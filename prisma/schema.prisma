@@ -14,16 +14,35 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
+model CopyPasta {
+    id        String        @id @default(uuid())
+    content   String
+    source    OriginSource?
+    sourceUrl String?
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
+    createdBy        User               @relation(fields: [createdById], references: [id])
+    createdById      String
+    CopyPastasOnTags CopyPastasOnTags[]
+}
 
-    @@index([name])
+model Tag {
+    id               String             @id @default(uuid())
+    name             String
+    createdAt        DateTime           @default(now())
+    updatedAt        DateTime           @updatedAt
+    CopyPastasOnTags CopyPastasOnTags[]
+}
+
+model CopyPastasOnTags {
+    copyPastas  CopyPasta @relation(fields: [copyPastaId], references: [id])
+    copyPastaId String
+    tags        Tag       @relation(fields: [tagId], references: [id])
+    tagId       String
+
+    @@unique([copyPastaId, tagId])
 }
 
 // Necessary for Next auth
@@ -55,14 +74,14 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String      @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?     @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+    copyPastas    CopyPasta[]
 }
 
 model VerificationToken {
@@ -71,4 +90,10 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+enum OriginSource {
+    Twitter
+    Facebook
+    Other
 }
