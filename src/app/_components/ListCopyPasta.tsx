@@ -11,9 +11,11 @@ import { ArrowDownIcon, LoaderCircleIcon, SkullIcon } from "~/components/ui/icon
 export function ListCopyPasta() {
     const searchParams = useSearchParams();
     const search = searchParams.get("search");
+    const tag = searchParams.get("tag");
     const [{ pages, }, allCopyPastas] = api.copyPasta.list.useSuspenseInfiniteQuery({
         limit: 3,
         search,
+        tag,
     }, {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
     });

@@ -1,8 +1,8 @@
 import { Card, CardContent } from "~/components/ui/card"
 import Link from "next/link"
-import { Badge } from "~/components/ui/badge"
+import { badgeVariants } from "~/components/ui/badge"
 import { CopyPasta, CopyPastasOnTags, Tag } from "@prisma/client";
-import { cn, trimContent } from "~/lib/utils";
+import { cn } from "~/lib/utils";
 import CopyPastaContent from "./CopyPastaContent";
 import { buttonVariants } from "./ui/button";
 import { LinkIcon } from "./ui/icons";
@@ -28,7 +28,9 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
                         <div className="flex w-full items-center justify-between relative">
                             {copyPastaProps.tags.length ? <div className="flex flex-wrap gap-2">
                                 {copyPastaProps.tags.map(tag =>
-                                    <Badge variant={'secondary'} key={tag.id}>{tag.name}</Badge>
+                                    <Link href={`/?tag=${tag.id}`} key={tag.id} className={badgeVariants({ variant: "default" })} prefetch={false}>
+                                        {tag.name}
+                                    </Link>
                                 )}
                             </div>
                                 : null

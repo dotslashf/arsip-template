@@ -1,4 +1,3 @@
-import { contextProps } from '@trpc/react-query/shared';
 import { initTRPC } from '@trpc/server';
 import { z } from "zod";
 
@@ -17,6 +16,7 @@ export const copyPastaRouter = createTRPCRouter({
                 limit: z.number().min(1).max(10).nullish(),
                 cursor: z.string().nullish(),
                 search: z.string().nullish(),
+                tag: z.string().uuid().nullish(),
             }),
         )
         .query(async ({ input, ctx }) => {
@@ -27,13 +27,21 @@ export const copyPastaRouter = createTRPCRouter({
                     mode: "insensitive"
                 }
             }
+            if (input.tag) {
+                condition["tag"] = {
+                    some: {
+                        tagId: input.tag
+                    }
+                }
+            }
 
             const copyPastas = await ctx.db.copyPasta.findMany({
                 take: input.limit ?? 1,
                 skip: input.cursor ? 1 : 0,
                 cursor: input.cursor ? { id: input.cursor } : undefined,
                 where: {
-                    content: condition["content"]
+                    content: condition["content"],
+                    CopyPastasOnTags: condition["tag"]
                 },
                 orderBy: {
                     createdAt: "desc"
