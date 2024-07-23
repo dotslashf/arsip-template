@@ -13,13 +13,13 @@ function CopyPastaContent(props: CopyPastaContentProps) {
         <>
             {props.content.length > 255 ?
                 (<span className='flex flex-col'>
-                    {trimContent(props.content)}{
+                    "{trimContent(props.content)}"{
                         <span>
                             <Link href={`/copy-pasta/${props.id}`} className={buttonVariants({ variant: 'link', size: 'url' })}>Read More</Link>
                         </span>
                     }
                 </span>)
-                : props.content
+                : `"${props.content}"`
             }
         </ >
     );
