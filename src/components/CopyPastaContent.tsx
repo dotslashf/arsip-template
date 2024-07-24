@@ -6,12 +6,13 @@ import { buttonVariants } from './ui/button';
 interface CopyPastaContentProps {
     id: string;
     content: string;
+    fullMode?: boolean;
 }
 
 function CopyPastaContent(props: CopyPastaContentProps) {
     return (
         <>
-            {props.content.length > 255 ?
+            {props.content.length > 255 && !props.fullMode ?
                 (<span className='flex flex-col'>
                     "{trimContent(props.content)}"{
                         <span>

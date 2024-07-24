@@ -8,7 +8,11 @@ import { buttonVariants } from "./ui/button";
 import { LinkIcon } from "./ui/icons";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
-    tags: Tag[]
+    CopyPastasOnTags: ({ tags: Tag } & {
+        copyPastaId: string;
+        tagId: string;
+    })[];
+    fullMode?: boolean
 }
 
 interface CopyPastaProps {
@@ -17,19 +21,22 @@ interface CopyPastaProps {
 
 export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
     return (
-        <Card className="w-full h-full lg:max-w-md shadow-sm text-justify">
+        <Card className={cn(
+            "w-full h-full shadow-sm text-justify",
+            copyPastaProps.fullMode ? "lg:max-w-4xl col-span-2" : "lg:max-w-md"
+        )}>
             <CardContent className="p-6 h-full flex flex-col justify-between gap-4">
                 <div className="text-sm text-primary">
-                    {<CopyPastaContent content={copyPastaProps.content} id={copyPastaProps.id} />}
+                    {<CopyPastaContent content={copyPastaProps.content} fullMode={copyPastaProps.fullMode} id={copyPastaProps.id} />}
                 </div>
                 <div className="flex flex-wrap items-center text-xs text-muted-foreground gap-4">
                     <span>Posted on {copyPastaProps.createdAt.toDateString()}</span>
-                    {copyPastaProps.tags.length || copyPastaProps.sourceUrl ?
+                    {copyPastaProps.CopyPastasOnTags.length || copyPastaProps.sourceUrl ?
                         <div className="flex w-full items-center justify-between relative">
-                            {copyPastaProps.tags.length ? <div className="flex flex-wrap gap-2">
-                                {copyPastaProps.tags.map(tag =>
-                                    <Link href={`/?tag=${tag.id}`} key={tag.id} className={badgeVariants({ variant: "default" })} prefetch={false}>
-                                        {tag.name}
+                            {copyPastaProps.CopyPastasOnTags.length ? <div className="flex flex-wrap gap-2">
+                                {copyPastaProps.CopyPastasOnTags.map(tag =>
+                                    <Link href={`/?tag=${tag.tags.id}`} key={tag.tags.id} className={badgeVariants({ variant: "default" })} prefetch={false}>
+                                        {tag.tags.name}
                                     </Link>
                                 )}
                             </div>

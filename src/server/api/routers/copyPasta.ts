@@ -60,4 +60,26 @@ export const copyPastaRouter = createTRPCRouter({
                 nextCursor
             }
         }),
+
+    byId: publicProcedure
+        .input(
+            z.object({
+                id: z.string().uuid()
+            })
+        ).query(async ({ input, ctx }) => {
+            const copyPasta = await ctx.db.copyPasta.findFirstOrThrow({
+                where: {
+                    id: input.id
+                },
+                include: {
+                    CopyPastasOnTags: {
+                        include: {
+                            tags: true
+                        }
+                    }
+                }
+            });
+
+            return copyPasta ?? null
+        })
 })

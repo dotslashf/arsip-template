@@ -20,7 +20,7 @@ export function ListCopyPasta() {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
     });
 
-    const { isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    const { isFetchingNextPage, fetchNextPage, hasNextPage } =
         allCopyPastas;
 
     return (
@@ -29,11 +29,7 @@ export function ListCopyPasta() {
                 <SearchBar />
                 {pages ? pages.map(page =>
                     page.copyPastas.map((copy) => {
-                        const copyWithTags = {
-                            ...copy,
-                            tags: copy.CopyPastasOnTags.map(tag => tag.tags)
-                        }
-                        return <CopyPastaCard key={copy.id} copyPastaProps={copyWithTags} />
+                        return <CopyPastaCard key={copy.id} copyPastaProps={copy} />
                     }
                     )
                 ) : null}
