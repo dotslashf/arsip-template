@@ -1,7 +1,7 @@
 import Navbar from "./Navbar"
 
 interface LayoutProps {
-    children: JSX.Element | JSX.Element[]
+    children: JSX.Element | JSX.Element[] | string
 }
 export default function Layout(props: LayoutProps) {
     return (

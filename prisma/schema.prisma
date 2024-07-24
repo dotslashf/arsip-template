@@ -19,6 +19,7 @@ model CopyPasta {
     content   String
     source    OriginSource?
     sourceUrl String?
+    postedAt  DateTime?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
