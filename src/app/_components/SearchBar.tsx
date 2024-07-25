@@ -1,6 +1,6 @@
 import { Input } from "~/components/ui/input";
 import { Button, buttonVariants } from "~/components/ui/button";
-import { SearchIcon } from "~/components/ui/icons";
+import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
@@ -41,7 +41,7 @@ export default function SearchBar() {
           size="icon"
           onClick={handleSearch}
         >
-          <SearchIcon />
+          <Search className="h-4 w-4" />
           <span className="sr-only">Search</span>
         </Button>
         <Link

@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { cn, trimContent } from "~/lib/utils";
 import { buttonVariants } from "./ui/button";
-import { ArrowRightIcon } from "./ui/icons";
+import { ArrowRight } from "lucide-react";
 
 interface CopyPastaContentProps {
   id: string;
@@ -25,7 +25,7 @@ function CopyPastaContent(props: CopyPastaContentProps) {
           )}
           prefetch={false}
         >
-          Lebih Lanjut <ArrowRightIcon className="ml-2 h-3 w-3" />
+          Lebih Lanjut <ArrowRight className="ml-2 h-3 w-3" />
         </Link>
       )}
     </div>

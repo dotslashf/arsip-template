@@ -5,7 +5,7 @@ import { type CopyPasta, type Tag } from "@prisma/client";
 import { cn } from "~/lib/utils";
 import CopyPastaContent from "./CopyPastaContent";
 import { buttonVariants } from "./ui/button";
-import { LinkIcon } from "./ui/icons";
+import { Link2 } from "lucide-react";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -65,7 +65,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
                     )}
                     prefetch={false}
                   >
-                    Cek Doksli <LinkIcon className="ml-2 h-3 w-3" />
+                    Cek Doksli <Link2 className="ml-2 h-3 w-3" />
                   </Link>
                 </div>
               ) : null}
