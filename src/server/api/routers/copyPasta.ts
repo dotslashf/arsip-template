@@ -1,5 +1,7 @@
+import { CopyPasta, CopyPastasOnTags, Prisma, Tag } from '@prisma/client';
 import { initTRPC } from '@trpc/server';
 import { z } from "zod";
+import { CopyPastaCardWithTagsProps, CopyPastaProps } from '~/components/CopyPastaCard';
 
 import {
     createTRPCRouter,
@@ -20,15 +22,15 @@ export const copyPastaRouter = createTRPCRouter({
             }),
         )
         .query(async ({ input, ctx }) => {
-            const condition: { [key: string]: any } = {};
+            const condition: Record<string, any> = {};
             if (input.search) {
-                condition["content"] = {
+                condition.content = {
                     contains: input.search,
                     mode: "insensitive"
                 }
             }
             if (input.tag) {
-                condition["tag"] = {
+                condition.tag = {
                     some: {
                         tagId: input.tag
                     }
@@ -40,8 +42,8 @@ export const copyPastaRouter = createTRPCRouter({
                 skip: input.cursor ? 1 : 0,
                 cursor: input.cursor ? { id: input.cursor } : undefined,
                 where: {
-                    content: condition["content"],
-                    CopyPastasOnTags: condition["tag"]
+                    content: condition.content,
+                    CopyPastasOnTags: condition.tag
                 },
                 orderBy: {
                     createdAt: "desc"
@@ -80,6 +82,47 @@ export const copyPastaRouter = createTRPCRouter({
                 }
             });
 
+            console.log(copyPasta);
+
             return copyPasta ?? null
+        }),
+
+    byTag: publicProcedure
+        .input(
+            z.object({
+                tagIds: z.string().uuid().array().nullish(),
+                copyPastaId: z.string().uuid()
+            })
+        ).query(async ({ input, ctx }) => {
+            if (!input.tagIds) return [];
+
+            const randomCopyPastaByTagIds: {
+                copyPastaId: string;
+                tagId: string;
+            }[] = await ctx.db.$queryRaw`
+                SELECT *
+                FROM "CopyPastasOnTags" "cpot"
+                WHERE "cpot"."tagId" in (${Prisma.join(input.tagIds)})
+                AND NOT "cpot"."copyPastaId" = ${input.copyPastaId}
+                ORDER BY RANDOM()
+                LIMIT 3
+            `
+
+            const copyPastas = await ctx.db.copyPasta.findMany({
+                where: {
+                    id: {
+                        in: randomCopyPastaByTagIds.map(c => c.copyPastaId)
+                    }
+                },
+                include: {
+                    CopyPastasOnTags: {
+                        include: {
+                            tags: true
+                        }
+                    }
+                }
+            })
+
+            return copyPastas
         })
 })

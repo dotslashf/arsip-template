@@ -1,29 +1,35 @@
-import Link from 'next/link';
-import React from 'react';
-import { trimContent, } from '~/lib/utils';
-import { buttonVariants } from './ui/button';
+import Link from "next/link";
+import React from "react";
+import { cn, trimContent } from "~/lib/utils";
+import { buttonVariants } from "./ui/button";
+import { ArrowRightIcon } from "./ui/icons";
 
 interface CopyPastaContentProps {
-    id: string;
-    content: string;
-    fullMode?: boolean;
+  id: string;
+  content: string;
+  fullMode?: boolean;
 }
 
 function CopyPastaContent(props: CopyPastaContentProps) {
-    return (
-        <>
-            {props.content.length > 255 && !props.fullMode ?
-                (<span className='flex flex-col'>
-                    "{trimContent(props.content)}"{
-                        <span>
-                            <Link href={`/copy-pasta/${props.id}`} className={buttonVariants({ variant: 'link', size: 'url' })}>Read More</Link>
-                        </span>
-                    }
-                </span>)
-                : `"${props.content}"`
-            }
-        </ >
-    );
+  return (
+    <div className="flex flex-col gap-2">
+      {props.content.length > 255 && !props.fullMode
+        ? `"${trimContent(props.content)}"`
+        : `"${props.content}"`}
+      {!props.fullMode && (
+        <Link
+          href={`/copy-pasta/${props.id}`}
+          className={cn(
+            buttonVariants({ variant: "link", size: "url" }),
+            "flex self-start",
+          )}
+          prefetch={false}
+        >
+          Lebih Lanjut <ArrowRightIcon className="ml-2 h-3 w-3" />
+        </Link>
+      )}
+    </div>
+  );
 }
 
 export default CopyPastaContent;
