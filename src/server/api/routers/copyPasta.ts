@@ -1,7 +1,6 @@
-import { CopyPasta, CopyPastasOnTags, Prisma, Tag } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { initTRPC } from '@trpc/server';
 import { z } from "zod";
-import { CopyPastaCardWithTagsProps, CopyPastaProps } from '~/components/CopyPastaCard';
 
 import {
     createTRPCRouter,

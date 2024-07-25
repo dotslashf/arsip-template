@@ -1,6 +1,7 @@
 import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { copyPastaRouter } from './routers/copyPasta';
+import { tagRouter } from './routers/tag';
 
 /**
  * This is the primary router for your server.
@@ -10,6 +11,7 @@ import { copyPastaRouter } from './routers/copyPasta';
 export const appRouter = createTRPCRouter({
   post: postRouter,
   copyPasta: copyPastaRouter,
+  tag: tagRouter,
 });
 
 // export type definition of API
