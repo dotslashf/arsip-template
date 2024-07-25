@@ -19,8 +19,11 @@ import { OriginSource } from "@prisma/client";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { api } from "~/trpc/react";
 import { Checkbox } from "~/components/ui/checkbox";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, CircleHelp } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import { format } from "date-fns";
+import { id } from "date-fns/locale";
 import {
   Popover,
   PopoverTrigger,
@@ -60,7 +63,36 @@ export default function CreateCopyPasta() {
     },
   });
 
-  const sourceEnum = Object.keys(OriginSource);
+  const sourceEnumHash = new Map([
+    [
+      "Twitter",
+      {
+        label: "Twitter (X)",
+        value: "Twitter",
+        icon: <FontAwesomeIcon icon={faTwitter} className="h-4 w-4" />,
+      },
+    ],
+    [
+      "Facebook",
+      {
+        label: "Facebook",
+        value: "Facebook",
+        icon: <FontAwesomeIcon icon={faFacebook} className="h-4 w-4" />,
+      },
+    ],
+    [
+      "Other",
+      {
+        label: "Lainnya",
+        value: "Other",
+        icon: <CircleHelp className="h-4 w-4" />,
+      },
+    ],
+  ]);
+
+  const sourceEnum = Object.keys(OriginSource).map((og) => {
+    return sourceEnumHash.get(og);
+  });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -106,7 +138,7 @@ export default function CreateCopyPasta() {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(field.value, "PPP", { locale: id })
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -155,12 +187,15 @@ export default function CreateCopyPasta() {
                 {sourceEnum.map((source) => (
                   <FormItem
                     className="flex items-center space-x-3 space-y-0"
-                    key={source}
+                    key={source?.value}
                   >
                     <FormControl>
-                      <RadioGroupItem value={source} />
+                      <RadioGroupItem value={source!.value} />
                     </FormControl>
-                    <FormLabel>{source}</FormLabel>
+                    <FormLabel className="flex gap-x-2">
+                      {source?.icon}
+                      {source?.label}
+                    </FormLabel>
                   </FormItem>
                 ))}
               </RadioGroup>
