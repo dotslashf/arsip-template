@@ -28,7 +28,14 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
         copyPastaProps.fullMode ? "col-span-2 lg:max-w-4xl" : "lg:max-w-md",
       )}
     >
-      <CardContent className="flex h-full flex-col justify-between gap-2 p-6">
+      <CardContent
+        className={cn(
+          "flex h-full flex-col justify-between gap-2 p-6 hover:cursor-pointer",
+          copyPastaProps.CopyPastasOnTags.some(
+            (tag) => tag.tags.name === "NSFW",
+          ) && "cursor-none blur transition hover:blur-none",
+        )}
+      >
         <div className="text-sm text-primary">
           {
             <CopyPastaContent
