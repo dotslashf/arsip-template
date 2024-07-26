@@ -44,9 +44,14 @@ const formSchema = z.object({
   postedAt: z.date(),
   sourceUrl: z.string().url().optional().or(z.literal("")),
   source: z.nativeEnum(OriginSource),
-  tags: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "Pilih 1 tag",
-  }),
+  tags: z
+    .array(z.string())
+    .max(3, {
+      message: "Maximal 3 tag",
+    })
+    .refine((value) => value.some((item) => item), {
+      message: "Pilih 1 tag",
+    }),
 });
 
 export default function CreateCopyPasta() {
