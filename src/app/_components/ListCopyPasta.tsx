@@ -15,7 +15,7 @@ export function ListCopyPasta() {
   const [{ pages }, allCopyPastas] =
     api.copyPasta.list.useSuspenseInfiniteQuery(
       {
-        limit: 3,
+        limit: 10,
         search,
         tag,
       },

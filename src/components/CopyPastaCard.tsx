@@ -7,6 +7,7 @@ import CopyPastaContent from "./CopyPastaContent";
 import { buttonVariants } from "./ui/button";
 import { Link2 } from "lucide-react";
 import { sourceEnumHash } from "~/app/_components/CreateCopyPasta";
+import { useToast } from "./ui/use-toast";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -21,6 +22,22 @@ export interface CopyPastaProps {
 }
 
 export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
+  const { toast } = useToast();
+
+  function handleCopy() {
+    navigator.clipboard
+      .writeText(copyPastaProps.content)
+      .then(() => {
+        toast({
+          description: "Templatenya udah ke copy nih",
+          className: cn(
+            "fixed top-0 m-auto left-0 right-0 lg:max-w-md max-w-sm mt-4",
+          ),
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <Card
       className={cn(
@@ -30,10 +47,12 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
     >
       <CardContent
         className={cn(
-          "flex h-full flex-col justify-between gap-2 p-6 hover:cursor-pointer",
+          "flex h-full flex-col justify-between gap-2 p-6 hover:cursor-auto",
           copyPastaProps.CopyPastasOnTags.some(
             (tag) => tag.tags.name === "NSFW",
-          ) && "cursor-none blur transition hover:blur-none",
+          ) &&
+            !copyPastaProps.fullMode &&
+            "cursor-none blur transition hover:blur-none",
         )}
       >
         <div className="text-sm text-primary">
@@ -42,6 +61,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               content={copyPastaProps.content}
               fullMode={copyPastaProps.fullMode}
               id={copyPastaProps.id}
+              onClick={handleCopy}
             />
           }
         </div>

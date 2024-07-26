@@ -4,7 +4,8 @@ import { cn, trimContent } from "~/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 
-interface CopyPastaContentProps {
+interface CopyPastaContentProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   id: string;
   content: string;
   fullMode?: boolean;
@@ -13,9 +14,11 @@ interface CopyPastaContentProps {
 function CopyPastaContent(props: CopyPastaContentProps) {
   return (
     <div className="flex flex-col gap-2">
-      {props.content.length > 255 && !props.fullMode
-        ? `"${trimContent(props.content)}"`
-        : `"${props.content}"`}
+      <span onClick={props.onClick} className="cursor-pointer">
+        {props.content.length > 255 && !props.fullMode
+          ? `"${trimContent(props.content)}"`
+          : `"${props.content}"`}
+      </span>
       {!props.fullMode && (
         <Link
           href={`/copy-pasta/${props.id}`}
