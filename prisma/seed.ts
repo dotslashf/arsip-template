@@ -25,7 +25,9 @@ async function main() {
       data: data.copyPastas.map((copy) => {
         return {
           content: copy,
-          createdById: "957468e0-4f09-4b53-a84d-40a3a54988a2",
+          createdById: "b4ead74f-fe2f-4359-98f6-4ba25ad9f29a",
+          approvedById: "b4ead74f-fe2f-4359-98f6-4ba25ad9f29a",
+          isApproved: true,
           createdAt: new Date(),
           source: faker.helpers.arrayElement(
             Object.keys(OriginSource),

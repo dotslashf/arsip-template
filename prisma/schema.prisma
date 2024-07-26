@@ -15,16 +15,21 @@ datasource db {
 }
 
 model CopyPasta {
-    id        String        @id @default(uuid())
+    id        String       @id @default(uuid())
     content   String
-    source    OriginSource?
+    source    OriginSource @default(Other)
     sourceUrl String?
-    postedAt  DateTime?
+    postedAt  DateTime     @default(now())
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    createdBy        User               @relation(fields: [createdById], references: [id])
+    isApproved Boolean @default(false)
+
+    approvedBy   User   @relation(name: "approvedBy", fields: [approvedById], references: [id])
+    approvedById String
+
+    createdBy        User               @relation(name: "createdBy", fields: [createdById], references: [id])
     createdById      String
     CopyPastasOnTags CopyPastasOnTags[]
 }
@@ -75,14 +80,15 @@ model Session {
 }
 
 model User {
-    id            String      @id @default(cuid())
-    name          String?
-    email         String?     @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    copyPastas    CopyPasta[]
+    id                  String      @id @default(cuid())
+    name                String?
+    email               String?     @unique
+    emailVerified       DateTime?
+    image               String?
+    accounts            Account[]
+    sessions            Session[]
+    CopyPastaApprovedBy CopyPasta[] @relation("approvedBy")
+    CopyPastaCreatedBy  CopyPasta[] @relation("createdBy")
 }
 
 model VerificationToken {
