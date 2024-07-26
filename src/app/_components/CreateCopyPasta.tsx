@@ -7,7 +7,6 @@ import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,14 +21,12 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { CalendarIcon, CircleHelp } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "~/components/ui/popover";
-import { cn } from "~/lib/utils";
+import { cn, formatDateToHuman } from "~/lib/utils";
 import { Calendar } from "~/components/ui/calendar";
 
 const formSchema = z.object({
@@ -54,6 +51,33 @@ const formSchema = z.object({
     }),
 });
 
+export const sourceEnumHash = new Map([
+  [
+    "Twitter",
+    {
+      label: "Twitter (X)",
+      value: "Twitter",
+      icon: <FontAwesomeIcon icon={faTwitter} className="h-3 w-3" />,
+    },
+  ],
+  [
+    "Facebook",
+    {
+      label: "Facebook",
+      value: "Facebook",
+      icon: <FontAwesomeIcon icon={faFacebook} className="h-3 w-3" />,
+    },
+  ],
+  [
+    "Other",
+    {
+      label: "Lainnya",
+      value: "Other",
+      icon: <CircleHelp className="h-3 w-3" />,
+    },
+  ],
+]);
+
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery();
 
@@ -67,33 +91,6 @@ export default function CreateCopyPasta() {
       tags: [],
     },
   });
-
-  const sourceEnumHash = new Map([
-    [
-      "Twitter",
-      {
-        label: "Twitter (X)",
-        value: "Twitter",
-        icon: <FontAwesomeIcon icon={faTwitter} className="h-4 w-4" />,
-      },
-    ],
-    [
-      "Facebook",
-      {
-        label: "Facebook",
-        value: "Facebook",
-        icon: <FontAwesomeIcon icon={faFacebook} className="h-4 w-4" />,
-      },
-    ],
-    [
-      "Other",
-      {
-        label: "Lainnya",
-        value: "Other",
-        icon: <CircleHelp className="h-4 w-4" />,
-      },
-    ],
-  ]);
 
   const sourceEnum = Object.keys(OriginSource).map((og) => {
     return sourceEnumHash.get(og);
@@ -143,11 +140,11 @@ export default function CreateCopyPasta() {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP", { locale: id })
+                        formatDateToHuman(field.value)
                       ) : (
                         <span>Pick a date</span>
                       )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className="ml-auto h-3 w-3 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -197,7 +194,7 @@ export default function CreateCopyPasta() {
                     <FormControl>
                       <RadioGroupItem value={source!.value} />
                     </FormControl>
-                    <FormLabel className="flex gap-x-2">
+                    <FormLabel className="flex items-center gap-x-2">
                       {source?.icon}
                       {source?.label}
                     </FormLabel>

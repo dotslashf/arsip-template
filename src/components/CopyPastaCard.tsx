@@ -2,10 +2,11 @@ import { Card, CardContent } from "~/components/ui/card";
 import Link from "next/link";
 import { badgeVariants } from "~/components/ui/badge";
 import { type CopyPasta, type Tag } from "@prisma/client";
-import { cn } from "~/lib/utils";
+import { cn, formatDateToHuman } from "~/lib/utils";
 import CopyPastaContent from "./CopyPastaContent";
 import { buttonVariants } from "./ui/button";
 import { Link2 } from "lucide-react";
+import { sourceEnumHash } from "~/app/_components/CreateCopyPasta";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -38,12 +39,22 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           }
         </div>
         <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-          <span>Posted on {copyPastaProps.createdAt.toDateString()}</span>
+          <span>
+            Kejadian pada:{" "}
+            {formatDateToHuman(copyPastaProps.postedAt ?? new Date())}
+          </span>
           {copyPastaProps.CopyPastasOnTags.length ||
           copyPastaProps.sourceUrl ? (
             <div className="relative flex w-full items-center justify-between">
               {copyPastaProps.CopyPastasOnTags.length ? (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={cn(
+                      buttonVariants({ variant: "default", size: "xs" }),
+                    )}
+                  >
+                    {sourceEnumHash.get(copyPastaProps.source)?.icon}
+                  </span>
                   {copyPastaProps.CopyPastasOnTags.map((tag) => (
                     <Link
                       href={`/?tag=${tag.tags.id}`}
