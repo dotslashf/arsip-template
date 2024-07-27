@@ -1,18 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { Button, buttonVariants } from "./ui/button";
-import { LogIn, LogOut } from "lucide-react";
+import { buttonVariants } from "./ui/button";
+import { LogIn, LogOut, UserRound } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import Avatar from "boring-avatars";
 
 interface NavbarProps {
   session: Session | null;
 }
 export default function Navbar({ session }: NavbarProps) {
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow dark:bg-gray-950">
+    <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-gray-950">
       <div className="container px-4 md:px-6">
         <div className="flex h-12 items-center">
           <Link
@@ -33,10 +41,47 @@ export default function Navbar({ session }: NavbarProps) {
                 <LogIn className="ml-2 w-3" />
               </Link>
             ) : (
-              <Button variant={"link"} onClick={() => signOut()}>
-                Keluar
-                <LogOut className="ml-2 w-3" />
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div>
+                    <Avatar
+                      name={session.user.id}
+                      colors={[
+                        "#0f172a",
+                        "#A6AEC1",
+                        "#CFD5E1",
+                        "#EDEDF2",
+                        "#FCFDFF",
+                      ]}
+                      size={38}
+                      variant="beam"
+                    />
+                    <span className="sr-only">Toggle user menu</span>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
+                    <Link
+                      href="#"
+                      prefetch={false}
+                      className="flex w-full justify-between"
+                    >
+                      Profile
+                      <UserRound className="w-3" />
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="cursor-pointer bg-destructive text-destructive-foreground focus:bg-destructive/70 focus:text-white">
+                    <span
+                      className="flex w-full justify-between"
+                      onClick={() => signOut()}
+                    >
+                      Keluar
+                      <LogOut className="w-3" />
+                    </span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </nav>
         </div>
