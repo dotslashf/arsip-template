@@ -1,12 +1,14 @@
+import { getServerAuthSession } from "~/server/auth";
 import Navbar from "./Navbar";
 
 interface LayoutProps {
   children: JSX.Element | JSX.Element[] | string;
 }
-export default function Layout(props: LayoutProps) {
+export default async function Layout(props: LayoutProps) {
+  const session = await getServerAuthSession();
   return (
     <main className="flex min-h-screen flex-col items-center text-primary">
-      <Navbar />
+      <Navbar session={session} />
       <div className="container flex flex-col items-center justify-center gap-6 px-4 py-16">
         {props.children}
       </div>

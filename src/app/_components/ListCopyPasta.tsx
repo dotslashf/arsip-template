@@ -5,8 +5,7 @@ import CopyPastaCard from "~/components/CopyPastaCard";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import SearchBar from "./SearchBar";
-// import { ArrowDownIcon, LoaderCircleIcon, SkullIcon } from "~/components/ui/icons";
-import { ArrowDown, LoaderCircle, Skull, SkullIcon } from "lucide-react";
+import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 
 export function ListCopyPasta() {
   const searchParams = useSearchParams();

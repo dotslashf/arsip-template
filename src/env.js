@@ -20,8 +20,10 @@ export const env = createEnv({
       // Since NextAuth.js automatically uses the VERCEL_URL if present.
       (str) => process.env.VERCEL_URL ?? str,
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-      process.env.VERCEL ? z.string() : z.string().url()
+      process.env.VERCEL ? z.string() : z.string().url(),
     ),
+    TWITTER_API_KEY: z.string(),
+    TWITTER_API_SECRET: z.string(),
   },
 
   /**
@@ -42,6 +44,8 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    TWITTER_API_KEY: process.env.TWITTER_API_KEY,
+    TWITTER_API_SECRET: process.env.TWITTER_API_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

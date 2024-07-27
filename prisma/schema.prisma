@@ -60,6 +60,8 @@ model Account {
     providerAccountId        String
     refresh_token            String? // @db.Text
     access_token             String? // @db.Text
+    oauth_token              String?
+    oauth_token_secret       String?
     expires_at               Int?
     token_type               String?
     scope                    String?

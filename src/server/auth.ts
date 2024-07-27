@@ -5,7 +5,8 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import DiscordProvider from "next-auth/providers/discord";
+import TwitterProvider from "next-auth/providers/twitter";
+import { env } from "~/env";
 
 // import { env } from "~/env";
 import { db } from "~/server/db";
@@ -57,6 +58,11 @@ export const authOptions: NextAuthOptions = {
      *
      * @see https://next-auth.js.org/providers/github
      */
+
+    TwitterProvider({
+      clientId: env.TWITTER_API_KEY,
+      clientSecret: env.TWITTER_API_SECRET,
+    }),
   ],
 };
 
