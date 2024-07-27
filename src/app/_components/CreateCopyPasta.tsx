@@ -28,7 +28,10 @@ import {
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { Calendar } from "~/components/ui/calendar";
 import { createCopyPastaForm } from "../form/copyPasta";
-import { z } from "zod";
+import { type z } from "zod";
+import useToast from "~/components/ui/use-react-hot-toast";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 export const sourceEnumHash = new Map([
   [
@@ -76,14 +79,25 @@ export default function CreateCopyPasta() {
     return sourceEnumHash.get(og);
   });
 
-  function onSubmit(values: z.infer<typeof createCopyPastaForm>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    createMutation.mutate({
-      ...values,
-    });
+  const toast = useToast();
 
-    console.log(createMutation.isSuccess);
+  useEffect(() => {
+    if (createMutation.isSuccess) {
+      redirect("/");
+    }
+  }, [createMutation.isSuccess]);
+
+  function onSubmit(values: z.infer<typeof createCopyPastaForm>) {
+    toast({
+      message: "",
+      promiseFn: createMutation.mutateAsync({ ...values }),
+      type: "promise",
+      promiseMsg: {
+        success: "Makasih!, tunggu diapproved ya!",
+        loading: "🔥 Sedang memasak",
+        error: "Duh, gagal nih",
+      },
+    });
   }
 
   return (

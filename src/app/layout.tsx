@@ -2,7 +2,7 @@ import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { Toaster } from "~/components/ui/toaster";
+import { Toaster } from "react-hot-toast";
 
 import { TRPCReactProvider } from "~/trpc/react";
 
@@ -19,7 +19,21 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
-        <Toaster />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              padding: "1rem",
+              borderRadius: "0.375rem",
+              width: "100%",
+              maxWidth: "28rem",
+            },
+            iconTheme: {
+              primary: "#0f172a",
+              secondary: "#FCFDFF",
+            },
+          }}
+        />
       </body>
     </html>
   );
