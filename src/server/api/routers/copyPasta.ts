@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
+import { createCopyPastaForm } from "~/app/form/copyPasta";
 
 import {
   createTRPCRouter,
@@ -11,6 +12,31 @@ import {
 export const t = initTRPC.create();
 
 export const copyPastaRouter = createTRPCRouter({
+  create: protectedProcedure
+    .input(createCopyPastaForm)
+    .mutation(async ({ ctx, input }) => {
+      const copyPasta = await ctx.db.copyPasta.create({
+        data: {
+          content: input.content,
+          source: input.source,
+          sourceUrl: input.sourceUrl,
+          postedAt: input.postedAt,
+          createdById: ctx.session.user.id,
+          CopyPastasOnTags: {
+            createMany: {
+              data: input.tags.map((tag) => {
+                return {
+                  tagId: tag,
+                };
+              }),
+            },
+          },
+        },
+      });
+
+      return copyPasta.id;
+    }),
+
   list: publicProcedure
     .input(
       z.object({
@@ -43,6 +69,7 @@ export const copyPastaRouter = createTRPCRouter({
         where: {
           content: condition.content,
           CopyPastasOnTags: condition.tag,
+          isApproved: true,
         },
         orderBy: {
           createdAt: "desc",

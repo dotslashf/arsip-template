@@ -26,8 +26,8 @@ model CopyPasta {
 
     isApproved Boolean @default(false)
 
-    approvedBy   User   @relation(name: "approvedBy", fields: [approvedById], references: [id])
-    approvedById String
+    approvedBy   User?   @relation(name: "approvedBy", fields: [approvedById], references: [id])
+    approvedById String?
 
     createdBy        User               @relation(name: "createdBy", fields: [createdById], references: [id])
     createdById      String

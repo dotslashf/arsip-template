@@ -1,6 +1,5 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
@@ -18,7 +17,7 @@ import { OriginSource } from "@prisma/client";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { api } from "~/trpc/react";
 import { Checkbox } from "~/components/ui/checkbox";
-import { CalendarIcon, CircleHelp } from "lucide-react";
+import { CalendarIcon, CircleHelp, PlusIcon } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -28,28 +27,8 @@ import {
 } from "~/components/ui/popover";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { Calendar } from "~/components/ui/calendar";
-
-const formSchema = z.object({
-  content: z
-    .string()
-    .min(10, {
-      message: "Minimal 10 karakter",
-    })
-    .max(500, {
-      message: "Max 500 karakter",
-    }),
-  postedAt: z.date(),
-  sourceUrl: z.string().url().optional().or(z.literal("")),
-  source: z.nativeEnum(OriginSource),
-  tags: z
-    .array(z.string())
-    .max(3, {
-      message: "Maximal 3 tag",
-    })
-    .refine((value) => value.some((item) => item), {
-      message: "Pilih 1 tag",
-    }),
-});
+import { createCopyPastaForm } from "../form/copyPasta";
+import { z } from "zod";
 
 export const sourceEnumHash = new Map([
   [
@@ -80,9 +59,10 @@ export const sourceEnumHash = new Map([
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery();
+  const createMutation = api.copyPasta.create.useMutation();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createCopyPastaForm>>({
+    resolver: zodResolver(createCopyPastaForm),
     defaultValues: {
       content: "",
       postedAt: new Date(),
@@ -96,10 +76,14 @@ export default function CreateCopyPasta() {
     return sourceEnumHash.get(og);
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof createCopyPastaForm>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    createMutation.mutate({
+      ...values,
+    });
+
+    console.log(createMutation.isSuccess);
   }
 
   return (
@@ -123,59 +107,61 @@ export default function CreateCopyPasta() {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="postedAt"
-          render={({ field }) => (
-            <FormItem className="mb-2 flex flex-col">
-              <FormLabel className="mb-1">Tanggal kejadian</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground",
-                      )}
-                    >
-                      {field.value ? (
-                        formatDateToHuman(field.value)
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-3 w-3 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="sourceUrl"
-          render={({ field }) => (
-            <FormItem className="mb-2">
-              <FormLabel>Doksli</FormLabel>
-              <FormControl>
-                <Input placeholder="Tautan menuju doksli" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+        <div className="flex justify-between gap-x-2">
+          <FormField
+            control={form.control}
+            name="postedAt"
+            render={({ field }) => (
+              <FormItem className="mb-2 w-full flex-col">
+                <FormLabel className="mb-1">Tanggal kejadian</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {field.value ? (
+                          formatDateToHuman(field.value)
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-3 w-3 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("1900-01-01")
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="sourceUrl"
+            render={({ field }) => (
+              <FormItem className="mb-2 w-full">
+                <FormLabel>Doksli</FormLabel>
+                <FormControl>
+                  <Input placeholder="www.doksli.com" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="source"
@@ -185,6 +171,7 @@ export default function CreateCopyPasta() {
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
+                className="grid grid-cols-3"
               >
                 {sourceEnum.map((source) => (
                   <FormItem
@@ -207,7 +194,7 @@ export default function CreateCopyPasta() {
         <FormField
           control={form.control}
           name="tags"
-          render={({ field }) => (
+          render={({}) => (
             <FormItem className="mb-2">
               <div>
                 <FormLabel>Tags</FormLabel>
@@ -251,8 +238,10 @@ export default function CreateCopyPasta() {
             </FormItem>
           )}
         />
-        <div className="mt-6">
-          <Button type="submit">Tambah</Button>
+        <div className="mt-6 w-full">
+          <Button type="submit" className="w-full items-center">
+            Tambah <PlusIcon className="ml-2 h-4 w-4" />
+          </Button>
         </div>
       </form>
     </Form>
