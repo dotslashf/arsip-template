@@ -22,7 +22,7 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
     : [];
 
   return (
-    <div className="flex w-full max-w-4xl flex-col items-center gap-4">
+    <div className="flex w-full flex-col gap-4 lg:px-32">
       {copyPasta && (
         <CopyPastaCard
           key={id}
@@ -32,29 +32,26 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
           }}
         />
       )}
-      <>
-        <Separator className="text-red-300" />
-        <div className="flex flex-col gap-2">
-          <div className="self-center text-sm font-semibold">
-            Template Yang Mungkin Sama:
-          </div>
-          {relatedCopyPastas?.length ? (
-            <div className="grid grid-cols-3 gap-2">
-              {relatedCopyPastas.map((c) => {
-                return (
-                  <CopyPastaCard
-                    key={c.id}
-                    copyPastaProps={{
-                      ...c,
-                      fullMode: false,
-                    }}
-                  />
-                );
-              })}
-            </div>
-          ) : null}
+      <div className="flex flex-col gap-2">
+        <div className="self-center text-sm font-semibold">
+          Template Yang Mungkin Sama:
         </div>
-      </>
+        {relatedCopyPastas?.length && (
+          <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-3">
+            {relatedCopyPastas.map((c) => {
+              return (
+                <CopyPastaCard
+                  key={c.id}
+                  copyPastaProps={{
+                    ...c,
+                    fullMode: false,
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

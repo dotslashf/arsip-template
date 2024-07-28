@@ -7,7 +7,7 @@ import CopyPastaContent from "./CopyPastaContent";
 import { buttonVariants } from "./ui/button";
 import { Link2 } from "lucide-react";
 import { sourceEnumHash } from "~/app/_components/CreateCopyPasta";
-import { useToast } from "./ui/use-toast";
+import useToast from "./ui/use-react-hot-toast";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -22,17 +22,16 @@ export interface CopyPastaProps {
 }
 
 export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
-  const { toast } = useToast();
+  const toast = useToast();
 
   function handleCopy() {
     navigator.clipboard
       .writeText(copyPastaProps.content)
       .then(() => {
         toast({
-          description: "Templatenya udah ke copy nih",
-          className: cn(
-            "fixed top-0 m-auto left-0 right-0 lg:max-w-md max-w-sm mt-4",
-          ),
+          message:
+            "Bersiap untuk kejahilan kecil 😼\n Silahkan paste templatenya!",
+          type: "info",
         });
       })
       .catch((err) => console.log(err));
@@ -40,19 +39,16 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
 
   return (
     <Card
-      className={cn(
-        "h-full w-full text-justify shadow-sm",
-        copyPastaProps.fullMode ? "col-span-2 lg:max-w-4xl" : "lg:max-w-md",
-      )}
+      className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
     >
       <CardContent
         className={cn(
           "flex h-full flex-col justify-between gap-2 p-6 hover:cursor-auto",
-          copyPastaProps.CopyPastasOnTags.some(
-            (tag) => tag.tags.name === "NSFW",
-          ) &&
-            !copyPastaProps.fullMode &&
-            "cursor-none blur transition hover:blur-none",
+          // copyPastaProps.CopyPastasOnTags.some(
+          //   (tag) => tag.tags.name === "NSFW",
+          // ) &&
+          //   !copyPastaProps.fullMode &&
+          //   "cursor-none blur transition hover:blur-none",
         )}
       >
         <div className="text-sm text-primary">

@@ -1,10 +1,9 @@
 import { Input } from "~/components/ui/input";
 import { Button, buttonVariants } from "~/components/ui/button";
-import { Search } from "lucide-react";
+import { PlusIcon, Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { Plus } from "lucide-react";
 import { cn } from "~/lib/utils";
 
 export default function SearchBar() {
@@ -46,10 +45,12 @@ export default function SearchBar() {
         </Button>
         <Link
           href={"/copy-pasta/create"}
-          className={cn(buttonVariants({ variant: "default" }), "item-center")}
+          className={cn(
+            buttonVariants({ variant: "default", size: "icon" }),
+            "item-center",
+          )}
         >
-          Template
-          <Plus className="ml-2 h-4 w-4" />
+          <PlusIcon className="h-4 w-4" />
         </Link>
       </div>
     </div>

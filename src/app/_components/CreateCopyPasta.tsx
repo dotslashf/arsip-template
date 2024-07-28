@@ -102,7 +102,7 @@ export default function CreateCopyPasta() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-md">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full lg:px-32">
         <FormField
           control={form.control}
           name="content"
