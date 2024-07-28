@@ -1,7 +1,6 @@
 ##### DEPENDENCIES
 
 FROM --platform=linux/amd64 node:20-slim AS deps
-RUN apt install --no-cache libc6-compat openssl
 WORKDIR /app
 
 # Install Prisma Client - remove if not using Prisma
