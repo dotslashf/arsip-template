@@ -1,6 +1,6 @@
-import Brand from "~/app/_components/Brand";
+import Brand from "~/components/Brand";
 import { HydrateClient } from "~/trpc/server";
-import SignInSocialProviders from "~/app/_components/SignIn";
+import SignInSocialProviders from "~/app/_components/SignInPage";
 
 export default async function SignIn() {
   return (

@@ -6,7 +6,7 @@ import { cn, formatDateToHuman } from "~/lib/utils";
 import CopyPastaContent from "./CopyPastaContent";
 import { buttonVariants } from "./ui/button";
 import { Link2 } from "lucide-react";
-import { sourceEnumHash } from "~/app/_components/CreateCopyPasta";
+import { sourceEnumHash } from "~/app/_components/CreateCopyPastaPage";
 import useToast from "./ui/use-react-hot-toast";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
@@ -41,16 +41,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
     <Card
       className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
     >
-      <CardContent
-        className={cn(
-          "flex h-full flex-col justify-between gap-2 p-6 hover:cursor-auto",
-          // copyPastaProps.CopyPastasOnTags.some(
-          //   (tag) => tag.tags.name === "NSFW",
-          // ) &&
-          //   !copyPastaProps.fullMode &&
-          //   "cursor-none blur transition hover:blur-none",
-        )}
-      >
+      <CardContent className="flex h-full flex-col justify-between gap-2 p-6 hover:cursor-auto">
         <div className="text-sm text-primary">
           {
             <CopyPastaContent
@@ -58,6 +49,13 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               fullMode={copyPastaProps.fullMode}
               id={copyPastaProps.id}
               onClick={handleCopy}
+              className={cn(
+                copyPastaProps.CopyPastasOnTags.some(
+                  (tag) => tag.tags.name === "NSFW",
+                ) &&
+                  !copyPastaProps.fullMode &&
+                  "blur-sm transition hover:blur-none",
+              )}
             />
           }
         </div>

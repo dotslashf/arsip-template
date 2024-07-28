@@ -1,0 +1,23 @@
+import { cn } from "~/lib/utils";
+import { Card, CardContent } from "./ui/card";
+import { Skeleton } from "./ui/skeleton";
+
+export default function SkeletonCopyPasta() {
+  return (
+    <Card
+      className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
+    >
+      <CardContent className="flex h-full flex-col justify-between gap-2 p-6 hover:cursor-auto">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-1/2" />
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-4 w-1/4" />
+        <div className="mt-4 flex space-x-1">
+          <Skeleton className="h-4 w-12" />
+          <Skeleton className="h-4 w-12" />
+          <Skeleton className="h-4 w-12" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

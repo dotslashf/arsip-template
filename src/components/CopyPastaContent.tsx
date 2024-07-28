@@ -14,7 +14,10 @@ interface CopyPastaContentProps
 function CopyPastaContent(props: CopyPastaContentProps) {
   return (
     <div className="flex flex-col gap-2">
-      <span onClick={props.onClick} className="cursor-pointer">
+      <span
+        onClick={props.onClick}
+        className={cn("cursor-pointer", props.className)}
+      >
         {props.content.length > 255 && !props.fullMode
           ? `"${trimContent(props.content)}"`
           : `"${props.content}"`}

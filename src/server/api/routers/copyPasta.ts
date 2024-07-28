@@ -9,6 +9,8 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
+import { faker } from "@faker-js/faker";
+
 export const t = initTRPC.create();
 
 export const copyPastaRouter = createTRPCRouter({
@@ -125,22 +127,32 @@ export const copyPastaRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       if (!input.tagIds) return [];
 
-      const randomCopyPastaByTagIds: {
-        copyPastaId: string;
-        tagId: string;
-      }[] = await ctx.db.$queryRaw`
-                SELECT *
-                FROM "CopyPastasOnTags" "cpot"
-                WHERE "cpot"."tagId" in (${Prisma.join(input.tagIds)})
-                AND NOT "cpot"."copyPastaId" = ${input.copyPastaId}
-                ORDER BY RANDOM()
-                LIMIT 3
-            `;
+      const fields = Object.keys(Prisma.CopyPastaScalarFieldEnum).filter(
+        (field) => field !== "approvedById" && field !== "createdById",
+      );
+      const sorts = {
+        field: faker.helpers.arrayElement(fields),
+        direction: faker.helpers.arrayElement(["asc", "desc"]),
+      };
+
+      const random = await ctx.db.copyPastasOnTags.findMany({
+        where: {
+          tagId: {
+            in: input.tagIds,
+          },
+          AND: {
+            NOT: {
+              copyPastaId: input.copyPastaId,
+            },
+          },
+        },
+      });
 
       const copyPastas = await ctx.db.copyPasta.findMany({
+        take: 3,
         where: {
           id: {
-            in: randomCopyPastaByTagIds.map((c) => c.copyPastaId),
+            in: random.map((c) => c.copyPastaId),
           },
         },
         include: {
@@ -150,7 +162,12 @@ export const copyPastaRouter = createTRPCRouter({
             },
           },
         },
+        orderBy: {
+          [sorts.field]: sorts.direction,
+        },
       });
+
+      console.log(copyPastas.map((c) => c.id));
 
       return copyPastas;
     }),

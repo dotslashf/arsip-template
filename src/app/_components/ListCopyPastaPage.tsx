@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import CopyPastaCard from "~/components/CopyPastaCard";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
-import SearchBar from "./SearchBar";
+import SearchBar from "../../components/SearchBar";
 import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 
 export function ListCopyPasta() {
