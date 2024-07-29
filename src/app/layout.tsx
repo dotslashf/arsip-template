@@ -28,7 +28,7 @@ export default function RootLayout({
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-2Q26HEWB87"
         ></Script>
-        <script>
+        <Script id="google-analytics">
           {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -36,7 +36,7 @@ export default function RootLayout({
 
           gtag('config', 'G-2Q26HEWB87');
           `}
-        </script>
+        </Script>
       </head>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
