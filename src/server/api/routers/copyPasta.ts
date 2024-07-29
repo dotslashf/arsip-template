@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
-import { createCopyPastaForm } from "~/app/form/copyPasta";
+import { createCopyPastaForm } from "~/server/form/copyPasta";
 
 import {
   createTRPCRouter,

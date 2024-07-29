@@ -27,7 +27,7 @@ import {
 } from "~/components/ui/popover";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { Calendar } from "~/components/ui/calendar";
-import { createCopyPastaForm } from "../form/copyPasta";
+import { createCopyPastaForm } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { redirect } from "next/navigation";
