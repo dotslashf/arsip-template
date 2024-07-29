@@ -23,11 +23,10 @@ model CopyPasta {
     postedAt  DateTime     @default(now())
 
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    updatedAt DateTime @default(now()) @updatedAt
 
-    isApproved Boolean @default(false)
-
-    approvedBy   User?   @relation(name: "approvedBy", fields: [approvedById], references: [id])
+    approvedAt   DateTime?
+    approvedBy   User?     @relation(name: "approvedBy", fields: [approvedById], references: [id])
     approvedById String?
 
     createdBy        User               @relation(name: "createdBy", fields: [createdById], references: [id])
