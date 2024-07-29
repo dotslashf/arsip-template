@@ -7,7 +7,7 @@ export const createCopyPastaForm = z.object({
     .min(10, {
       message: "Minimal 10 karakter",
     })
-    .max(500, {
+    .max(2500, {
       message: "Max 500 karakter",
     }),
   postedAt: z.date(),
