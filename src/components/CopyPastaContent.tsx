@@ -16,11 +16,11 @@ function CopyPastaContent(props: CopyPastaContentProps) {
     <div className="flex flex-col gap-2">
       <span
         onClick={props.onClick}
-        className={cn("cursor-pointer", props.className)}
+        className={cn("cursor-pointer whitespace-pre-line", props.className)}
       >
         {props.content.length > 255 && !props.fullMode
-          ? `"${trimContent(props.content)}"`
-          : `"${props.content}"`}
+          ? `${trimContent(props.content)}`
+          : `${props.content}`}
       </span>
       {!props.fullMode && (
         <Link
