@@ -29,7 +29,7 @@ export default function SearchBar() {
         <Input
           type="search"
           placeholder="Ini template bukan sih?..."
-          className="flex-1"
+          className="flex-1 shadow-sm"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
