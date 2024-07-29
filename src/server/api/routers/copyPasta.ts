@@ -71,10 +71,12 @@ export const copyPastaRouter = createTRPCRouter({
         where: {
           content: condition.content,
           CopyPastasOnTags: condition.tag,
-          isApproved: true,
+          approvedAt: {
+            not: null,
+          },
         },
         orderBy: {
-          createdAt: "desc",
+          approvedAt: "desc",
         },
         include: {
           CopyPastasOnTags: {

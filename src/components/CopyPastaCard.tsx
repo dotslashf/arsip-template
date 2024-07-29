@@ -74,7 +74,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           <ScrollArea
             onClick={handleCopy}
             className={cn(
-              "rounded-md font-mono text-primary",
+              "rounded-md font-mono text-sm font-semibold text-primary",
               copyPastaProps.fullMode ? "h-fit" : "h-28",
               copyPastaProps.CopyPastasOnTags.some(
                 (tag) => tag.tags.name === "NSFW",
@@ -94,7 +94,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               href={`/copy-pasta/${copyPastaProps.id}`}
               className={cn(
                 buttonVariants({ variant: "link", size: "url" }),
-                "flex self-start",
+                "flex self-start underline",
               )}
               prefetch={false}
             >
