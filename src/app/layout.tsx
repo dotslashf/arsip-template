@@ -5,6 +5,7 @@ import { type Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -17,6 +18,26 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-2Q26HEWB87"
+        ></Script>
+        <script>
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-2Q26HEWB87');
+          `}
+        </script>
+      </head>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
         <Toaster
