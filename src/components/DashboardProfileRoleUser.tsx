@@ -5,7 +5,7 @@ import { api } from "~/trpc/react";
 export default function DashboardProfileRoleUser() {
   const listApproved = api.profile.list.useInfiniteQuery(
     {
-      limit: 1,
+      limit: 10,
       type: "approved",
     },
     {
@@ -15,7 +15,7 @@ export default function DashboardProfileRoleUser() {
 
   const listNotApproved = api.profile.list.useInfiniteQuery(
     {
-      limit: 1,
+      limit: 10,
       type: "disapproved",
     },
     {
