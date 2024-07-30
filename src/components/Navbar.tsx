@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { LogIn, LogOut, UserRound } from "lucide-react";
+import { LogIn, LogOut, Package, UserRound } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
@@ -28,7 +28,9 @@ export default function Navbar({ session }: NavbarProps) {
             className="mr-auto flex items-center gap-2 text-lg font-semibold"
             prefetch={false}
           >
-            <span className="font-bold">i-t-b</span>
+            <span className="font-bold">
+              <Package />
+            </span>
           </Link>
           <nav className="ml-auto flex items-center space-x-4">
             {!session?.user ? (
