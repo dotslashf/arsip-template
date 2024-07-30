@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import Link from "next/link";
 import { badgeVariants } from "~/components/ui/badge";
 import { type CopyPasta, type Tag } from "@prisma/client";
@@ -8,6 +14,7 @@ import { ArrowRight, Link2 } from "lucide-react";
 import { sourceEnumHash } from "~/app/_components/CreateCopyPastaPage";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
+import CopyPastaCardAction from "./CopyPastaCardAction";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -15,6 +22,7 @@ export interface CopyPastaCardWithTagsProps extends CopyPasta {
     tagId: string;
   })[];
   fullMode?: boolean;
+  isApprovalMode?: boolean;
 }
 
 export interface CopyPastaProps {
@@ -156,6 +164,11 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           ) : null}
         </div>
       </CardContent>
+      {copyPastaProps.isApprovalMode && (
+        <CardFooter>
+          <CopyPastaCardAction id={copyPastaProps.id} />
+        </CardFooter>
+      )}
     </Card>
   );
 }
