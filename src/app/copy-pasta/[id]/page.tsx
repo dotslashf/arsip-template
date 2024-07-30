@@ -12,7 +12,7 @@ export default function CopyPastaById({ params }: { params: { id: string } }) {
         <Brand />
         <Suspense
           fallback={
-            <div className="flex w-full flex-col gap-4 lg:px-32">
+            <div className="flex w-full flex-col gap-4">
               <SkeletonCopyPasta />
             </div>
           }

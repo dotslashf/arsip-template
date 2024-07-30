@@ -1,14 +1,14 @@
+import { Package } from "lucide-react";
 import Link from "next/link";
 
 export default function Brand() {
   return (
     <Link href={"/"}>
-      <h1 className="text-2xl font-bold">
-        ini
+      <h1 className="flex items-center justify-center text-2xl font-bold">
+        <Package className="mr-3" />
+        arsip
         <br />
         template
-        <br />
-        bukan
       </h1>
     </Link>
   );

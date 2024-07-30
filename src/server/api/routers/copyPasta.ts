@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
-import { createCopyPastaForm } from "~/app/form/copyPasta";
+import { createCopyPastaForm } from "~/server/form/copyPasta";
 
 import {
   createTRPCRouter,
@@ -71,10 +71,12 @@ export const copyPastaRouter = createTRPCRouter({
         where: {
           content: condition.content,
           CopyPastasOnTags: condition.tag,
-          isApproved: true,
+          approvedAt: {
+            not: null,
+          },
         },
         orderBy: {
-          createdAt: "desc",
+          approvedAt: "desc",
         },
         include: {
           CopyPastasOnTags: {
@@ -101,7 +103,7 @@ export const copyPastaRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const copyPasta = await ctx.db.copyPasta.findFirstOrThrow({
+      const copyPasta = await ctx.db.copyPasta.findFirst({
         where: {
           id: input.id,
         },
@@ -114,7 +116,7 @@ export const copyPastaRouter = createTRPCRouter({
         },
       });
 
-      return copyPasta ?? null;
+      return copyPasta ?? 0;
     }),
 
   byTag: publicProcedure
@@ -166,8 +168,6 @@ export const copyPastaRouter = createTRPCRouter({
           [sorts.field]: sorts.direction,
         },
       });
-
-      console.log(copyPastas.map((c) => c.id));
 
       return copyPastas;
     }),

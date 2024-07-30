@@ -1,5 +1,6 @@
 "use client";
 
+import { notFound } from "next/navigation";
 import CopyPastaCard from "~/components/CopyPastaCard";
 import SkeletonCopyPasta from "~/components/SkeletonCopyPasta";
 import { api } from "~/trpc/react";
@@ -12,13 +13,17 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
     id: id,
   });
 
+  if (!copyPasta) {
+    return notFound();
+  }
+
   const { isLoading, data: related } = api.copyPasta.byTag.useQuery({
     tagIds: copyPasta.CopyPastasOnTags.map((tag) => tag.tagId),
     copyPastaId: copyPasta.id,
   });
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:px-32">
+    <div className="flex w-full flex-col gap-4">
       {copyPasta && (
         <CopyPastaCard
           key={id}
