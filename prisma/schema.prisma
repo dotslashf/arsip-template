@@ -91,6 +91,7 @@ model User {
     sessions            Session[]
     CopyPastaApprovedBy CopyPasta[] @relation("approvedBy")
     CopyPastaCreatedBy  CopyPasta[] @relation("createdBy")
+    role                UserRole    @default(User)
 }
 
 model VerificationToken {
@@ -105,4 +106,9 @@ enum OriginSource {
     Twitter
     Facebook
     Other
+}
+
+enum UserRole {
+    User
+    Admin
 }
