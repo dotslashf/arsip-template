@@ -1,5 +1,6 @@
 "use client";
 
+import { notFound } from "next/navigation";
 import CopyPastaCard from "~/components/CopyPastaCard";
 import SkeletonCopyPasta from "~/components/SkeletonCopyPasta";
 import { api } from "~/trpc/react";
@@ -11,6 +12,10 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
   const [copyPasta] = api.copyPasta.byId.useSuspenseQuery({
     id: id,
   });
+
+  if (!copyPasta) {
+    return notFound();
+  }
 
   const { isLoading, data: related } = api.copyPasta.byTag.useQuery({
     tagIds: copyPasta.CopyPastasOnTags.map((tag) => tag.tagId),

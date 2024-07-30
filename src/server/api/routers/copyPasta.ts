@@ -103,7 +103,7 @@ export const copyPastaRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const copyPasta = await ctx.db.copyPasta.findFirstOrThrow({
+      const copyPasta = await ctx.db.copyPasta.findFirst({
         where: {
           id: input.id,
         },
@@ -116,7 +116,7 @@ export const copyPastaRouter = createTRPCRouter({
         },
       });
 
-      return copyPasta ?? null;
+      return copyPasta ?? 0;
     }),
 
   byTag: publicProcedure
