@@ -26,7 +26,7 @@ export function ListCopyPasta() {
   const { isFetchingNextPage, fetchNextPage, hasNextPage } = allCopyPastas;
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:px-32">
+    <div className="flex w-full flex-col gap-4">
       <div className="grid grid-cols-1 gap-y-2 lg:grid-cols-2 lg:gap-4">
         <SearchBar />
         {pages

@@ -83,7 +83,7 @@ export default function CreateCopyPasta() {
 
   useEffect(() => {
     if (createMutation.isSuccess) {
-      redirect("/");
+      redirect("/dashboard/profile");
     }
   }, [createMutation.isSuccess]);
 
@@ -102,7 +102,7 @@ export default function CreateCopyPasta() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full lg:px-32">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <FormField
           control={form.control}
           name="content"

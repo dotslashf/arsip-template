@@ -62,7 +62,7 @@ export default function Navbar({ session }: NavbarProps) {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>
                     <Link
-                      href="#"
+                      href="/dashboard/profile"
                       prefetch={false}
                       className="flex w-full justify-between"
                     >

@@ -18,7 +18,7 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
   });
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:px-32">
+    <div className="flex w-full flex-col gap-4">
       {copyPasta && (
         <CopyPastaCard
           key={id}

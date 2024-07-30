@@ -5,6 +5,7 @@ import {
 } from "~/server/api/trpc";
 import { copyPastaRouter } from "./routers/copyPasta";
 import { tagRouter } from "./routers/tag";
+import { profileRouter } from "./routers/profile";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ import { tagRouter } from "./routers/tag";
 export const appRouter = createTRPCRouter({
   copyPasta: copyPastaRouter,
   tag: tagRouter,
+  profile: profileRouter,
 });
 
 // export type definition of API

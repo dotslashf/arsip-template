@@ -169,8 +169,6 @@ export const copyPastaRouter = createTRPCRouter({
         },
       });
 
-      console.log(copyPastas.map((c) => c.id));
-
       return copyPastas;
     }),
 });
