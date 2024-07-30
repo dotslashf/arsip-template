@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 
 interface ProfileCopyPastaCardProps {
+  type: "approved" | "disapproved";
   data?: InfiniteData<{
     copyPastas: CopyPastaCardWithTagsProps[];
     nextCursor: string | undefined;
@@ -21,6 +22,7 @@ interface ProfileCopyPastaCardProps {
 export default function ProfileCopyPastaCard({
   data,
   fn,
+  type,
 }: ProfileCopyPastaCardProps) {
   function getContent() {
     if (fn.isFetchingNextPage) {
@@ -49,10 +51,18 @@ export default function ProfileCopyPastaCard({
       {data
         ? data.pages.map((page) =>
             page.copyPastas.map((copy) => {
-              return <CopyPastaCard key={copy.id} copyPastaProps={copy} />;
+              return (
+                <CopyPastaCard
+                  key={copy.id}
+                  copyPastaProps={{
+                    ...copy,
+                    isApprovalMode: type === "disapproved" && !copy.fullMode,
+                  }}
+                />
+              );
             }),
           )
-        : new Array(4).fill(true).map((_, i) => {
+        : new Array(1).fill(true).map((_, i) => {
             return <SkeletonCopyPasta key={i} />;
           })}
       <Button
