@@ -1,4 +1,4 @@
-import { Card, CardContent } from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import Link from "next/link";
 import { badgeVariants } from "~/components/ui/badge";
 import { type CopyPasta, type Tag } from "@prisma/client";
@@ -41,12 +41,12 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
     <Card
       className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
     >
-      <CardContent className="flex flex-col justify-between gap-2 p-6 hover:cursor-auto">
-        <div className="overflow-x-hidden text-sm text-primary">
+      <CardHeader className="pb-0">
+        <CardTitle>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill={"none"}
-            className="mb-2 h-6 w-6"
+            className="h-6 w-6"
           >
             <path
               d="M14 16C14 14.1144 14 13.1716 14.5858 12.5858C15.1716 12 16.1144 12 18 12C19.8856 12 20.8284 12 21.4142 12.5858C22 13.1716 22 14.1144 22 16C22 17.8856 22 18.8284 21.4142 19.4142C20.8284 20 19.8856 20 18 20C16.1144 20 15.1716 20 14.5858 19.4142C14 18.8284 14 17.8856 14 16Z"
@@ -71,16 +71,24 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               strokeLinecap="round"
             />
           </svg>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col justify-between gap-2 p-6 pt-2 hover:cursor-auto">
+        <div
+          className={cn(
+            "overflow-x-hidden text-sm text-primary",
+            copyPastaProps.CopyPastasOnTags.some(
+              (tag) => tag.tags.name === "NSFW",
+            ) &&
+              !copyPastaProps.fullMode &&
+              "blur-sm transition hover:blur-none",
+          )}
+        >
           <ScrollArea
             onClick={handleCopy}
             className={cn(
               "rounded-md font-mono text-sm font-semibold text-primary",
               copyPastaProps.fullMode ? "h-fit" : "h-28",
-              copyPastaProps.CopyPastasOnTags.some(
-                (tag) => tag.tags.name === "NSFW",
-              ) &&
-                !copyPastaProps.fullMode &&
-                "blur-sm transition hover:blur-none",
             )}
           >
             <blockquote className="cursor-pointer whitespace-pre-line">
