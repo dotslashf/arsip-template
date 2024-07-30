@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { SessionProvider } from "~/components/SessionContext";
 import { getServerAuthSession } from "~/server/auth";
 
 interface HOCAuthProps {
@@ -9,6 +10,6 @@ export default async function HOCAuth({ children }: HOCAuthProps) {
   if (!session) {
     return redirect("/auth/sign-in");
   } else {
-    return <>{children}</>;
+    return <SessionProvider session={session}>{children}</SessionProvider>;
   }
 }
