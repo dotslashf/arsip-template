@@ -10,10 +10,15 @@ import Script from "next/script";
 export const metadata: Metadata = {
   title: {
     template: "%s | arsip-template",
-    default: "📦 | arsip-template",
+    default: "arsip-template",
   },
   description: "platform buat nyimpan template (copypasta) netizen",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [
+    {
+      rel: "icon",
+      url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>📦</text></svg>",
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -40,6 +45,10 @@ export default function RootLayout({
           gtag('config', 'G-2Q26HEWB87');
           `}
         </Script>
+        <link
+          rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>📦</text></svg>"
+        ></link>
       </head>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>

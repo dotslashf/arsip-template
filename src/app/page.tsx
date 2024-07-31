@@ -15,7 +15,7 @@ type Props = {
 export async function generateMetadata({
   searchParams,
 }: Props): Promise<Metadata> {
-  let content = "📦";
+  let content = "";
   const search = searchParams.search as string;
   if (searchParams.search && searchParams.tag) {
     const tag = await api.tag.byId({ id: searchParams.tag as string });
@@ -26,7 +26,7 @@ export async function generateMetadata({
   } else if (searchParams.search) {
     content = `${search}`;
   }
-  const title = `${content} | arsip-template`;
+  const title = `${content}arsip-template`;
   return {
     title,
   };
