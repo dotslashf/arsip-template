@@ -38,7 +38,7 @@ export const sourceEnumHash = new Map([
     {
       label: "Twitter (X)",
       value: "Twitter",
-      icon: <FontAwesomeIcon icon={faTwitter} className="mr-2 h-4 w-4" />,
+      icon: <FontAwesomeIcon icon={faTwitter} className="h-4 w-4" />,
     },
   ],
   [
@@ -46,7 +46,7 @@ export const sourceEnumHash = new Map([
     {
       label: "Facebook",
       value: "Facebook",
-      icon: <FontAwesomeIcon icon={faFacebook} className="mr-2 h-4 w-4" />,
+      icon: <FontAwesomeIcon icon={faFacebook} className="h-4 w-4" />,
     },
   ],
   [
@@ -54,7 +54,7 @@ export const sourceEnumHash = new Map([
     {
       label: "Lainnya",
       value: "Other",
-      icon: <CircleHelp className="mr-2 h-4 w-4" />,
+      icon: <CircleHelp className="h-4 w-4" />,
     },
   ],
 ]);
@@ -214,7 +214,7 @@ export default function CreateCopyPasta() {
                       <FormLabel>
                         <Badge variant={"secondary"}>
                           {source?.icon}
-                          {source?.label}
+                          <span className="ml-2">{source?.label}</span>
                         </Badge>
                       </FormLabel>
                     </FormItem>
