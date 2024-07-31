@@ -1,7 +1,11 @@
 import Brand from "~/components/Brand";
 import { HydrateClient } from "~/trpc/server";
 import SignInSocialProviders from "~/app/_components/SignInPage";
+import { type Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Masuk ke akun anda",
+};
 export default async function SignIn() {
   return (
     <HydrateClient>

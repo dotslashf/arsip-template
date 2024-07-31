@@ -3,7 +3,12 @@ import { HydrateClient } from "~/trpc/server";
 import HOCAuth from "~/app/_components/AuthPage";
 import ProfilePage from "~/app/_components/ProfilePage";
 import Brand from "~/components/Brand";
+import { type Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Dashboard | Profile",
+  description: "Dashboard | Profile",
+};
 export default async function Profile() {
   return (
     <HydrateClient>

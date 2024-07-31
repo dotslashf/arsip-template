@@ -4,6 +4,12 @@ import CreateCopyPastaForm from "~/app/_components/CreateCopyPastaPage";
 import Brand from "~/components/Brand";
 import HOCAuth from "~/app/_components/AuthPage";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Mari buat templatemu disini",
+  description: "Halaman untuk membuat template",
+};
 export default async function CreateCopyPasta() {
   return (
     <HydrateClient>
