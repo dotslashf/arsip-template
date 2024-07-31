@@ -12,5 +12,5 @@ export function formatDateToHuman(date: Date, formatString = "PPP") {
 }
 
 export function trimContent(content: string, length = 255) {
-  return content.slice(0, length) + "...";
+  return content ? content.slice(0, length) + "..." : "😱😱😱";
 }

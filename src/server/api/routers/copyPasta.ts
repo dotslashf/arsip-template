@@ -106,6 +106,9 @@ export const copyPastaRouter = createTRPCRouter({
       const copyPasta = await ctx.db.copyPasta.findFirst({
         where: {
           id: input.id,
+          approvedAt: {
+            not: null,
+          },
         },
         include: {
           CopyPastasOnTags: {
