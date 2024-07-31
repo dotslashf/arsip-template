@@ -16,22 +16,21 @@ import { Textarea } from "~/components/ui/textarea";
 import { OriginSource } from "@prisma/client";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { api } from "~/trpc/react";
-import { Checkbox } from "~/components/ui/checkbox";
-import { CalendarIcon, CircleHelp, PlusIcon } from "lucide-react";
+import { CircleHelp, PlusIcon } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "~/components/ui/popover";
-import { cn, formatDateToHuman } from "~/lib/utils";
-import { Calendar } from "~/components/ui/calendar";
+import { formatDateToHuman } from "~/lib/utils";
 import { createCopyPastaForm } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
+import MultipleSelector, {
+  type Option,
+} from "~/components/ui/multiple-selector";
+import { Badge, badgeVariants } from "~/components/ui/badge";
+import { DateTimePicker } from "~/components/ui/datetime-picker";
+import { id } from "date-fns/locale";
 
 export const sourceEnumHash = new Map([
   [
@@ -39,7 +38,7 @@ export const sourceEnumHash = new Map([
     {
       label: "Twitter (X)",
       value: "Twitter",
-      icon: <FontAwesomeIcon icon={faTwitter} className="h-3 w-3" />,
+      icon: <FontAwesomeIcon icon={faTwitter} className="mr-2 h-4 w-4" />,
     },
   ],
   [
@@ -47,7 +46,7 @@ export const sourceEnumHash = new Map([
     {
       label: "Facebook",
       value: "Facebook",
-      icon: <FontAwesomeIcon icon={faFacebook} className="h-3 w-3" />,
+      icon: <FontAwesomeIcon icon={faFacebook} className="mr-2 h-4 w-4" />,
     },
   ],
   [
@@ -55,7 +54,7 @@ export const sourceEnumHash = new Map([
     {
       label: "Lainnya",
       value: "Other",
-      icon: <CircleHelp className="h-3 w-3" />,
+      icon: <CircleHelp className="mr-2 h-4 w-4" />,
     },
   ],
 ]);
@@ -64,11 +63,18 @@ export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery();
   const createMutation = api.copyPasta.create.useMutation();
 
+  const tagOptions: Option[] = tags.map((tag) => {
+    return {
+      label: tag.name,
+      value: tag.id,
+    };
+  });
+
   const form = useForm<z.infer<typeof createCopyPastaForm>>({
     resolver: zodResolver(createCopyPastaForm),
     defaultValues: {
       content: "",
-      postedAt: new Date(),
+      postedAt: undefined,
       source: "Other",
       sourceUrl: "",
       tags: [],
@@ -120,45 +126,25 @@ export default function CreateCopyPasta() {
             </FormItem>
           )}
         />
-
-        <div className="flex justify-between gap-x-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <FormField
             control={form.control}
             name="postedAt"
             render={({ field }) => (
               <FormItem className="mb-2 w-full flex-col">
                 <FormLabel className="mb-1">Tanggal kejadian</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground",
-                        )}
-                      >
-                        {field.value ? (
-                          formatDateToHuman(field.value)
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-3 w-3 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
+                <div>
+                  <FormControl>
+                    <DateTimePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      granularity="day"
+                      placeholder={formatDateToHuman(new Date())}
+                      displayFormat={{ hour24: "PPP" }}
+                      locale={id}
                     />
-                  </PopoverContent>
-                </Popover>
+                  </FormControl>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -175,83 +161,69 @@ export default function CreateCopyPasta() {
               </FormItem>
             )}
           />
-        </div>
-        <FormField
-          control={form.control}
-          name="source"
-          render={({ field }) => (
-            <FormItem className="mb-2 space-y-2">
-              <FormLabel>Sumber</FormLabel>
-              <RadioGroup
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                className="grid grid-cols-3"
-              >
-                {sourceEnum.map((source) => (
-                  <FormItem
-                    className="flex items-center space-x-3 space-y-0"
-                    key={source?.value}
-                  >
-                    <FormControl>
-                      <RadioGroupItem value={source!.value} />
-                    </FormControl>
-                    <FormLabel className="flex items-center gap-x-2">
-                      {source?.icon}
-                      {source?.label}
-                    </FormLabel>
-                  </FormItem>
-                ))}
-              </RadioGroup>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="tags"
-          render={({}) => (
-            <FormItem className="mb-2">
-              <div>
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem className="mb-2 w-full">
                 <FormLabel>Tags</FormLabel>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {tags.map((tag) => (
-                  <FormField
-                    key={tag.id}
-                    control={form.control}
-                    name="tags"
-                    render={({ field }) => {
-                      return (
-                        <FormItem
-                          key={tag.id}
-                          className="flex flex-row items-start space-x-3 space-y-0"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(tag.id)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, tag.id])
-                                  : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== tag.id,
-                                      ),
-                                    );
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {tag.name}
-                          </FormLabel>
-                        </FormItem>
-                      );
+                <FormControl>
+                  <MultipleSelector
+                    {...field}
+                    maxSelected={3}
+                    hidePlaceholderWhenSelected
+                    onMaxSelected={(maxLimit) => {
+                      toast({
+                        type: "danger",
+                        message: `Maximal tag hanya ${maxLimit}`,
+                      });
                     }}
+                    hideClearAllButton
+                    badgeClassName={badgeVariants({ variant: "secondary" })}
+                    defaultOptions={tagOptions}
+                    placeholder="Kira kira ini template cocok dengan tag..."
+                    emptyIndicator={
+                      <p className="text-center text-sm text-slate-600 dark:text-gray-400">
+                        Yang kamu cari gak ada 😱
+                      </p>
+                    }
                   />
-                ))}
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="source"
+            render={({ field }) => (
+              <FormItem className="mb-2 w-full space-y-2">
+                <FormLabel>Sumber</FormLabel>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  {sourceEnum.map((source) => (
+                    <FormItem
+                      className="flex items-center space-x-3 space-y-0"
+                      key={source?.value}
+                    >
+                      <FormControl>
+                        <RadioGroupItem value={source!.value} />
+                      </FormControl>
+                      <FormLabel>
+                        <Badge variant={"secondary"}>
+                          {source?.icon}
+                          {source?.label}
+                        </Badge>
+                      </FormLabel>
+                    </FormItem>
+                  ))}
+                </RadioGroup>
+              </FormItem>
+            )}
+          />
+        </div>
         <div className="mt-6 w-full">
           <Button type="submit" className="w-full items-center">
             Tambah <PlusIcon className="ml-2 h-4 w-4" />
