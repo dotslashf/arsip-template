@@ -33,6 +33,7 @@ export default function DashboardProfileRoleAdmin() {
               fetchNextPage: list.fetchNextPage,
             }}
             type="disapproved"
+            isApprovalMode={true}
           />
         </TabsContent>
       </Tabs>
