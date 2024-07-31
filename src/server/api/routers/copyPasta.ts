@@ -28,7 +28,7 @@ export const copyPastaRouter = createTRPCRouter({
             createMany: {
               data: input.tags.map((tag) => {
                 return {
-                  tagId: tag,
+                  tagId: tag.value,
                 };
               }),
             },
@@ -155,6 +155,9 @@ export const copyPastaRouter = createTRPCRouter({
         where: {
           id: {
             in: random.map((c) => c.copyPastaId),
+          },
+          approvedAt: {
+            not: null,
           },
         },
         include: {
