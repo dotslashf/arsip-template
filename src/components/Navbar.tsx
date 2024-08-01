@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import Avatar from "boring-avatars";
+import { ToggleTheme } from "./ToggleTheme";
 
 interface NavbarProps {
   session: Session | null;
@@ -33,6 +34,7 @@ export default function Navbar({ session }: NavbarProps) {
             </span>
           </Link>
           <nav className="ml-auto flex items-center space-x-4">
+            <ToggleTheme />
             {!session?.user ? (
               <Link
                 href="/auth/sign-in"

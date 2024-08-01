@@ -54,7 +54,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill={"none"}
-            className="h-6 w-6"
+            className="h-6 w-6 dark:text-primary"
           >
             <path
               d="M14 16C14 14.1144 14 13.1716 14.5858 12.5858C15.1716 12 16.1144 12 18 12C19.8856 12 20.8284 12 21.4142 12.5858C22 13.1716 22 14.1144 22 16C22 17.8856 22 18.8284 21.4142 19.4142C20.8284 20 19.8856 20 18 20C16.1144 20 15.1716 20 14.5858 19.4142C14 18.8284 14 17.8856 14 16Z"
@@ -84,7 +84,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
       <CardContent className="flex flex-col justify-between gap-2 p-6 pt-2 hover:cursor-auto">
         <div
           className={cn(
-            "overflow-x-hidden text-sm text-primary",
+            "overflow-x-hidden text-sm",
             copyPastaProps.CopyPastasOnTags.some(
               (tag) => tag.tags.name === "NSFW",
             ) &&
@@ -95,7 +95,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           <ScrollArea
             onClick={handleCopy}
             className={cn(
-              "rounded-md font-mono text-sm font-semibold text-primary",
+              "rounded-md font-mono text-sm font-semibold",
               copyPastaProps.fullMode ? "h-fit" : "h-28",
             )}
           >
@@ -118,7 +118,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
             </Link>
           </div>
         )}
-        <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground dark:text-muted-foreground">
           <span>
             Kejadian pada:{" "}
             {formatDateToHuman(copyPastaProps.postedAt ?? new Date())}
