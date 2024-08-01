@@ -91,6 +91,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               (tag) => tag.tags.name === "NSFW",
             ) &&
               !copyPastaProps.fullMode &&
+              !copyPastaProps.isApprovalMode &&
               "blur-sm transition hover:blur-none",
           )}
         >
