@@ -11,9 +11,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export function ToggleTheme() {
   const { setTheme } = useTheme();
+
+  function handleSetTheme(theme: "light" | "dark" | "system") {
+    setTheme(theme);
+    sendGAEvent({ event: "setTheme", value: theme });
+  }
 
   return (
     <DropdownMenu>
@@ -25,13 +31,13 @@ export function ToggleTheme() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem onClick={() => handleSetTheme("light")}>
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => handleSetTheme("dark")}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={() => handleSetTheme("system")}>
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

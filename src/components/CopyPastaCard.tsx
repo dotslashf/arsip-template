@@ -15,6 +15,7 @@ import { sourceEnumHash } from "~/app/_components/CreateCopyPastaPage";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import CopyPastaCardAction from "./CopyPastaCardAction";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -41,6 +42,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
             "Bersiap untuk kejahilan kecil 😼\n Silahkan paste templatenya!",
           type: "info",
         });
+        sendGAEvent({ event: "buttonClicked", value: "copyPasta.copyPaste" });
       })
       .catch((err) => console.log(err));
   }

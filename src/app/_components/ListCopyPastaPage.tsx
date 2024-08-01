@@ -9,6 +9,7 @@ import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 import { Suspense } from "react";
 import ListTags from "~/components/ListTags";
 import { Skeleton } from "~/components/ui/skeleton";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export function ListCopyPasta() {
   const searchParams = useSearchParams();
@@ -27,6 +28,11 @@ export function ListCopyPasta() {
     );
 
   const { isFetchingNextPage, fetchNextPage, hasNextPage } = allCopyPastas;
+
+  async function handleNextList() {
+    await fetchNextPage();
+    sendGAEvent({ event: "buttonClicked", value: "home.nextList" });
+  }
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -52,7 +58,7 @@ export function ListCopyPasta() {
           : null}
       </div>
       <Button
-        onClick={() => fetchNextPage()}
+        onClick={handleNextList}
         disabled={!hasNextPage || isFetchingNextPage}
       >
         {isFetchingNextPage ? (
