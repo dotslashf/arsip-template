@@ -42,11 +42,11 @@ export async function GET(request: Request) {
       >
         <div tw="flex flex-col w-full h-full items-center justify-center bg-slate-50">
           <div tw="flex w-full">
-            <div tw="flex flex-col md:flex-row w-full py-12 px-4 items-center justify-around p-8">
+            <div tw="flex flex-col flex-row w-full py-12 px-4 items-center justify-around p-8">
               <h2 tw="flex items-center justify-center text-5xl font-bold tracking-tight text-slate-800  max-w-xs w-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  tw="w-10 h-10 mr-2"
+                  className="mr-2"
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
@@ -55,7 +55,11 @@ export async function GET(request: Request) {
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  class="lucide lucide-package mr-3"
+                  style={{
+                    width: "2.5rem",
+                    height: "2.5rem",
+                    marginRight: "0.5rem",
+                  }}
                 >
                   <path d="m7.5 4.27 9 5.15"></path>
                   <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
