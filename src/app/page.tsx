@@ -19,12 +19,12 @@ export async function generateMetadata({
   const search = searchParams.search as string;
   if (searchParams.search && searchParams.tag) {
     const tag = await api.tag.byId({ id: searchParams.tag as string });
-    content = `${tag?.name} | ${search}`;
+    content = `${tag?.name} | ${search} `;
   } else if (searchParams.tag) {
     const tag = await api.tag.byId({ id: searchParams.tag as string });
-    content = `${tag?.name}`;
+    content = `${tag?.name} | `;
   } else if (searchParams.search) {
-    content = `${search}`;
+    content = `${search} | `;
   }
   const title = `${content}arsip-template`;
   return {
