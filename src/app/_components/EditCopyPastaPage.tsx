@@ -16,24 +16,31 @@ import { Textarea } from "~/components/ui/textarea";
 import { OriginSource } from "@prisma/client";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { api } from "~/trpc/react";
-import { PlusIcon } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { formatDateToHuman } from "~/lib/utils";
-import { createCopyPastaForm } from "../../server/form/copyPasta";
+import { editCopyPastaForm } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
 import MultipleSelector, {
   type Option,
 } from "~/components/ui/multiple-selector";
 import { Badge, badgeVariants } from "~/components/ui/badge";
 import { DateTimePicker } from "~/components/ui/datetime-picker";
-import { id } from "date-fns/locale";
 import { sourceEnumHash } from "~/lib/constant";
+import { id as idLocale } from "date-fns/locale";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
-export default function CreateCopyPasta() {
+interface EditCopyPastaProps {
+  id: string;
+}
+export default function EditCopyPasta({ id }: EditCopyPastaProps) {
   const [tags] = api.tag.list.useSuspenseQuery();
-  const createMutation = api.copyPasta.create.useMutation();
+  const [copyPasta] = api.copyPasta.byId.useSuspenseQuery({
+    id,
+    approvedAt: false,
+  });
+  const editMutation = api.dashboard.editCopyPasta.useMutation();
 
   const tagOptions: Option[] = tags.map((tag) => {
     return {
@@ -42,14 +49,20 @@ export default function CreateCopyPasta() {
     };
   });
 
-  const form = useForm<z.infer<typeof createCopyPastaForm>>({
-    resolver: zodResolver(createCopyPastaForm),
+  const form = useForm<z.infer<typeof editCopyPastaForm>>({
+    resolver: zodResolver(editCopyPastaForm),
     defaultValues: {
-      content: "",
-      postedAt: undefined,
-      source: "Other",
-      sourceUrl: "",
-      tags: [],
+      id: copyPasta.id,
+      content: copyPasta.content,
+      postedAt: copyPasta.postedAt,
+      source: copyPasta.source,
+      sourceUrl: copyPasta.sourceUrl ?? undefined,
+      tags: copyPasta.CopyPastasOnTags.map((tag) => {
+        return {
+          label: tag.tags.name,
+          value: tag.tags.id,
+        };
+      }),
     },
   });
 
@@ -60,18 +73,18 @@ export default function CreateCopyPasta() {
   const toast = useToast();
 
   useEffect(() => {
-    if (createMutation.isSuccess) {
-      redirect("/dashboard/profile");
+    if (editMutation.isSuccess) {
+      redirect(`/copy-pasta/${id}`);
     }
-  }, [createMutation.isSuccess]);
+  }, [editMutation.isSuccess, id]);
 
-  function onSubmit(values: z.infer<typeof createCopyPastaForm>) {
+  function onSubmit(values: z.infer<typeof editCopyPastaForm>) {
     toast({
       message: "",
-      promiseFn: createMutation.mutateAsync({ ...values }),
+      promiseFn: editMutation.mutateAsync({ ...values }),
       type: "promise",
       promiseMsg: {
-        success: "Makasih!, tunggu diapproved ya!",
+        success: "Template sudah diedit dan diapprove!",
         loading: "🔥 Sedang memasak",
         error: "Duh, gagal nih",
       },
@@ -92,6 +105,7 @@ export default function CreateCopyPasta() {
                   placeholder="Isi dari templatenya..."
                   {...field}
                   rows={5}
+                  disabled
                 />
               </FormControl>
               <FormMessage />
@@ -113,7 +127,7 @@ export default function CreateCopyPasta() {
                       granularity="day"
                       placeholder={formatDateToHuman(new Date())}
                       displayFormat={{ hour24: "PPP" }}
-                      locale={id}
+                      locale={idLocale}
                     />
                   </FormControl>
                 </div>
@@ -197,8 +211,12 @@ export default function CreateCopyPasta() {
           />
         </div>
         <div className="mt-6 w-full">
-          <Button type="submit" className="w-full items-center">
-            Tambah <PlusIcon className="ml-2 h-4 w-4" />
+          <Button
+            type="submit"
+            className="w-full items-center"
+            variant={"yellow"}
+          >
+            Edit <Pencil className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </form>

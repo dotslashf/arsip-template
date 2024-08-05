@@ -5,23 +5,28 @@ import Brand from "~/components/Brand";
 import { Suspense } from "react";
 import SkeletonCopyPasta from "~/components/SkeletonCopyPasta";
 import { type Metadata } from "next";
-import { type CopyPasta } from "@prisma/client";
 import { trimContent } from "~/lib/utils";
+import { notFound } from "next/navigation";
 
-type Props = {
+export type PropsPage = {
   params: { id: string };
   searchParams: Record<string, string | string[] | undefined>;
 };
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PropsPage): Promise<Metadata> {
   const id = params.id;
 
-  const copyPasta = (await api.copyPasta.byId({ id })) as unknown as CopyPasta;
+  const copyPasta = await api.copyPasta.byId({ id });
+  if (!copyPasta) {
+    return notFound();
+  }
 
   return {
     title: `${trimContent(copyPasta.content, 30)}`,
   };
 }
-export default function CopyPastaById({ params }: Props) {
+export default function CopyPastaById({ params }: PropsPage) {
   return (
     <HydrateClient>
       <Layout>

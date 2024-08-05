@@ -3,10 +3,11 @@ import { initTRPC } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 import { z } from "zod";
+import { editCopyPastaForm } from "~/server/form/copyPasta";
 
 export const t = initTRPC.create();
 
-export const profileRouter = createTRPCRouter({
+export const dashboardRouter = createTRPCRouter({
   list: protectedProcedure
     .input(
       z.object({
@@ -113,5 +114,39 @@ export const profileRouter = createTRPCRouter({
         copyPastas,
         nextCursor,
       };
+    }),
+
+  editCopyPasta: protectedProcedure
+    .input(editCopyPastaForm)
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.copyPastasOnTags.deleteMany({
+        where: {
+          copyPastaId: input.id,
+        },
+      });
+
+      await ctx.db.copyPasta.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          postedAt: input.postedAt,
+          source: input.source,
+          sourceUrl: input.sourceUrl,
+          approvedById: ctx.session.user.id,
+          approvedAt: new Date(),
+          CopyPastasOnTags: {
+            createMany: {
+              data: input.tags.map((tag) => {
+                return {
+                  tagId: tag.value,
+                };
+              }),
+            },
+          },
+        },
+      });
+
+      return true;
     }),
 });

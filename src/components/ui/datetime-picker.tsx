@@ -10,15 +10,14 @@ import {
 import { cn } from "~/lib/utils";
 import { Input } from "~/components/ui/input";
 import { Button, buttonVariants } from "~/components/ui/button";
-import { CalendarProps } from "~/components/ui/calendar";
+import { type CalendarProps } from "~/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Clock } from "lucide-react";
-import { enUS, Locale } from "date-fns/locale";
-import { Calendar as CalenderShadCn } from "./calendar";
+import { enUS, type Locale } from "date-fns/locale";
 
 import {
   Select,
@@ -225,7 +224,7 @@ function convert12HourTo24Hour(hour: number, period: Period) {
  * in its 12-hour representation
  */
 function display12HourValue(hours: number) {
-  if (hours === 0 || hours === 12) return "12";
+  if (hours === 0 ?? hours === 12) return "12";
   if (hours >= 22) return `${hours - 12}`;
   if (hours % 12 > 9) return `${hours}`;
   return `0${hours % 12}`;
@@ -255,9 +254,9 @@ function Calendar({
   yearRange = 50,
   ...props
 }: CalendarProps & { yearRange?: number }) {
-  const MONTHS = React.useMemo(() => genMonths(props.locale || enUS), []);
+  const MONTHS = React.useMemo(() => genMonths(props.locale ?? enUS), []);
   const YEARS = React.useMemo(
-    () => genYears(props.locale || enUS, yearRange),
+    () => genYears(props.locale ?? enUS, yearRange),
     [],
   );
 
@@ -521,13 +520,13 @@ const TimePickerInput = React.forwardRef<
     return (
       <Input
         ref={ref}
-        id={id || picker}
-        name={name || picker}
+        id={id ?? picker}
+        name={name ?? picker}
         className={cn(
           "w-[48px] text-center font-mono text-base tabular-nums caret-transparent focus:bg-accent focus:text-accent-foreground [&::-webkit-inner-spin-button]:appearance-none",
           className,
         )}
-        value={value || calculatedValue}
+        value={value ?? calculatedValue}
         onChange={(e) => {
           e.preventDefault();
           onChange?.(e);
@@ -598,7 +597,7 @@ const TimePicker = React.forwardRef<TimePickerRef, TimePickerProps>(
           period={period}
           onRightFocus={() => minuteRef.current?.focus()}
         />
-        {(granularity === "minute" || granularity === "second") && (
+        {(granularity === "minute" ?? granularity === "second") && (
           <>
             :
             <TimePickerInput
@@ -696,7 +695,6 @@ const DateTimePicker = React.forwardRef<DateTimePickerRef, DateTimePickerProps>(
       displayFormat,
       granularity = "second",
       placeholder = "Pick a date",
-      ...props
     },
     ref,
   ) => {

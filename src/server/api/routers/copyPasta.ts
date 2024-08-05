@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createCopyPastaForm } from "~/server/form/copyPasta";
 
@@ -100,15 +100,20 @@ export const copyPastaRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().uuid(),
+        approvedAt: z.boolean().default(true),
       }),
     )
     .query(async ({ input, ctx }) => {
       const copyPasta = await ctx.db.copyPasta.findFirst({
         where: {
           id: input.id,
-          approvedAt: {
-            not: null,
-          },
+          approvedAt: input.approvedAt
+            ? {
+                not: null,
+              }
+            : {
+                equals: null,
+              },
         },
         include: {
           CopyPastasOnTags: {
@@ -119,7 +124,13 @@ export const copyPastaRouter = createTRPCRouter({
         },
       });
 
-      return copyPasta ?? 0;
+      if (!copyPasta) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
+
+      return copyPasta;
     }),
 
   byTag: publicProcedure

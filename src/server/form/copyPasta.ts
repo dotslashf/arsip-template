@@ -34,3 +34,7 @@ export const createCopyPastaForm = z.object({
       message: "Pilih 1 tag",
     }),
 });
+
+export const editCopyPastaForm = createCopyPastaForm.extend({
+  id: z.string().uuid(),
+});

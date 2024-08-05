@@ -11,11 +11,11 @@ import { type CopyPasta, type Tag } from "@prisma/client";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { ArrowRight, Link2 } from "lucide-react";
-import { sourceEnumHash } from "~/app/_components/CreateCopyPastaPage";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import CopyPastaCardAction from "./CopyPastaCardAction";
 import { sendGAEvent } from "@next/third-parties/google";
+import { sourceEnumHash } from "~/lib/constant";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {

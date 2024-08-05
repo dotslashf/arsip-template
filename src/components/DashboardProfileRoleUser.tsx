@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
 
 export default function DashboardProfileRoleUser() {
-  const listApproved = api.profile.list.useInfiniteQuery(
+  const listApproved = api.dashboard.list.useInfiniteQuery(
     {
       limit: 10,
       type: "approved",
@@ -13,7 +13,7 @@ export default function DashboardProfileRoleUser() {
     },
   );
 
-  const listNotApproved = api.profile.list.useInfiniteQuery(
+  const listNotApproved = api.dashboard.list.useInfiniteQuery(
     {
       limit: 10,
       type: "disapproved",
