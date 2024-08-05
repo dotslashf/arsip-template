@@ -218,8 +218,8 @@ const MultipleSelector = React.forwardRef<
     );
 
     const handleUnselect = React.useCallback(
-      (option: Option) => {
-        const newOptions = selected.filter((s) => s.value !== option.value);
+      (option?: Option) => {
+        const newOptions = selected.filter((s) => s.value !== option?.value);
         setSelected(newOptions);
         onChange?.(newOptions);
       },
@@ -234,7 +234,7 @@ const MultipleSelector = React.forwardRef<
             if (input.value === "" && selected.length > 0) {
               const lastSelectOption = selected[selected.length - 1];
               // If last item is fixed, we should not remove it.
-              if (!lastSelectOption.fixed) {
+              if (!lastSelectOption?.fixed) {
                 handleUnselect(selected[selected.length - 1]);
               }
             }
