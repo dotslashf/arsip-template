@@ -22,8 +22,33 @@ export async function generateMetadata({
     return notFound();
   }
 
+  const title = `${trimContent(copyPasta.content, 30)}`;
+  const description = `${trimContent(copyPasta.content, 255)}`;
+  const url = `https://arsip-template.koyeb.app/api/og?copyPasta=${trimContent(copyPasta.content, 255)}`;
+
   return {
-    title: `${trimContent(copyPasta.content, 30)}`,
+    title,
+    openGraph: {
+      title,
+      description,
+      url: `https://arsip-template.koyeb.app/copy-pasta/${copyPasta.id}`,
+      images: [
+        {
+          url,
+          width: 1200,
+          height: 630,
+          alt: "Cover",
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: "@arsip-mim",
+      images: [url],
+    },
   };
 }
 export default function CopyPastaById({ params }: PropsPage) {
