@@ -21,6 +21,27 @@ export const metadata: Metadata = {
       url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>📦</text></svg>",
     },
   ],
+  openGraph: {
+    title: "arsip-template",
+    description: "platform buat nyimpan template (copypasta) netizen",
+    url: `https://arsip-template.koyeb.app/`,
+    images: [
+      {
+        url: "https://arsip-template.koyeb.app/api/og",
+        width: 1200,
+        height: 630,
+        alt: "Cover",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "arsip-template",
+    description: "platform buat nyimpan template (copypasta) netizen",
+    creator: "@arsip-mim",
+    images: [`https://arsip-template.koyeb.app/`],
+  },
 };
 
 export default function RootLayout({
