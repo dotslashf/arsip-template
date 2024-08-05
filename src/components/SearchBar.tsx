@@ -38,7 +38,7 @@ export default function SearchBar() {
         />
         <Button
           type="submit"
-          variant="outline"
+          variant="secondary"
           size="icon"
           onClick={handleSearch}
         >
