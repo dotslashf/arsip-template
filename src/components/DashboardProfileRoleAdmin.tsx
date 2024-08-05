@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
 
 export default function DashboardProfileRoleAdmin() {
-  const list = api.profile.listDisapprovedCopyPasta.useInfiniteQuery(
+  const list = api.dashboard.listDisapprovedCopyPasta.useInfiniteQuery(
     {
       limit: 10,
     },
@@ -33,6 +33,7 @@ export default function DashboardProfileRoleAdmin() {
               fetchNextPage: list.fetchNextPage,
             }}
             type="disapproved"
+            isApprovalMode={true}
           />
         </TabsContent>
       </Tabs>

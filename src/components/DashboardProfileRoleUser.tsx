@@ -3,9 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
 
 export default function DashboardProfileRoleUser() {
-  const listApproved = api.profile.list.useInfiniteQuery(
+  const listApproved = api.dashboard.list.useInfiniteQuery(
     {
-      limit: 1,
+      limit: 10,
       type: "approved",
     },
     {
@@ -13,9 +13,9 @@ export default function DashboardProfileRoleUser() {
     },
   );
 
-  const listNotApproved = api.profile.list.useInfiniteQuery(
+  const listNotApproved = api.dashboard.list.useInfiniteQuery(
     {
-      limit: 1,
+      limit: 10,
       type: "disapproved",
     },
     {
@@ -59,6 +59,7 @@ export default function DashboardProfileRoleUser() {
               // eslint-disable-next-line @typescript-eslint/no-misused-promises
               fetchNextPage: listNotApproved.fetchNextPage,
             }}
+            isApprovalMode={false}
           />
         </TabsContent>
       </Tabs>

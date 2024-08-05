@@ -1,18 +1,20 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check, Pencil } from "lucide-react";
 import { Button } from "./ui/button";
 import { api } from "~/trpc/react";
 import useToast from "./ui/use-react-hot-toast";
+import { useRouter } from "next/navigation";
 
-interface CopyPastaCardActionProps {
+export interface CopyPastaCardActionProps {
   id: string;
 }
 export default function CopyPastaCardAction({ id }: CopyPastaCardActionProps) {
   const utils = api.useUtils();
-  const approveMutation = api.profile.approveById.useMutation({
+  const router = useRouter();
+  const approveMutation = api.dashboard.approveById.useMutation({
     async onSuccess() {
-      void utils.profile.listDisapprovedCopyPasta.invalidate();
+      void utils.dashboard.listDisapprovedCopyPasta.invalidate();
     },
   });
 
@@ -32,13 +34,18 @@ export default function CopyPastaCardAction({ id }: CopyPastaCardActionProps) {
       },
     });
   }
+
+  function handleEdit() {
+    return router.push(`/copy-pasta/${id}/edit`);
+  }
   return (
-    <Button
-      className="bg-green-500 text-white hover:bg-green-600"
-      onClick={handleApprove}
-      size={"icon"}
-    >
-      <Check className="w-4" />
-    </Button>
+    <div className="flex gap-x-2">
+      <Button variant={"green"} onClick={handleApprove} size={"icon"}>
+        <Check className="w-4" />
+      </Button>
+      <Button variant={"yellow"} onClick={handleEdit} size={"icon"}>
+        <Pencil className="w-4" />
+      </Button>
+    </div>
   );
 }

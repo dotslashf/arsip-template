@@ -1,4 +1,5 @@
 import { initTRPC } from "@trpc/server";
+import { z } from "zod";
 import {
   createTRPCRouter,
   // protectedProcedure,
@@ -18,4 +19,18 @@ export const tagRouter = createTRPCRouter({
 
     return tags;
   }),
+
+  byId: publicProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.tag.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 });

@@ -17,12 +17,14 @@ interface ProfileCopyPastaCardProps {
     hasNextPage: boolean;
     fetchNextPage: () => void;
   };
+  isApprovalMode?: boolean;
 }
 
 export default function ProfileCopyPastaCard({
   data,
   fn,
   type,
+  isApprovalMode,
 }: ProfileCopyPastaCardProps) {
   function getContent() {
     if (fn.isFetchingNextPage) {
@@ -56,7 +58,10 @@ export default function ProfileCopyPastaCard({
                   key={copy.id}
                   copyPastaProps={{
                     ...copy,
-                    isApprovalMode: type === "disapproved" && !copy.fullMode,
+                    isApprovalMode:
+                      type === "disapproved" &&
+                      !copy.fullMode &&
+                      isApprovalMode,
                   }}
                 />
               );

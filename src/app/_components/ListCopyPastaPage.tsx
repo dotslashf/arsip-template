@@ -6,6 +6,10 @@ import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import SearchBar from "../../components/SearchBar";
 import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
+import { Suspense } from "react";
+import ListTags from "~/components/ListTags";
+import { Skeleton } from "~/components/ui/skeleton";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export function ListCopyPasta() {
   const searchParams = useSearchParams();
@@ -25,10 +29,26 @@ export function ListCopyPasta() {
 
   const { isFetchingNextPage, fetchNextPage, hasNextPage } = allCopyPastas;
 
+  async function handleNextList() {
+    await fetchNextPage();
+    sendGAEvent({ event: "buttonClicked", value: "home.nextList" });
+  }
+
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="grid grid-cols-1 gap-y-2 lg:grid-cols-2 lg:gap-4">
         <SearchBar />
+        <Suspense
+          fallback={
+            <div className="col-span-2 flex space-x-2 py-2">
+              {new Array(6).fill(true).map((_, i) => (
+                <Skeleton key={i} className="h-5 w-16 rounded-full" />
+              ))}
+            </div>
+          }
+        >
+          <ListTags id={tag} />
+        </Suspense>
         {pages
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
@@ -38,7 +58,7 @@ export function ListCopyPasta() {
           : null}
       </div>
       <Button
-        onClick={() => fetchNextPage()}
+        onClick={handleNextList}
         disabled={!hasNextPage || isFetchingNextPage}
       >
         {isFetchingNextPage ? (

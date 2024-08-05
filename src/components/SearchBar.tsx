@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import { cn } from "~/lib/utils";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export default function SearchBar() {
   const [query, setQuery] = useState<string>("");
@@ -14,6 +15,7 @@ export default function SearchBar() {
   const handleSearch = () => {
     const currentParams = new URLSearchParams(searchParams);
     currentParams.set("search", query);
+    sendGAEvent({ event: "search", value: currentParams.get("search") });
     router.push(`?${currentParams.toString()}`);
   };
 
@@ -36,7 +38,7 @@ export default function SearchBar() {
         />
         <Button
           type="submit"
-          variant="outline"
+          variant="secondary"
           size="icon"
           onClick={handleSearch}
         >
@@ -49,6 +51,9 @@ export default function SearchBar() {
             buttonVariants({ variant: "default", size: "icon" }),
             "item-center",
           )}
+          onClick={() => {
+            sendGAEvent({ event: "buttonClicked", value: "create.copyPasta" });
+          }}
         >
           <PlusIcon className="h-4 w-4" />
         </Link>

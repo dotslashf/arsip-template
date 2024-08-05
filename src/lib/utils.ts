@@ -10,3 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 export function formatDateToHuman(date: Date, formatString = "PPP") {
   return format(date, formatString, { locale: id });
 }
+
+export function trimContent(content: string, length = 255) {
+  return content ? content.slice(0, length) + "..." : "😱😱😱";
+}
