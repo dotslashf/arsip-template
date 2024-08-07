@@ -107,7 +107,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
             </blockquote>
           </ScrollArea>
         </div>
-        {!copyPastaProps.fullMode && (
+        {!copyPastaProps.fullMode && !copyPastaProps.isApprovalMode && (
           <div className="self-start">
             <Link
               href={`/copy-pasta/${copyPastaProps.id}`}
