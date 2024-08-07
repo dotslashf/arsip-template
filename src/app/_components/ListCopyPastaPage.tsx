@@ -8,8 +8,8 @@ import SearchBar from "../../components/SearchBar";
 import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 import { Suspense } from "react";
 import ListTags from "~/components/ListTags";
-import { Skeleton } from "~/components/ui/skeleton";
 import { sendGAEvent } from "@next/third-parties/google";
+import ListTagsSkeleton from "~/components/ListTagsSkeleton";
 
 export function ListCopyPasta() {
   const searchParams = useSearchParams();
@@ -38,15 +38,7 @@ export function ListCopyPasta() {
     <div className="flex w-full flex-col gap-4">
       <div className="grid grid-cols-1 gap-y-2 lg:grid-cols-2 lg:gap-4">
         <SearchBar />
-        <Suspense
-          fallback={
-            <div className="col-span-2 flex space-x-2 py-2">
-              {new Array(6).fill(true).map((_, i) => (
-                <Skeleton key={i} className="h-5 w-16 rounded-full" />
-              ))}
-            </div>
-          }
-        >
+        <Suspense fallback={<ListTagsSkeleton />}>
           <ListTags id={tag} />
         </Suspense>
         {pages
