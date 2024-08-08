@@ -1,4 +1,4 @@
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -114,6 +114,41 @@ export const dashboardRouter = createTRPCRouter({
         copyPastas,
         nextCursor,
       };
+    }),
+
+  byId: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const copyPasta = await ctx.db.copyPasta.findFirst({
+        where: {
+          id: input.id,
+        },
+        include: {
+          CopyPastasOnTags: {
+            include: {
+              tags: true,
+            },
+          },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+
+      if (!copyPasta) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+      }
+
+      return copyPasta;
     }),
 
   editCopyPasta: protectedProcedure
