@@ -169,7 +169,10 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
       </CardContent>
       {copyPastaProps.isApprovalMode && (
         <CardFooter>
-          <CopyPastaCardAction id={copyPastaProps.id} />
+          <CopyPastaCardAction
+            id={copyPastaProps.id}
+            isApproved={!!copyPastaProps.approvedAt}
+          />
         </CardFooter>
       )}
     </Card>

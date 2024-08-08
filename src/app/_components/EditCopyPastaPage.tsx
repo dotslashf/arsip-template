@@ -38,7 +38,6 @@ export default function EditCopyPasta({ id }: EditCopyPastaProps) {
   const [tags] = api.tag.list.useSuspenseQuery();
   const [copyPasta] = api.copyPasta.byId.useSuspenseQuery({
     id,
-    approvedAt: false,
   });
   const editMutation = api.dashboard.editCopyPasta.useMutation();
 

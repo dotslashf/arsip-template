@@ -61,7 +61,8 @@ export default function DashboardProfileRoleAdmin() {
               // eslint-disable-next-line @typescript-eslint/no-misused-promises
               fetchNextPage: listApprovedByUserId.fetchNextPage,
             }}
-            type="approved"
+            type="disapproved"
+            isApprovalMode={true}
           />
         </TabsContent>
       </Tabs>

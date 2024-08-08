@@ -8,8 +8,12 @@ import { useRouter } from "next/navigation";
 
 export interface CopyPastaCardActionProps {
   id: string;
+  isApproved: boolean;
 }
-export default function CopyPastaCardAction({ id }: CopyPastaCardActionProps) {
+export default function CopyPastaCardAction({
+  id,
+  isApproved,
+}: CopyPastaCardActionProps) {
   const utils = api.useUtils();
   const router = useRouter();
   const approveMutation = api.dashboard.approveById.useMutation({
@@ -40,7 +44,12 @@ export default function CopyPastaCardAction({ id }: CopyPastaCardActionProps) {
   }
   return (
     <div className="flex gap-x-2">
-      <Button variant={"green"} onClick={handleApprove} size={"icon"}>
+      <Button
+        variant={"green"}
+        onClick={handleApprove}
+        size={"icon"}
+        disabled={isApproved}
+      >
         <Check className="w-4" />
       </Button>
       <Button variant={"yellow"} onClick={handleEdit} size={"icon"}>
