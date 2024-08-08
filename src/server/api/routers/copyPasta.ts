@@ -121,6 +121,12 @@ export const copyPastaRouter = createTRPCRouter({
               tags: true,
             },
           },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
       });
 

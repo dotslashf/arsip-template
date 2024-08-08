@@ -34,7 +34,7 @@ const ogCopyPastaId = (copyPasta?: string) => (
     <div tw="flex flex-col w-full h-full items-center justify-center bg-slate-50">
       <div tw="flex w-full">
         <div tw="flex flex-col flex-row w-full py-12 px-4 items-center justify-around p-8">
-          <h2 tw="flex items-center justify-center text-5xl font-bold tracking-tight text-slate-800  max-w-xs w-full">
+          <h2 tw="pl-16 flex items-center justify-center text-5xl font-bold tracking-tight text-slate-800  max-w-xs w-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="mr-2"
@@ -60,7 +60,7 @@ const ogCopyPastaId = (copyPasta?: string) => (
             <span>arsip template</span>
           </h2>
           <div tw="h-full w-0.5 self-center bg-slate-600 dark:bg-white/10"></div>
-          <div tw="flex max-w-xs w-full text-slate-800 text-md text-right">
+          <div tw="flex max-w-xs w-full text-slate-800 text-3xl text-center">
             {copyPasta}
           </div>
         </div>
@@ -82,7 +82,7 @@ const ogCopyPasta = () => (
       fontFamily: "Geist",
     }}
   >
-    <div tw="flex w-full">
+    <div tw="flex w-full flex-col -mt-8">
       <div tw="flex w-full items-center justify-center p-8">
         <h2 tw="flex items-center justify-center text-7xl font-bold tracking-tight text-slate-800 max-w-xs">
           <svg
@@ -109,6 +109,9 @@ const ogCopyPasta = () => (
           <span>arsip template</span>
         </h2>
       </div>
+      <span tw="flex items-center justify-center text-xl text-slate-800">
+        platform template(copy-pasta) netizen Indonesia 🇮🇩
+      </span>
     </div>
   </div>
 );

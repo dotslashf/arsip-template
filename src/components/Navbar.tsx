@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { LogIn, LogOut, Package, UserRound } from "lucide-react";
+import { LogIn, LogOut, Package, PlusIcon, UserRound } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
@@ -64,20 +64,46 @@ export default function Navbar({ session }: NavbarProps) {
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    className={cn(
+                      buttonVariants({ variant: "ghost" }),
+                      "w-full items-center",
+                    )}
+                  >
                     <Link
                       href="/dashboard/profile"
                       prefetch={false}
-                      className="flex w-full justify-between"
+                      className="flex w-full items-center justify-between"
                     >
                       Profile
                       <UserRound className="w-3" />
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="cursor-pointer bg-destructive text-destructive-foreground focus:bg-destructive/70 focus:text-white">
+                  <DropdownMenuItem
+                    className={cn(
+                      buttonVariants({ variant: "default" }),
+                      "w-full items-center",
+                    )}
+                  >
+                    <Link
+                      href="/copy-pasta/create"
+                      prefetch={false}
+                      className="flex w-full items-center justify-between"
+                    >
+                      Tambah
+                      <PlusIcon className="w-3" />
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className={cn(
+                      buttonVariants({ variant: "destructive" }),
+                      "w-full items-center",
+                    )}
+                  >
                     <span
-                      className="flex w-full justify-between"
+                      className="flex w-full items-center justify-between"
                       onClick={() => signOut()}
                     >
                       Keluar
