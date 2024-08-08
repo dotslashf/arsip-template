@@ -8,6 +8,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "~/components/theme-provider";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: {
@@ -53,6 +54,7 @@ export default function RootLayout({
       className={`${GeistSans.variable}`}
       suppressHydrationWarning={true}
     >
+      <GoogleTagManager gtmId="GTM-NG2RHJGW" />
       <head>
         <meta
           name="viewport"
