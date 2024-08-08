@@ -30,7 +30,7 @@ export default function SearchBar() {
       <div className="col-span-2 flex items-center space-x-2">
         <Input
           type="search"
-          placeholder="Ini template bukan sih?..."
+          placeholder="Cari template..."
           className="flex-1 shadow-sm"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -39,23 +39,32 @@ export default function SearchBar() {
         <Button
           type="submit"
           variant="secondary"
-          size="icon"
           onClick={handleSearch}
+          className="hidden lg:flex"
+        >
+          <Search className="mr-2 h-4 w-4" />
+          Cari
+          <span className="sr-only">Search</span>
+        </Button>
+        <Button
+          type="submit"
+          size={"icon"}
+          variant="secondary"
+          onClick={handleSearch}
+          className="flex lg:hidden"
         >
           <Search className="h-4 w-4" />
           <span className="sr-only">Search</span>
         </Button>
         <Link
           href={"/copy-pasta/create"}
-          className={cn(
-            buttonVariants({ variant: "default", size: "icon" }),
-            "item-center",
-          )}
+          className={cn(buttonVariants({}), "item-center")}
           onClick={() => {
             sendGAEvent({ event: "buttonClicked", value: "create.copyPasta" });
           }}
         >
-          <PlusIcon className="h-4 w-4" />
+          <PlusIcon className="mr-2 h-4 w-4" />
+          Tambah
         </Link>
       </div>
     </div>

@@ -8,7 +8,7 @@ interface UserProfileCardProps {
 }
 export default function UserProfileCard({ session }: UserProfileCardProps) {
   return (
-    <Card className="w-full bg-card text-card-foreground shadow-sm">
+    <Card className="w-full bg-card text-card-foreground shadow-sm lg:w-1/4">
       <CardHeader className="flex flex-col items-center space-y-2 p-6">
         <Avatar
           name={session?.user.id ?? "John Doe"}

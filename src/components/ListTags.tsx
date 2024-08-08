@@ -23,7 +23,7 @@ export default function ListTags({ id }: ListTagsProps) {
               id === tag.id
                 ? badgeVariants({ variant: "default" })
                 : badgeVariants({ variant: "outline" }),
-              "hover:bg-primary hover:text-primary-foreground",
+              "shadow-sm hover:bg-primary hover:text-primary-foreground",
             )}
             prefetch={false}
           >
