@@ -6,11 +6,11 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import Link from "next/link";
-import { badgeVariants } from "~/components/ui/badge";
+import { Badge, badgeVariants } from "~/components/ui/badge";
 import { type CopyPasta, type Tag } from "@prisma/client";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { buttonVariants } from "./ui/button";
-import { ArrowRight, Link2 } from "lucide-react";
+import { ArrowRight, Calendar, Link2 } from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import CopyPastaCardAction from "./CopyPastaCardAction";
@@ -30,6 +30,10 @@ export interface CopyPastaCardWithTagsProps extends CopyPasta {
     copyPastaId: string;
     tagId: string;
   })[];
+  createdBy: {
+    id: string;
+    name: string | null;
+  };
   fullMode?: boolean;
   isApprovalMode?: boolean;
 }
@@ -60,10 +64,9 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
       whileHover={{
         scale: !copyPastaProps.fullMode ? 1.02 : 1,
       }}
+      className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
     >
-      <Card
-        className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
-      >
+      <Card>
         <CardHeader className="pb-0">
           <CardTitle>
             <svg
@@ -138,12 +141,17 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               </Link>
             </div>
           )}
-          <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground dark:text-muted-foreground">
+          <div className="mt-2 flex flex-col gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:mt-4">
             {copyPastaProps.fullMode && (
-              <span>
-                Kejadian pada:{" "}
-                {formatDateToHuman(copyPastaProps.postedAt ?? new Date())}
-              </span>
+              <div className="flex justify-between">
+                <Badge variant={"outline"} className="w-fit">
+                  Di tambahkan oleh: {copyPastaProps.createdBy.name ?? "Anon"}
+                </Badge>
+                <div className="flex items-center">
+                  <Calendar className="mr-2 h-4 w-4" />{" "}
+                  {formatDateToHuman(copyPastaProps.postedAt ?? new Date())}
+                </div>
+              </div>
             )}
             {copyPastaProps.CopyPastasOnTags.length ||
             copyPastaProps.sourceUrl ? (
