@@ -40,10 +40,6 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
                     key={c.id}
                     copyPastaProps={{
                       ...c,
-                      createdBy: {
-                        id: "",
-                        name: "",
-                      },
                       fullMode: false,
                     }}
                   />

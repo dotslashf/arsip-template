@@ -30,7 +30,7 @@ export interface CopyPastaCardWithTagsProps extends CopyPasta {
     copyPastaId: string;
     tagId: string;
   })[];
-  createdBy: {
+  createdBy?: {
     id: string;
     name: string | null;
   };
@@ -145,7 +145,10 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
             {copyPastaProps.fullMode && (
               <div className="flex justify-between">
                 <Badge variant={"outline"} className="w-fit">
-                  Di tambahkan oleh: {copyPastaProps.createdBy.name ?? "Anon"}
+                  Di tambahkan oleh:{" "}
+                  {copyPastaProps.createdBy
+                    ? copyPastaProps.createdBy.name
+                    : "Anon"}
                 </Badge>
                 <div className="flex items-center">
                   <Calendar className="mr-2 h-4 w-4" />{" "}
