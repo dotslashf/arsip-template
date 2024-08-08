@@ -22,8 +22,8 @@ export async function generateMetadata({
     return notFound();
   }
 
-  const title = `${trimContent(copyPasta.content, 30)}`;
-  const description = `${trimContent(copyPasta.content, 255)}`;
+  const title = `${trimContent(copyPasta.content, 60)}`;
+  const description = `${trimContent(copyPasta.content, 155)}`;
   const url = `https://arsip-template.koyeb.app/api/og?copyPasta=${trimContent(copyPasta.content, 255)}`;
 
   return {
