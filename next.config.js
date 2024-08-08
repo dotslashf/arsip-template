@@ -9,6 +9,9 @@ const config = {
   reactStrictMode: true,
   swcMinify: true,
   output: "standalone",
+  httpAgentOptions: {
+    keepAlive: false,
+  },
 };
 
 export default config;
