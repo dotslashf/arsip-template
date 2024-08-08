@@ -16,6 +16,13 @@ import { ScrollArea } from "./ui/scroll-area";
 import CopyPastaCardAction from "./CopyPastaCardAction";
 import { sendGAEvent } from "@next/third-parties/google";
 import { sourceEnumHash } from "~/lib/constant";
+import { Roboto_Slab } from "next/font/google";
+
+const robotoSlab = Roboto_Slab({
+  weight: ["400", "600"],
+  style: ["normal"],
+  subsets: ["latin"],
+});
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -98,8 +105,9 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           <ScrollArea
             onClick={handleCopy}
             className={cn(
-              "rounded-md font-mono text-sm font-semibold",
-              copyPastaProps.fullMode ? "h-fit" : "h-28",
+              "rounded-md",
+              copyPastaProps.fullMode ? "h-fit text-lg" : "h-28 text-sm",
+              robotoSlab.className,
             )}
           >
             <blockquote className="cursor-pointer whitespace-pre-line">
@@ -122,10 +130,12 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           </div>
         )}
         <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground dark:text-muted-foreground">
-          <span>
-            Kejadian pada:{" "}
-            {formatDateToHuman(copyPastaProps.postedAt ?? new Date())}
-          </span>
+          {copyPastaProps.fullMode && (
+            <span>
+              Kejadian pada:{" "}
+              {formatDateToHuman(copyPastaProps.postedAt ?? new Date())}
+            </span>
+          )}
           {copyPastaProps.CopyPastasOnTags.length ||
           copyPastaProps.sourceUrl ? (
             <div className="relative flex w-full items-center justify-between">
