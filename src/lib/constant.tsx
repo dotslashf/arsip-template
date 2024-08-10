@@ -2,6 +2,15 @@ import { CircleHelp } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
 
+export interface DataInterface {
+  copyPastas: string[];
+  tags: string[];
+  ranks: {
+    title: string;
+    minCount: number;
+  }[];
+}
+
 export const sourceEnumHash = new Map([
   [
     "Twitter",
