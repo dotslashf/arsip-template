@@ -1,3 +1,4 @@
+import { Dot } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
@@ -12,6 +13,7 @@ export default function Footer() {
           >
             Ketentuan Layanan
           </Link>
+          <Dot className="w-4" />
           <Link
             href="/privacy-policy"
             className="text-sm hover:underline"
