@@ -14,10 +14,7 @@ import { ArrowRight, Calendar, Link2 } from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import CopyPastaCardAction from "./CopyPastaCardAction";
-import {
-  sendGAEvent,
-  // sendGTMEvent
-} from "@next/third-parties/google";
+import { sendGAEvent } from "@next/third-parties/google";
 import { sourceEnumHash } from "~/lib/constant";
 import { Roboto_Slab } from "next/font/google";
 import { motion } from "framer-motion";
@@ -58,9 +55,6 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           type: "info",
         });
         sendGAEvent("event", "buttonClicked", { value: "copyPasta.copyPaste" });
-        // sendGTMEvent("event", "buttonClicked", {
-        //   value: "copyPasta.copyPaste",
-        // });
       })
       .catch((err) => console.log(err));
   }
