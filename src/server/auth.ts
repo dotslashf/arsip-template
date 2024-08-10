@@ -50,7 +50,6 @@ export const authOptions: NextAuthOptions = {
           id: user.rankId,
         },
       });
-      console.log("user", user, rank);
       return {
         ...session,
         user: {

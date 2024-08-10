@@ -36,20 +36,20 @@ async function main() {
     },
   });
 
-  users.map(async (user) => {
-    const contributionCount = user._count.CopyPastaCreatedBy;
+  await Promise.all(
+    users.map(async (user) => {
+      const contributionCount = user._count.CopyPastaCreatedBy;
 
-    const rank = ranks.reverse().find((r) => contributionCount >= r.minCount);
+      const rank = ranks.reverse().find((r) => contributionCount >= r.minCount);
 
-    if (rank) {
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { rankId: rank.id },
-      });
-    }
-  });
-
-  console.log("Users assigned with rank");
+      if (rank) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { rankId: rank.id },
+        });
+      }
+    }),
+  );
 }
 
 main()

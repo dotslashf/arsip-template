@@ -70,8 +70,6 @@ export const copyPastaRouter = createTRPCRouter({
         };
       }
 
-      console.log(condition, "byUserId");
-
       const copyPastas = await ctx.db.copyPasta.findMany({
         take: input.limit ?? 1,
         skip: input.cursor ? 1 : 0,
