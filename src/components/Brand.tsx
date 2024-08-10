@@ -1,9 +1,15 @@
+import { sendGAEvent } from "@next/third-parties/google";
 import { Package } from "lucide-react";
 import Link from "next/link";
 
 export default function Brand() {
   return (
-    <Link href={"/"}>
+    <Link
+      href={"/"}
+      onClick={() =>
+        sendGAEvent("event", "buttonClicked", { value: "homePage" })
+      }
+    >
       <h1 className="flex items-center justify-center text-3xl font-bold leading-7 dark:text-foreground">
         <Package className="mr-3" />
         arsip

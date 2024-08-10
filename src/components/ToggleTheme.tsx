@@ -11,15 +11,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google";
+import {
+  sendGAEvent,
+  // sendGTMEvent
+} from "@next/third-parties/google";
 
 export function ToggleTheme() {
   const { setTheme } = useTheme();
 
   function handleSetTheme(theme: "light" | "dark" | "system") {
     setTheme(theme);
-    sendGAEvent({ event: "setTheme", value: theme });
-    sendGTMEvent({ event: "setTheme", value: theme });
+    sendGAEvent("event", "setTheme", { value: theme });
+    // sendGTMEvent({ event: "setTheme", value: theme });
   }
 
   return (
