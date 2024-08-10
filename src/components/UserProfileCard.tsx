@@ -2,6 +2,7 @@ import { type Session } from "next-auth";
 import { Card, CardHeader, CardContent } from "./ui/card";
 import Avatar from "boring-avatars";
 import { Badge } from "./ui/badge";
+import { avatarColorsTheme } from "~/lib/constant";
 
 interface UserProfileCardProps {
   session: Session | null;
@@ -12,7 +13,7 @@ export default function UserProfileCard({ session }: UserProfileCardProps) {
       <CardHeader className="flex flex-col items-center space-y-2 p-6">
         <Avatar
           name={session?.user.id ?? "John Doe"}
-          colors={["#0f172a", "#A6AEC1", "#CFD5E1", "#EDEDF2", "#FCFDFF"]}
+          colors={avatarColorsTheme}
           size={64}
           variant="beam"
         />
@@ -22,8 +23,14 @@ export default function UserProfileCard({ session }: UserProfileCardProps) {
           </h4>
         </div>
       </CardHeader>
-      <CardContent className="flex justify-center px-6 pb-6">
-        <Badge>Role: {session?.user.role ?? "User"}</Badge>
+      <CardContent className="flex flex-col items-center space-y-2 font-mono text-sm font-semibold">
+        <span className="flex w-full justify-between">
+          Role: <Badge>{session?.user.role ?? "User"}</Badge>
+        </span>
+        <span className="flex w-full justify-between">
+          Rank:
+          <Badge>{session?.user.rank?.title ?? "User"}</Badge>
+        </span>
       </CardContent>
     </Card>
   );

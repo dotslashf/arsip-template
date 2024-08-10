@@ -23,6 +23,7 @@ import {
 import Avatar from "boring-avatars";
 import { ToggleTheme } from "./ToggleTheme";
 import { sendGAEvent } from "@next/third-parties/google";
+import { avatarColorsTheme } from "~/lib/constant";
 
 interface NavbarProps {
   session: Session | null;
@@ -69,13 +70,7 @@ export default function Navbar({ session }: NavbarProps) {
                   <div>
                     <Avatar
                       name={session.user.id}
-                      colors={[
-                        "#0f172a",
-                        "#A6AEC1",
-                        "#CFD5E1",
-                        "#EDEDF2",
-                        "#FCFDFF",
-                      ]}
+                      colors={avatarColorsTheme}
                       size={38}
                       variant="beam"
                     />

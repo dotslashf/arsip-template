@@ -11,6 +11,14 @@ export interface DataInterface {
   }[];
 }
 
+export const avatarColorsTheme = [
+  "#E75B04",
+  "#FDFCFB",
+  "#862B04",
+  "#EAE8E6",
+  "#FDD1BF",
+];
+
 export const sourceEnumHash = new Map([
   [
     "Twitter",
