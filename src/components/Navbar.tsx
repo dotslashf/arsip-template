@@ -15,6 +15,7 @@ import {
 } from "./ui/dropdown-menu";
 import Avatar from "boring-avatars";
 import { ToggleTheme } from "./ToggleTheme";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface NavbarProps {
   session: Session | null;
@@ -40,6 +41,11 @@ export default function Navbar({ session }: NavbarProps) {
                 href="/auth/sign-in"
                 className={cn(buttonVariants({ variant: "link" }))}
                 prefetch={false}
+                onClick={() => {
+                  sendGAEvent("event", "buttonClicked", {
+                    value: "signIn",
+                  });
+                }}
               >
                 Masuk
                 <LogIn className="ml-2 w-3" />
@@ -74,6 +80,11 @@ export default function Navbar({ session }: NavbarProps) {
                       href="/dashboard/profile"
                       prefetch={false}
                       className="flex w-full items-center justify-between"
+                      onClick={() =>
+                        sendGAEvent("event", "buttonClicked", {
+                          value: "profile",
+                        })
+                      }
                     >
                       Profile
                       <UserRound className="w-3" />
@@ -90,6 +101,11 @@ export default function Navbar({ session }: NavbarProps) {
                       href="/copy-pasta/create"
                       prefetch={false}
                       className="flex w-full items-center justify-between"
+                      onClick={() =>
+                        sendGAEvent("event", "buttonClicked", {
+                          value: "create.copyPasta",
+                        })
+                      }
                     >
                       Tambah
                       <PlusIcon className="w-3" />

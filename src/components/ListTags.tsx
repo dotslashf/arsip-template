@@ -5,6 +5,7 @@ import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { cn } from "~/lib/utils";
 import { badgeVariants } from "./ui/badge";
 import { api } from "~/trpc/react";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface ListTagsProps {
   id: string | null;
@@ -19,6 +20,11 @@ export default function ListTags({ id }: ListTagsProps) {
           <Link
             href={`/?tag=${tag.id}`}
             key={tag.id}
+            onClick={() =>
+              sendGAEvent("event", "buttonClicked", {
+                value: `tag:${tag.name}`,
+              })
+            }
             className={cn(
               id === tag.id
                 ? badgeVariants({ variant: "default" })

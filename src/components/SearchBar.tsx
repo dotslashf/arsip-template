@@ -5,7 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import { cn } from "~/lib/utils";
-import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google";
+import {
+  sendGAEvent,
+  // sendGTMEvent
+} from "@next/third-parties/google";
 
 export default function SearchBar() {
   const [query, setQuery] = useState<string>("");

@@ -8,7 +8,10 @@ import SearchBar from "../../components/SearchBar";
 import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 import { Suspense } from "react";
 import ListTags from "~/components/ListTags";
-import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google";
+import {
+  sendGAEvent,
+  // sendGTMEvent
+} from "@next/third-parties/google";
 import ListTagsSkeleton from "~/components/ListTagsSkeleton";
 
 export function ListCopyPasta() {

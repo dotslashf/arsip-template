@@ -14,7 +14,10 @@ import { ArrowRight, Calendar, Link2 } from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import CopyPastaCardAction from "./CopyPastaCardAction";
-import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google";
+import {
+  sendGAEvent,
+  // sendGTMEvent
+} from "@next/third-parties/google";
 import { sourceEnumHash } from "~/lib/constant";
 import { Roboto_Slab } from "next/font/google";
 import { motion } from "framer-motion";
@@ -190,6 +193,11 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
                       className={cn(
                         buttonVariants({ variant: "link", size: "url" }),
                       )}
+                      onClick={() =>
+                        sendGAEvent("event", "doksli", {
+                          value: copyPastaProps.sourceUrl,
+                        })
+                      }
                       prefetch={false}
                     >
                       Cek Doksli <Link2 className="ml-2 h-3 w-3" />
