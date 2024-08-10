@@ -14,10 +14,9 @@ import {
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { OriginSource } from "@prisma/client";
-import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { api } from "~/trpc/react";
 import { PlusIcon } from "lucide-react";
-import { formatDateToHuman } from "~/lib/utils";
+import { determineSource, formatDateToHuman } from "~/lib/utils";
 import { createCopyPastaForm } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
@@ -26,7 +25,7 @@ import { useEffect } from "react";
 import MultipleSelector, {
   type Option,
 } from "~/components/ui/multiple-selector";
-import { Badge, badgeVariants } from "~/components/ui/badge";
+import { badgeVariants } from "~/components/ui/badge";
 import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id } from "date-fns/locale";
 import { sourceEnumHash } from "~/lib/constant";
@@ -53,10 +52,6 @@ export default function CreateCopyPasta() {
     },
   });
 
-  const sourceEnum = Object.keys(OriginSource).map((og) => {
-    return sourceEnumHash.get(og);
-  });
-
   const toast = useToast();
 
   useEffect(() => {
@@ -68,7 +63,10 @@ export default function CreateCopyPasta() {
   function onSubmit(values: z.infer<typeof createCopyPastaForm>) {
     toast({
       message: "",
-      promiseFn: createMutation.mutateAsync({ ...values }),
+      promiseFn: createMutation.mutateAsync({
+        ...values,
+        source: determineSource(values.sourceUrl),
+      }),
       type: "promise",
       promiseMsg: {
         success: "Makasih!, tunggu diapproved ya!",
@@ -98,41 +96,7 @@ export default function CreateCopyPasta() {
             </FormItem>
           )}
         />
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <FormField
-            control={form.control}
-            name="postedAt"
-            render={({ field }) => (
-              <FormItem className="mb-2 w-full flex-col">
-                <FormLabel className="mb-1">Tanggal kejadian</FormLabel>
-                <div>
-                  <FormControl>
-                    <DateTimePicker
-                      value={field.value}
-                      onChange={field.onChange}
-                      granularity="day"
-                      placeholder={formatDateToHuman(new Date())}
-                      displayFormat={{ hour24: "PPP" }}
-                      locale={id}
-                    />
-                  </FormControl>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="sourceUrl"
-            render={({ field }) => (
-              <FormItem className="mb-2 w-full">
-                <FormLabel>Doksli</FormLabel>
-                <FormControl>
-                  <Input placeholder="www.doksli.com" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+        <div className="grid grid-cols-1 gap-4">
           <FormField
             control={form.control}
             name="tags"
@@ -167,31 +131,35 @@ export default function CreateCopyPasta() {
           />
           <FormField
             control={form.control}
-            name="source"
+            name="postedAt"
             render={({ field }) => (
-              <FormItem className="mb-2 w-full space-y-2">
-                <FormLabel>Sumber</FormLabel>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  {sourceEnum.map((source) => (
-                    <FormItem
-                      className="flex items-center space-x-3 space-y-0"
-                      key={source?.value}
-                    >
-                      <FormControl>
-                        <RadioGroupItem value={source!.value} />
-                      </FormControl>
-                      <FormLabel>
-                        <Badge variant={"secondary"}>
-                          {source?.icon}
-                          <span className="ml-2">{source?.label}</span>
-                        </Badge>
-                      </FormLabel>
-                    </FormItem>
-                  ))}
-                </RadioGroup>
+              <FormItem className="mb-2 w-full flex-col">
+                <FormLabel className="mb-1">Tanggal kejadian</FormLabel>
+                <div>
+                  <FormControl>
+                    <DateTimePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      granularity="day"
+                      placeholder={formatDateToHuman(new Date())}
+                      displayFormat={{ hour24: "PPP" }}
+                      locale={id}
+                    />
+                  </FormControl>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="sourceUrl"
+            render={({ field }) => (
+              <FormItem className="mb-2 w-full">
+                <FormLabel>Doksli</FormLabel>
+                <FormControl>
+                  <Input placeholder="www.doksli.com" {...field} />
+                </FormControl>
               </FormItem>
             )}
           />
