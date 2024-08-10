@@ -18,8 +18,8 @@ export function ToggleTheme() {
 
   function handleSetTheme(theme: "light" | "dark" | "system") {
     setTheme(theme);
-    sendGAEvent({ event: "setTheme", value: theme });
-    sendGTMEvent({ event: "setTheme", value: theme });
+    sendGAEvent("event", "setTheme", { value: theme });
+    // sendGTMEvent({ event: "setTheme", value: theme });
   }
 
   return (

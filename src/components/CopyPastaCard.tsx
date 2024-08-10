@@ -54,8 +54,10 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
             "Bersiap untuk kejahilan kecil 😼\n Silahkan paste templatenya!",
           type: "info",
         });
-        sendGAEvent({ event: "buttonClicked", value: "copyPasta.copyPaste" });
-        sendGTMEvent({ event: "buttonClicked", value: "copyPasta.copyPaste" });
+        sendGAEvent("event", "buttonClicked", { value: "copyPasta.copyPaste" });
+        // sendGTMEvent("event", "buttonClicked", {
+        //   value: "copyPasta.copyPaste",
+        // });
       })
       .catch((err) => console.log(err));
   }

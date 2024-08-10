@@ -15,8 +15,8 @@ export default function SearchBar() {
   const handleSearch = () => {
     const currentParams = new URLSearchParams(searchParams);
     currentParams.set("search", query);
-    sendGAEvent({ event: "search", value: currentParams.get("search") });
-    sendGTMEvent({ event: "search", value: currentParams.get("search") });
+    sendGAEvent("event", "search", { value: currentParams.get("search") });
+    // sendGTMEvent({ event: "search", value: currentParams.get("search") });
     router.push(`?${currentParams.toString()}`);
   };
 
@@ -61,8 +61,10 @@ export default function SearchBar() {
           href={"/copy-pasta/create"}
           className={cn(buttonVariants({}), "item-center")}
           onClick={() => {
-            sendGAEvent({ event: "buttonClicked", value: "create.copyPasta" });
-            sendGTMEvent({ event: "buttonClicked", value: "create.copyPasta" });
+            sendGAEvent("event", "buttonClicked", {
+              value: "create.copyPasta",
+            });
+            // sendGTMEvent({ event: "buttonClicked", value: "create.copyPasta" });
           }}
         >
           <PlusIcon className="mr-2 h-4 w-4" />

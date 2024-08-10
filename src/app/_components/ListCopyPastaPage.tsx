@@ -31,8 +31,8 @@ export function ListCopyPasta() {
 
   async function handleNextList() {
     await fetchNextPage();
-    sendGAEvent({ event: "buttonClicked", value: "home.nextList" });
-    sendGTMEvent({ event: "buttonClicked", value: "home.nextList" });
+    sendGAEvent("event", "buttonClicked", { value: "home.nextList" });
+    // sendGTMEvent("event", "buttonClicked", { value: "home.nextList" });
   }
 
   return (
