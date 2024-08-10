@@ -9,7 +9,7 @@ export default function TOSPage() {
       <Layout>
         <Brand />
         <div className="mx-auto">
-          <h1 className="mb-8 text-3xl font-bold md:text-4xl">
+          <h1 className="mb-8 text-2xl font-bold md:text-4xl">
             Ketentuan Layanan
           </h1>
           <div className="space-y-6 text-justify">

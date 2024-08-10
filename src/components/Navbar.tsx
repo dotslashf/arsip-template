@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { buttonVariants } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { LogIn, LogOut, Package, PlusIcon, UserRound } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
@@ -35,6 +35,12 @@ export default function Navbar({ session }: NavbarProps) {
             </span>
           </Link>
           <nav className="ml-auto flex items-center space-x-4">
+            <Link
+              href={"/ranking"}
+              className={buttonVariants({ variant: "default" })}
+            >
+              Ranking
+            </Link>
             <ToggleTheme />
             {!session?.user ? (
               <Link

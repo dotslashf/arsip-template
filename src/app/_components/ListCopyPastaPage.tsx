@@ -15,12 +15,14 @@ export function ListCopyPasta() {
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
   const tag = searchParams.get("tag");
+  const byUserId = searchParams.get("byUserId");
   const [{ pages }, allCopyPastas] =
     api.copyPasta.list.useSuspenseInfiniteQuery(
       {
         limit: 10,
         search,
         tag,
+        byUserId,
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
