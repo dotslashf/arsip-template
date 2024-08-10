@@ -29,6 +29,7 @@ export default function ListTags({ id }: ListTagsProps) {
       <div className="flex w-max space-x-2 py-2">
         {tags.map((tag) => (
           <Badge
+            key={tag.id}
             onClick={() => handleTagClick(tag)}
             className={
               "cursor-pointer shadow-sm hover:bg-primary hover:text-primary-foreground"

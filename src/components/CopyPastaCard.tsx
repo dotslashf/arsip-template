@@ -63,6 +63,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
     <motion.div
       whileHover={{
         scale: !copyPastaProps.fullMode ? 1.02 : 1,
+        rotateZ: -0.5,
       }}
       className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
     >
@@ -100,10 +101,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col justify-between gap-2 p-6 pt-2 hover:cursor-auto">
-          <motion.div
-            whileTap={{
-              scale: 0.95,
-            }}
+          <div
             className={cn(
               "overflow-x-hidden text-sm",
               copyPastaProps.CopyPastasOnTags.some(
@@ -126,7 +124,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
                 {copyPastaProps.content}
               </blockquote>
             </ScrollArea>
-          </motion.div>
+          </div>
           {!copyPastaProps.fullMode && !copyPastaProps.isApprovalMode && (
             <div className="self-start">
               <Link
