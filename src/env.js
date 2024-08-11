@@ -24,6 +24,10 @@ export const env = createEnv({
     ),
     TWITTER_API_KEY: z.string(),
     TWITTER_API_SECRET: z.string(),
+    DISCORD_API_CLIENT_ID: z.string(),
+    DISCORD_API_CLIENT_SECRET: z.string(),
+    GOOGLE_API_CLIENT_ID: z.string(),
+    GOOGLE_API_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -46,6 +50,10 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     TWITTER_API_KEY: process.env.TWITTER_API_KEY,
     TWITTER_API_SECRET: process.env.TWITTER_API_SECRET,
+    DISCORD_API_CLIENT_ID: process.env.DISCORD_API_CLIENT_ID,
+    DISCORD_API_CLIENT_SECRET: process.env.DISCORD_API_CLIENT_SECRET,
+    GOOGLE_API_CLIENT_ID: process.env.GOOGLE_API_CLIENT_ID,
+    GOOGLE_API_CLIENT_SECRET: process.env.GOOGLE_API_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

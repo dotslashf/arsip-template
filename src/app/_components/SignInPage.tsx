@@ -3,7 +3,11 @@
 import { signIn } from "next-auth/react";
 import { Button } from "~/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter } from "@fortawesome/free-brands-svg-icons";
+import {
+  faTwitter,
+  faDiscord,
+  faGoogle,
+} from "@fortawesome/free-brands-svg-icons";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 
 export default function SignInSocialProviders() {
@@ -22,7 +26,7 @@ export default function SignInSocialProviders() {
         <CardContent>
           <div className="space-y-4">
             <Button
-              variant="outline"
+              variant="twitter"
               className="w-full"
               size={"lg"}
               onClick={() =>
@@ -33,6 +37,32 @@ export default function SignInSocialProviders() {
             >
               <FontAwesomeIcon icon={faTwitter} className="mr-2 h-4 w-4" />
               Masuk dengan Twitter (X)
+            </Button>
+            <Button
+              variant="discord"
+              className="w-full"
+              size={"lg"}
+              onClick={() =>
+                signIn("discord", {
+                  callbackUrl: "/",
+                })
+              }
+            >
+              <FontAwesomeIcon icon={faDiscord} className="mr-2 h-4 w-4" />
+              Masuk dengan Discord
+            </Button>
+            <Button
+              variant="google"
+              className="w-full"
+              size={"lg"}
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: "/",
+                })
+              }
+            >
+              <FontAwesomeIcon icon={faGoogle} className="mr-2 h-4 w-4" />
+              Masuk dengan Google
             </Button>
           </div>
         </CardContent>

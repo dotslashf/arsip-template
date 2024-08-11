@@ -41,6 +41,12 @@ export const dashboardRouter = createTRPCRouter({
               tags: true,
             },
           },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
       });
       const nextCursor =
@@ -124,6 +130,12 @@ export const dashboardRouter = createTRPCRouter({
           CopyPastasOnTags: {
             include: {
               tags: true,
+            },
+          },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
             },
           },
         },
@@ -232,6 +244,12 @@ export const dashboardRouter = createTRPCRouter({
           CopyPastasOnTags: {
             include: {
               tags: true,
+            },
+          },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
             },
           },
         },
