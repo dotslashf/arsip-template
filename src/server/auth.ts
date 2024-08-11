@@ -7,9 +7,10 @@ import {
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 import TwitterProvider from "next-auth/providers/twitter";
-import { env } from "~/env";
+import Discord from "next-auth/providers/discord";
+import Google from "next-auth/providers/google";
 
-// import { env } from "~/env";
+import { env } from "~/env";
 import { db } from "~/server/db";
 
 /**
@@ -46,10 +47,24 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     session: async ({ session, user }) => {
       const rank = await db.rank.findUnique({
-        where: {
-          id: user.rankId,
-        },
+        where: user.rankId
+          ? {
+              id: user.rankId,
+            }
+          : {
+              minCount: 0,
+            },
       });
+      if (!user.rankId) {
+        await db.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            rankId: rank?.id,
+          },
+        });
+      }
       return {
         ...session,
         user: {
@@ -76,6 +91,14 @@ export const authOptions: NextAuthOptions = {
     TwitterProvider({
       clientId: env.TWITTER_API_KEY,
       clientSecret: env.TWITTER_API_SECRET,
+    }),
+    Discord({
+      clientId: env.DISCORD_API_CLIENT_ID,
+      clientSecret: env.DISCORD_API_CLIENT_SECRET,
+    }),
+    Google({
+      clientId: env.GOOGLE_API_CLIENT_ID,
+      clientSecret: env.GOOGLE_API_CLIENT_SECRET,
     }),
   ],
 };

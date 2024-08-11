@@ -41,6 +41,7 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
                     copyPastaProps={{
                       ...c,
                       fullMode: false,
+                      isCreatorAndDateShown: false,
                     }}
                   />
                 );

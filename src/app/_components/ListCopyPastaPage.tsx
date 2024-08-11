@@ -46,7 +46,15 @@ export function ListCopyPasta() {
         {pages
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
-                return <CopyPastaCard key={copy.id} copyPastaProps={copy} />;
+                return (
+                  <CopyPastaCard
+                    key={copy.id}
+                    copyPastaProps={{
+                      ...copy,
+                      isCreatorAndDateShown: false,
+                    }}
+                  />
+                );
               }),
             )
           : null}

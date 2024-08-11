@@ -1,8 +1,13 @@
+import { type Metadata } from "next";
 import Link from "next/link";
 import Brand from "~/components/Brand";
 import Layout from "~/components/Layout";
 import { HydrateClient } from "~/trpc/server";
 
+export const metadata: Metadata = {
+  title: "Ketentuan Layanan",
+  description: "Ketentuan Layanan arsip-template",
+};
 export default function TOSPage() {
   return (
     <HydrateClient>

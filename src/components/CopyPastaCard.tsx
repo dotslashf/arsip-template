@@ -18,6 +18,7 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { sourceEnumHash } from "~/lib/constant";
 import { Roboto_Slab } from "next/font/google";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const robotoSlab = Roboto_Slab({
   weight: ["400", "600"],
@@ -36,6 +37,7 @@ export interface CopyPastaCardWithTagsProps extends CopyPasta {
   };
   fullMode?: boolean;
   isApprovalMode?: boolean;
+  isCreatorAndDateShown?: boolean;
 }
 
 export interface CopyPastaProps {
@@ -44,6 +46,9 @@ export interface CopyPastaProps {
 
 export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
   const toast = useToast();
+  const router = useRouter();
+  copyPastaProps.isCreatorAndDateShown =
+    copyPastaProps.isCreatorAndDateShown ?? true;
 
   function handleCopy() {
     navigator.clipboard
@@ -140,9 +145,15 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
             </div>
           )}
           <div className="mt-2 flex flex-col gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:mt-4">
-            {copyPastaProps.fullMode && (
+            {copyPastaProps.isCreatorAndDateShown && (
               <div className="flex justify-between">
-                <Badge variant={"outline"} className="w-fit">
+                <Badge
+                  variant={"outline"}
+                  className="w-fit cursor-pointer"
+                  onClick={() => {
+                    router.push(`/?byUserId=${copyPastaProps.createdById}`);
+                  }}
+                >
                   Di tambahkan oleh:{" "}
                   {copyPastaProps.createdBy
                     ? copyPastaProps.createdBy.name

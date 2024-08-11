@@ -18,6 +18,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
+import Avatar from "boring-avatars";
+import { avatarColorsTheme } from "~/lib/constant";
 
 export default function RankingPage() {
   const [rankings] = api.ranking.topUsers.useSuspenseQuery();
@@ -63,7 +65,7 @@ export default function RankingPage() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[50px]"></TableHead>
-              <TableHead>User</TableHead>
+              <TableHead>Tukang Arsip</TableHead>
               <TableHead className="text-center">Rank</TableHead>
               <TableHead className="w-24 text-center"># Arsip</TableHead>
             </TableRow>
@@ -80,8 +82,16 @@ export default function RankingPage() {
                   }}
                 >
                   <TableCell className="font-medium">{rankPosition}</TableCell>
-                  <TableCell className="transition-colors hover:text-blue-500">
-                    {getMedal(rankPosition)} {rank.name}
+                  <TableCell className="flex items-center transition-colors hover:text-blue-500">
+                    <Avatar
+                      name={rank.id}
+                      colors={avatarColorsTheme}
+                      size={38}
+                      variant="beam"
+                    />
+                    <span className="ml-4">
+                      {getMedal(rankPosition)} {rank.name}
+                    </span>
                   </TableCell>
                   <TableCell className="text-center">
                     <Badge>{rank.rank?.title}</Badge>

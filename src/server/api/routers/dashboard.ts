@@ -41,6 +41,12 @@ export const dashboardRouter = createTRPCRouter({
               tags: true,
             },
           },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
       });
       const nextCursor =
@@ -51,6 +57,23 @@ export const dashboardRouter = createTRPCRouter({
         copyPastas,
         nextCursor,
       };
+    }),
+
+  editName: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          name: input.name,
+        },
+      });
     }),
 
   approveById: protectedProcedure
@@ -124,6 +147,12 @@ export const dashboardRouter = createTRPCRouter({
           CopyPastasOnTags: {
             include: {
               tags: true,
+            },
+          },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
             },
           },
         },
@@ -232,6 +261,12 @@ export const dashboardRouter = createTRPCRouter({
           CopyPastasOnTags: {
             include: {
               tags: true,
+            },
+          },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
             },
           },
         },
