@@ -62,6 +62,7 @@ export default function ProfileCopyPastaCard({
                       type === "disapproved" &&
                       !copy.fullMode &&
                       isApprovalMode,
+                    fullMode: type === "disapproved" && isApprovalMode,
                   }}
                 />
               );

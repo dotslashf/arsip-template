@@ -75,6 +75,28 @@ export const dashboardRouter = createTRPCRouter({
           approvedById: ctx.session.user.id,
         },
       });
+
+      const userContributionCount = await ctx.db.copyPasta.count({
+        where: { createdById: copyPasta.createdById },
+      });
+
+      const rank = await ctx.db.rank.findFirst({
+        where: {
+          minCount: {
+            lte: userContributionCount,
+          },
+        },
+        orderBy: {
+          minCount: "desc",
+        },
+      });
+      if (rank) {
+        await ctx.db.user.update({
+          where: { id: copyPasta.createdById },
+          data: { rankId: rank.id },
+        });
+      }
+
       return copyPasta.id;
     }),
 

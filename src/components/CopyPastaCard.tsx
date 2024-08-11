@@ -63,7 +63,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
     <motion.div
       whileHover={{
         scale: !copyPastaProps.fullMode ? 1.02 : 1,
-        rotateZ: -0.5,
+        rotateZ: !copyPastaProps.fullMode ? -0.5 : 0,
       }}
       className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
     >
