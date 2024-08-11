@@ -34,7 +34,7 @@ export default function RankingPage() {
 
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1" className="border-0">
-            <AccordionTrigger className="text-sm">
+            <AccordionTrigger className="text-sm text-primary">
               Urutan Ranking
             </AccordionTrigger>
             <AccordionContent>

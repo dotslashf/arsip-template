@@ -35,7 +35,7 @@ export default function Navbar({ session }: NavbarProps) {
         <div className="flex h-12 items-center">
           <Link
             href="/"
-            className="mr-auto flex items-center gap-2 text-lg font-semibold"
+            className="mr-auto flex items-center gap-2 text-lg font-semibold text-primary"
             prefetch={false}
           >
             <span className="font-bold">

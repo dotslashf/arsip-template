@@ -10,10 +10,10 @@ export default async function Layout(props: LayoutProps) {
   return (
     <main className="flex min-h-screen flex-col items-center">
       <Navbar session={session} />
-      <div className="container mb-auto flex flex-col items-center justify-center gap-y-14 px-6 pb-10 pt-24 lg:px-36">
+      <div className="container mb-auto flex flex-col items-center justify-center gap-y-14 px-6 pb-10 pt-24 lg:px-[8.5rem]">
         {props.children}
       </div>
-      <Footer />
+      <Footer session={session} />
     </main>
   );
 }
