@@ -13,7 +13,6 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
-import { OriginSource } from "@prisma/client";
 import { api } from "~/trpc/react";
 import { PlusIcon } from "lucide-react";
 import { determineSource, formatDateToHuman } from "~/lib/utils";
@@ -28,7 +27,6 @@ import MultipleSelector, {
 import { badgeVariants } from "~/components/ui/badge";
 import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id } from "date-fns/locale";
-import { sourceEnumHash } from "~/lib/constant";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery();

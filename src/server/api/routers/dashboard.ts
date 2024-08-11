@@ -59,6 +59,23 @@ export const dashboardRouter = createTRPCRouter({
       };
     }),
 
+  editName: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          name: input.name,
+        },
+      });
+    }),
+
   approveById: protectedProcedure
     .input(
       z.object({
