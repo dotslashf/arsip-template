@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { type UserRole } from "@prisma/client";
+import { type Rank, type UserRole } from "@prisma/client";
 import {
   getServerSession,
   type DefaultSession,
@@ -24,12 +24,16 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       role: UserRole;
+      rankId: string;
+      rank: Rank;
     } & DefaultSession["user"];
   }
 
   interface User {
     // ...other properties
     role: UserRole;
+    rankId: string;
+    rank: Rank;
   }
 }
 
@@ -40,14 +44,22 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-        role: user.role,
-      },
-    }),
+    session: async ({ session, user }) => {
+      const rank = await db.rank.findUnique({
+        where: {
+          id: user.rankId,
+        },
+      });
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+          role: user.role,
+          rank,
+        },
+      };
+    },
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [

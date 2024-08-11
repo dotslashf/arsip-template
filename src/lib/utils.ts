@@ -40,3 +40,16 @@ export function determineSource(url = "Other") {
     return OriginSource.Other;
   }
 }
+
+export function getMedal(number: number) {
+  switch (number) {
+    case 1:
+      return "🥇 ";
+    case 2:
+      return "🥈 ";
+    case 3:
+      return "🥉 ";
+    default:
+      return "";
+  }
+}

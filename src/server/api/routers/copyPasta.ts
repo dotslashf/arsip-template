@@ -46,6 +46,7 @@ export const copyPastaRouter = createTRPCRouter({
         cursor: z.string().nullish(),
         search: z.string().nullish(),
         tag: z.string().uuid().nullish(),
+        byUserId: z.string().nullish(),
       }),
     )
     .query(async ({ input, ctx }) => {
@@ -63,6 +64,11 @@ export const copyPastaRouter = createTRPCRouter({
           },
         };
       }
+      if (input.byUserId) {
+        condition.createdById = {
+          equals: input.byUserId,
+        };
+      }
 
       const copyPastas = await ctx.db.copyPasta.findMany({
         take: input.limit ?? 1,
@@ -71,6 +77,7 @@ export const copyPastaRouter = createTRPCRouter({
         where: {
           content: condition.content,
           CopyPastasOnTags: condition.tag,
+          createdById: condition.createdById,
           approvedAt: {
             not: null,
           },

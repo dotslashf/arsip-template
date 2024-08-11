@@ -92,6 +92,16 @@ model User {
     CopyPastaApprovedBy CopyPasta[] @relation("approvedBy")
     CopyPastaCreatedBy  CopyPasta[] @relation("createdBy")
     role                UserRole    @default(User)
+
+    rankId String?
+    rank   Rank?   @relation(fields: [rankId], references: [id])
+}
+
+model Rank {
+    id       String @id @default(uuid())
+    title    String
+    minCount Int    @unique
+    User     User[]
 }
 
 model VerificationToken {

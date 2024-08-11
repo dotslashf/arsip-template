@@ -11,17 +11,20 @@
     "db:studio": "prisma studio",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "seed": "ts-node --esm prisma/seed-rank.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.6.0",
     "@faker-js/faker": "^8.4.1",
+    "@feedback-fish/react": "^1.2.2",
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@hookform/resolvers": "^3.9.0",
     "@next/third-parties": "^14.2.5",
     "@prisma/client": "^5.14.0",
     "@radix-ui/number": "^1.1.0",
+    "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",

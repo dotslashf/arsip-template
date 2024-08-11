@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { LogIn, LogOut, Package, PlusIcon, UserRound } from "lucide-react";
+import {
+  LogIn,
+  LogOut,
+  Medal,
+  Package,
+  PlusIcon,
+  UserRound,
+} from "lucide-react";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
@@ -16,6 +23,7 @@ import {
 import Avatar from "boring-avatars";
 import { ToggleTheme } from "./ToggleTheme";
 import { sendGAEvent } from "@next/third-parties/google";
+import { avatarColorsTheme } from "~/lib/constant";
 
 interface NavbarProps {
   session: Session | null;
@@ -27,7 +35,7 @@ export default function Navbar({ session }: NavbarProps) {
         <div className="flex h-12 items-center">
           <Link
             href="/"
-            className="mr-auto flex items-center gap-2 text-lg font-semibold"
+            className="mr-auto flex items-center gap-2 text-lg font-semibold text-primary"
             prefetch={false}
           >
             <span className="font-bold">
@@ -35,6 +43,12 @@ export default function Navbar({ session }: NavbarProps) {
             </span>
           </Link>
           <nav className="ml-auto flex items-center space-x-4">
+            <Link
+              href={"/ranking"}
+              className={buttonVariants({ variant: "default", size: "icon" })}
+            >
+              <Medal className="m w-4" />
+            </Link>
             <ToggleTheme />
             {!session?.user ? (
               <Link
@@ -56,13 +70,7 @@ export default function Navbar({ session }: NavbarProps) {
                   <div>
                     <Avatar
                       name={session.user.id}
-                      colors={[
-                        "#0f172a",
-                        "#A6AEC1",
-                        "#CFD5E1",
-                        "#EDEDF2",
-                        "#FCFDFF",
-                      ]}
+                      colors={avatarColorsTheme}
                       size={38}
                       variant="beam"
                     />
