@@ -55,6 +55,16 @@ export const authOptions: NextAuthOptions = {
               minCount: 0,
             },
       });
+      if (!user.rankId) {
+        await db.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            rankId: rank?.id,
+          },
+        });
+      }
       return {
         ...session,
         user: {
