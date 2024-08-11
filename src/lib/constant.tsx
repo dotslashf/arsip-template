@@ -12,11 +12,11 @@ export interface DataInterface {
 }
 
 export const avatarColorsTheme = [
-  "#E75B04",
-  "#FDFCFB",
-  "#862B04",
-  "#EAE8E6",
-  "#FDD1BF",
+  "#4D7CDB",
+  "#D51010",
+  "#FFFFFF",
+  "#E6E8EA",
+  "#A5C8E2",
 ];
 
 export const sourceEnumHash = new Map([
