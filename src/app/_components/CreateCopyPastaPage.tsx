@@ -115,7 +115,7 @@ export default function CreateCopyPasta() {
                       });
                     }}
                     hideClearAllButton
-                    badgeClassName={badgeVariants({ variant: "secondary" })}
+                    badgeClassName={badgeVariants({ variant: "destructive" })}
                     defaultOptions={tagOptions}
                     placeholder="Kira kira ini template cocok dengan tag..."
                     emptyIndicator={

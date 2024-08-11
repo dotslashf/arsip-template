@@ -431,7 +431,7 @@ const MultipleSelector = React.forwardRef<
                       (disabled ?? option.fixed) && "hidden",
                     )}
                   >
-                    <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                    <X className="h-3 w-3 text-background dark:text-foreground" />
                   </button>
                 </Badge>
               );
