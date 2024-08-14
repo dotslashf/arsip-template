@@ -10,7 +10,6 @@ import { notFound } from "next/navigation";
 
 export type PropsPage = {
   params: { id: string };
-  searchParams: Record<string, string | string[] | undefined>;
 };
 export async function generateMetadata({
   params,

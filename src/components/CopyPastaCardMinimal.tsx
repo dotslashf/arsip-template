@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import Link from "next/link";
 import { Badge, badgeVariants } from "~/components/ui/badge";
 import { type CopyPasta, type Tag } from "@prisma/client";
@@ -13,10 +7,10 @@ import { Button, buttonVariants } from "./ui/button";
 import { ArrowRight, Calendar, Link2 } from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
-import CopyPastaCardAction from "./CopyPastaCardAction";
 import { sendGAEvent } from "@next/third-parties/google";
 import { sourceEnumHash } from "~/lib/constant";
 import { Roboto_Slab } from "next/font/google";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 const robotoSlab = Roboto_Slab({
@@ -34,8 +28,7 @@ export interface CopyPastaCardWithTagsProps extends CopyPasta {
     id: string;
     name: string | null;
   };
-  fullMode?: boolean;
-  isApprovalMode?: boolean;
+  isFullMode?: boolean;
   isCreatorAndDateShown?: boolean;
 }
 
@@ -43,7 +36,9 @@ export interface CopyPastaProps {
   copyPastaProps: CopyPastaCardWithTagsProps;
 }
 
-export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
+export default function CopyPastaCardMinimal({
+  copyPastaProps,
+}: CopyPastaProps) {
   const toast = useToast();
   const router = useRouter();
   copyPastaProps.isCreatorAndDateShown =
@@ -69,7 +64,11 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
   }
 
   return (
-    <div
+    <motion.div
+      whileHover={{
+        scale: !copyPastaProps.isFullMode ? 1.02 : 1,
+        rotateZ: !copyPastaProps.isFullMode ? -0.5 : 0,
+      }}
       className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
     >
       <Card>
@@ -112,8 +111,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               copyPastaProps.CopyPastasOnTags.some(
                 (tag) => tag.tags.name === "NSFW",
               ) &&
-                !copyPastaProps.fullMode &&
-                !copyPastaProps.isApprovalMode &&
+                !copyPastaProps.isFullMode &&
                 "blur-sm transition hover:blur-none",
             )}
           >
@@ -121,7 +119,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               onClick={handleCopy}
               className={cn(
                 "rounded-md",
-                copyPastaProps.fullMode ? "h-fit text-lg" : "h-28 text-sm",
+                copyPastaProps.isFullMode ? "h-fit text-lg" : "h-28 text-sm",
                 robotoSlab.className,
               )}
             >
@@ -130,19 +128,17 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               </blockquote>
             </ScrollArea>
           </div>
-          {!copyPastaProps.fullMode &&
-            !copyPastaProps.isApprovalMode &&
-            copyPastaProps.approvedAt && (
-              <div className="self-start">
-                <Button
-                  variant={"link"}
-                  size={"url"}
-                  onClick={() => handleMoreInfo(copyPastaProps.id)}
-                >
-                  Lebih Lanjut <ArrowRight className="ml-2 h-3 w-3" />
-                </Button>
-              </div>
-            )}
+          {!copyPastaProps.isFullMode && (
+            <div className="self-start">
+              <Button
+                variant={"link"}
+                size={"url"}
+                onClick={() => handleMoreInfo(copyPastaProps.id)}
+              >
+                Lebih Lanjut <ArrowRight className="ml-2 h-3 w-3" />
+              </Button>
+            </div>
+          )}
           <div className="mt-2 flex flex-col gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:mt-4">
             {copyPastaProps.isCreatorAndDateShown && (
               <div className="flex justify-between">
@@ -210,15 +206,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
             ) : null}
           </div>
         </CardContent>
-        {copyPastaProps.isApprovalMode && (
-          <CardFooter>
-            <CopyPastaCardAction
-              id={copyPastaProps.id}
-              isApproved={!!copyPastaProps.approvedAt}
-            />
-          </CardFooter>
-        )}
       </Card>
-    </div>
+    </motion.div>
   );
 }

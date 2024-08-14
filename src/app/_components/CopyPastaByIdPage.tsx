@@ -1,6 +1,6 @@
 "use client";
 
-import CopyPastaCard from "~/components/CopyPastaCard";
+import CopyPastaCardMinimal from "~/components/CopyPastaCardMinimal";
 import SkeletonCopyPasta from "~/components/SkeletonCopyPasta";
 import { api } from "~/trpc/react";
 
@@ -20,11 +20,11 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
   return (
     <div className="flex w-full flex-col gap-4">
       {copyPasta && (
-        <CopyPastaCard
+        <CopyPastaCardMinimal
           key={id}
           copyPastaProps={{
             ...copyPasta,
-            fullMode: true,
+            isFullMode: true,
           }}
         />
       )}
@@ -36,11 +36,11 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
           {related && !isLoading
             ? related.map((c) => {
                 return (
-                  <CopyPastaCard
+                  <CopyPastaCardMinimal
                     key={c.id}
                     copyPastaProps={{
                       ...c,
-                      fullMode: false,
+                      isFullMode: false,
                       isCreatorAndDateShown: false,
                     }}
                   />
