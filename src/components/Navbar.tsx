@@ -29,6 +29,11 @@ interface NavbarProps {
   session: Session | null;
 }
 export default function Navbar({ session }: NavbarProps) {
+  function handleSignOut() {
+    sendGAEvent("event", "buttonClicked", { value: `signOut` });
+    void signOut();
+  }
+
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
       <div className="container px-4 md:px-6">
@@ -125,11 +130,9 @@ export default function Navbar({ session }: NavbarProps) {
                       buttonVariants({ variant: "destructive" }),
                       "w-full items-center",
                     )}
+                    onClick={handleSignOut}
                   >
-                    <span
-                      className="flex w-full items-center justify-between"
-                      onClick={() => signOut()}
-                    >
+                    <span className="flex w-full items-center justify-between">
                       Keluar
                       <LogOut className="w-3" />
                     </span>
