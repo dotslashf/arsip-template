@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { initTRPC, TRPCError } from "@trpc/server";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createCopyPastaForm } from "~/server/form/copyPasta";
 
@@ -10,8 +10,6 @@ import {
 } from "~/server/api/trpc";
 
 import { faker } from "@faker-js/faker";
-
-export const t = initTRPC.create();
 
 export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure

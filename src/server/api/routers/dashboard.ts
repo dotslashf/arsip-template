@@ -1,11 +1,9 @@
-import { initTRPC, TRPCError } from "@trpc/server";
+import { TRPCError } from "@trpc/server";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 import { z } from "zod";
 import { editCopyPastaForm } from "~/server/form/copyPasta";
-
-export const t = initTRPC.create();
 
 export const dashboardRouter = createTRPCRouter({
   list: protectedProcedure
@@ -62,7 +60,7 @@ export const dashboardRouter = createTRPCRouter({
   editName: protectedProcedure
     .input(
       z.object({
-        name: z.string(),
+        name: z.string().max(50),
       }),
     )
     .mutation(async ({ ctx, input }) => {
