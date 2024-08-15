@@ -8,7 +8,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "~/components/theme-provider";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { GoogleTagManager } from "@next/third-parties/google";
+import { env } from "~/env";
 
 export const metadata: Metadata = {
   title: {
@@ -45,6 +45,8 @@ export const metadata: Metadata = {
   },
 };
 
+const isDevelopment = env.NODE_ENV === "development";
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -59,7 +61,7 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-        <GoogleAnalytics gaId="G-2Q26HEWB87" />
+        {!isDevelopment && <GoogleAnalytics gaId="G-2Q26HEWB87" />}
         <link
           rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>📦</text></svg>"
