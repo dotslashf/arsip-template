@@ -13,6 +13,23 @@ import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
+import { createClient } from "redis";
+import { env } from "~/env";
+import {
+  createTrpcRedisLimiter,
+  defaultFingerPrint,
+} from "@trpc-limiter/redis";
+import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
+
+export const redis = createClient({
+  password: env.REDIS_PASSWORD,
+  socket: {
+    host: env.REDIS_HOST_URL,
+    port: 12554,
+  },
+  disableOfflineQueue: true,
+});
 
 /**
  * 1. CONTEXT
@@ -26,9 +43,11 @@ import { db } from "~/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: {
+  headers: Headers;
+  req?: NextRequest;
+}) => {
   const session = await getServerAuthSession();
-
   return {
     db,
     session,
@@ -55,6 +74,14 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       },
     };
   },
+});
+
+const rateLimiter = createTrpcRedisLimiter<typeof t>({
+  fingerprint: (ctx) => defaultFingerPrint(ctx.req!),
+  message: (hitInfo) => `Too many requests, please try again later. ${hitInfo}`,
+  max: 5,
+  windowMs: 60000,
+  redisClient: redis,
 });
 
 /**
@@ -120,6 +147,21 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  */
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.session || !ctx.session.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    return next({
+      ctx: {
+        // infers the `session` as non-nullable
+        session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });
+
+export const protectedProcedureLimited = t.procedure
+  .use(timingMiddleware)
+  .use(rateLimiter)
   .use(({ ctx, next }) => {
     if (!ctx.session || !ctx.session.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });

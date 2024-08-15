@@ -1,10 +1,14 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  protectedProcedureLimited,
+  publicProcedure,
+} from "../trpc";
 import { EmotionType } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 export const reactionRouter = createTRPCRouter({
-  reactionByCopyPastaId: protectedProcedure
+  reactionByCopyPastaId: protectedProcedureLimited
     .input(
       z.object({
         copyPastaId: z.string().uuid(),

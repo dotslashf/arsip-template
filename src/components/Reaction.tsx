@@ -12,6 +12,7 @@ interface ReactionProps {
   copyPastaId: string;
 }
 export default function Reaction({ copyPastaId }: ReactionProps) {
+  const toast = useToast();
   const session = getSession();
   const [isHovered, setIsHovered] = useState(false);
   const utils = api.useUtils();
@@ -28,7 +29,6 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
   const currentUserReaction =
     reactionsByCopyPastaId?.currentUserReaction?.emotion;
 
-  const toast = useToast();
   const router = useRouter();
 
   async function handleReaction(reaction: EmotionType) {
@@ -60,9 +60,9 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
       }),
       type: "promise",
       promiseMsg: {
-        success: `Reaksi ${reactionName} sudah tersimpan`,
+        success: `Reaksi ${reactionName} ✍️`,
         loading: "🔥 Sedang memasak",
-        error: "Duh, gagal nih",
+        error: `Pelan pelan pak sopir 🏎️💨 `,
       },
     });
   }

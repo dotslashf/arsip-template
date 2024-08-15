@@ -7,18 +7,18 @@ import {
 } from "~/components/ui/card";
 import Link from "next/link";
 import { Badge, badgeVariants } from "~/components/ui/badge";
-import { EmotionType, Prisma, type CopyPasta, type Tag } from "@prisma/client";
+import { Prisma, type CopyPasta, type Tag } from "@prisma/client";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { Button, buttonVariants } from "./ui/button";
 import { ArrowRight, Calendar, Link2 } from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import { sendGAEvent } from "@next/third-parties/google";
-import { reactionsMap, sourceEnumHash } from "~/lib/constant";
+import { sourceEnumHash } from "~/lib/constant";
 import { Roboto_Slab } from "next/font/google";
 import { useRouter } from "next/navigation";
 import Reaction from "./Reaction";
-import { motion } from "framer-motion";
+import ReactionSummary from "./ReactionSummary";
 
 const robotoSlab = Roboto_Slab({
   weight: ["400", "600"],
@@ -225,28 +225,7 @@ export default function CopyPastaCardMinimal({
         )}
         {copyPastaProps.isReactionSummaryShown && (
           <CardFooter>
-            <div className="flex space-x-2">
-              {Object.keys(EmotionType).map((reaction, i) => (
-                <motion.div whileHover="hover">
-                  <Badge key={i} variant={"secondary"}>
-                    <motion.span
-                      variants={{
-                        hover: {
-                          scale: 1.5,
-                          rotateZ: 5,
-                          transition: { type: "tween", duration: 0.2 },
-                        },
-                      }}
-                    >
-                      {reactionsMap(reaction, "w-4 mr-2")?.child}
-                    </motion.span>
-                    {copyPastaProps.reactions?.find(
-                      (r) => r.emotion === reaction,
-                    )?._count.emotion ?? 0}
-                  </Badge>
-                </motion.div>
-              ))}
-            </div>
+            <ReactionSummary reactions={copyPastaProps.reactions} />
           </CardFooter>
         )}
       </Card>
