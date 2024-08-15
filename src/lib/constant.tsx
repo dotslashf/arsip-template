@@ -1,6 +1,13 @@
 import { CircleHelp } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { EmotionType } from "@prisma/client";
+import {
+  FluentEmojiFlatFaceWithSymbolsOnMouth,
+  FluentEmojiFlatHundredPoints,
+  FluentEmojiFlatRollingOnTheFloorLaughing,
+  FluentEmojiFlatThinkingFace,
+} from "~/components/Icons";
 
 export interface DataInterface {
   copyPastas: string[];
@@ -45,3 +52,32 @@ export const sourceEnumHash = new Map([
     },
   ],
 ]);
+
+export const reactionsMap = (emotion: string, className: string) => {
+  const map: Record<
+    string,
+    {
+      name: EmotionType;
+      child: JSX.Element;
+    }
+  > = {
+    Kocak: {
+      name: EmotionType.Kocak,
+      child: <FluentEmojiFlatRollingOnTheFloorLaughing className={className} />,
+    },
+    Hah: {
+      name: EmotionType.Hah,
+      child: <FluentEmojiFlatThinkingFace className={className} />,
+    },
+    Marah: {
+      name: EmotionType.Marah,
+      child: <FluentEmojiFlatFaceWithSymbolsOnMouth className={className} />,
+    },
+    Setuju: {
+      name: EmotionType.Setuju,
+      child: <FluentEmojiFlatHundredPoints className={className} />,
+    },
+  };
+
+  return map[emotion];
+};

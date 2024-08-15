@@ -30,7 +30,7 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
       )}
       <div className="flex flex-col gap-2">
         <div className="self-center text-sm font-semibold">
-          Template Yang Mungkin Sama:
+          Template Dengan Tag Yang Sama:
         </div>
         <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-3">
           {related && !isLoading

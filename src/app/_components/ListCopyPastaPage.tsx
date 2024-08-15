@@ -74,6 +74,7 @@ export function ListCopyPasta() {
                     copyPastaProps={{
                       ...copy,
                       isCreatorAndDateShown: false,
+                      isReactionSummaryShown: true,
                     }}
                   />
                 );

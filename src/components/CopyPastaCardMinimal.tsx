@@ -1,17 +1,24 @@
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import Link from "next/link";
 import { Badge, badgeVariants } from "~/components/ui/badge";
-import { type CopyPasta, type Tag } from "@prisma/client";
+import { EmotionType, Prisma, type CopyPasta, type Tag } from "@prisma/client";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { Button, buttonVariants } from "./ui/button";
 import { ArrowRight, Calendar, Link2 } from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import { sendGAEvent } from "@next/third-parties/google";
-import { sourceEnumHash } from "~/lib/constant";
+import { reactionsMap, sourceEnumHash } from "~/lib/constant";
 import { Roboto_Slab } from "next/font/google";
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Reaction from "./Reaction";
+import { motion } from "framer-motion";
 
 const robotoSlab = Roboto_Slab({
   weight: ["400", "600"],
@@ -28,8 +35,17 @@ export interface CopyPastaCardWithTagsProps extends CopyPasta {
     id: string;
     name: string | null;
   };
+  reactions?: (Prisma.PickEnumerable<
+    Prisma.ReactionGroupByOutputType,
+    ("copyPastaId" | "emotion")[]
+  > & {
+    _count: {
+      emotion: number;
+    };
+  })[];
   isFullMode?: boolean;
   isCreatorAndDateShown?: boolean;
+  isReactionSummaryShown?: boolean;
 }
 
 export interface CopyPastaProps {
@@ -64,11 +80,7 @@ export default function CopyPastaCardMinimal({
   }
 
   return (
-    <motion.div
-      whileHover={{
-        scale: !copyPastaProps.isFullMode ? 1.02 : 1,
-        rotateZ: !copyPastaProps.isFullMode ? -0.5 : 0,
-      }}
+    <div
       className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
     >
       <Card>
@@ -206,7 +218,38 @@ export default function CopyPastaCardMinimal({
             ) : null}
           </div>
         </CardContent>
+        {copyPastaProps.isFullMode && (
+          <CardFooter>
+            <Reaction copyPastaId={copyPastaProps.id} />
+          </CardFooter>
+        )}
+        {copyPastaProps.isReactionSummaryShown && (
+          <CardFooter>
+            <div className="flex space-x-2">
+              {Object.keys(EmotionType).map((reaction, i) => (
+                <motion.div whileHover="hover">
+                  <Badge key={i} variant={"secondary"}>
+                    <motion.span
+                      variants={{
+                        hover: {
+                          scale: 1.5,
+                          rotateZ: 5,
+                          transition: { type: "tween", duration: 0.2 },
+                        },
+                      }}
+                    >
+                      {reactionsMap(reaction, "w-4 mr-2")?.child}
+                    </motion.span>
+                    {copyPastaProps.reactions?.find(
+                      (r) => r.emotion === reaction,
+                    )?._count.emotion ?? 0}
+                  </Badge>
+                </motion.div>
+              ))}
+            </div>
+          </CardFooter>
+        )}
       </Card>
-    </motion.div>
+    </div>
   );
 }
