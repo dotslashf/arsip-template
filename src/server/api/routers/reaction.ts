@@ -53,10 +53,22 @@ export const reactionRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
+      const counts = await ctx.db.reaction.findMany({
+        where: { copyPastaId: input.copyPastaId },
+      });
       const reactions = await ctx.db.reaction.findMany({
         where: {
           copyPastaId: input.copyPastaId,
         },
+        include: {
+          user: {
+            select: {
+              name: true,
+              id: true,
+            },
+          },
+        },
+        take: 5,
       });
       const currentUserReaction = await ctx.db.reaction.findFirst({
         where: {
@@ -66,7 +78,8 @@ export const reactionRouter = createTRPCRouter({
       });
 
       return {
-        reactionsCount: reactions.length,
+        reactions,
+        counts: counts.length,
         currentUserReaction,
         userId: input.userId ? input.userId : ctx.session?.user.id,
       };

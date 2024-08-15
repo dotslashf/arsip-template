@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { api } from "~/trpc/react";
 import { EmotionType } from "@prisma/client";
 import useToast from "./ui/use-react-hot-toast";
@@ -8,6 +8,8 @@ import { Skeleton } from "./ui/skeleton";
 import { reactionsMap } from "~/lib/constant";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+
 interface ReactionProps {
   copyPastaId: string;
 }
@@ -68,7 +70,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
   }
 
   return (
-    <div className="flex flex-col space-y-3">
+    <div className="flex space-x-2">
       <motion.div
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
@@ -135,9 +137,31 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
           </Button>
         )}
       </motion.div>
-      <span className="text-sm text-primary underline">
-        {reactionsByCopyPastaId?.reactionsCount ?? 0} jumlah reaksi
-      </span>
+      <Popover>
+        <PopoverTrigger>
+          <span className={buttonVariants({ variant: "outline" })}>
+            {reactionsByCopyPastaId?.counts ?? 0} like
+          </span>
+        </PopoverTrigger>
+        <PopoverContent className="lg:text-md w-fit px-3 py-2 text-sm">
+          <div className="flex flex-col">
+            {reactionsByCopyPastaId?.reactions.map((react) => (
+              <span
+                key={react.id}
+                className="flex text-primary underline hover:cursor-pointer"
+                onClick={() => router.push(`/?byUserId=${react.user.id}`)}
+              >
+                {react.user.name}{" "}
+                {reactionsMap(react.emotion, "w-4 ml-2")?.child}
+              </span>
+            ))}
+            {reactionsByCopyPastaId && reactionsByCopyPastaId.counts > 5
+              ? "dan yang lainnya..."
+              : null}
+          </div>
+        </PopoverContent>
+      </Popover>
+      <span className="text-sm text-primary underline"></span>
     </div>
   );
 }
