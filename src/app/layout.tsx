@@ -25,10 +25,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "arsip-template",
     description: "platform buat nyimpan template (copypasta) netizen",
-    url: `https://arsip-template.koyeb.app/`,
+    url: `https://arsiptemplate.app/`,
     images: [
       {
-        url: "https://arsip-template.koyeb.app/api/og",
+        url: "https://arsiptemplate.app/api/og",
         width: 1200,
         height: 630,
         alt: "Cover",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     title: "arsip-template",
     description: "platform buat nyimpan template (copypasta) netizen",
     creator: "@arsip-mim",
-    images: [`https://arsip-template.koyeb.app/`],
+    images: [`https://arsiptemplate.app/`],
   },
 };
 
