@@ -77,6 +77,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 });
 
 const rateLimiter = createTrpcRedisLimiter<typeof t>({
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   fingerprint: (ctx) => defaultFingerPrint(ctx.req!),
   message: (hitInfo) => `Too many requests, please try again later. ${hitInfo}`,
   max: 5,
@@ -160,8 +161,8 @@ export const protectedProcedure = t.procedure
   });
 
 export const protectedProcedureLimited = t.procedure
-  .use(timingMiddleware)
   .use(rateLimiter)
+  .use(timingMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session || !ctx.session.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
