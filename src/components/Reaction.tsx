@@ -9,16 +9,22 @@ import { reactionsMap } from "~/lib/constant";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import Link from "next/link";
 
+const session = getSession();
 interface ReactionProps {
   copyPastaId: string;
 }
 export default function Reaction({ copyPastaId }: ReactionProps) {
   const toast = useToast();
-  const session = getSession();
   const [isHovered, setIsHovered] = useState(false);
   const utils = api.useUtils();
   const mutationReaction = api.reaction.reactionByCopyPastaId.useMutation({
+    async onSuccess() {
+      void utils.reaction.getReactionByCopyPastaId.invalidate();
+    },
+  });
+  const mutationUnReaction = api.reaction.unReactionByCopyPastaId.useMutation({
     async onSuccess() {
       void utils.reaction.getReactionByCopyPastaId.invalidate();
     },
@@ -32,6 +38,23 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
     reactionsByCopyPastaId?.currentUserReaction?.emotion;
 
   const router = useRouter();
+
+  async function handleUnReact(id?: string) {
+    if (!id) return;
+
+    toast({
+      message: "",
+      promiseFn: mutationUnReaction.mutateAsync({
+        id,
+      }),
+      type: "promise",
+      promiseMsg: {
+        success: `Kok gak jadi dilike? 🥹`,
+        loading: "🔥 Sedang memasak",
+        error: `Pelan pelan pak sopir 🏎️💨 `,
+      },
+    });
+  }
 
   async function handleReaction(reaction: EmotionType) {
     const isSession = await session;
@@ -69,6 +92,19 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
     });
   }
 
+  function getReactionChild() {
+    if (reactionsByCopyPastaId) {
+      if (isUserReacted && reactionsByCopyPastaId.currentUserReaction) {
+        return reactionsMap(
+          reactionsByCopyPastaId.currentUserReaction.emotion,
+          "w-5",
+        )?.child;
+      }
+      return reactionsMap("Kocak", "w-5")?.child;
+    }
+    return <Skeleton className="h-5 w-5 rounded-full" />;
+  }
+
   return (
     <div className="flex space-x-2">
       <motion.div
@@ -81,7 +117,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
           Object.keys(EmotionType).map((key, i) => {
             return (
               <motion.div
-                key={i}
+                key={key}
                 initial={{ opacity: 0, x: -20, rotateZ: -180 }}
                 animate={{ opacity: 1, x: 0, rotateZ: 0 }}
                 transition={{ delay: i * 0.1 }}
@@ -100,7 +136,9 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
                     onClick={() =>
                       isUserReacted &&
                       currentUserReaction === reactionsMap(key, "w-5")!.name
-                        ? null
+                        ? handleUnReact(
+                            reactionsByCopyPastaId.currentUserReaction?.id,
+                          )
                         : handleReaction(reactionsMap(key, "w-5")!.name)
                     }
                   >
@@ -122,18 +160,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
           })
         ) : (
           <Button variant={"outline"} size={"icon"} className="rounded-full">
-            {reactionsByCopyPastaId ? (
-              isUserReacted ? (
-                reactionsMap(
-                  reactionsByCopyPastaId.currentUserReaction!.emotion,
-                  "w-5",
-                )?.child
-              ) : (
-                reactionsMap("Kocak", "w-5")?.child
-              )
-            ) : (
-              <Skeleton className="h-5 w-5 rounded-full" />
-            )}
+            {getReactionChild()}
           </Button>
         )}
       </motion.div>
@@ -146,18 +173,22 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
         <PopoverContent className="lg:text-md w-fit px-3 py-2 text-sm">
           <div className="flex flex-col">
             {reactionsByCopyPastaId?.reactions.map((react) => (
-              <span
+              <Link
                 key={react.id}
                 className="flex text-primary underline hover:cursor-pointer"
-                onClick={() => router.push(`/?byUserId=${react.user.id}`)}
+                href={`/?byUserId=${react.user.id}`}
+                prefetch={false}
               >
                 {react.user.name}{" "}
                 {reactionsMap(react.emotion, "w-4 ml-2")?.child}
-              </span>
+              </Link>
             ))}
-            {reactionsByCopyPastaId && reactionsByCopyPastaId.counts > 5
-              ? "dan yang lainnya..."
-              : null}
+            {reactionsByCopyPastaId &&
+              reactionsByCopyPastaId.counts > 5 &&
+              "dan yang lainnya..."}
+            {reactionsByCopyPastaId &&
+              reactionsByCopyPastaId.counts === 0 &&
+              "belum ada nih 🦗"}
           </div>
         </PopoverContent>
       </Popover>

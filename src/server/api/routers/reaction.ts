@@ -45,6 +45,26 @@ export const reactionRouter = createTRPCRouter({
       });
     }),
 
+  unReactionByCopyPastaId: protectedProcedureLimited
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.session.user) {
+        return redirect("/");
+      }
+
+      await ctx.db.reaction.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return true;
+    }),
+
   getReactionByCopyPastaId: publicProcedure
     .input(
       z.object({
