@@ -1,6 +1,6 @@
 "use client";
 
-import CopyPastaCard from "~/components/CopyPastaCard";
+import CopyPastaCardMinimal from "~/components/CopyPastaCardMinimal";
 import SkeletonCopyPasta from "~/components/SkeletonCopyPasta";
 import { api } from "~/trpc/react";
 
@@ -20,27 +20,27 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
   return (
     <div className="flex w-full flex-col gap-4">
       {copyPasta && (
-        <CopyPastaCard
+        <CopyPastaCardMinimal
           key={id}
           copyPastaProps={{
             ...copyPasta,
-            fullMode: true,
+            isFullMode: true,
           }}
         />
       )}
       <div className="flex flex-col gap-2">
         <div className="self-center text-sm font-semibold">
-          Template Yang Mungkin Sama:
+          Template Dengan Tag Yang Sama:
         </div>
         <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-3">
           {related && !isLoading
             ? related.map((c) => {
                 return (
-                  <CopyPastaCard
+                  <CopyPastaCardMinimal
                     key={c.id}
                     copyPastaProps={{
                       ...c,
-                      fullMode: false,
+                      isFullMode: false,
                       isCreatorAndDateShown: false,
                     }}
                   />

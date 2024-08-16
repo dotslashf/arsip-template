@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { initTRPC, TRPCError } from "@trpc/server";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createCopyPastaForm } from "~/server/form/copyPasta";
 
@@ -10,8 +10,6 @@ import {
 } from "~/server/api/trpc";
 
 import { faker } from "@faker-js/faker";
-
-export const t = initTRPC.create();
 
 export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure
@@ -93,12 +91,28 @@ export const copyPastaRouter = createTRPCRouter({
           },
         },
       });
+
+      const reactions = await ctx.db.reaction.groupBy({
+        by: ["copyPastaId", "emotion"],
+        where: {
+          copyPastaId: {
+            in: copyPastas.map((c) => c.id),
+          },
+        },
+        _count: {
+          emotion: true,
+        },
+      });
+
       const nextCursor =
         copyPastas.length > 0
           ? copyPastas[copyPastas.length - 1]?.id
           : undefined;
       return {
-        copyPastas,
+        copyPastas: copyPastas.map((cp) => ({
+          ...cp,
+          reactions: reactions.filter((r) => r.copyPastaId === cp.id),
+        })),
         nextCursor,
       };
     }),

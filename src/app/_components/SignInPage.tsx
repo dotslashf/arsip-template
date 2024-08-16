@@ -9,8 +9,16 @@ import {
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export default function SignInSocialProviders() {
+  function handleSignIn(platform: string) {
+    sendGAEvent("event", "buttonClicked", { value: `signIn.${platform}` });
+    void signIn(platform, {
+      callbackUrl: "/",
+    });
+  }
+
   return (
     <>
       <Card className="mx-auto mt-8 w-full max-w-xl items-center justify-center space-y-6 bg-secondary py-6">
@@ -29,11 +37,7 @@ export default function SignInSocialProviders() {
               variant="twitter"
               className="w-full"
               size={"lg"}
-              onClick={() =>
-                signIn("twitter", {
-                  callbackUrl: "/",
-                })
-              }
+              onClick={() => handleSignIn("twitter")}
             >
               <FontAwesomeIcon icon={faTwitter} className="mr-2 h-4 w-4" />
               Masuk dengan Twitter (X)
@@ -42,11 +46,7 @@ export default function SignInSocialProviders() {
               variant="discord"
               className="w-full"
               size={"lg"}
-              onClick={() =>
-                signIn("discord", {
-                  callbackUrl: "/",
-                })
-              }
+              onClick={() => handleSignIn("discord")}
             >
               <FontAwesomeIcon icon={faDiscord} className="mr-2 h-4 w-4" />
               Masuk dengan Discord
@@ -55,11 +55,7 @@ export default function SignInSocialProviders() {
               variant="google"
               className="w-full"
               size={"lg"}
-              onClick={() =>
-                signIn("google", {
-                  callbackUrl: "/",
-                })
-              }
+              onClick={() => handleSignIn("google")}
             >
               <FontAwesomeIcon icon={faGoogle} className="mr-2 h-4 w-4" />
               Masuk dengan Google

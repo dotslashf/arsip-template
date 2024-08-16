@@ -10,7 +10,6 @@ import { notFound } from "next/navigation";
 
 export type PropsPage = {
   params: { id: string };
-  searchParams: Record<string, string | string[] | undefined>;
 };
 export async function generateMetadata({
   params,
@@ -24,14 +23,14 @@ export async function generateMetadata({
 
   const title = `${trimContent(copyPasta.content, 60)}`;
   const description = `${trimContent(copyPasta.content, 155)}`;
-  const url = `https://arsip-template.koyeb.app/api/og?copyPasta=${trimContent(copyPasta.content, 255)}`;
+  const url = `https://arsiptemplate.app/api/og?copyPasta=${trimContent(copyPasta.content, 255)}`;
 
   return {
     title,
     openGraph: {
       title,
       description,
-      url: `https://arsip-template.koyeb.app/copy-pasta/${copyPasta.id}`,
+      url: `https://arsiptemplate.app/copy-pasta/${copyPasta.id}`,
       images: [
         {
           url,

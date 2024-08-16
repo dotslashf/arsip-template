@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import CopyPastaCard from "~/components/CopyPastaCard";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import SearchBar from "../../components/SearchBar";
@@ -10,6 +9,7 @@ import { Suspense } from "react";
 import ListTags from "~/components/ListTags";
 import { sendGAEvent } from "@next/third-parties/google";
 import ListTagsSkeleton from "~/components/ListTagsSkeleton";
+import CopyPastaCardMinimal from "~/components/CopyPastaCardMinimal";
 
 export function ListCopyPasta() {
   const searchParams = useSearchParams();
@@ -36,6 +36,28 @@ export function ListCopyPasta() {
     sendGAEvent("event", "buttonClicked", { value: "home.nextList" });
   }
 
+  function getContent() {
+    if (isFetchingNextPage) {
+      return (
+        <span className="flex items-center">
+          Sedang Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
+        </span>
+      );
+    } else if (hasNextPage) {
+      return (
+        <span className="flex items-center">
+          Muat Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
+        </span>
+      );
+    } else {
+      return (
+        <span className="flex items-center">
+          Tidak Ada Template Lagi <Skull className="ml-2 h-4 w-4" />
+        </span>
+      );
+    }
+  }
+
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="grid grid-cols-1 gap-y-2 lg:grid-cols-2 lg:gap-4">
@@ -47,11 +69,12 @@ export function ListCopyPasta() {
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
                 return (
-                  <CopyPastaCard
+                  <CopyPastaCardMinimal
                     key={copy.id}
                     copyPastaProps={{
                       ...copy,
                       isCreatorAndDateShown: false,
+                      isReactionSummaryShown: true,
                     }}
                   />
                 );
@@ -63,19 +86,7 @@ export function ListCopyPasta() {
         onClick={handleNextList}
         disabled={!hasNextPage || isFetchingNextPage}
       >
-        {isFetchingNextPage ? (
-          <span className="flex items-center">
-            Sedang Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
-          </span>
-        ) : hasNextPage ? (
-          <span className="flex items-center">
-            Muat Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
-          </span>
-        ) : (
-          <span className="flex items-center">
-            Tidak Ada Template Lagi <Skull className="ml-2 h-4 w-4" />
-          </span>
-        )}
+        {getContent()}
       </Button>
     </div>
   );

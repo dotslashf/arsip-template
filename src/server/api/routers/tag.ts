@@ -1,12 +1,5 @@
-import { initTRPC } from "@trpc/server";
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  // protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
-
-export const t = initTRPC.create();
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const tagRouter = createTRPCRouter({
   list: publicProcedure.query(async ({ ctx }) => {
