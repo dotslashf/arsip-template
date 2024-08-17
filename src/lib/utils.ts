@@ -1,4 +1,4 @@
-import { OriginSource } from "@prisma/client";
+import { $Enums, OriginSource } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
@@ -52,4 +52,43 @@ export function getMedal(number: number) {
     default:
       return "";
   }
+}
+
+export function mergeReactions(
+  data?: {
+    copyPastaId: string;
+    userId: string;
+    emotion: $Enums.EmotionType;
+    _count: {
+      emotion: number;
+    };
+  }[],
+) {
+  return data?.reduce(
+    (acc, curr) => {
+      const key = `${curr.emotion}`;
+
+      if (!acc[key]) {
+        acc[key] = {
+          ...curr,
+          _count: { emotion: 0 },
+        };
+      }
+
+      acc[key]._count.emotion += curr._count.emotion;
+
+      return acc;
+    },
+    {} as Record<
+      string,
+      {
+        copyPastaId: string;
+        userId: string;
+        emotion: $Enums.EmotionType;
+        _count: {
+          emotion: number;
+        };
+      }
+    >,
+  );
 }

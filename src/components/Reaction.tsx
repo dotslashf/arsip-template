@@ -6,12 +6,11 @@ import { EmotionType } from "@prisma/client";
 import useToast from "./ui/use-react-hot-toast";
 import { Skeleton } from "./ui/skeleton";
 import { reactionsMap } from "~/lib/constant";
-import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import Link from "next/link";
+import { session } from "./HOCSession";
 
-const session = getSession();
 interface ReactionProps {
   copyPastaId: string;
 }
@@ -24,7 +23,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
       void utils.reaction.getReactionByCopyPastaId.invalidate();
     },
   });
-  const mutationUnReaction = api.reaction.unReactionByCopyPastaId.useMutation({
+  const mutationUnReaction = api.reaction.unReactionById.useMutation({
     async onSuccess() {
       void utils.reaction.getReactionByCopyPastaId.invalidate();
     },

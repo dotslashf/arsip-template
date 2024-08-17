@@ -45,7 +45,7 @@ export const reactionRouter = createTRPCRouter({
       });
     }),
 
-  unReactionByCopyPastaId: protectedProcedureLimited
+  unReactionById: protectedProcedureLimited
     .input(
       z.object({
         id: z.string().uuid(),
@@ -63,6 +63,22 @@ export const reactionRouter = createTRPCRouter({
       });
 
       return true;
+    }),
+
+  unReactionByUserId: protectedProcedureLimited
+    .input(
+      z.object({
+        userId: z.string(),
+        copyPastaId: z.string().uuid(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.reaction.deleteMany({
+        where: {
+          copyPastaId: input.copyPastaId,
+          userId: input.userId,
+        },
+      });
     }),
 
   getReactionByCopyPastaId: publicProcedure

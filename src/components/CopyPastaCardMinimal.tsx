@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import Link from "next/link";
 import { Badge, badgeVariants } from "~/components/ui/badge";
-import { type Prisma, type CopyPasta, type Tag } from "@prisma/client";
+import { type CopyPasta, type Tag, type $Enums } from "@prisma/client";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { Button, buttonVariants } from "./ui/button";
 import { ArrowRight, Calendar, Link2, MessageSquareQuote } from "lucide-react";
@@ -29,14 +29,14 @@ export interface CopyPastaCardWithTagsProps extends CopyPasta {
     id: string;
     name: string | null;
   };
-  reactions?: (Prisma.PickEnumerable<
-    Prisma.ReactionGroupByOutputType,
-    ("copyPastaId" | "emotion")[]
-  > & {
+  reactions?: {
+    copyPastaId: string;
+    userId: string;
+    emotion: $Enums.EmotionType;
     _count: {
       emotion: number;
     };
-  })[];
+  }[];
   isFullMode?: boolean;
   isCreatorAndDateShown?: boolean;
   isReactionSummaryShown?: boolean;
@@ -125,7 +125,10 @@ export default function CopyPastaCardMinimal({
           )}
           <div className="mt-1 flex flex-col gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:mt-2">
             {copyPastaProps.isReactionSummaryShown && (
-              <ReactionSummary reactions={copyPastaProps.reactions} />
+              <ReactionSummary
+                reactions={copyPastaProps.reactions}
+                copyPastaId={copyPastaProps.id}
+              />
             )}
             {copyPastaProps.CopyPastasOnTags.length ||
             copyPastaProps.sourceUrl ? (

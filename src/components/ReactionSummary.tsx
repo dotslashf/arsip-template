@@ -1,40 +1,48 @@
-import { EmotionType, Prisma } from "@prisma/client";
-import { motion } from "framer-motion";
+import { type $Enums, EmotionType } from "@prisma/client";
+import dynamic from "next/dynamic";
 import { Badge } from "./ui/badge";
-import { reactionsMap } from "~/lib/constant";
+import { Skeleton } from "./ui/skeleton";
+import { mergeReactions } from "~/lib/utils";
+
+const ReactionSummaryChild = dynamic(() => import("./ReactionSummaryChild"), {
+  ssr: false,
+  loading: () => (
+    <Badge variant={"secondary"}>
+      <Skeleton className="mr-2 h-4 w-4 rounded-full" /> 0
+    </Badge>
+  ),
+});
 
 interface ReactionSummaryProps {
-  reactions?: (Prisma.PickEnumerable<
-    Prisma.ReactionGroupByOutputType,
-    ("copyPastaId" | "emotion")[]
-  > & {
+  copyPastaId: string;
+  reactions?: {
+    copyPastaId: string;
+    userId: string;
+    emotion: $Enums.EmotionType;
     _count: {
       emotion: number;
     };
-  })[];
+  }[];
 }
-export default function ReactionSummary({ reactions }: ReactionSummaryProps) {
+export default function ReactionSummary({
+  reactions,
+  copyPastaId,
+}: ReactionSummaryProps) {
   return (
     <div className="flex space-x-2">
-      {Object.keys(EmotionType).map((reaction, i) => (
-        <motion.div whileHover="hover" key={reaction}>
-          <Badge key={i} variant={"secondary"}>
-            <motion.span
-              variants={{
-                hover: {
-                  scale: 1.5,
-                  rotateZ: 5,
-                  transition: { type: "tween", duration: 0.2 },
-                },
-              }}
-            >
-              {reactionsMap(reaction, "w-4 mr-2")?.child}
-            </motion.span>
-            {reactions?.find((r) => r.emotion === reaction)?._count.emotion ??
-              0}
-          </Badge>
-        </motion.div>
-      ))}
+      {Object.keys(EmotionType).map((reaction, i) => {
+        const merged = mergeReactions(reactions);
+        const isReactionExist = merged?.[reaction];
+        return (
+          <ReactionSummaryChild
+            key={reaction}
+            copyPastaId={copyPastaId}
+            count={isReactionExist?._count.emotion ?? 0}
+            emotion={reaction}
+            userId={isReactionExist?.userId}
+          />
+        );
+      })}
     </div>
   );
 }
