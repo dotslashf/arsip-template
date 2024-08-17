@@ -12,13 +12,13 @@ interface ReactionSummaryChildProps {
   copyPastaId: string;
   emotion: string;
   count: number;
-  userId?: string;
+  userIds?: string[];
 }
 export default function ReactionSummaryChild({
   copyPastaId,
   count,
   emotion,
-  userId,
+  userIds,
 }: ReactionSummaryChildProps) {
   const toast = useToast();
   const utils = api.useUtils();
@@ -48,9 +48,6 @@ export default function ReactionSummaryChild({
 
   async function handleUnReact() {
     if (!currentUser) return;
-
-    console.log(copyPastaId, currentUser);
-
     toast({
       message: "",
       promiseFn: mutationUnReaction.mutateAsync({
@@ -107,10 +104,18 @@ export default function ReactionSummaryChild({
       whileHover="hover"
       whileTap="tap"
       onClick={() =>
-        userId === currentUser ? handleUnReact() : handleReaction(emotion)
+        currentUser && userIds?.includes(currentUser)
+          ? handleUnReact()
+          : handleReaction(emotion)
       }
     >
-      <Badge variant={userId === currentUser ? "default" : "secondary"}>
+      <Badge
+        variant={
+          currentUser && userIds?.includes(currentUser)
+            ? "default"
+            : "secondary"
+        }
+      >
         <motion.span
           variants={{
             hover: {

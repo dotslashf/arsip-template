@@ -71,11 +71,13 @@ export function mergeReactions(
       if (!acc[key]) {
         acc[key] = {
           ...curr,
+          userIds: [],
           _count: { emotion: 0 },
         };
       }
 
       acc[key]._count.emotion += curr._count.emotion;
+      acc[key].userIds.push(curr.userId);
 
       return acc;
     },
@@ -83,7 +85,7 @@ export function mergeReactions(
       string,
       {
         copyPastaId: string;
-        userId: string;
+        userIds: string[];
         emotion: $Enums.EmotionType;
         _count: {
           emotion: number;

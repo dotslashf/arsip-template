@@ -39,7 +39,7 @@ export default function ReactionSummary({
             copyPastaId={copyPastaId}
             count={isReactionExist?._count.emotion ?? 0}
             emotion={reaction}
-            userId={isReactionExist?.userId}
+            userIds={isReactionExist?.userIds}
           />
         );
       })}
