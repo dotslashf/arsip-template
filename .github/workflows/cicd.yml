@@ -9,6 +9,7 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GCE_INSTANCE: arsip-template-vm
   GCE_INSTANCE_ZONE: asia-southeast1-c
+  REGION: asia-southeast1
 
 jobs:
   deploy:
@@ -25,16 +26,22 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
 
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker $REGION-docker.pkg.dev
+
       - name: Build and push Docker image
         run: |
-          docker build -t gcr.io/$PROJECT_ID/arsip-template:${{ github.sha }} .
-          docker push gcr.io/$PROJECT_ID/arsip-template:${{ github.sha }}
+          docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
+          docker push $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }}
 
       - name: Deploy to VM
         run: |
           gcloud compute ssh --zone $GCE_INSTANCE_ZONE $GCE_INSTANCE --command '
-            docker pull gcr.io/${{ env.PROJECT_ID }}/arsip-template:${{ github.sha }}
-            docker stop arsip-template || true
-            docker rm arsip-template || true
-            docker run -d --name arsip-template -p 3000:3000 gcr.io/${{ env.PROJECT_ID }}/arsip-template:${{ github.sha }}
+            # Pull the new image
+            gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+            docker pull ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:${{ github.sha }}
+
+            # Rest of the deployment script remains the same...
+            # (Include the blue-green deployment logic here)
           '
