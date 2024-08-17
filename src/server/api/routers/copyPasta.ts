@@ -93,7 +93,7 @@ export const copyPastaRouter = createTRPCRouter({
       });
 
       const reactions = await ctx.db.reaction.groupBy({
-        by: ["copyPastaId", "emotion"],
+        by: ["copyPastaId", "emotion", "userId"],
         where: {
           copyPastaId: {
             in: copyPastas.map((c) => c.id),

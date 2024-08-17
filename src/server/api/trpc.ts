@@ -80,7 +80,7 @@ const rateLimiter = createTrpcRedisLimiter<typeof t>({
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   fingerprint: (ctx) => defaultFingerPrint(ctx.req!),
   message: (hitInfo) => `Too many requests, please try again later. ${hitInfo}`,
-  max: 5,
+  max: env.NODE_ENV === "development" ? 100 : 5,
   windowMs: 60000,
   redisClient: redis,
 });
