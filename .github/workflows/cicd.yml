@@ -45,7 +45,7 @@ jobs:
             # Pull the new image
             gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
             docker pull ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:${{ github.sha }}
-
-            # Rest of the deployment script remains the same...
-            # (Include the blue-green deployment logic here)
+            docker stop arsip-template || true
+            docker rm arsip-template || true
+            docker run -d --name arsip-template -p 3000:3000 gcr.io/${{ env.PROJECT_ID }}/arsip-template:${{ github.sha }}
           '
