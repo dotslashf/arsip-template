@@ -41,25 +41,26 @@ jobs:
 
       - name: Deploy to VM
         run: |
-          # create env file
-          echo NODE_ENV=production >> .env
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
-          echo DISCORD_API_CLIENT_ID=${{ secrets.DISCORD_API_CLIENT_ID }} >> .env
-          echo DISCORD_API_CLIENT_SECRET=${{ secrets.DISCORD_API_CLIENT_SECRET }} >> .env
-          echo GOOGLE_API_CLIENT_ID=${{ secrets.GOOGLE_API_CLIENT_ID }} >> .env
-          echo GOOGLE_API_CLIENT_SECRET=${{ secrets.GOOGLE_API_CLIENT_SECRET }} >> .env
-          echo NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} >> .env
-          echo NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} >> .env
-          echo REDIS_HOST_URL=${{ secrets.REDIS_HOST_URL }} >> .env
-          echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
-          echo TWITTER_API_KEY=${{ secrets.TWITTER_API_KEY }} >> .env
-          echo TWITTER_API_SECRET=${{ secrets.TWITTER_API_SECRET }} >> .env
-
           gcloud compute ssh --zone $GCE_INSTANCE_ZONE $GCE_INSTANCE --command '
             # Pull the new image
             gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
             docker pull ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:${{ github.sha }}
+
             docker stop arsip-template || true
             docker rm arsip-template || true
-            docker run -d --name arsip-template -p 3000:3000 --env-file .env ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:${{ github.sha }}
+            
+            docker run -d --name arsip-template -p 3000:3000 \
+              -e NODE_ENV=production \
+              -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+              -e DISCORD_API_CLIENT_ID=${{ secrets.DISCORD_API_CLIENT_ID }} \
+              -e DISCORD_API_CLIENT_SECRET=${{ secrets.DISCORD_API_CLIENT_SECRET }} \
+              -e GOOGLE_API_CLIENT_ID=${{ secrets.GOOGLE_API_CLIENT_ID }} \
+              -e GOOGLE_API_CLIENT_SECRET=${{ secrets.GOOGLE_API_CLIENT_SECRET }} \
+              -e NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} \
+              -e NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} \
+              -e REDIS_HOST_URL=${{ secrets.REDIS_HOST_URL }} \
+              -e REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} \
+              -e TWITTER_API_KEY=${{ secrets.TWITTER_API_KEY }} \
+              -e TWITTER_API_SECRET=${{ secrets.TWITTER_API_SECRET }} \
+              ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:${{ github.sha }}
           '
