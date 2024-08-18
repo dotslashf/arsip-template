@@ -37,6 +37,7 @@ export default function SearchBar() {
     };
 
     void searchQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);
 
   const handleSubmit = () => {

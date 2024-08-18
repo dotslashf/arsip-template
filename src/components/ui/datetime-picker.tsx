@@ -254,10 +254,13 @@ function Calendar({
   yearRange = 50,
   ...props
 }: CalendarProps & { yearRange?: number }) {
-  const MONTHS = React.useMemo(() => genMonths(props.locale ?? enUS), []);
+  const MONTHS = React.useMemo(
+    () => genMonths(props.locale ?? enUS),
+    [props.locale],
+  );
   const YEARS = React.useMemo(
     () => genYears(props.locale ?? enUS, yearRange),
-    [],
+    [props.locale, yearRange],
   );
 
   return (
@@ -300,8 +303,8 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
-        IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        IconLeft: () => <ChevronLeft className="h-4 w-4" />,
+        IconRight: () => <ChevronRight className="h-4 w-4" />,
         CaptionLabel: ({ displayMonth }) => {
           return (
             <div className="inline-flex gap-2">

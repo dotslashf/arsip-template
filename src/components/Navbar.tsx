@@ -2,14 +2,7 @@
 
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import {
-  LogIn,
-  LogOut,
-  Medal,
-  Package,
-  PlusIcon,
-  UserRound,
-} from "lucide-react";
+import { LogIn, LogOut, Medal, PlusIcon, UserRound } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";

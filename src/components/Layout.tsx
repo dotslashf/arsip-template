@@ -3,7 +3,6 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import React, { cloneElement, type ReactElement } from "react";
 import { type Session } from "next-auth";
-import { Badge } from "./ui/badge";
 
 interface LayoutProps {
   children:
