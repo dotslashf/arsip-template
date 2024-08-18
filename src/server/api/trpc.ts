@@ -19,8 +19,8 @@ import {
   createTrpcRedisLimiter,
   defaultFingerPrint,
 } from "@trpc-limiter/redis";
-import { NextApiRequest } from "next";
-import { NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
+import { logTRPCRequest } from "../middleware";
 
 export const redis = createClient({
   password: env.REDIS_PASSWORD,
@@ -113,19 +113,26 @@ export const createTRPCRouter = t.router;
  * network latency that would occur in production but not in local development.
  */
 const timingMiddleware = t.middleware(async ({ next, path }) => {
-  const start = Date.now();
-
   if (t._config.isDev) {
     // artificial delay in dev
     const waitMs = Math.floor(Math.random() * 400) + 100;
     await new Promise((resolve) => setTimeout(resolve, waitMs));
   }
 
+  return await next();
+});
+
+const loggingMiddleware = t.middleware(async ({ path, next, ctx }) => {
+  const start = Date.now();
   const result = await next();
 
-  const end = Date.now();
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
-
+  logTRPCRequest({
+    path,
+    start,
+    end: Date.now(),
+    result,
+    ctx,
+  });
   return result;
 });
 
@@ -136,7 +143,9 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure.use(timingMiddleware);
+export const publicProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(loggingMiddleware);
 
 /**
  * Protected (authenticated) procedure
@@ -148,6 +157,7 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  */
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
+  .use(loggingMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session || !ctx.session.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -163,6 +173,7 @@ export const protectedProcedure = t.procedure
 export const protectedProcedureLimited = t.procedure
   .use(rateLimiter)
   .use(timingMiddleware)
+  .use(loggingMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session || !ctx.session.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });

@@ -55,9 +55,22 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
             headers.set("x-trpc-source", "nextjs-react");
             return headers;
           },
+          fetch: async (input, init) => {
+            try {
+              const response = await fetch(input, init);
+              if (!response.ok) {
+                console.error(`HTTP error! status: ${response.status}`);
+                console.error("Response:", await response.text());
+              }
+              return response;
+            } catch (error) {
+              console.error("Fetch error:", error);
+              throw error;
+            }
+          },
         }),
       ],
-    })
+    }),
   );
 
   return (
@@ -71,6 +84,6 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return window.location.origin;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  if (process.env.NEXTAUTH_URL) return `${process.env.NEXTAUTH_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;
 }
