@@ -117,6 +117,29 @@ export const copyPastaRouter = createTRPCRouter({
       };
     }),
 
+  search: publicProcedure
+    .input(
+      z.object({
+        query: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const results = await ctx.db.copyPasta.findMany({
+        where: {
+          content: {
+            contains: input.query,
+            mode: "insensitive",
+          },
+          approvedAt: {
+            not: null,
+          },
+        },
+        take: 5,
+      });
+
+      return results;
+    }),
+
   byId: publicProcedure
     .input(
       z.object({

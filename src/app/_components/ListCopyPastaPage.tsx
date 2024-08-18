@@ -3,13 +3,27 @@
 import { useSearchParams } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
-import SearchBar from "../../components/SearchBar";
 import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 import { Suspense } from "react";
 import ListTags from "~/components/ListTags";
 import { sendGAEvent } from "@next/third-parties/google";
 import ListTagsSkeleton from "~/components/ListTagsSkeleton";
 import CopyPastaCardMinimal from "~/components/CopyPastaCardMinimal";
+import dynamic from "next/dynamic";
+import { Skeleton } from "~/components/ui/skeleton";
+
+const SearchBar = dynamic(() => import("../../components/SearchBar"), {
+  ssr: false,
+  loading() {
+    return (
+      <div className="col-span-2 flex space-x-2">
+        <Skeleton className="h-10 flex-1" />
+        <Skeleton className="h-10 w-10" />
+        <Skeleton className="h-10 w-10" />
+      </div>
+    );
+  },
+});
 
 export function ListCopyPasta() {
   const searchParams = useSearchParams();
