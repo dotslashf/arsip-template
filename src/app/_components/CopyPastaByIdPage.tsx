@@ -18,7 +18,7 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
   });
 
   return (
-    <div className="flex w-full flex-col gap-4">
+    <div className="flex w-full flex-col">
       {copyPasta && (
         <CopyPastaCardMinimal
           key={id}
@@ -28,11 +28,11 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
           }}
         />
       )}
-      <div className="flex flex-col gap-2">
+      <div className="mt-10 flex flex-col gap-2 lg:mt-20">
         <div className="self-center text-sm font-semibold">
           Template Dengan Tag Yang Sama:
         </div>
-        <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-3">
+        <div className="mt-2 grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
           {related && !isLoading
             ? related.map((c) => {
                 return (

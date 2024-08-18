@@ -238,4 +238,14 @@ export const copyPastaRouter = createTRPCRouter({
 
       return copyPastas;
     }),
+
+  count: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.copyPasta.count({
+      where: {
+        approvedAt: {
+          not: null,
+        },
+      },
+    });
+  }),
 });

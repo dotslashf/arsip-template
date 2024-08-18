@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import React, { cloneElement, type ReactElement } from "react";
 import { type Session } from "next-auth";
+import { Badge } from "./ui/badge";
 
 interface LayoutProps {
   children:
@@ -21,7 +22,7 @@ export default async function Layout(props: LayoutProps) {
   return (
     <main className="flex min-h-screen flex-col items-center">
       <Navbar session={session} />
-      <div className="container mb-auto flex flex-col items-center justify-center gap-y-14 px-6 pb-10 pt-24 lg:px-[8.5rem]">
+      <div className="container mb-auto flex flex-col items-center justify-center gap-y-10 px-6 pb-10 pt-20 lg:gap-y-14 lg:px-[8.5rem] lg:pt-24">
         {childrenWithSession}
       </div>
       <Footer session={session} />

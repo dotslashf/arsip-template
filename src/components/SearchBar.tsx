@@ -54,8 +54,8 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="col-span-2 w-full">
-      <div className="col-span-2 flex flex-col">
+    <div className="col-span-3 w-full">
+      <div className="col-span-3 flex flex-col">
         <div className="relative flex-1">
           {isSearching && (
             <div className="absolute z-10 mt-14 flex w-full items-center justify-center rounded-md border bg-primary-foreground px-3 py-2 dark:text-accent">
@@ -119,8 +119,8 @@ function ButtonSearch({ children, onClick }: ButtonInterface) {
       variant="secondary"
       onClick={onClick}
     >
-      <Search className="h-4 w-4" />
       {children}
+      <Search className={`h-4 w-4 ${children ? "ml-2" : null}`} />
       <span className="sr-only">Search</span>
     </Button>
   );
@@ -144,8 +144,8 @@ function ButtonPlus({
         });
       }}
     >
-      <PlusIcon className="h-4 w-4" />
       {children}
+      <PlusIcon className={`h-4 w-4 ${children ? "ml-2" : null}`} />
     </Link>
   );
 }

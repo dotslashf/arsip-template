@@ -279,4 +279,25 @@ export const dashboardRouter = createTRPCRouter({
         nextCursor,
       };
     }),
+
+  countCopyPastaAdmin: protectedProcedure.query(async ({ ctx }) => {
+    const isNotApproved = await ctx.db.copyPasta.count({
+      where: {
+        approvedAt: {
+          equals: null,
+        },
+      },
+    });
+
+    const isApproved = await ctx.db.copyPasta.count({
+      where: {
+        approvedById: ctx.session.user.id,
+      },
+    });
+
+    return {
+      isNotApproved,
+      isApproved,
+    };
+  }),
 });

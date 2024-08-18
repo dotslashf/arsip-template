@@ -75,7 +75,7 @@ export default function CopyPastaCardMinimal({
 
   return (
     <div
-      className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
+      className={cn("col-span-3 w-full text-justify shadow-sm lg:col-span-1")}
     >
       <Card>
         <CardHeader className="pb-0">

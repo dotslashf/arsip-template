@@ -5,7 +5,7 @@ import { Badge } from "./ui/badge";
 import { api } from "~/trpc/react";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Tag } from "@prisma/client";
+import { type Tag } from "@prisma/client";
 
 interface ListTagsProps {
   id: string | null;
@@ -25,7 +25,7 @@ export default function ListTags({ id }: ListTagsProps) {
   };
 
   return (
-    <ScrollArea className="col-span-2 w-full whitespace-nowrap rounded-md">
+    <ScrollArea className="col-span-3 w-full whitespace-nowrap rounded-md">
       <div className="flex w-max space-x-2 py-2">
         {tags.map((tag) => (
           <Badge

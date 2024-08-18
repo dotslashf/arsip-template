@@ -5,11 +5,14 @@ import { Dot, MessageSquareText } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { type Session } from "next-auth";
+import { api } from "~/trpc/react";
 
 interface FooterProps {
   session: Session | null;
 }
 export default function Footer({ session }: FooterProps) {
+  const [count] = api.copyPasta.count.useSuspenseQuery();
+
   return (
     <footer className="w-full bg-white py-6 shadow dark:bg-card">
       <div className="container flex items-center justify-center gap-4 px-4 md:px-6">
@@ -37,15 +40,19 @@ export default function Footer({ session }: FooterProps) {
           >
             Changelog
           </Link>
-          {session && (
-            <div className="lg:ml-auto">
-              <FeedbackFish projectId="ee2e6f2b856911" userId={session.user.id}>
-                <Button>
-                  Ada Masukan? <MessageSquareText className="ml-2 w-4" />
-                </Button>
-              </FeedbackFish>
-            </div>
-          )}
+          <div className="flex flex-col items-center justify-center gap-2 lg:ml-auto lg:flex-row">
+            <Button variant={"outline"}>
+              {count} template telah diarsipkan
+            </Button>
+            <FeedbackFish
+              projectId="ee2e6f2b856911"
+              userId={session ? session.user.id : undefined}
+            >
+              <Button>
+                Ada Masukan? <MessageSquareText className="ml-2 w-4" />
+              </Button>
+            </FeedbackFish>
+          </div>
         </div>
       </div>
     </footer>

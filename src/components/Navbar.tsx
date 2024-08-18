@@ -24,11 +24,14 @@ import Avatar from "boring-avatars";
 import { ToggleTheme } from "./ToggleTheme";
 import { sendGAEvent } from "@next/third-parties/google";
 import { avatarColorsTheme } from "~/lib/constant";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 interface NavbarProps {
   session: Session | null;
 }
 export default function Navbar({ session }: NavbarProps) {
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+
   function handleSignOut() {
     sendGAEvent("event", "buttonClicked", { value: `signOut` });
     void signOut();
@@ -38,22 +41,12 @@ export default function Navbar({ session }: NavbarProps) {
     <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
       <div className="container px-4 md:px-6">
         <div className="flex h-12 items-center">
-          <Link
-            href="/"
-            className="mr-auto flex items-center gap-2 text-lg font-semibold text-primary"
-            prefetch={false}
-          >
-            <span className="font-bold">
-              <Package />
-            </span>
-          </Link>
           <nav className="ml-auto flex items-center space-x-4">
-            <Link
-              href={"/ranking"}
-              className={buttonVariants({ variant: "default", size: "icon" })}
-            >
-              <Medal className="m w-4" />
-            </Link>
+            {isSmallDevice ? (
+              <ButtonRanking />
+            ) : (
+              <ButtonRanking>Leaderboard</ButtonRanking>
+            )}
             <ToggleTheme />
             {!session?.user ? (
               <Link
@@ -67,7 +60,7 @@ export default function Navbar({ session }: NavbarProps) {
                 }}
               >
                 Masuk
-                <LogIn className="ml-2 w-3" />
+                <LogIn className="ml-2 w-4" />
               </Link>
             ) : (
               <DropdownMenu>
@@ -82,7 +75,7 @@ export default function Navbar({ session }: NavbarProps) {
                     <span className="sr-only">Toggle user menu</span>
                   </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="mt-2 w-44">
                   <DropdownMenuItem
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
@@ -100,7 +93,7 @@ export default function Navbar({ session }: NavbarProps) {
                       }
                     >
                       Profile
-                      <UserRound className="w-3" />
+                      <UserRound className="w-4" />
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -121,7 +114,7 @@ export default function Navbar({ session }: NavbarProps) {
                       }
                     >
                       Tambah
-                      <PlusIcon className="w-3" />
+                      <PlusIcon className="w-4" />
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -134,7 +127,7 @@ export default function Navbar({ session }: NavbarProps) {
                   >
                     <span className="flex w-full items-center justify-between">
                       Keluar
-                      <LogOut className="w-3" />
+                      <LogOut className="w-4" />
                     </span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -144,5 +137,24 @@ export default function Navbar({ session }: NavbarProps) {
         </div>
       </div>
     </nav>
+  );
+}
+
+function ButtonRanking({
+  children,
+}: {
+  children?: JSX.Element | JSX.Element[] | string;
+}) {
+  return (
+    <Link
+      href={"/ranking"}
+      className={cn(
+        buttonVariants({ size: children ? "default" : "icon" }),
+        "item-center",
+      )}
+    >
+      {children}
+      <Medal className={`w-4 ${children ? "ml-2" : null}`} />
+    </Link>
   );
 }
