@@ -47,7 +47,7 @@ const cookiePrefix = process.env.NODE_ENV === "production" ? "__Secure-" : "";
 export const authOptions: NextAuthOptions = {
   cookies: {
     sessionToken: {
-      name: `${cookiePrefix}next-auth.state`,
+      name: `${cookiePrefix}next-auth.session-token`,
       options: {
         httpOnly: true,
         sameSite: "lax",
@@ -57,7 +57,7 @@ export const authOptions: NextAuthOptions = {
       },
     },
     callbackUrl: {
-      name: `${cookiePrefix}next-auth.state`,
+      name: `${cookiePrefix}next-auth.callback-url`,
       options: {
         sameSite: "lax",
         path: "/",
