@@ -16,7 +16,7 @@ const SearchBar = dynamic(() => import("../../components/SearchBar"), {
   ssr: false,
   loading() {
     return (
-      <div className="col-span-2 flex space-x-2">
+      <div className="col-span-3 flex space-x-2">
         <Skeleton className="h-10 flex-1" />
         <Skeleton className="h-10 w-10" />
         <Skeleton className="h-10 w-10" />
@@ -33,7 +33,7 @@ export function ListCopyPasta() {
   const [{ pages }, allCopyPastas] =
     api.copyPasta.list.useSuspenseInfiniteQuery(
       {
-        limit: 10,
+        limit: 9,
         search,
         tag,
         byUserId,
@@ -74,7 +74,7 @@ export function ListCopyPasta() {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="grid grid-cols-1 gap-y-2 lg:grid-cols-2 lg:gap-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <SearchBar />
         <Suspense fallback={<ListTagsSkeleton />}>
           <ListTags id={tag} />

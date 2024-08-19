@@ -1,6 +1,7 @@
 import ProfileCopyPastaCard from "~/components/ProfileCopyPastaCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
+import { Badge } from "./ui/badge";
 
 export default function DashboardProfileRoleAdmin() {
   const list = api.dashboard.listDisapprovedCopyPasta.useInfiniteQuery(
@@ -22,15 +23,20 @@ export default function DashboardProfileRoleAdmin() {
       },
     );
 
+  const [count] = api.dashboard.countCopyPastaAdmin.useSuspenseQuery();
+
   return (
     <div className="w-full lg:w-3/4">
       <Tabs defaultValue="disapproved" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger className="w-full" value="disapproved">
-            Perlu disetujui
+            Perlu disetujui{" "}
+            <Badge variant={"destructive"} className="ml-2">
+              {count.isNotApproved}
+            </Badge>
           </TabsTrigger>
           <TabsTrigger className="w-full" value="approvedByUserId">
-            Yang disetujui
+            Yang disetujui <Badge className="ml-2">{count.isApproved}</Badge>
           </TabsTrigger>
         </TabsList>
         <TabsContent

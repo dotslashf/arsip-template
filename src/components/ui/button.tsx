@@ -24,11 +24,10 @@ const buttonVariants = cva(
         yellow:
           "focus:outline-none text-background bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium dark:focus:ring-yellow-90",
         discord:
-          "bg-[#7289da] text-white hover:bg-[#677bc4] focus:ring-[#7289da]",
+          "bg-discord text-white hover:bg-discord-hover focus:ring-discord",
         twitter:
-          "bg-[#1da1f2] text-white hover:bg-[#1a91da] focus:ring-[#1da1f2]",
-        google:
-          "bg-[#005129] text-white hover:bg-[#005129]/80 focus:ring-[#005129]",
+          "bg-twitter text-white hover:bg-twitter-hover focus:ring-twitter",
+        google: "bg-google text-white hover:bg-google/80 focus:ring-google",
       },
       size: {
         default: "h-10 px-4 py-2",

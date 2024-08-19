@@ -30,7 +30,7 @@ export default function ReactionSummary({
 }: ReactionSummaryProps) {
   return (
     <div className="flex space-x-2">
-      {Object.keys(EmotionType).map((reaction, i) => {
+      {Object.keys(EmotionType).map((reaction) => {
         const merged = mergeReactions(reactions);
         const isReactionExist = merged?.[reaction];
         return (

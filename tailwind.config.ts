@@ -52,6 +52,15 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        twitter: {
+          DEFAULT: "#1da1f2",
+          hover: "#1a91da",
+        },
+        discord: {
+          DEFAULT: "#7289da",
+          hover: "#677bc4",
+        },
+        google: "#008645",
       },
       borderRadius: {
         lg: "var(--radius)",

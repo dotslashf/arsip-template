@@ -25,8 +25,8 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       role: UserRole;
-      rankId: string;
       rank: Rank;
+      loginProvider?: string;
     } & DefaultSession["user"];
   }
 
@@ -46,6 +46,11 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     session: async ({ session, user }) => {
+      const account = await db.account.findFirst({
+        where: {
+          userId: user.id,
+        },
+      });
       const rank = await db.rank.findUnique({
         where: user.rankId
           ? {
@@ -72,6 +77,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           role: user.role,
           rank,
+          loginProvider: account?.provider,
         },
       };
     },

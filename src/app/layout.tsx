@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   icons: [
     {
       rel: "icon",
-      url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>📦</text></svg>",
+      url: "/favicon.png",
     },
   ],
   openGraph: {
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     title: "arsip-template",
     description: "platform buat nyimpan template (copypasta) netizen",
     creator: "@arsip-mim",
-    images: [`https://arsiptemplate.app/`],
+    images: [`https://arsiptemplate.app/api/og`],
   },
 };
 
@@ -62,10 +62,6 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
         {!isDevelopment && <GoogleAnalytics gaId="G-2Q26HEWB87" />}
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>📦</text></svg>"
-        ></link>
         <meta
           name="google-adsense-account"
           content="ca-pub-6938265092429326"
