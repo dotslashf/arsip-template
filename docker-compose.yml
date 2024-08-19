@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  web:
+    image: $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${GITHUB_SHA}
+    container_name: arsip-template
+    ports:
+      - "3000:3000"
+    restart: always
+    env_file:
+      - .env.production
