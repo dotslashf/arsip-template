@@ -28,7 +28,7 @@ export default function DashboardProfileRoleAdmin() {
   return (
     <div className="w-full lg:w-3/4">
       <Tabs defaultValue="disapproved" className="w-full">
-        <TabsList className="w-full">
+        <TabsList className="w-full bg-secondary-foreground/10">
           <TabsTrigger className="w-full" value="disapproved">
             Perlu disetujui{" "}
             <Badge variant={"destructive"} className="ml-2">

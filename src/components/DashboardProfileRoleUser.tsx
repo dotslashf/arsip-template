@@ -26,7 +26,7 @@ export default function DashboardProfileRoleUser() {
   return (
     <div className="w-full lg:w-3/4">
       <Tabs defaultValue="approved" className="w-full">
-        <TabsList className="w-full">
+        <TabsList className="w-full bg-secondary-foreground/10">
           <TabsTrigger className="w-full" value="approved">
             Disetujui
           </TabsTrigger>
