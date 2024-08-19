@@ -76,6 +76,27 @@ export const authOptions: NextAuthOptions = {
         domain: "." + "arsiptemplate.app",
       },
     },
+    pkceCodeVerifier: {
+      name: `${cookiePrefix}next-auth.pkce.code_verifier`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        maxAge: 900,
+        domain: "." + "arsiptemplate.app",
+      },
+    },
+    nonce: {
+      name: `${cookiePrefix}next-auth.nonce`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        domain: "." + "arsiptemplate.app",
+      },
+    },
   },
   callbacks: {
     session: async ({ session, user }) => {
