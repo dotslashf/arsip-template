@@ -13,6 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import useToast from "./ui/use-react-hot-toast";
 import { api } from "~/trpc/react";
+import { cn } from "~/lib/utils";
 
 interface UserProfileCardProps {
   session: Session | null;
@@ -114,7 +115,11 @@ export default function UserProfileCard({ session }: UserProfileCardProps) {
         <span className="flex w-full justify-between">
           Login Provider:
           <Badge
-            className={`bg-${session?.user.loginProvider ?? "primary"} hover:bg-twitter-hover`}
+            className={cn(
+              session?.user.loginProvider
+                ? `bg-${session.user.loginProvider} hover:bg-${session.user.loginProvider}-hover`
+                : "bg-primary hover:bg-primary/80",
+            )}
           >
             {session?.user.loginProvider ?? "User"}
           </Badge>
