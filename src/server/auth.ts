@@ -43,13 +43,11 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+const cookiePrefix = process.env.NODE_ENV === "production" ? "__Secure-" : "";
 export const authOptions: NextAuthOptions = {
   cookies: {
     sessionToken: {
-      name:
-        process.env.NODE_ENV === "production"
-          ? `__Secure-next-auth.session-token`
-          : `next-auth.session-token`,
+      name: `${cookiePrefix}next-auth.state`,
       options: {
         httpOnly: true,
         sameSite: "lax",
@@ -59,14 +57,22 @@ export const authOptions: NextAuthOptions = {
       },
     },
     callbackUrl: {
-      name:
-      process.env.NODE_ENV === "production"
-        ? `__Secure-next-auth.callback-url`
-        : `next-auth.callback-url`,
+      name: `${cookiePrefix}next-auth.state`,
       options: {
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production" ? true : false,,
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        domain: "." + "arsiptemplate.app",
+      },
+    },
+    state: {
+      name: `${cookiePrefix}next-auth.state`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        maxAge: 900,
         domain: "." + "arsiptemplate.app",
       },
     },
