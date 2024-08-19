@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { OriginSource, Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createCopyPastaForm } from "~/server/form/copyPasta";
@@ -240,12 +240,32 @@ export const copyPastaRouter = createTRPCRouter({
     }),
 
   count: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db.copyPasta.count({
+    const total = await ctx.db.copyPasta.count({
       where: {
         approvedAt: {
           not: null,
         },
       },
     });
+    const sources = await Promise.all(
+      Object.keys(OriginSource).map(async (key) => {
+        return {
+          source: key,
+          count: await ctx.db.copyPasta.count({
+            where: {
+              approvedAt: {
+                not: null,
+              },
+              source: key as OriginSource,
+            },
+          }),
+        };
+      }),
+    );
+
+    return {
+      total,
+      sources,
+    };
   }),
 });
