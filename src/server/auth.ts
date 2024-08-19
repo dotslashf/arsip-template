@@ -55,6 +55,7 @@ export const authOptions: NextAuthOptions = {
         sameSite: "lax",
         path: "/",
         secure: process.env.NODE_ENV === "production" ? true : false,
+        domain: "." + "arsiptemplate.app",
       },
     },
   },
