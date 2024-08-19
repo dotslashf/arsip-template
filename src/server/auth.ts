@@ -58,6 +58,18 @@ export const authOptions: NextAuthOptions = {
         domain: "." + "arsiptemplate.app",
       },
     },
+    callbackUrl: {
+      name:
+      process.env.NODE_ENV === "production"
+        ? `__Secure-next-auth.callback-url`
+        : `next-auth.callback-url`,
+      options: {
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production" ? true : false,,
+        domain: "." + "arsiptemplate.app",
+      },
+    },
   },
   callbacks: {
     session: async ({ session, user }) => {
