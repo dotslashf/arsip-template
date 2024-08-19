@@ -69,9 +69,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
   }
 
   return (
-    <div
-      className={cn("col-span-2 w-full text-justify shadow-sm lg:col-span-1")}
-    >
+    <div className="col-span-2 w-full text-justify shadow-sm lg:col-span-1">
       <Card>
         <CardHeader className="pb-0">
           <CardTitle>
