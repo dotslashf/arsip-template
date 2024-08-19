@@ -111,6 +111,14 @@ export default function UserProfileCard({ session }: UserProfileCardProps) {
           Rank:
           <Badge>{session?.user.rank?.title ?? "User"}</Badge>
         </span>
+        <span className="flex w-full justify-between">
+          Login Provider:
+          <Badge
+            className={`bg-${session?.user.loginProvider ?? "primary"} hover:bg-twitter-hover`}
+          >
+            {session?.user.loginProvider ?? "User"}
+          </Badge>
+        </span>
       </CardContent>
     </Card>
   );
