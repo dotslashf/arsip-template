@@ -45,6 +45,10 @@ jobs:
             # Navigate to the project directory where docker-compose.yml is located
             cd  /home/fadhlurahman_i/projects/arsip-template
 
+            export REGION=asia-southeast1
+            export PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
+            export GITHUB_SHA=${{ github.sha }}
+
             # Pull the new image
             docker-compose pull
 
