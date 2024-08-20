@@ -2,9 +2,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import Link from "next/link";
 import { Badge, badgeVariants } from "~/components/ui/badge";
 import { type CopyPasta, type Tag, type $Enums } from "@prisma/client";
-import { cn, formatDateToHuman } from "~/lib/utils";
+import { cn, formatDateToHuman, trimContent } from "~/lib/utils";
 import { Button, buttonVariants } from "./ui/button";
-import { ArrowRight, Calendar, Link2, MessageSquareQuote } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Clipboard,
+  Link2,
+  MessageSquareQuote,
+  Share2,
+} from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import { sendGAEvent } from "@next/third-parties/google";
@@ -13,6 +20,14 @@ import { Roboto_Slab } from "next/font/google";
 import { useRouter } from "next/navigation";
 import Reaction from "./Reaction";
 import ReactionSummary from "./ReactionSummary";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const robotoSlab = Roboto_Slab({
   weight: ["400", "600"],
@@ -95,14 +110,13 @@ export default function CopyPastaCardMinimal({
             )}
           >
             <ScrollArea
-              onClick={handleCopy}
               className={cn(
                 "rounded-md",
                 copyPastaProps.isFullMode ? "h-fit text-lg" : "h-28 text-sm",
                 robotoSlab.className,
               )}
             >
-              <blockquote className="cursor-pointer whitespace-pre-line">
+              <blockquote className="whitespace-pre-line">
                 {copyPastaProps.content}
               </blockquote>
             </ScrollArea>
@@ -119,8 +133,36 @@ export default function CopyPastaCardMinimal({
             </div>
           )}
           {copyPastaProps.isFullMode && (
-            <div className="mt-3 lg:mt-6">
+            <div className="mt-3 flex space-x-2 lg:mt-6">
               <Reaction copyPastaId={copyPastaProps.id} />
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button variant={"twitter"}>
+                    Share <Share2 className="ml-2 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="text-slate-800" align="start">
+                  <DropdownMenuItem
+                    className="flex w-full justify-between"
+                    onClick={handleCopy}
+                  >
+                    Salin <Clipboard className="ml-2 w-4" />
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link
+                      href={`https://twitter.com/intent/post?text=${trimContent(copyPastaProps.content, 150)}&url=arsiptemplate.app/copy-pasta/${copyPastaProps.id}`}
+                      target="_blank"
+                      className="flex w-full justify-between"
+                    >
+                      Tweet{" "}
+                      <FontAwesomeIcon
+                        icon={faTwitter}
+                        className="ml-2 h-4 w-4"
+                      />
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           )}
           <div className="mt-1 flex flex-col gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:mt-2">
@@ -178,7 +220,7 @@ export default function CopyPastaCardMinimal({
               <div className="flex justify-between">
                 <Badge
                   variant={"outline"}
-                  className="w-fit cursor-pointer"
+                  className="w-fit"
                   onClick={() => {
                     router.push(`/?byUserId=${copyPastaProps.createdById}`);
                   }}

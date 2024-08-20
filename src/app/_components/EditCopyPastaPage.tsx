@@ -36,7 +36,14 @@ export default function EditCopyPasta({ id }: EditCopyPastaProps) {
   const [copyPasta] = api.dashboard.byId.useSuspenseQuery({
     id,
   });
-  const editMutation = api.dashboard.editCopyPasta.useMutation();
+
+  const utils = api.useUtils();
+  const editMutation = api.dashboard.editCopyPasta.useMutation({
+    async onSuccess() {
+      void utils.dashboard.listDisapprovedCopyPasta.invalidate();
+      void utils.dashboard.countCopyPastaAdmin.invalidate();
+    },
+  });
 
   const tagOptions: Option[] = tags.map((tag) => {
     return {
@@ -66,7 +73,7 @@ export default function EditCopyPasta({ id }: EditCopyPastaProps) {
 
   useEffect(() => {
     if (editMutation.isSuccess) {
-      redirect(`/copy-pasta/${id}`);
+      redirect(`/dashboard/profile`);
     }
   }, [editMutation.isSuccess, id]);
 

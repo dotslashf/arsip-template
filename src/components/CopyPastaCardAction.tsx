@@ -19,6 +19,7 @@ export default function CopyPastaCardAction({
   const approveMutation = api.dashboard.approveById.useMutation({
     async onSuccess() {
       void utils.dashboard.listDisapprovedCopyPasta.invalidate();
+      void utils.dashboard.countCopyPastaAdmin.invalidate();
     },
   });
 

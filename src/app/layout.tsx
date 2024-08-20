@@ -15,7 +15,8 @@ export const metadata: Metadata = {
     template: "%s | arsip-template",
     default: "arsip-template",
   },
-  description: "platform buat nyimpan template (copypasta) netizen",
+  description:
+    "Sebuah platform untuk menyimpan dan berbagi template (copy-pasta) menarik dari netizen Indonesia.",
   icons: [
     {
       rel: "icon",
