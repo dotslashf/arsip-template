@@ -43,7 +43,61 @@ declare module "next-auth" {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+const cookiePrefix = process.env.NODE_ENV === "production" ? "__Secure-" : "";
 export const authOptions: NextAuthOptions = {
+  cookies: {
+    sessionToken: {
+      name: `${cookiePrefix}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        domain: "." + "arsiptemplate.app",
+      },
+    },
+    callbackUrl: {
+      name: `${cookiePrefix}next-auth.callback-url`,
+      options: {
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        domain: "." + "arsiptemplate.app",
+      },
+    },
+    state: {
+      name: `${cookiePrefix}next-auth.state`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        maxAge: 900,
+        domain: "." + "arsiptemplate.app",
+      },
+    },
+    pkceCodeVerifier: {
+      name: `${cookiePrefix}next-auth.pkce.code_verifier`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        maxAge: 900,
+        domain: "." + "arsiptemplate.app",
+      },
+    },
+    nonce: {
+      name: `${cookiePrefix}next-auth.nonce`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production" ? true : false,
+        domain: "." + "arsiptemplate.app",
+      },
+    },
+  },
   callbacks: {
     session: async ({ session, user }) => {
       const account = await db.account.findFirst({
