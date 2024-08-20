@@ -105,7 +105,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
   }
 
   return (
-    <div className="flex space-x-2">
+    <>
       <motion.div
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
@@ -191,7 +191,6 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
           </div>
         </PopoverContent>
       </Popover>
-      <span className="text-sm text-primary underline"></span>
-    </div>
+    </>
   );
 }
