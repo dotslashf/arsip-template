@@ -1,28 +1,8 @@
 import { MetadataRoute } from "next";
 import { baseUrl } from "~/lib/constant";
-import { db } from "~/server/db";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
-    const copyPastas = await db.copyPasta.findMany({
-      where: {
-        approvedAt: {
-          not: null,
-        },
-      },
-      select: {
-        id: true,
-        updatedAt: true,
-      },
-    });
-
-    const copyPastaEntries: MetadataRoute.Sitemap = copyPastas.map((pasta) => ({
-      url: `${baseUrl}/copy-pasta/${pasta.id}`,
-      lastModified: pasta.updatedAt,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    }));
-
     const staticRoutes: MetadataRoute.Sitemap = [
       {
         url: baseUrl,
@@ -62,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     ];
 
-    return [...staticRoutes, ...copyPastaEntries];
+    return [...staticRoutes];
   } catch (error) {
     console.error("Error generating sitemap:", error);
     return [];
