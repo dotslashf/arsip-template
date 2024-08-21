@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { baseUrl } from "~/lib/constant";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/dashboard/", "/api/trpc/"],
     },
-    sitemap: "https://arsiptemplate.app/sitemap.xml",
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }

@@ -81,3 +81,5 @@ export const reactionsMap = (emotion: string, className: string) => {
 
   return map[emotion];
 };
+
+export const baseUrl = "https://arsiptemplate.app";
