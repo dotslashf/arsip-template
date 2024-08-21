@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Badge, badgeVariants } from "~/components/ui/badge";
 import { type CopyPasta, type Tag } from "@prisma/client";
 import { cn, formatDateToHuman } from "~/lib/utils";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import { ArrowRight, Calendar, Link2 } from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
