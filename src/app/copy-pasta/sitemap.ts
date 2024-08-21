@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { baseUrl } from "~/lib/constant";
 import { db } from "~/server/db";
 
-export async function generateSitemaps() {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const copyPastas = await db.copyPasta.findMany({
     where: {
       approvedAt: {
@@ -14,22 +14,15 @@ export async function generateSitemaps() {
       updatedAt: true,
     },
   });
-  return copyPastas;
-}
 
-export default async function sitemap({
-  id,
-  updatedAt,
-}: {
-  id: string;
-  updatedAt: Date;
-}): Promise<MetadataRoute.Sitemap> {
-  return [
-    {
-      url: `${baseUrl}/copy-pasta/${id}`,
-      lastModified: updatedAt,
+  const entries = copyPastas.map((copy) => {
+    return {
+      url: `${baseUrl}/copy-pasta/${copy.id}`,
+      lastModified: copy.updatedAt,
       changeFrequency: "monthly",
       priority: 0.7,
-    },
-  ];
+    };
+  }) as MetadataRoute.Sitemap;
+
+  return [...entries];
 }
