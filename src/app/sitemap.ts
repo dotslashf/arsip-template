@@ -1,42 +1,64 @@
 import type { MetadataRoute } from "next";
+import { baseUrl } from "~/lib/constant";
+import { db } from "~/server/db";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const copyPastas = await db.copyPasta.findMany({
+    where: {
+      approvedAt: {
+        not: null,
+      },
+    },
+    select: {
+      id: true,
+      updatedAt: true,
+    },
+  });
+
+  const copyPastaEntries: MetadataRoute.Sitemap = copyPastas.map((pasta) => ({
+    url: `${baseUrl}/copy-pasta/${pasta.id}`,
+    lastModified: pasta.updatedAt,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
   return [
     {
-      url: "https://arsiptemplate.app/",
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 1,
     },
     {
-      url: "https://arsiptemplate.app/tos",
+      url: `${baseUrl}/tos`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.8,
     },
     {
-      url: "https://arsiptemplate.app/privacy-policy",
+      url: `${baseUrl}/privacy-policy`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.8,
     },
     {
-      url: "https://arsiptemplate.app/ranking",
+      url: `${baseUrl}/ranking`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.8,
     },
     {
-      url: "https://arsiptemplate.app/changelog",
+      url: `${baseUrl}/changelog`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.8,
     },
     {
-      url: "https://arsiptemplate.app/copy-pasta/create",
+      url: `${baseUrl}/copy-pasta/create`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.8,
     },
+    ...copyPastaEntries,
   ];
 }

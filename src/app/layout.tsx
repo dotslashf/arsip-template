@@ -9,6 +9,7 @@ import { ThemeProvider } from "~/components/theme-provider";
 
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { env } from "~/env";
+import { baseUrl } from "~/lib/constant";
 
 export const metadata: Metadata = {
   title: {
@@ -26,10 +27,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: "arsip-template",
     description: "platform buat nyimpan template (copypasta) netizen",
-    url: `https://arsiptemplate.app/`,
+    url: `${baseUrl}`,
     images: [
       {
-        url: "https://arsiptemplate.app/api/og",
+        url: `${baseUrl}/api/og`,
         width: 1200,
         height: 630,
         alt: "Cover",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     title: "arsip-template",
     description: "platform buat nyimpan template (copypasta) netizen",
     creator: "@arsip-mim",
-    images: [`https://arsiptemplate.app/api/og`],
+    images: [`${baseUrl}/api/og`],
   },
 };
 
