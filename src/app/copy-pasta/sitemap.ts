@@ -1,19 +1,9 @@
 import { MetadataRoute } from "next";
 import { baseUrl } from "~/lib/constant";
-import { db } from "~/server/db";
+import { api } from "~/trpc/server";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const copyPastas = await db.copyPasta.findMany({
-    where: {
-      approvedAt: {
-        not: null,
-      },
-    },
-    select: {
-      id: true,
-      updatedAt: true,
-    },
-  });
+  const copyPastas = await api.copyPasta.getAllApproved();
 
   const entries = copyPastas.map((copy) => {
     return {
