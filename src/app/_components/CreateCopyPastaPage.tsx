@@ -29,7 +29,10 @@ import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id } from "date-fns/locale";
 
 export default function CreateCopyPasta() {
-  const [tags] = api.tag.list.useSuspenseQuery();
+  const [tags] = api.tag.list.useSuspenseQuery(undefined, {
+    staleTime: Infinity,
+    refetchOnMount: false,
+  });
   const createMutation = api.copyPasta.create.useMutation();
 
   const tagOptions: Option[] = tags.map((tag) => {

@@ -22,8 +22,12 @@ import Avatar from "boring-avatars";
 import { avatarColorsTheme } from "~/lib/constant";
 
 export default function RankingPage() {
-  const [rankings] = api.ranking.topUsers.useSuspenseQuery();
-  const [rankingLists] = api.ranking.list.useSuspenseQuery();
+  const [rankings] = api.ranking.topUsers.useSuspenseQuery(undefined, {
+    staleTime: Infinity,
+  });
+  const [rankingLists] = api.ranking.list.useSuspenseQuery(undefined, {
+    staleTime: Infinity,
+  });
   const router = useRouter();
 
   return (
