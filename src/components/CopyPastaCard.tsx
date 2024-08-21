@@ -132,13 +132,15 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
             !copyPastaProps.isApprovalMode &&
             copyPastaProps.approvedAt && (
               <div className="self-start">
-                <Button
-                  variant={"link"}
-                  size={"url"}
+                <Link
+                  href={`/copy-pasta/${copyPastaProps.id}`}
+                  className={cn(
+                    buttonVariants({ variant: "link", size: "url" }),
+                  )}
                   onClick={() => handleMoreInfo(copyPastaProps.id)}
                 >
                   Lebih Lanjut <ArrowRight className="ml-2 h-3 w-3" />
-                </Button>
+                </Link>
               </div>
             )}
           <div className="mt-2 flex flex-col gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:mt-4">

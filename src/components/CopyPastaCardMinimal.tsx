@@ -123,13 +123,13 @@ export default function CopyPastaCardMinimal({
           </div>
           {!copyPastaProps.isFullMode && (
             <div className="self-start">
-              <Button
-                variant={"link"}
-                size={"url"}
+              <Link
+                href={`/copy-pasta/${copyPastaProps.id}`}
+                className={cn(buttonVariants({ variant: "link", size: "url" }))}
                 onClick={() => handleMoreInfo(copyPastaProps.id)}
               >
                 Lebih Lanjut <ArrowRight className="ml-2 h-3 w-3" />
-              </Button>
+              </Link>
             </div>
           )}
           {copyPastaProps.isFullMode && (

@@ -8,14 +8,24 @@ interface CopyPastaByIdProps {
   id: string;
 }
 export default function CopyPastaById({ id }: CopyPastaByIdProps) {
-  const [copyPasta] = api.copyPasta.byId.useSuspenseQuery({
-    id: id,
-  });
+  const [copyPasta] = api.copyPasta.byId.useSuspenseQuery(
+    {
+      id: id,
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
 
-  const { isLoading, data: related } = api.copyPasta.byTag.useQuery({
-    tagIds: copyPasta.CopyPastasOnTags.map((tag) => tag.tagId),
-    copyPastaId: copyPasta.id,
-  });
+  const { isLoading, data: related } = api.copyPasta.byTag.useQuery(
+    {
+      tagIds: copyPasta.CopyPastasOnTags.map((tag) => tag.tagId),
+      copyPastaId: copyPasta.id,
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
 
   return (
     <div className="flex w-full flex-col">

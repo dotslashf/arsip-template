@@ -32,7 +32,10 @@ interface EditCopyPastaProps {
   id: string;
 }
 export default function EditCopyPasta({ id }: EditCopyPastaProps) {
-  const [tags] = api.tag.list.useSuspenseQuery();
+  const [tags] = api.tag.list.useSuspenseQuery(undefined, {
+    staleTime: Infinity,
+    refetchOnMount: false,
+  });
   const [copyPasta] = api.dashboard.byId.useSuspenseQuery({
     id,
   });

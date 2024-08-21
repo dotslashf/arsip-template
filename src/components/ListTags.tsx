@@ -11,7 +11,10 @@ interface ListTagsProps {
   id: string | null;
 }
 export default function ListTags({ id }: ListTagsProps) {
-  const [tags] = api.tag.list.useSuspenseQuery();
+  const [tags] = api.tag.list.useSuspenseQuery(undefined, {
+    staleTime: Infinity,
+    refetchOnMount: false,
+  });
   const searchParams = useSearchParams();
   const router = useRouter();
 
