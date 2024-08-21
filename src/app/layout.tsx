@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "~/components/theme-provider";
 
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { env } from "~/env";
 
 export const metadata: Metadata = {
@@ -63,6 +63,7 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
         {!isDevelopment && <GoogleAnalytics gaId="G-2Q26HEWB87" />}
+        {!isDevelopment && <GoogleTagManager gtmId="GTM-NG2RHJGW" />}
         <meta
           name="google-adsense-account"
           content="ca-pub-6938265092429326"
