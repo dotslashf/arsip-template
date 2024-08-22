@@ -22,7 +22,7 @@ export default function ProfilePage() {
 
   return (
     <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
-      <UserProfileCard session={session} />
+      <UserProfileCard session={session} isPreviewMode={false} />
       {dashboardByRole(session?.user.role)}
     </div>
   );

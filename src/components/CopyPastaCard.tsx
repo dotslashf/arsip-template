@@ -148,9 +148,9 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
               <div className="flex justify-between">
                 <Badge
                   variant={"outline"}
-                  className="w-fit cursor-pointer"
+                  className="w-fit"
                   onClick={() => {
-                    router.push(`/?byUserId=${copyPastaProps.createdById}`);
+                    router.push(`/user/${copyPastaProps.createdById}`);
                   }}
                 >
                   Di tambahkan oleh:{" "}

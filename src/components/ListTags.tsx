@@ -35,7 +35,7 @@ export default function ListTags({ id }: ListTagsProps) {
             key={tag.id}
             onClick={() => handleTagClick(tag)}
             className={
-              "cursor-pointer shadow-sm hover:bg-primary hover:text-primary-foreground"
+              "shadow-sm hover:bg-primary hover:text-primary-foreground"
             }
             variant={id === tag.id ? "default" : "outline"}
           >

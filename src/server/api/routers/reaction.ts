@@ -120,4 +120,24 @@ export const reactionRouter = createTRPCRouter({
         userId: input.userId ? input.userId : ctx.session?.user.id,
       };
     }),
+
+  getReactionsByUserId: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const reactions = await ctx.db.reaction.groupBy({
+        by: ["emotion"],
+        where: {
+          userId: input.userId,
+        },
+        _count: {
+          emotion: true,
+        },
+      });
+
+      return reactions;
+    }),
 });

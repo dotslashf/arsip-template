@@ -92,7 +92,7 @@ export default function CopyPastaCardMinimal({
     <div
       className={cn("col-span-3 w-full text-justify shadow-sm lg:col-span-1")}
     >
-      <Card>
+      <Card className="h-full">
         <CardHeader className="pb-0">
           <CardTitle>
             <MessageSquareQuote className="w-5" />
@@ -222,7 +222,7 @@ export default function CopyPastaCardMinimal({
                   variant={"outline"}
                   className="w-fit"
                   onClick={() => {
-                    router.push(`/?byUserId=${copyPastaProps.createdById}`);
+                    router.push(`/user/${copyPastaProps.createdById}`);
                   }}
                 >
                   Di tambahkan oleh:{" "}

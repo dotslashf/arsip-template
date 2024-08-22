@@ -122,19 +122,24 @@ const timingMiddleware = t.middleware(async ({ next }) => {
   return await next();
 });
 
-const loggingMiddleware = t.middleware(async ({ path, next, ctx }) => {
-  const start = Date.now();
-  const result = await next();
+const loggingMiddleware = t.middleware(
+  async ({ path, next, ctx, type, getRawInput }) => {
+    const start = Date.now();
+    const result = await next();
+    const input = await getRawInput();
 
-  logTRPCRequest({
-    path,
-    start,
-    end: Date.now(),
-    result,
-    ctx,
-  });
-  return result;
-});
+    logTRPCRequest({
+      path,
+      start,
+      end: Date.now(),
+      input,
+      result,
+      ctx,
+      type,
+    });
+    return result;
+  },
+);
 
 /**
  * Public (unauthenticated) procedure
