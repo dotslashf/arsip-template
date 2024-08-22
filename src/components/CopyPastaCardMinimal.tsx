@@ -16,7 +16,6 @@ import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import { sendGAEvent } from "@next/third-parties/google";
 import { robotoSlab, sourceEnumHash } from "~/lib/constant";
-import { Roboto_Slab } from "next/font/google";
 import { useRouter } from "next/navigation";
 import Reaction from "./Reaction";
 import ReactionSummary from "./ReactionSummary";

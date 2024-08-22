@@ -1,4 +1,4 @@
-import { EmotionType, Prisma } from "@prisma/client";
+import { EmotionType, type Prisma } from "@prisma/client";
 import { Badge } from "./ui/badge";
 import { motion } from "framer-motion";
 import { reactionsMap } from "~/lib/constant";
@@ -20,7 +20,7 @@ export default function ReactionSummaryProfile({
     <div className="flex space-x-2">
       {Object.keys(EmotionType).map((reaction) => {
         return (
-          <motion.div whileHover="hover" whileTap="tap">
+          <motion.div key={reaction} whileHover="hover" whileTap="tap">
             <Badge variant={"outline"}>
               <motion.span
                 variants={{

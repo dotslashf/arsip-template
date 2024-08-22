@@ -60,7 +60,7 @@ export const tagRouter = createTRPCRouter({
         .reduce(
           (acc, tag) => {
             acc[tag.name] = {
-              count: (acc[tag.name]?.count || 0) + 1,
+              count: (acc[tag.name]?.count ?? 0) + 1,
               id: tag.id,
             };
             return acc;

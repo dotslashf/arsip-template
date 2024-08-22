@@ -13,14 +13,15 @@ export function logTRPCRequest({
 }: LogTRPCRequest) {
   const duration = end - start;
   const timestamp = new Date().toISOString();
-  const userId = ctx.session?.user?.id ?? "anonymous";
+  const userId = ctx.session?.user.id ?? "anonymous";
   const status = result instanceof TRPCError ? "error" : "success";
   const errorMessage = result instanceof TRPCError ? result.message : "";
   const userAgent = ctx.req?.headers.get("user-agent") ?? "Unknown";
   const method = ctx.req?.method ?? "Unknown";
   const ip =
-    ctx.req?.headers.get("x-forwarded-for") ??
-    ctx.req?.connection.remoteAddress ??
+    ctx.req?.ip ??
+    ctx.req?.headers.get("X-Forwarded-For") ??
+    ctx.req?.headers.get("x-real-ip") ??
     "Unknown";
 
   const logEntry = `

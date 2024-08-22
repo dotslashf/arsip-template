@@ -3,7 +3,7 @@ import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import Avatar from "boring-avatars";
 import { Badge, badgeVariants } from "./ui/badge";
 import { avatarColorsTheme, baseUrl } from "~/lib/constant";
-import { Edit, Share, Share2 } from "lucide-react";
+import { Edit, Share2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

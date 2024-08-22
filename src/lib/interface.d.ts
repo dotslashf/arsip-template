@@ -1,3 +1,9 @@
+import { type PrismaClient } from "@prisma/client";
+import { type DefaultArgs } from "@prisma/client/runtime/library";
+import { type MiddlewareResult } from "@trpc/server/unstable-core-do-not-import";
+import { type Session } from "next-auth";
+import { type NextRequest } from "next/server";
+
 export interface DataInterface {
   copyPastas: string[];
   tags: string[];
@@ -8,15 +14,6 @@ export interface DataInterface {
 }
 
 export interface LogTRPCRequest {
-  ctx: any;
-  end: number;
-  path: string;
-  result: any;
-  start: number;
-  input: any;
-}
-
-interface LogTRPCRequest {
   path: string;
   start: number;
   end: number;
@@ -32,7 +29,7 @@ interface LogTRPCRequest {
       DefaultArgs
     >;
   };
-  input: any;
+  input: unknown;
   type: "query" | "mutation" | "subscription";
   result: MiddlewareResult<object>;
 }

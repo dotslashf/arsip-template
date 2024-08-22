@@ -1,8 +1,7 @@
 "use client";
 
 import { sendGAEvent } from "@next/third-parties/google";
-import { UserRole } from "@prisma/client";
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import CopyPastaCardMinimal from "~/components/CopyPastaCardMinimal";
 import GetContent from "~/components/GetContent";
 import { Button } from "~/components/ui/button";
