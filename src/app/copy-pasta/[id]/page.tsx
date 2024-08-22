@@ -29,7 +29,7 @@ export async function generateMetadata({
   return {
     title,
     alternates: {
-      canonical: `/copy-pasta/${copyPasta.id}`,
+      canonical: `${baseUrl}/copy-pasta/${copyPasta.id}`,
     },
     openGraph: {
       title,
