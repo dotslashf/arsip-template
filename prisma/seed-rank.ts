@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import { createRequire } from "node:module";
-import { DataInterface } from "~/lib/constant";
+import { DataInterface } from "~/lib/interface";
 const require = createRequire(import.meta.url);
 
 const data: DataInterface = require("./data.json");
