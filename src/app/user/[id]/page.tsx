@@ -1,6 +1,5 @@
 import Layout from "~/components/Layout";
 import { api, HydrateClient } from "~/trpc/server";
-import CopyPastaPage from "~/app/_components/CopyPastaByIdPage";
 import Brand from "~/components/Brand";
 import { Suspense } from "react";
 import SkeletonCopyPasta from "~/components/SkeletonCopyPasta";
@@ -8,6 +7,7 @@ import { type Metadata } from "next";
 import { trimContent } from "~/lib/utils";
 import { notFound } from "next/navigation";
 import { baseUrl } from "~/lib/constant";
+import UserCopyPastaPage from "~/app/_components/UserCopyPastaPage";
 
 export type PropsPage = {
   params: { id: string };
@@ -17,24 +17,24 @@ export async function generateMetadata({
 }: PropsPage): Promise<Metadata> {
   const id = params.id;
 
-  const copyPasta = await api.copyPasta.byId({ id });
-  if (!copyPasta) {
+  const user = await api.user.byId({ id });
+  if (!user) {
     return notFound();
   }
 
-  const title = `${trimContent(copyPasta.content, 60)}`;
-  const description = `${trimContent(copyPasta.content, 155)}`;
-  const url = `${baseUrl}/api/og?copyPasta=${trimContent(copyPasta.content, 255)}`;
+  const title = `${trimContent(user.name ?? "", 30)} | arsip-template`;
+  const description = `Kumpulan arsip template dari: ${trimContent(user.name ?? "", 30)}`;
+  const url = `${baseUrl}/api/og}`;
 
   return {
     title,
     alternates: {
-      canonical: `${baseUrl}/copy-pasta/${copyPasta.id}`,
+      canonical: `/user/${user.id}`,
     },
     openGraph: {
       title,
       description,
-      url: `${baseUrl}/copy-pasta/${copyPasta.id}`,
+      url: `${baseUrl}/user/${user.id}`,
       images: [
         {
           url,
@@ -54,7 +54,7 @@ export async function generateMetadata({
     },
   };
 }
-export default function CopyPastaById({ params }: PropsPage) {
+export default function CopyPastaFromUserById({ params }: PropsPage) {
   return (
     <HydrateClient>
       <Layout>
@@ -66,7 +66,7 @@ export default function CopyPastaById({ params }: PropsPage) {
             </div>
           }
         >
-          <CopyPastaPage id={params.id} />
+          <UserCopyPastaPage id={params.id} />
         </Suspense>
       </Layout>
     </HydrateClient>

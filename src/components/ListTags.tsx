@@ -30,18 +30,24 @@ export default function ListTags({ id }: ListTagsProps) {
   return (
     <ScrollArea className="col-span-3 w-full whitespace-nowrap rounded-md">
       <div className="flex w-max space-x-2 py-2">
-        {tags.map((tag) => (
-          <Badge
-            key={tag.id}
-            onClick={() => handleTagClick(tag)}
-            className={
-              "cursor-pointer shadow-sm hover:bg-primary hover:text-primary-foreground"
-            }
-            variant={id === tag.id ? "default" : "outline"}
-          >
-            {tag.name}
-          </Badge>
-        ))}
+        {[...tags]
+          .sort((a, b) => {
+            if (a.id === id) return -1;
+            if (b.id === id) return 1;
+            return 0;
+          })
+          .map((tag) => (
+            <Badge
+              key={tag.id}
+              onClick={() => handleTagClick(tag)}
+              className={
+                "shadow-sm hover:bg-primary hover:text-primary-foreground"
+              }
+              variant={id === tag.id ? "default" : "outline"}
+            >
+              {tag.name}
+            </Badge>
+          ))}
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>

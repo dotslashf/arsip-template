@@ -44,6 +44,9 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 const cookiePrefix = process.env.NODE_ENV === "production" ? "__Secure-" : "";
+const domain =
+  process.env.NODE_ENV === "production" ? "arsiptemplate.app" : "localhost";
+const secure = process.env.NODE_ENV === "production" ? true : false;
 export const authOptions: NextAuthOptions = {
   cookies: {
     sessionToken: {
@@ -52,8 +55,8 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production" ? true : false,
-        domain: "." + "arsiptemplate.app",
+        secure,
+        domain: "." + domain,
       },
     },
     callbackUrl: {
@@ -61,8 +64,8 @@ export const authOptions: NextAuthOptions = {
       options: {
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production" ? true : false,
-        domain: "." + "arsiptemplate.app",
+        secure,
+        domain: "." + domain,
       },
     },
     state: {
@@ -71,9 +74,9 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production" ? true : false,
+        secure,
         maxAge: 900,
-        domain: "." + "arsiptemplate.app",
+        domain: "." + domain,
       },
     },
     pkceCodeVerifier: {
@@ -82,9 +85,9 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production" ? true : false,
+        secure,
         maxAge: 900,
-        domain: "." + "arsiptemplate.app",
+        domain: "." + domain,
       },
     },
     nonce: {
@@ -93,8 +96,8 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production" ? true : false,
-        domain: "." + "arsiptemplate.app",
+        secure,
+        domain: "." + domain,
       },
     },
   },

@@ -8,6 +8,7 @@ import { tagRouter } from "./routers/tag";
 import { dashboardRouter } from "./routers/dashboard";
 import { rankingRouter } from "./routers/ranking";
 import { reactionRouter } from "./routers/reaction";
+import { userRouter } from "./routers/user";
 
 /**
  * This is the primary router for your server.
@@ -20,6 +21,7 @@ export const appRouter = createTRPCRouter({
   dashboard: dashboardRouter,
   ranking: rankingRouter,
   reaction: reactionRouter,
+  user: userRouter,
 });
 
 // export type definition of API

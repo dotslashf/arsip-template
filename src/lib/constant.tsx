@@ -8,15 +8,7 @@ import {
   FluentEmojiFlatRollingOnTheFloorLaughing,
   FluentEmojiFlatThinkingFace,
 } from "~/components/Icons";
-
-export interface DataInterface {
-  copyPastas: string[];
-  tags: string[];
-  ranks: {
-    title: string;
-    minCount: number;
-  }[];
-}
+import { Roboto_Slab } from "next/font/google";
 
 export const avatarColorsTheme = [
   "#4D7CDB",
@@ -82,4 +74,13 @@ export const reactionsMap = (emotion: string, className: string) => {
   return map[emotion];
 };
 
-export const baseUrl = "https://arsiptemplate.app";
+export const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://arsiptemplate.app"
+    : "http://localhost:3000";
+
+export const robotoSlab = Roboto_Slab({
+  weight: ["400", "600"],
+  style: ["normal"],
+  subsets: ["latin"],
+});

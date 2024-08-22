@@ -1,9 +1,9 @@
 import { type Session } from "next-auth";
-import { Card, CardHeader, CardContent } from "./ui/card";
+import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import Avatar from "boring-avatars";
-import { Badge } from "./ui/badge";
-import { avatarColorsTheme } from "~/lib/constant";
-import { Edit } from "lucide-react";
+import { Badge, badgeVariants } from "./ui/badge";
+import { avatarColorsTheme, baseUrl } from "~/lib/constant";
+import { Edit, Share2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,12 +14,19 @@ import { Input } from "./ui/input";
 import useToast from "./ui/use-react-hot-toast";
 import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
+import ReactionSummaryProfile from "./ReactionSummaryProfile";
+import Link from "next/link";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface UserProfileCardProps {
   session: Session | null;
+  isPreviewMode: boolean;
 }
 
-export default function UserProfileCard({ session }: UserProfileCardProps) {
+export default function UserProfileCard({
+  session,
+  isPreviewMode,
+}: UserProfileCardProps) {
   const [isEditMode, setIsEditMode] = useState(false);
   const editProfileName = z.object({
     name: z.string(),
@@ -55,15 +62,55 @@ export default function UserProfileCard({ session }: UserProfileCardProps) {
     setIsEditMode(!isEditMode);
   }
 
+  const { data: reactions } = api.reaction.getReactionsByUserId.useQuery(
+    {
+      userId: session!.user.id,
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
+
+  const { data: topTags } = api.tag.getTopTagsByUserId.useQuery(
+    {
+      userId: session!.user.id,
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
+
+  function handleShareProfile() {
+    navigator.clipboard
+      .writeText(`${baseUrl}/user/${session?.user.id}`)
+      .then(() => {
+        toast({
+          message: "Silahkan dishare profilenya yah 🍰",
+          type: "success",
+        });
+        sendGAEvent("event", "shareProfile", {
+          value: `profile:${session?.user.name}`,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
-    <Card className="w-full bg-card text-card-foreground shadow-sm lg:w-1/4">
+    <Card
+      className={cn(
+        "relative w-full bg-card text-card-foreground shadow-sm lg:w-1/4",
+        isPreviewMode && "lg:w-full",
+      )}
+    >
       <CardHeader className="flex flex-col items-center space-y-2 p-6">
-        <Avatar
-          name={session?.user.id ?? "John Doe"}
-          colors={avatarColorsTheme}
-          size={64}
-          variant="beam"
-        />
+        <span className="rounded-full border-2 border-secondary-foreground">
+          <Avatar
+            name={session?.user.id ?? "John Doe"}
+            colors={avatarColorsTheme}
+            size={64}
+            variant="beam"
+          />
+        </span>
         <div className="w-full space-y-1 text-center">
           <div className="flex w-full items-center justify-center">
             {isEditMode ? (
@@ -91,14 +138,18 @@ export default function UserProfileCard({ session }: UserProfileCardProps) {
               </Form>
             ) : (
               <div className="flex flex-col items-center space-y-2">
-                <span className="py-2">{session?.user.name ?? "Anon"}</span>
-                <Button
-                  variant={"outline"}
-                  size={"icon"}
-                  onClick={() => setIsEditMode(!isEditMode)}
-                >
-                  <Edit className="h-3 w-3" />
-                </Button>
+                <span className="py-2 font-bold">
+                  {session?.user.name ?? "Anon"}
+                </span>
+                {!isPreviewMode && (
+                  <Button
+                    variant={"outline"}
+                    size={"icon"}
+                    onClick={() => setIsEditMode(!isEditMode)}
+                  >
+                    <Edit className="h-3 w-3" />
+                  </Button>
+                )}
               </div>
             )}
           </div>
@@ -125,6 +176,38 @@ export default function UserProfileCard({ session }: UserProfileCardProps) {
           </Badge>
         </span>
       </CardContent>
+      <Button
+        onClick={handleShareProfile}
+        className="absolute bottom-0 w-full rounded-t-none"
+        variant={"destructive"}
+      >
+        Share <Share2 className="ml-2 w-4" />
+      </Button>
+      <CardFooter className="mb-8 flex flex-col space-y-2 font-mono text-sm font-semibold">
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <span>Reactions:</span>
+          <ReactionSummaryProfile reactions={reactions} />
+        </div>
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <span>Tags:</span>
+          <div className="grid grid-cols-2 gap-2">
+            {topTags?.map((tag) => {
+              return (
+                <Link
+                  className={cn(
+                    badgeVariants({ variant: "outline" }),
+                    "items-center justify-center",
+                  )}
+                  href={`/?tag=${tag.count.id}`}
+                  key={tag.name}
+                >
+                  {tag.id} ({tag.count.count})
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </CardFooter>
     </Card>
   );
 }

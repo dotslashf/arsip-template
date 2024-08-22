@@ -82,7 +82,7 @@ export default function RankingPage() {
                   key={rank.id}
                   className="cursor-pointer"
                   onClick={() => {
-                    router.push(`/?byUserId=${rank.id}`);
+                    router.push(`/user/${rank.id}`);
                   }}
                 >
                   <TableCell className="font-medium">{rankPosition}</TableCell>
