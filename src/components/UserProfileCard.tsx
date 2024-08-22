@@ -62,13 +62,23 @@ export default function UserProfileCard({
     setIsEditMode(!isEditMode);
   }
 
-  const { data: reactions } = api.reaction.getReactionsByUserId.useQuery({
-    userId: session!.user.id,
-  });
+  const { data: reactions } = api.reaction.getReactionsByUserId.useQuery(
+    {
+      userId: session!.user.id,
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
 
-  const { data: top5Tags } = api.tag.getTopTagsByUserId.useQuery({
-    userId: session!.user.id,
-  });
+  const { data: topTags } = api.tag.getTopTagsByUserId.useQuery(
+    {
+      userId: session!.user.id,
+    },
+    {
+      staleTime: Infinity,
+    },
+  );
 
   function handleShareProfile() {
     navigator.clipboard
@@ -93,12 +103,14 @@ export default function UserProfileCard({
       )}
     >
       <CardHeader className="flex flex-col items-center space-y-2 p-6">
-        <Avatar
-          name={session?.user.id ?? "John Doe"}
-          colors={avatarColorsTheme}
-          size={64}
-          variant="beam"
-        />
+        <span className="rounded-full border-2 border-secondary-foreground">
+          <Avatar
+            name={session?.user.id ?? "John Doe"}
+            colors={avatarColorsTheme}
+            size={64}
+            variant="beam"
+          />
+        </span>
         <div className="w-full space-y-1 text-center">
           <div className="flex w-full items-center justify-center">
             {isEditMode ? (
@@ -126,7 +138,9 @@ export default function UserProfileCard({
               </Form>
             ) : (
               <div className="flex flex-col items-center space-y-2">
-                <span className="py-2">{session?.user.name ?? "Anon"}</span>
+                <span className="py-2 font-bold">
+                  {session?.user.name ?? "Anon"}
+                </span>
                 {!isPreviewMode && (
                   <Button
                     variant={"outline"}
@@ -177,7 +191,7 @@ export default function UserProfileCard({
         <div className="flex flex-col items-center justify-center space-y-2">
           <span>Tags:</span>
           <div className="grid grid-cols-2 gap-2">
-            {top5Tags?.map((tag) => {
+            {topTags?.map((tag) => {
               return (
                 <Link
                   className={cn(

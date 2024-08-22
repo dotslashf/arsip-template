@@ -37,6 +37,9 @@ export const tagRouter = createTRPCRouter({
       const topUserTags = await ctx.db.copyPasta.findMany({
         where: {
           createdById: input.userId,
+          approvedAt: {
+            not: null,
+          },
         },
         select: {
           CopyPastasOnTags: {
@@ -71,9 +74,9 @@ export const tagRouter = createTRPCRouter({
           >,
         );
 
-      const top5Tags = Object.entries(tagCounts)
+      const topTags = Object.entries(tagCounts)
         .sort(([, a], [, b]) => b.count - a.count)
-        .slice(0, 5)
+        .slice(0, 4)
         .map(([tagId, count]) => ({
           id: tagId,
           name: topUserTags.find((cp) =>
@@ -82,6 +85,6 @@ export const tagRouter = createTRPCRouter({
           count,
         }));
 
-      return top5Tags;
+      return topTags;
     }),
 });

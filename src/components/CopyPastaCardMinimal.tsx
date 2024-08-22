@@ -5,17 +5,17 @@ import { type CopyPasta, type Tag, type $Enums } from "@prisma/client";
 import { cn, formatDateToHuman, trimContent } from "~/lib/utils";
 import { Button, buttonVariants } from "./ui/button";
 import {
+  ALargeSmall,
   ArrowRight,
   Calendar,
   Clipboard,
   Link2,
-  MessageSquareQuote,
   Share2,
 } from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import { sendGAEvent } from "@next/third-parties/google";
-import { sourceEnumHash } from "~/lib/constant";
+import { robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { Roboto_Slab } from "next/font/google";
 import { useRouter } from "next/navigation";
 import Reaction from "./Reaction";
@@ -28,12 +28,6 @@ import {
 } from "./ui/dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-
-const robotoSlab = Roboto_Slab({
-  weight: ["400", "600"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -95,7 +89,7 @@ export default function CopyPastaCardMinimal({
       <Card className="h-full">
         <CardHeader className="pb-0">
           <CardTitle>
-            <MessageSquareQuote className="w-5" />
+            <ALargeSmall className="h-6 w-6" />
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col justify-between gap-2 p-6 pt-2 hover:cursor-auto">
@@ -112,7 +106,7 @@ export default function CopyPastaCardMinimal({
             <ScrollArea
               className={cn(
                 "rounded-md",
-                copyPastaProps.isFullMode ? "h-fit text-lg" : "h-28 text-sm",
+                copyPastaProps.isFullMode ? "h-fit text-lg" : "h-36 text-sm",
                 robotoSlab.className,
               )}
             >

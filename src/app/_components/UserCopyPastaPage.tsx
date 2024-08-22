@@ -47,10 +47,10 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
 
   return (
     <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
-      <div className="flex w-full items-center justify-center">
+      <div className="flex w-full max-w-md items-center justify-center">
         <UserProfileCard session={session} isPreviewMode={true} />
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid flex-1 grid-cols-2 gap-2">
         {pages
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
@@ -67,7 +67,7 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
               }),
             )
           : null}
-        <div className="col-span-2">
+        <div className="col-span-2 w-full">
           <Button
             onClick={handleNextList}
             disabled={!hasNextPage || isFetchingNextPage}

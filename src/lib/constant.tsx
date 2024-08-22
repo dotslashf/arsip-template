@@ -8,7 +8,7 @@ import {
   FluentEmojiFlatRollingOnTheFloorLaughing,
   FluentEmojiFlatThinkingFace,
 } from "~/components/Icons";
-
+import { Roboto_Slab } from "next/font/google";
 
 export const avatarColorsTheme = [
   "#4D7CDB",
@@ -78,3 +78,9 @@ export const baseUrl =
   process.env.NODE_ENV === "production"
     ? "https://arsiptemplate.app"
     : "http://localhost:3000";
+
+export const robotoSlab = Roboto_Slab({
+  weight: ["400", "600"],
+  style: ["normal"],
+  subsets: ["latin"],
+});
