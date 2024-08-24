@@ -36,7 +36,6 @@ export default async function Home() {
   return (
     <HydrateClient>
       <Layout>
-        <Brand />
         <Suspense fallback={<SkeletonListCopyPasta />}>
           <ListCopyPasta />
         </Suspense>

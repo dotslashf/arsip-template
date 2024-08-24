@@ -15,7 +15,6 @@ export default async function EditCopyPasta({ params }: PropsPage) {
     <HydrateClient>
       <HOCAuth>
         <Layout>
-          <Brand />
           <EditCopyPastaForm id={params.id} />
         </Layout>
       </HOCAuth>

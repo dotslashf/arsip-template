@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { LogIn, LogOut, Medal, PlusIcon, UserRound } from "lucide-react";
+import {
+  LogIn,
+  LogOut,
+  Medal,
+  Package,
+  PlusIcon,
+  UserRound,
+} from "lucide-react";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
 import { type Session } from "next-auth";
@@ -32,8 +39,17 @@ export default function Navbar({ session }: NavbarProps) {
 
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
-      <div className="container px-4 lg:px-[6.5rem]">
+      <div className="container px-6 lg:px-[6.5rem]">
         <div className="flex h-12 items-center">
+          <Link
+            href={"/"}
+            className="flex items-center justify-center font-bold leading-4 text-primary"
+          >
+            <Package className="mr-1 w-6" />
+            arsip
+            <br />
+            template
+          </Link>
           <nav className="ml-auto flex items-center space-x-4">
             {isSmallDevice ? (
               <ButtonRanking />

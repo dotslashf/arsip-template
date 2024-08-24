@@ -77,7 +77,6 @@ export default function ChangeLog() {
   return (
     <HydrateClient>
       <Layout>
-        <Brand />
         <div className="mx-auto h-full w-full">
           <h1 className="mb-8 text-2xl font-bold md:text-4xl">Changelog</h1>
           <div className="space-y-6 text-justify">

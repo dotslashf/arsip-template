@@ -12,7 +12,6 @@ export default function PrivacyPolicyPage() {
   return (
     <HydrateClient>
       <Layout>
-        <Brand />
         <div className="mx-auto">
           <h1 className="mb-8 text-2xl font-bold md:text-4xl">
             Kebijakan Privasi

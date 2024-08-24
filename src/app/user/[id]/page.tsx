@@ -58,7 +58,6 @@ export default function CopyPastaFromUserById({ params }: PropsPage) {
   return (
     <HydrateClient>
       <Layout>
-        <Brand />
         <Suspense
           fallback={
             <div className="flex w-full flex-col gap-4">

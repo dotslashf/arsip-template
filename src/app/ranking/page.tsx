@@ -14,7 +14,6 @@ export default async function Ranking() {
   return (
     <HydrateClient>
       <Layout>
-        <Brand />
         <Suspense fallback={<RankSkeleton />}>
           <RankingPage />
         </Suspense>

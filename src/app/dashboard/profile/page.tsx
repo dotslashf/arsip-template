@@ -14,7 +14,6 @@ export default async function Profile() {
     <HydrateClient>
       <HOCAuth>
         <Layout>
-          <Brand />
           <ProfilePage />
         </Layout>
       </HOCAuth>

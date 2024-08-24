@@ -15,7 +15,6 @@ export default async function CreateCopyPasta() {
     <HydrateClient>
       <HOCAuth>
         <Layout>
-          <Brand />
           <CreateCopyPastaForm />
         </Layout>
       </HOCAuth>
