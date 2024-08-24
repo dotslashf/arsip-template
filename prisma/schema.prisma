@@ -21,12 +21,14 @@ model CopyPasta {
     source    OriginSource @default(Other)
     sourceUrl String?
     postedAt  DateTime     @default(now())
+    imageUrl  String?
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @default(now()) @updatedAt
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @default(now()) @updatedAt
+    approvedAt DateTime?
+    deletedAt  DateTime?
 
-    approvedAt   DateTime?
-    approvedBy   User?     @relation(name: "approvedBy", fields: [approvedById], references: [id])
+    approvedBy   User?   @relation(name: "approvedBy", fields: [approvedById], references: [id])
     approvedById String?
 
     createdBy        User               @relation(name: "createdBy", fields: [createdById], references: [id])
