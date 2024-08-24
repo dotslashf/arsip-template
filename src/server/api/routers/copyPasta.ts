@@ -1,7 +1,7 @@
 import { OriginSource, Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createCopyPastaForm } from "~/server/form/copyPasta";
+import { createCopyPastaFormServer } from "~/server/form/copyPasta";
 
 import {
   createTRPCRouter,
@@ -13,8 +13,9 @@ import { faker } from "@faker-js/faker";
 
 export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(createCopyPastaForm)
+    .input(createCopyPastaFormServer)
     .mutation(async ({ ctx, input }) => {
+
       const copyPasta = await ctx.db.copyPasta.create({
         data: {
           content: input.content,
@@ -22,6 +23,7 @@ export const copyPastaRouter = createTRPCRouter({
           sourceUrl: input.sourceUrl,
           postedAt: input.postedAt,
           createdById: ctx.session.user.id,
+          imageUrl: input.imageUrl,
           CopyPastasOnTags: {
             createMany: {
               data: input.tags.map((tag) => {

@@ -12,6 +12,15 @@ const config = {
   httpAgentOptions: {
     keepAlive: false,
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "storage.googleapis.com",
+        protocol: "https",
+        pathname: "/arsip-template/**",
+      },
+    ],
+  },
 };
 
 export default config;

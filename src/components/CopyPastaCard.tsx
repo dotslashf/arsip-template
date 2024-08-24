@@ -17,6 +17,7 @@ import CopyPastaCardAction from "./CopyPastaCardAction";
 import { sendGAEvent } from "@next/third-parties/google";
 import { robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -63,13 +64,13 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
 
   return (
     <div className="col-span-2 w-full text-justify shadow-sm lg:col-span-1">
-      <Card>
+      <Card className="flex h-full flex-col">
         <CardHeader className="pb-0">
           <CardTitle>
             <ALargeSmall className="h-6 w-6" />
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col justify-between gap-2 p-6 pt-2 hover:cursor-auto">
+        <CardContent className="flex flex-1 flex-col justify-between gap-2 p-6 pt-2 hover:cursor-auto">
           <div
             className={cn(
               "overflow-x-hidden text-sm",
@@ -83,11 +84,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           >
             <ScrollArea
               onClick={handleCopy}
-              className={cn(
-                "rounded-md",
-                copyPastaProps.fullMode ? "h-fit text-lg" : "h-36 text-sm",
-                robotoSlab.className,
-              )}
+              className={cn("rounded-md text-sm", robotoSlab.className)}
             >
               <blockquote className="cursor-pointer whitespace-pre-line">
                 {copyPastaProps.content}
@@ -109,81 +106,91 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
                 </Link>
               </div>
             )}
-          <div className="mt-2 flex flex-col gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:mt-4">
-            {copyPastaProps.isCreatorAndDateShown && (
-              <div className="flex justify-between">
-                <Badge
-                  variant={"outline"}
-                  className="w-fit"
-                  onClick={() => {
-                    router.push(`/user/${copyPastaProps.createdById}`);
-                  }}
-                >
-                  Di tambahkan oleh:{" "}
-                  {copyPastaProps.createdBy
-                    ? copyPastaProps.createdBy.name
-                    : "Anon"}
-                </Badge>
-                <div className="flex items-center">
-                  <Calendar className="mr-2 h-4 w-4" />{" "}
-                  {formatDateToHuman(copyPastaProps.postedAt ?? new Date())}
-                </div>
+        </CardContent>
+        {copyPastaProps.imageUrl && (
+          <CardFooter>
+            <Image
+              src={copyPastaProps.imageUrl}
+              alt="Doksli Image"
+              width={0}
+              height={0}
+              sizes="50vw"
+              style={{ width: "50%", height: "auto" }}
+            />
+          </CardFooter>
+        )}
+        <CardFooter className="flex flex-col gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
+          {copyPastaProps.isCreatorAndDateShown && (
+            <div className="flex justify-between">
+              <Badge
+                variant={"outline"}
+                className="w-fit"
+                onClick={() => {
+                  router.push(`/user/${copyPastaProps.createdById}`);
+                }}
+              >
+                Ditambahkan oleh:{" "}
+                {copyPastaProps.createdBy
+                  ? copyPastaProps.createdBy.name
+                  : "Anon"}
+              </Badge>
+              <div className="flex items-center">
+                <Calendar className="mr-2 h-4 w-4" />{" "}
+                {formatDateToHuman(copyPastaProps.postedAt ?? new Date())}
               </div>
-            )}
-            {copyPastaProps.CopyPastasOnTags.length ||
-            copyPastaProps.sourceUrl ? (
-              <div className="relative flex w-full items-center justify-between">
-                {copyPastaProps.CopyPastasOnTags.length ? (
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span
-                      className={cn(
-                        buttonVariants({ variant: "default", size: "xs" }),
-                      )}
-                    >
-                      {sourceEnumHash.get(copyPastaProps.source)?.icon}
-                    </span>
-                    {copyPastaProps.CopyPastasOnTags.map((tag) => (
-                      <Link
-                        href={`/?tag=${tag.tags.id}`}
-                        key={tag.tags.id}
-                        className={badgeVariants({ variant: "default" })}
-                        prefetch={false}
-                      >
-                        {tag.tags.name}
-                      </Link>
-                    ))}
-                  </div>
-                ) : null}
-                {copyPastaProps.sourceUrl ? (
-                  <div className="absolute right-0">
+            </div>
+          )}
+          {copyPastaProps.CopyPastasOnTags.length ||
+          copyPastaProps.sourceUrl ? (
+            <div className="relative flex w-full items-center justify-between">
+              {copyPastaProps.CopyPastasOnTags.length ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={cn(
+                      buttonVariants({ variant: "default", size: "xs" }),
+                    )}
+                  >
+                    {sourceEnumHash.get(copyPastaProps.source)?.icon}
+                  </span>
+                  {copyPastaProps.CopyPastasOnTags.map((tag) => (
                     <Link
-                      href={copyPastaProps.sourceUrl}
-                      className={cn(
-                        buttonVariants({ variant: "link", size: "url" }),
-                      )}
-                      onClick={() =>
-                        sendGAEvent("event", "doksli", {
-                          value: copyPastaProps.sourceUrl,
-                        })
-                      }
+                      href={`/?tag=${tag.tags.id}`}
+                      key={tag.tags.id}
+                      className={badgeVariants({ variant: "default" })}
                       prefetch={false}
                     >
-                      Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+                      {tag.tags.name}
                     </Link>
-                  </div>
-                ) : null}
-              </div>
-            ) : null}
-          </div>
-        </CardContent>
-        {copyPastaProps.isApprovalMode && (
-          <CardFooter>
+                  ))}
+                </div>
+              ) : null}
+              {copyPastaProps.sourceUrl ? (
+                <div className="absolute right-0">
+                  <Link
+                    href={copyPastaProps.sourceUrl}
+                    className={cn(
+                      buttonVariants({ variant: "link", size: "url" }),
+                    )}
+                    onClick={() =>
+                      sendGAEvent("event", "doksli", {
+                        value: copyPastaProps.sourceUrl,
+                      })
+                    }
+                    prefetch={false}
+                  >
+                    Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+                  </Link>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+          {copyPastaProps.isApprovalMode && (
             <CopyPastaCardAction
               id={copyPastaProps.id}
               isApproved={!!copyPastaProps.approvedAt}
             />
-          </CardFooter>
-        )}
+          )}
+        </CardFooter>
       </Card>
     </div>
   );

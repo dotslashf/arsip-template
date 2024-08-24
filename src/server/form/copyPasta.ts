@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { OriginSource } from "@prisma/client";
 
-export const createCopyPastaForm = z.object({
+export const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png"];
+export const MAX_FILE_SIZE = 2 * 1024 * 1024;
+
+export const baseCopyPastaForm = z.object({
   content: z
     .string()
     .min(10, {
@@ -35,6 +38,23 @@ export const createCopyPastaForm = z.object({
     }),
 });
 
-export const editCopyPastaForm = createCopyPastaForm.extend({
+export const createCopyPastaFormClient = baseCopyPastaForm.extend({
+  imageUrl: z
+    .any()
+    .refine((file: File) => {
+      if (!file) return true;
+      return ACCEPTED_IMAGE_TYPES.includes(file.type);
+    }, "Only images are allowed")
+    .refine((file: File) => {
+      if (!file) return true;
+      return file.size <= MAX_FILE_SIZE;
+    }, "Max file size is 2MB"),
+});
+
+export const createCopyPastaFormServer = baseCopyPastaForm.extend({
+  imageUrl: z.string().url().nullish(),
+});
+
+export const editCopyPastaForm = createCopyPastaFormClient.extend({
   id: z.string().uuid(),
 });

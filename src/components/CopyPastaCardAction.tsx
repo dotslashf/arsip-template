@@ -44,17 +44,18 @@ export default function CopyPastaCardAction({
     return router.push(`/copy-pasta/${id}/edit`);
   }
   return (
-    <div className="flex gap-x-2">
+    <div className="mt-4 flex w-full justify-between gap-x-2">
+      <Button variant={"yellow"} onClick={handleEdit} size={"sm"}>
+        Edit
+        <Pencil className="ml-2 w-4" />
+      </Button>
       <Button
         variant={"green"}
         onClick={handleApprove}
-        size={"icon"}
+        size={"sm"}
         disabled={isApproved}
       >
-        <Check className="w-4" />
-      </Button>
-      <Button variant={"yellow"} onClick={handleEdit} size={"icon"}>
-        <Pencil className="w-4" />
+        Setuju <Check className="ml-2 w-4" />
       </Button>
     </div>
   );

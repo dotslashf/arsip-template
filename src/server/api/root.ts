@@ -1,14 +1,11 @@
-import {
-  createCallerFactory,
-  createTRPCRouter,
-  // publicProcedure,
-} from "~/server/api/trpc";
+import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { copyPastaRouter } from "./routers/copyPasta";
 import { tagRouter } from "./routers/tag";
 import { dashboardRouter } from "./routers/dashboard";
 import { rankingRouter } from "./routers/ranking";
 import { reactionRouter } from "./routers/reaction";
 import { userRouter } from "./routers/user";
+import { uploadRouter } from "./routers/upload";
 
 /**
  * This is the primary router for your server.
@@ -22,6 +19,7 @@ export const appRouter = createTRPCRouter({
   ranking: rankingRouter,
   reaction: reactionRouter,
   user: userRouter,
+  upload: uploadRouter,
 });
 
 // export type definition of API

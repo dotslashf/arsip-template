@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import chalk from "chalk";
-import { LogTRPCRequest } from "~/lib/interface";
+import { type LogTRPCRequest } from "~/lib/interface";
 
 export function logTRPCRequest({
   ctx,
