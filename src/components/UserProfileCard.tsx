@@ -199,7 +199,7 @@ export default function UserProfileCard({
                     "items-center justify-center",
                   )}
                   href={`/?tag=${tag.count.id}`}
-                  key={tag.name}
+                  key={tag.count.id}
                 >
                   {tag.id} ({tag.count.count})
                 </Link>
