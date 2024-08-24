@@ -33,3 +33,14 @@ export interface LogTRPCRequest {
   type: "query" | "mutation" | "subscription";
   result: MiddlewareResult<object>;
 }
+
+interface ToastType {
+  message: string;
+  type: "info" | "success" | "danger" | "promise";
+  promiseFn?: Promise<unknown>;
+  promiseMsg?: {
+    success: string;
+    error: string;
+    loading: string;
+  };
+}

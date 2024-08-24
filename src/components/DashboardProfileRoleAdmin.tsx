@@ -4,7 +4,7 @@ import { api } from "~/trpc/react";
 import { Badge } from "./ui/badge";
 
 export default function DashboardProfileRoleAdmin() {
-  const list = api.dashboard.listDisapprovedCopyPasta.useInfiniteQuery(
+  const list = api.dashboard.listWaitingApprovedCopyPasta.useInfiniteQuery(
     {
       limit: 10,
     },

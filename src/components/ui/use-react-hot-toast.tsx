@@ -1,17 +1,8 @@
 import { toast as rhToast } from "react-hot-toast";
-interface toastType {
-  message: string;
-  type: "info" | "success" | "danger" | "promise";
-  promiseFn?: Promise<unknown>;
-  promiseMsg?: {
-    success: string;
-    error: string;
-    loading: string;
-  };
-}
+import { type ToastType } from "~/lib/interface";
 
 const useToast = () => {
-  const toast = ({ message, type, promiseFn, promiseMsg }: toastType): void => {
+  const toast = ({ message, type, promiseFn, promiseMsg }: ToastType): void => {
     switch (type) {
       case "success":
         rhToast.success(message);

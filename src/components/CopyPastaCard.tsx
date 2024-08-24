@@ -6,11 +6,11 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import Link from "next/link";
-import { Badge, badgeVariants } from "~/components/ui/badge";
+import { badgeVariants } from "~/components/ui/badge";
 import { type CopyPasta, type Tag } from "@prisma/client";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { buttonVariants } from "./ui/button";
-import { ALargeSmall, ArrowRight, Calendar, Link2 } from "lucide-react";
+import { ALargeSmall, ArrowRight, Calendar, Link2, Trash } from "lucide-react";
 import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import CopyPastaCardAction from "./CopyPastaCardAction";
@@ -64,7 +64,12 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
 
   return (
     <div className="col-span-2 w-full text-justify shadow-sm lg:col-span-1">
-      <Card className="flex h-full flex-col">
+      <Card className="relative flex h-full flex-col">
+        {copyPastaProps.deletedAt && (
+          <div className="absolute right-0 top-0 flex items-center rounded-md rounded-br-none rounded-tl-none bg-destructive p-3 font-mono text-destructive-foreground">
+            <Trash className="w-4" />
+          </div>
+        )}
         <CardHeader className="pb-0">
           <CardTitle>
             <ALargeSmall className="h-6 w-6" />
@@ -121,22 +126,16 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
         )}
         <CardFooter className="flex flex-col gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
           {copyPastaProps.isCreatorAndDateShown && (
-            <div className="flex justify-between">
-              <Badge
-                variant={"outline"}
-                className="w-fit"
-                onClick={() => {
-                  router.push(`/user/${copyPastaProps.createdById}`);
-                }}
-              >
+            <div className="flex w-full justify-between">
+              <Link href={`/user/${copyPastaProps.createdById}`}>
                 Ditambahkan oleh:{" "}
                 {copyPastaProps.createdBy
                   ? copyPastaProps.createdBy.name
                   : "Anon"}
-              </Badge>
+              </Link>
               <div className="flex items-center">
                 <Calendar className="mr-2 h-4 w-4" />{" "}
-                {formatDateToHuman(copyPastaProps.postedAt ?? new Date())}
+                {formatDateToHuman(copyPastaProps.createdAt ?? new Date())}
               </div>
             </div>
           )}

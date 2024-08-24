@@ -43,7 +43,7 @@ export default function EditCopyPasta({ id }: EditCopyPastaProps) {
   const utils = api.useUtils();
   const editMutation = api.dashboard.editCopyPasta.useMutation({
     async onSuccess() {
-      void utils.dashboard.listDisapprovedCopyPasta.invalidate();
+      void utils.dashboard.listWaitingApprovedCopyPasta.invalidate();
       void utils.dashboard.countCopyPastaAdmin.invalidate();
     },
   });

@@ -4,6 +4,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 import { z } from "zod";
 import { editCopyPastaForm } from "~/server/form/copyPasta";
+import { deleteBucketFile } from "~/server/util/storage";
 
 export const dashboardRouter = createTRPCRouter({
   list: protectedProcedure
@@ -21,6 +22,7 @@ export const dashboardRouter = createTRPCRouter({
         cursor: input.cursor ? { id: input.cursor } : undefined,
         where: {
           createdById: ctx.session.user.id,
+          // deletedAt: null,
           approvedAt:
             input.type === "approved"
               ? {
@@ -121,7 +123,7 @@ export const dashboardRouter = createTRPCRouter({
       return copyPasta.id;
     }),
 
-  listDisapprovedCopyPasta: protectedProcedure
+  listWaitingApprovedCopyPasta: protectedProcedure
     .input(
       z.object({
         limit: z.number().min(1).max(10).nullish(),
@@ -137,6 +139,7 @@ export const dashboardRouter = createTRPCRouter({
           approvedAt: {
             equals: null,
           },
+          deletedAt: null,
         },
         orderBy: {
           createdAt: "desc",
@@ -300,4 +303,35 @@ export const dashboardRouter = createTRPCRouter({
       isApproved,
     };
   }),
+
+  deleteById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (ctx.session.user.role !== "Admin") {
+        return;
+      }
+
+      const copy = await ctx.db.copyPasta.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (copy && copy.imageUrl) {
+        await deleteBucketFile(copy.imageUrl);
+      }
+
+      await ctx.db.copyPasta.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          deletedAt: new Date(),
+        },
+      });
+    }),
 });
