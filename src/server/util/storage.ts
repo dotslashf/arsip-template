@@ -23,7 +23,6 @@ export const generateV4WriteSignedUrl = async (
       expires: Date.now() + 15 * 60 * 1000,
       contentType,
     });
-  console.log("url", url);
   return url;
 };
 

@@ -53,8 +53,8 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
         twitter: {
-          DEFAULT: "#1da1f2",
-          hover: "#1a91da",
+          DEFAULT: "hsl(var(--twitter))",
+          hover: "hsl(var(--twitter))",
         },
         discord: {
           DEFAULT: "#7289da",

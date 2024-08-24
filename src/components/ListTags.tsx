@@ -6,6 +6,7 @@ import { api } from "~/trpc/react";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type Tag } from "@prisma/client";
+import { DAYS } from "~/lib/constant";
 
 interface ListTagsProps {
   id: string | null;
@@ -14,6 +15,7 @@ export default function ListTags({ id }: ListTagsProps) {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
     staleTime: Infinity,
     refetchOnMount: false,
+    gcTime: 7 * DAYS,
   });
   const searchParams = useSearchParams();
   const router = useRouter();

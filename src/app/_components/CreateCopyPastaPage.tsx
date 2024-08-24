@@ -36,6 +36,7 @@ export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
     staleTime: Infinity,
     refetchOnMount: false,
+    gcTime: 7 * DAYS,
   });
   const createMutation = api.copyPasta.create.useMutation();
   const getUploadUrl = api.upload.getUploadSignedUrl.useMutation();

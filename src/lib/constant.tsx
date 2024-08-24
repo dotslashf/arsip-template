@@ -84,3 +84,5 @@ export const robotoSlab = Roboto_Slab({
   style: ["normal"],
   subsets: ["latin"],
 });
+
+export const DAYS = 24 * 60 * 60 * 1000;

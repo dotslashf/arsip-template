@@ -8,14 +8,17 @@ import { type Session } from "next-auth";
 import { api } from "~/trpc/react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Badge } from "./ui/badge";
-import { sourceEnumHash } from "~/lib/constant";
+import { DAYS, sourceEnumHash } from "~/lib/constant";
 import { cn } from "~/lib/utils";
 
 interface FooterProps {
   session: Session | null;
 }
 export default function Footer({ session }: FooterProps) {
-  const [count] = api.copyPasta.count.useSuspenseQuery();
+  const [count] = api.copyPasta.count.useSuspenseQuery(undefined, {
+    staleTime: 1 * DAYS,
+    gcTime: 1 * DAYS,
+  });
 
   return (
     <footer className="w-full bg-white py-6 shadow dark:bg-card">

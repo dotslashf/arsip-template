@@ -15,7 +15,6 @@ export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure
     .input(createCopyPastaFormServer)
     .mutation(async ({ ctx, input }) => {
-
       const copyPasta = await ctx.db.copyPasta.create({
         data: {
           content: input.content,
@@ -261,6 +260,7 @@ export const copyPastaRouter = createTRPCRouter({
               source: key as OriginSource,
             },
           }),
+          fill: `var(--color-${key.toLowerCase()})`,
         };
       }),
     );
@@ -269,5 +269,49 @@ export const copyPastaRouter = createTRPCRouter({
       total,
       sources,
     };
+  }),
+
+  statisticsBySource: publicProcedure.query(async ({ ctx }) => {
+    const twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+    const copyPastas = await ctx.db.copyPasta.findMany({
+      where: {
+        createdAt: {
+          gte: twoWeeksAgo,
+        },
+      },
+    });
+
+    const groupedData: Record<
+      string,
+      { Twitter: number; Facebook: number; Other: number }
+    > = {};
+    copyPastas.forEach((cp) => {
+      const date = cp.createdAt.toISOString().split("T")[0]!;
+      const source = cp.source;
+
+      if (!groupedData[date]) {
+        groupedData[date] = { Twitter: 0, Facebook: 0, Other: 0 };
+      }
+
+      if (source in groupedData[date]) {
+        groupedData[date][source]++;
+      } else {
+        groupedData[date].Other++;
+      }
+    });
+
+    // Format data for chart
+    const chartData = Object.keys(groupedData)
+      .sort()
+      .map((date) => ({
+        date,
+        twitter: groupedData[date]?.Twitter,
+        facebook: groupedData[date]?.Facebook,
+        other: groupedData[date]?.Other,
+      }));
+
+    return chartData;
   }),
 });

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import {
+  ChartNoAxesCombined,
   LogIn,
   LogOut,
   Medal,
@@ -124,6 +125,27 @@ export default function Navbar({ session }: NavbarProps) {
                     >
                       Tambah
                       <PlusIcon className="w-4" />
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className={cn(
+                      buttonVariants({ variant: "secondary" }),
+                      "w-full items-center",
+                    )}
+                  >
+                    <Link
+                      href="/statistics"
+                      prefetch={false}
+                      className="flex w-full items-center justify-between"
+                      onClick={() =>
+                        sendGAEvent("event", "buttonClicked", {
+                          value: "statistics",
+                        })
+                      }
+                    >
+                      Statistik
+                      <ChartNoAxesCombined className="w-4" />
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />

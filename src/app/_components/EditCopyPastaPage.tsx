@@ -35,6 +35,7 @@ export default function EditCopyPasta({ id }: EditCopyPastaProps) {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
     staleTime: Infinity,
     refetchOnMount: false,
+    gcTime: 7 * DAYS,
   });
   const [copyPasta] = api.dashboard.byId.useSuspenseQuery({
     id,
