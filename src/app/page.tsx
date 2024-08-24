@@ -3,6 +3,7 @@ import { api, HydrateClient } from "~/trpc/server";
 import { ListCopyPasta } from "./_components/ListCopyPastaPage";
 import { Suspense } from "react";
 import SkeletonListCopyPasta from "~/components/SkeletonListCopyPasta";
+import Hero from "~/components/Hero";
 import { type Metadata } from "next";
 
 type Props = {
@@ -31,9 +32,15 @@ export async function generateMetadata({
 }
 
 export default async function Home() {
+  const copyPastas = await api.copyPasta.list({
+    limit: 10,
+  });
+  const texts = copyPastas.copyPastas.map((copy) => copy.content);
+
   return (
     <HydrateClient>
       <Layout>
+        <Hero texts={texts} />
         <Suspense fallback={<SkeletonListCopyPasta />}>
           <ListCopyPasta />
         </Suspense>
