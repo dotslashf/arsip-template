@@ -49,7 +49,10 @@ export default function DashboardProfileRoleUser() {
             type="approved"
           />
         </TabsContent>
-        <TabsContent value="disapproved" className="grid grid-cols-1 gap-y-2">
+        <TabsContent
+          value="disapproved"
+          className="grid grid-cols-1 gap-2 lg:gap-4"
+        >
           <ProfileCopyPastaCard
             data={listNotApproved.data}
             type="disapproved"

@@ -1,8 +1,6 @@
-// import { getServerAuthSession } from "~/server/auth";
 import Layout from "~/components/Layout";
 import { api, HydrateClient } from "~/trpc/server";
 import { ListCopyPasta } from "./_components/ListCopyPastaPage";
-import Brand from "../components/Brand";
 import { Suspense } from "react";
 import SkeletonListCopyPasta from "~/components/SkeletonListCopyPasta";
 import { type Metadata } from "next";

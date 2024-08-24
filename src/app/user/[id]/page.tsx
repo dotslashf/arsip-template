@@ -1,6 +1,5 @@
 import Layout from "~/components/Layout";
 import { api, HydrateClient } from "~/trpc/server";
-import Brand from "~/components/Brand";
 import { Suspense } from "react";
 import SkeletonCopyPasta from "~/components/SkeletonCopyPasta";
 import { type Metadata } from "next";

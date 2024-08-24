@@ -1,4 +1,3 @@
-import Brand from "~/components/Brand";
 import Layout from "~/components/Layout";
 import { HydrateClient } from "~/trpc/server";
 

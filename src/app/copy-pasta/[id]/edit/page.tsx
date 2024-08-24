@@ -1,7 +1,6 @@
 import Layout from "~/components/Layout";
 import { HydrateClient } from "~/trpc/server";
 import EditCopyPastaForm from "~/app/_components/EditCopyPastaPage";
-import Brand from "~/components/Brand";
 import HOCAuth from "~/components/HOCAuth";
 
 import type { Metadata } from "next";

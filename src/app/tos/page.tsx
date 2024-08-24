@@ -1,6 +1,5 @@
 import { type Metadata } from "next";
 import Link from "next/link";
-import Brand from "~/components/Brand";
 import Layout from "~/components/Layout";
 import { HydrateClient } from "~/trpc/server";
 
