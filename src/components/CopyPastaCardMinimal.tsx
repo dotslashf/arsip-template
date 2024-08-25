@@ -179,7 +179,10 @@ export default function CopyPastaCardMinimal({
                     Share <Share2 className="ml-2 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="text-slate-800" align="start">
+                <DropdownMenuContent
+                  className="text-slate-800 dark:text-slate-100"
+                  align="start"
+                >
                   <DropdownMenuItem
                     className="flex w-full justify-between"
                     onClick={handleCopy}
@@ -257,6 +260,7 @@ export default function CopyPastaCardMinimal({
                       })
                     }
                     prefetch={false}
+                    target="__blank"
                   >
                     Cek Doksli <Link2 className="ml-2 h-3 w-3" />
                   </Link>

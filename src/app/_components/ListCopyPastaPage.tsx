@@ -73,8 +73,8 @@ export function ListCopyPasta() {
   }
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3" id="main">
+    <div className="flex w-full flex-col gap-4" id="main">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <SearchBar />
         <Suspense fallback={<ListTagsSkeleton />}>
           <ListTags id={tag} />

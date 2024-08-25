@@ -1,4 +1,4 @@
-import { Package, PencilLine } from "lucide-react";
+import { Package, Search } from "lucide-react";
 import React from "react";
 import { buttonVariants } from "./ui/button";
 import Link from "next/link";
@@ -17,8 +17,8 @@ export default function Hero({ texts }: HeroProps) {
     <div className="relative flex min-h-96 w-full items-center justify-center overflow-hidden rounded-lg bg-white text-gray-900 transition-colors duration-300 dark:bg-card dark:text-white">
       {/* Background with infinite running text */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 -top-3 transform">
-          {[...Array(30)].map((_, i) => (
+        <div className="absolute inset-0 -right-36 -top-36 rotate-45 transform">
+          {[...Array(45)].map((_, i) => (
             <div
               key={i}
               className={`${i % 2 === 0 ? "animate-scrollText" : "animate-scrollTextReverse"} whitespace-nowrap text-sm font-semibold text-slate-800 text-opacity-20 dark:text-white/15`}
@@ -40,8 +40,8 @@ export default function Hero({ texts }: HeroProps) {
           <br />
           template
         </h1>
-        <p className="text-md mx-auto max-w-2xl font-bold dark:text-white lg:text-xl">
-          platform untuk berbagi template (copy-pasta) menarik dari netizen 🇮🇩.
+        <p className="text-md mx-auto max-w-4xl font-bold text-secondary-foreground dark:text-white lg:text-xl">
+          platform berbagi template / copy-pasta menarik dari netizen.
         </p>
         <div className="mt-6">
           <Link
@@ -51,7 +51,7 @@ export default function Hero({ texts }: HeroProps) {
             )}
           >
             Mulai Mencari
-            <PencilLine className="ml-2 w-4" />
+            <Search className="ml-2 w-4" />
           </Link>
         </div>
       </div>

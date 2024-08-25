@@ -176,6 +176,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
                       })
                     }
                     prefetch={false}
+                    target="__blank"
                   >
                     Cek Doksli <Link2 className="ml-2 h-3 w-3" />
                   </Link>
