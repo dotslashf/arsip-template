@@ -27,6 +27,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Run Prisma migrations
+ENV DATABASE_URL=${DATABASE_URL}
 RUN npm install -g prisma && prisma migrate deploy
 
 # ENV NEXT_TELEMETRY_DISABLED 1
