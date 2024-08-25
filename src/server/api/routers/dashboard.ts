@@ -332,6 +332,7 @@ export const dashboardRouter = createTRPCRouter({
         },
         data: {
           deletedAt: new Date(),
+          imageUrl: null,
         },
       });
     }),
