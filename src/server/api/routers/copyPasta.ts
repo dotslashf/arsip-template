@@ -272,47 +272,56 @@ export const copyPastaRouter = createTRPCRouter({
     };
   }),
 
-  statisticsBySource: publicProcedure.query(async ({ ctx }) => {
-    const twoWeeksAgo = new Date();
-    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+  statisticsBySource: publicProcedure
+    .input(
+      z.object({
+        days: z
+          .number()
+          .nullish()
+          .transform((val) => val ?? 7),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const daysAgo = new Date();
+      daysAgo.setDate(daysAgo.getDate() - input.days);
 
-    const copyPastas = await ctx.db.copyPasta.findMany({
-      where: {
-        createdAt: {
-          gte: twoWeeksAgo,
+      const copyPastas = await ctx.db.copyPasta.findMany({
+        where: {
+          createdAt: {
+            gte: daysAgo,
+          },
         },
-      },
-    });
+      });
 
-    const groupedData: Record<
-      string,
-      { Twitter: number; Facebook: number; Other: number }
-    > = {};
-    copyPastas.forEach((cp) => {
-      const date = cp.createdAt.toISOString().split("T")[0]!;
-      const source = cp.source;
+      const groupedData: Record<
+        string,
+        { Twitter: number; Facebook: number; Other: number }
+      > = {};
+      copyPastas.forEach((cp) => {
+        const date = cp.createdAt.toISOString().split("T")[0]!;
+        const source = cp.source;
 
-      if (!groupedData[date]) {
-        groupedData[date] = { Twitter: 0, Facebook: 0, Other: 0 };
-      }
+        if (!groupedData[date]) {
+          groupedData[date] = { Twitter: 0, Facebook: 0, Other: 0 };
+        }
 
-      if (source in groupedData[date]) {
-        groupedData[date][source]++;
-      } else {
-        groupedData[date].Other++;
-      }
-    });
+        if (source in groupedData[date]) {
+          groupedData[date][source]++;
+        } else {
+          groupedData[date].Other++;
+        }
+      });
 
-    // Format data for chart
-    const chartData = Object.keys(groupedData)
-      .sort()
-      .map((date) => ({
-        date,
-        twitter: groupedData[date]?.Twitter,
-        facebook: groupedData[date]?.Facebook,
-        other: groupedData[date]?.Other,
-      }));
+      // Format data for chart
+      const chartData = Object.keys(groupedData)
+        .sort()
+        .map((date) => ({
+          date,
+          twitter: groupedData[date]?.Twitter,
+          facebook: groupedData[date]?.Facebook,
+          other: groupedData[date]?.Other,
+        }));
 
-    return chartData;
-  }),
+      return chartData;
+    }),
 });
