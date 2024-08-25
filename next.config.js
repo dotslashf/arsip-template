@@ -7,7 +7,7 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-  swcMinify: false,
+  swcMinify: true,
   output: "standalone",
   httpAgentOptions: {
     keepAlive: false,
