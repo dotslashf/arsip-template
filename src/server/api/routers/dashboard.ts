@@ -321,7 +321,7 @@ export const dashboardRouter = createTRPCRouter({
         },
       });
 
-      if (copy && copy.imageUrl) {
+      if (copy?.imageUrl) {
         await deleteBucketFile(copy.imageUrl);
       }
 

@@ -31,6 +31,7 @@ import MultipleSelector, {
 import { badgeVariants } from "~/components/ui/badge";
 import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id } from "date-fns/locale";
+import { DAYS } from "~/lib/constant";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {

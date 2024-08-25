@@ -27,6 +27,7 @@ import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id as idLocale } from "date-fns/locale";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
+import { DAYS } from "~/lib/constant";
 
 interface EditCopyPastaProps {
   id: string;
