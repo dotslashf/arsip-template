@@ -36,7 +36,6 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          echo "${{ secrets.GCP_CREDENTIALS }}" > /home/fadhlurahman_i/projects/arsip-template/gcp-service-account-key.json
           docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
           docker push $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }}
 
@@ -44,6 +43,7 @@ jobs:
         run: |
           gcloud compute ssh --zone $GCE_INSTANCE_ZONE $GCE_INSTANCE --command '
             # Navigate to the project directory where docker-compose.yml is located
+            echo "${{ secrets.GCP_CREDENTIALS }}" > /home/fadhlurahman_i/projects/arsip-template/gcp-service-account-key.json
             cd  /home/fadhlurahman_i/projects/arsip-template
 
             export REGION=asia-southeast1
