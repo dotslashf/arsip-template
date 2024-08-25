@@ -37,7 +37,6 @@ ENV GCS_BUCKET_NAME=${GCS_BUCKET_NAME}
 # Run Prisma migrations
 RUN npm install -g prisma && prisma migrate deploy
 
-
 RUN \
     if [ -f yarn.lock ]; then SKIP_ENV_VALIDATION=1 yarn build; \
     elif [ -f package-lock.json ]; then SKIP_ENV_VALIDATION=1 npm run build; \
@@ -60,6 +59,9 @@ COPY --from=builder /app/package.json ./package.json
 
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+
+# Copy the GCP service account key file
+COPY gcp-service-account-key.json ./gcp-service-account-key.json
 
 EXPOSE 3000
 ENV PORT 3000

@@ -36,6 +36,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
+          echo "${{ secrets.GCP_SA_KEY }}" > gcp-service-account-key.json
           docker build --build-arg DATABASE_URL=${{secrets.DATABASE_URL}} --build-arg GCS_BUCKET_NAME=${{secrets.BUCKET_NAME}} -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
           docker push $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }}
 
@@ -43,8 +44,10 @@ jobs:
         run: |
           gcloud compute ssh --zone $GCE_INSTANCE_ZONE $GCE_INSTANCE --command '
             # Navigate to the project directory where docker-compose.yml is located
-            echo "${{ secrets.GCP_CREDENTIALS }}" > /home/fadhlurahman_i/projects/arsip-template/gcp-service-account-key.json
-            cd  /home/fadhlurahman_i/projects/arsip-template
+            cd /home/fadhlurahman_i/projects/arsip-template
+
+            # Create the service account key file
+            echo "${{ secrets.GCP_SA_KEY }}" > gcp-service-account-key.json
 
             export REGION=asia-southeast1
             export PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
