@@ -188,6 +188,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
             <CopyPastaCardAction
               id={copyPastaProps.id}
               isApproved={!!copyPastaProps.approvedAt}
+              isDeleted={!!copyPastaProps.deletedAt}
             />
           )}
         </CardFooter>

@@ -1,6 +1,14 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, Pie, PieChart, XAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  Pie,
+  PieChart,
+  XAxis,
+} from "recharts";
 
 import {
   Card,
@@ -12,6 +20,8 @@ import {
 import {
   type ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "~/components/ui/chart";
@@ -56,21 +66,56 @@ export function StatisticsPage() {
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig}>
-            <BarChart accessibilityLayer data={statistics}>
+            <BarChart
+              accessibilityLayer
+              data={statistics}
+              margin={{
+                top: 20,
+                right: 10,
+                left: 10,
+              }}
+            >
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="date"
                 tickLine={false}
-                tickMargin={10}
+                tickMargin={20}
                 axisLine={false}
+                tickFormatter={(value: any, _) => {
+                  const newValue = value as string;
+                  const date = newValue.split("-");
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                  return date[date.length - 1]!;
+                }}
               />
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent indicator="line" />}
               />
-              <Bar dataKey="twitter" fill="var(--color-twitter)" radius={4} />
-              <Bar dataKey="facebook" fill="var(--color-facebook)" radius={4} />
-              <Bar dataKey="other" fill="var(--color-other)" radius={4} />
+              <Bar dataKey="twitter" fill="var(--color-twitter)" radius={4}>
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Bar>
+              <Bar dataKey="facebook" fill="var(--color-facebook)" radius={4}>
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Bar>
+              <Bar dataKey="other" fill="var(--color-other)" radius={4}>
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Bar>
             </BarChart>
           </ChartContainer>
         </CardContent>
@@ -86,12 +131,15 @@ export function StatisticsPage() {
             className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
           >
             <PieChart>
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+              <ChartTooltip
+                content={<ChartTooltipContent nameKey="source" hideLabel />}
+              />
               <Pie
                 data={statisticsDonut.sources}
                 dataKey="count"
-                label
                 nameKey="source"
+                label
+                labelLine={false}
               />
             </PieChart>
           </ChartContainer>
