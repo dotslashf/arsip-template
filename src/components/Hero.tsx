@@ -34,12 +34,15 @@ export default function Hero({ texts }: HeroProps) {
 
       {/* Main content */}
       <div className="relative z-10 px-4 text-center">
-        <h1 className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/90 to-primary/80 bg-clip-text text-left text-3xl font-bold text-transparent lg:text-5xl">
+        <Link
+          href={"/"}
+          className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/90 to-primary/80 bg-clip-text text-left text-3xl font-bold text-transparent lg:text-5xl"
+        >
           <Package className="mr-1 h-5 w-5 text-primary lg:mr-3 lg:h-9 lg:w-9" />
           arsip
           <br />
           template
-        </h1>
+        </Link>
         <p className="text-md mx-auto max-w-4xl font-bold text-secondary-foreground dark:text-white lg:text-xl">
           platform berbagi template / copy-pasta menarik dari netizen.
         </p>

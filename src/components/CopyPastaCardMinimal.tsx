@@ -277,7 +277,7 @@ export default function CopyPastaCardMinimal({
                 className="font-semibold transition-colors hover:text-primary hover:underline lg:self-end"
                 prefetch={false}
               >
-                Ditambahkan oleh:{" "}
+                Diarsipkan oleh:{" "}
                 {copyPastaProps.createdBy
                   ? copyPastaProps.createdBy.name
                   : "Anon"}

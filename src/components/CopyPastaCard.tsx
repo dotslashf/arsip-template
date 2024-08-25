@@ -128,7 +128,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
           {copyPastaProps.isCreatorAndDateShown && (
             <div className="flex w-full justify-between">
               <Link href={`/user/${copyPastaProps.createdById}`}>
-                Ditambahkan oleh:{" "}
+                Diarsipkan oleh:{" "}
                 {copyPastaProps.createdBy
                   ? copyPastaProps.createdBy.name
                   : "Anon"}
