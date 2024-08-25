@@ -19,18 +19,22 @@ RUN \
 
 ##### BUILDER
 
-FROM --platform=linux/amd64 node:20-slim AS builder
+FROM --platform=linux/amd64 node:current-bullseye-slim AS builder
 ARG DATABASE_URL
 ARG NEXT_PUBLIC_CLIENTVAR
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Run Prisma migrations
+# Install OpenSSL
+RUN apt-get update -y && apt-get install -y openssl
+
+# Set the DATABASE_URL environment variable
 ENV DATABASE_URL=${DATABASE_URL}
+
+# Run Prisma migrations
 RUN npm install -g prisma && prisma migrate deploy
 
-# ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN \
     if [ -f yarn.lock ]; then SKIP_ENV_VALIDATION=1 yarn build; \
@@ -42,7 +46,7 @@ RUN \
 
 ##### RUNNER
 
-FROM --platform=linux/amd64 gcr.io/distroless/nodejs20-debian12 AS runner
+FROM --platform=linux/amd64 node:20-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
