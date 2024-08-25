@@ -42,7 +42,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-import { contextProps } from "@trpc/react-query/shared";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
