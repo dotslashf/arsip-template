@@ -1,9 +1,7 @@
-##### DEPENDENCIES
-
+# DEPS
 FROM --platform=linux/amd64 node:20-slim AS deps
 WORKDIR /app
 
-# Install Prisma Client - remove if not using Prisma
 COPY prisma ./
 
 # Install dependencies based on the preferred package manager
@@ -17,8 +15,8 @@ RUN \
     else echo "Lockfile not found." && exit 1; \
     fi
 
-##### BUILDER
 
+# BUILDER
 FROM --platform=linux/amd64 node:20-bullseye-slim AS builder
 ARG DATABASE_URL
 ARG GCS_BUCKET_NAME
@@ -47,8 +45,7 @@ RUN \
     else echo "Lockfile not found." && exit 1; \
     fi
 
-##### RUNNER
-
+# RUNNER
 FROM --platform=linux/amd64 gcr.io/distroless/nodejs20-debian12 AS runner
 WORKDIR /app
 
