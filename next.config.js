@@ -3,11 +3,26 @@
  * for Docker builds.
  */
 await import("./src/env.js");
+import TerserPlugin from "terser-webpack-plugin";
 
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: false,
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      config.optimization.minimizer = [
+        new TerserPlugin({
+          terserOptions: {
+            compress: true,
+          },
+        }),
+      ];
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return config;
+  },
   output: "standalone",
   httpAgentOptions: {
     keepAlive: false,
