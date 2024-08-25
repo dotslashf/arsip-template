@@ -26,6 +26,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Run Prisma migrations
+RUN npm install -g prisma && prisma migrate deploy
+
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN \

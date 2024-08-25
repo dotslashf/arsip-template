@@ -36,6 +36,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
+          echo "${{ secrets.GCP_CREDENTIALS }}" > /home/fadhlurahman_i/projects/arsip-template/gcp-service-account-key.json
           docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
           docker push $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }}
 
