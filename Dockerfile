@@ -19,7 +19,7 @@ RUN \
 
 ##### BUILDER
 
-FROM --platform=linux/amd64 node:current-bullseye-slim AS builder
+FROM --platform=linux/amd64 node:20-bullseye-slim AS builder
 ARG DATABASE_URL
 ARG GCS_BUCKET_NAME
 ARG NEXT_PUBLIC_CLIENTVAR
