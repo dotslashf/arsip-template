@@ -1,7 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import chalk from "chalk";
 import { type LogTRPCRequest } from "~/lib/interface";
-
 export function logTRPCRequest({
   ctx,
   end,
@@ -11,33 +10,14 @@ export function logTRPCRequest({
   type,
   input,
 }: LogTRPCRequest) {
-  const duration = end - start;
-  const timestamp = new Date().toISOString();
-  const userId = ctx.session?.user.id ?? "anonymous";
-  const status = result instanceof TRPCError ? "error" : "success";
-  const errorMessage = result instanceof TRPCError ? result.message : "";
-  const userAgent = ctx.req?.headers.get("user-agent") ?? "Unknown";
-  const method = ctx.req?.method ?? "Unknown";
-  const ip =
-    ctx.req?.ip ??
-    ctx.req?.headers.get("X-Forwarded-For") ??
-    ctx.req?.headers.get("x-real-ip") ??
-    "Unknown";
-
-  const logEntry = `
-${chalk.bgBlueBright.black(" TRPC ")}     ${chalk.grey(timestamp)}
-${chalk.yellow("Path:")}      ${chalk.cyan(path)}
-${chalk.yellow("Type:")}      ${chalk.cyan(type)}
-${chalk.yellow("Method:")}    ${chalk.cyan(method)}
-${chalk.yellow("Duration:")}  ${chalk.cyan(`${duration}ms`)}
-${chalk.yellow("User ID:")}   ${chalk.magenta(userId)}
-${chalk.yellow("IP:")}        ${chalk.magenta(ip)}
-${chalk.yellow("Status:")}    ${status === "error" ? chalk.red(status) : chalk.green(status)}
-${chalk.yellow("Input:")}     ${chalk.grey(JSON.stringify(input ?? null).slice(0, 100))}
-${chalk.yellow("User Agent:")} ${chalk.grey(userAgent)}
-${errorMessage && chalk.yellow("Error:") + "     " + chalk.red(errorMessage)}
-${chalk.grey("─".repeat(80))}
-  `;
-
-  console.log(logEntry.trim());
+  const duration = end - start,
+    timestamp = new Date().toISOString(),
+    userId = ctx.session?.user.id ?? "anonymous",
+    status = result instanceof TRPCError ? "error" : "success",
+    errorMessage = result instanceof TRPCError ? result.message : "",
+    userAgent = ctx.req?.headers.get("user-agent") ?? "Unknown",
+    method = ctx.req?.method ?? "Unknown";
+  console.log(
+    `${chalk.bgBlueBright.black(" TRPC ")} ${chalk.grey(timestamp)} | 🛤️ ${chalk.cyan(path)} | 🛠️ ${chalk.cyan(type)} | 📩 ${chalk.cyan(method)} | ⏱️ ${chalk.cyan(`${duration}ms`)} | 👤 ${chalk.magenta(userId)} | ${status === "error" ? "❌" : "✅"} ${status === "error" ? chalk.red(status) : chalk.green(status)}${errorMessage ? ` | 🛑 ${chalk.red(errorMessage)}` : ""} | 🖥️ ${chalk.grey(userAgent)} | 🔍 ${chalk.grey(JSON.stringify(input ?? null).slice(0, 100))}`,
+  );
 }
