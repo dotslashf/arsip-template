@@ -21,7 +21,7 @@ RUN \
 
 FROM --platform=linux/amd64 node:current-bullseye-slim AS builder
 ARG DATABASE_URL
-ARG BUCKET_NAME
+ARG GCS_BUCKET_NAME
 ARG NEXT_PUBLIC_CLIENTVAR
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -32,7 +32,7 @@ RUN apt-get update -y && apt-get install -y openssl
 
 # Set the DATABASE_URL environment variable
 ENV DATABASE_URL=${DATABASE_URL}
-ENV BUCKET_NAME=${BUCKET_NAME}
+ENV GCS_BUCKET_NAME=${GCS_BUCKET_NAME}
 
 # Run Prisma migrations
 RUN npm install -g prisma && prisma migrate deploy

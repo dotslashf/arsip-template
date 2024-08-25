@@ -36,7 +36,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build --build-arg DATABASE_URL=${{secrets.DATABASE_URL}} --build-arg BUCKET_NAME=${{secrets.BUCKET_NAME}} -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
+          docker build --build-arg DATABASE_URL=${{secrets.DATABASE_URL}} --build-arg GCS_BUCKET_NAME=${{secrets.BUCKET_NAME}} -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
           docker push $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }}
 
       - name: Deploy to VM
