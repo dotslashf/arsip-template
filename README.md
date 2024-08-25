@@ -1,29 +1,31 @@
-# Create T3 App
+# 📦arsip-template
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+url: [📌 web](https://arsiptemplate.app)
 
-## What's next? How do I make an app with this?
+<img src="https://github.com/user-attachments/assets/6115d5aa-aa21-47ac-a189-51cc56b55a66" alt="Website" width="75%" height="75%">
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+### platform berbagi template / copy-pasta menarik dari netizen. 🇮🇩
+> build using t3 stack, nextjs, trpc, prisma, postgres, nextauth
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+#### Main Feature:
+1. Manageable copy-pasta content with create, (approved, edit, delete, **admin-only**) ✍️
+2. Reactions for copy-pasta, laugh, thinking, agree, angry 🤣🤔💯😡
+3. Personal profile page 🚶
+4. Search using tags, userId, query 🔍
+5. Statistics page to look whats being up to date 📊
+6. Light/dark mode 🦇☀️
+7. Share copy-pasta, copy-paste or tweet 🔄️
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+#### More features:
+```🤔💭```
 
-## Learn More
+#### Local development:
+```
+- cp .env.example to .env
+- ...
+- Working on progress 🛠️
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+###### Contribution and Issue
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+you can create PR with ideas 💡 or submit issue with bug 🐛
