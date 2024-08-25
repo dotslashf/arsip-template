@@ -35,30 +35,27 @@ jobs:
           gcloud auth configure-docker $REGION-docker.pkg.dev
 
       - name: Build and push Docker image
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" > gcp-service-account-key.json
-          docker build --build-arg DATABASE_URL=${{secrets.DATABASE_URL}} --build-arg GCS_BUCKET_NAME=${{secrets.BUCKET_NAME}} -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
+          echo "$GCP_SA_KEY" > gcp-service-account-key.json
+          docker build --build-arg DATABASE_URL=${{secrets.DATABASE_URL}} --build-arg GCS_BUCKET_NAME=${{secrets.BUCKET_NAME}} --build-arg GCP_SA_KEY="$GCP_SA_KEY" -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
           docker push $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }}
 
       - name: Deploy to VM
         run: |
           gcloud compute ssh --zone $GCE_INSTANCE_ZONE $GCE_INSTANCE --command '
-            # Navigate to the project directory where docker-compose.yml is located
             cd /home/fadhlurahman_i/projects/arsip-template
-
-            # Create the service account key file
-            echo "${{ secrets.GCP_SA_KEY }}" > gcp-service-account-key.json
 
             export REGION=asia-southeast1
             export PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
             export GITHUB_SHA=${{ github.sha }}
+            export GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}"
 
-            # Pull the new image
+            # Update docker-compose.yml to include GCP_SA_KEY
+            sed -i "s|GCP_SA_KEY=.*|GCP_SA_KEY=$GCP_SA_KEY|g" docker-compose.yml
+
             docker-compose pull
-
-            # Stop and remove the existing container (if any)
             docker-compose down
-
-            # Start the new container with the updated image
             docker-compose up -d
           '

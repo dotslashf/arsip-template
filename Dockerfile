@@ -22,6 +22,7 @@ RUN \
 FROM --platform=linux/amd64 node:20-bullseye-slim AS builder
 ARG DATABASE_URL
 ARG GCS_BUCKET_NAME
+ARG GCP_SA_KEY
 ARG NEXT_PUBLIC_CLIENTVAR
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -30,9 +31,10 @@ COPY . .
 # Install OpenSSL
 RUN apt-get update -y && apt-get install -y openssl
 
-# Set the DATABASE_URL environment variable
+# Set environment variables
 ENV DATABASE_URL=${DATABASE_URL}
 ENV GCS_BUCKET_NAME=${GCS_BUCKET_NAME}
+ENV GCP_SA_KEY=${GCP_SA_KEY}
 
 # Run Prisma migrations
 RUN npm install -g prisma && prisma migrate deploy
@@ -60,8 +62,8 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
-# Copy the GCP service account key file
-COPY gcp-service-account-key.json ./gcp-service-account-key.json
+# Copy the GCP service account key from the builder stage
+COPY --from=builder /app/gcp-service-account-key.json ./gcp-service-account-key.json
 
 EXPOSE 3000
 ENV PORT 3000
