@@ -10,10 +10,12 @@ import { useState } from "react";
 export interface CopyPastaCardActionProps {
   id: string;
   isApproved: boolean;
+  isDeleted: boolean;
 }
 export default function CopyPastaCardAction({
   id,
   isApproved,
+  isDeleted,
 }: CopyPastaCardActionProps) {
   const utils = api.useUtils();
   const router = useRouter();
@@ -27,6 +29,7 @@ export default function CopyPastaCardAction({
   const deleteMutation = api.dashboard.deleteById.useMutation({
     onSuccess() {
       void utils.dashboard.listWaitingApprovedCopyPasta.invalidate();
+      void utils.dashboard.countCopyPastaAdmin.invalidate();
     },
   });
 
@@ -68,7 +71,12 @@ export default function CopyPastaCardAction({
   return (
     <div className="mt-4 flex w-full justify-between gap-x-2">
       <div className="flex space-x-2">
-        <Button variant={"yellow"} onClick={handleEdit} size={"sm"}>
+        <Button
+          variant={"yellow"}
+          onClick={handleEdit}
+          size={"sm"}
+          disabled={isDeleted}
+        >
           Edit
           <Pencil className="ml-2 w-4" />
         </Button>
@@ -82,6 +90,7 @@ export default function CopyPastaCardAction({
             variant={"destructive"}
             onClick={() => setIsSureDelete(true)}
             size={"sm"}
+            disabled={isDeleted}
           >
             Hapus
             <Trash className="ml-2 w-4" />

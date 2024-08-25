@@ -80,6 +80,7 @@ export const copyPastaRouter = createTRPCRouter({
           approvedAt: {
             not: null,
           },
+          deletedAt: null,
         },
         orderBy: {
           approvedAt: "desc",

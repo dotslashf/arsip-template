@@ -289,6 +289,7 @@ export const dashboardRouter = createTRPCRouter({
         approvedAt: {
           equals: null,
         },
+        deletedAt: null,
       },
     });
 
