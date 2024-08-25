@@ -42,6 +42,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
+import { contextProps } from "@trpc/react-query/shared";
 
 export interface CopyPastaCardWithTagsProps extends CopyPasta {
   CopyPastasOnTags: ({ tags: Tag } & {
@@ -127,7 +128,9 @@ export default function CopyPastaCardMinimal({
               )}
             >
               <blockquote className="whitespace-pre-line">
-                {copyPastaProps.content}
+                {copyPastaProps.isFullMode
+                  ? copyPastaProps.content
+                  : trimContent(copyPastaProps.content, 255)}
               </blockquote>
             </ScrollArea>
           </div>
@@ -189,11 +192,11 @@ export default function CopyPastaCardMinimal({
                   >
                     Salin <Clipboard className="ml-2 w-4" />
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link
                       href={`https://twitter.com/intent/post?text=${trimContent(copyPastaProps.content, 150)}&url=arsiptemplate.app/copy-pasta/${copyPastaProps.id}`}
                       target="_blank"
-                      className="flex w-full justify-between"
+                      className="flex w-full items-center justify-between"
                     >
                       Tweet{" "}
                       <FontAwesomeIcon
@@ -270,12 +273,16 @@ export default function CopyPastaCardMinimal({
           ) : null}
           {copyPastaProps.isCreatorAndDateShown && (
             <div className="flex w-full flex-col items-center justify-between gap-2 lg:flex-row">
-              <span className="font-semibold lg:self-end">
+              <Link
+                href={`/user/${copyPastaProps.createdById}`}
+                className="font-semibold transition-colors hover:text-primary hover:underline lg:self-end"
+                prefetch={false}
+              >
                 Ditambahkan oleh:{" "}
                 {copyPastaProps.createdBy
                   ? copyPastaProps.createdBy.name
                   : "Anon"}
-              </span>
+              </Link>
               <div className="flex flex-col space-y-2 lg:items-end">
                 <div className="flex items-center justify-center">
                   Kejadian <CalendarDays className="mx-2 h-4 w-4" />{" "}

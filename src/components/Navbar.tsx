@@ -87,6 +87,7 @@ export default function Navbar({ session }: NavbarProps) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="mt-2 w-44">
                   <DropdownMenuItem
+                    asChild
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       "w-full items-center",
@@ -106,8 +107,30 @@ export default function Navbar({ session }: NavbarProps) {
                       <UserRound className="w-4" />
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem
+                    asChild
+                    className={cn(
+                      buttonVariants({ variant: "ghost" }),
+                      "w-full items-center",
+                    )}
+                  >
+                    <Link
+                      href="/statistics"
+                      prefetch={false}
+                      className="flex w-full items-center justify-between"
+                      onClick={() =>
+                        sendGAEvent("event", "buttonClicked", {
+                          value: "statistics",
+                        })
+                      }
+                    >
+                      Statistik
+                      <ChartNoAxesCombined className="w-4" />
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
+                    asChild
                     className={cn(
                       buttonVariants({ variant: "default" }),
                       "w-full items-center",
@@ -129,27 +152,7 @@ export default function Navbar({ session }: NavbarProps) {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    className={cn(
-                      buttonVariants({ variant: "secondary" }),
-                      "w-full items-center",
-                    )}
-                  >
-                    <Link
-                      href="/statistics"
-                      prefetch={false}
-                      className="flex w-full items-center justify-between"
-                      onClick={() =>
-                        sendGAEvent("event", "buttonClicked", {
-                          value: "statistics",
-                        })
-                      }
-                    >
-                      Statistik
-                      <ChartNoAxesCombined className="w-4" />
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
+                    asChild
                     className={cn(
                       buttonVariants({ variant: "destructive" }),
                       "w-full items-center",
