@@ -45,7 +45,7 @@ const chartConfig = {
 
 export function StatisticsPage() {
   const [statistics] = api.copyPasta.statisticsBySource.useSuspenseQuery(
-    undefined,
+    {},
     {
       gcTime: 1 * DAYS,
     },
@@ -79,7 +79,7 @@ export function StatisticsPage() {
               <XAxis
                 dataKey="date"
                 tickLine={false}
-                tickMargin={20}
+                tickMargin={10}
                 axisLine={false}
                 tickFormatter={(value: any, _) => {
                   const newValue = value as string;
