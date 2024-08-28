@@ -1,4 +1,4 @@
-import { Package, Search } from "lucide-react";
+import { Package, PenBoxIcon, Search } from "lucide-react";
 import React from "react";
 import { buttonVariants } from "./ui/button";
 import Link from "next/link";
@@ -46,14 +46,22 @@ export default function Hero({ texts }: HeroProps) {
         <p className="text-md mx-auto max-w-4xl font-bold text-secondary-foreground dark:text-white lg:text-xl">
           platform berbagi template / copy-pasta menarik dari netizen.
         </p>
-        <div className="mt-6">
+        <div className="mt-6 flex flex-col items-center justify-center gap-4">
           <Link
-            href={"#main"}
+            href={"/copy-pasta/create"}
             className={cn(
               buttonVariants({ variant: "destructive", size: "lg" }),
+              "",
             )}
           >
-            Mulai Mencari
+            Mulai Mengarsipkan
+            <PenBoxIcon className="ml-2 h-4 w-4" />
+          </Link>
+          <Link
+            href={"#main"}
+            className={cn(buttonVariants({ variant: "secondary", size: "lg" }))}
+          >
+            Cari Template
             <Search className="ml-2 w-4" />
           </Link>
         </div>
