@@ -3,30 +3,43 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const userRouter = createTRPCRouter({
-  byId: publicProcedure
+  byIdentifier: publicProcedure
     .input(
       z.object({
-        id: z.string(),
+        identifier: z.string(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const user = await ctx.db.user.findUnique({
-        where: {
-          id: input.id,
-        },
-        select: {
-          id: true,
-          name: true,
-          role: true,
-          Reactions: true,
-          rank: true,
-          accounts: {
-            select: {
-              provider: true,
-            },
+      const columns = {
+        id: true,
+        name: true,
+        role: true,
+        Reactions: true,
+        rank: true,
+        avatarSeed: true,
+        username: true,
+        accounts: {
+          select: {
+            provider: true,
           },
         },
+      };
+
+      let user = await ctx.db.user.findFirst({
+        where: {
+          username: input.identifier,
+        },
+        select: columns,
       });
+
+      if (!user) {
+        user = await ctx.db.user.findUnique({
+          where: {
+            id: input.identifier,
+          },
+          select: columns,
+        });
+      }
 
       if (!user)
         throw new TRPCError({

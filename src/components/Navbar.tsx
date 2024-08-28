@@ -21,11 +21,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import Avatar from "boring-avatars";
 import { ToggleTheme } from "./ToggleTheme";
 import { sendGAEvent } from "@next/third-parties/google";
-import { avatarColorsTheme } from "~/lib/constant";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import Avatar from "./ui/avatar";
 
 interface NavbarProps {
   session: Session | null;
@@ -37,7 +36,6 @@ export default function Navbar({ session }: NavbarProps) {
     sendGAEvent("event", "buttonClicked", { value: `signOut` });
     void signOut();
   }
-
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
       <div className="container px-6 lg:px-[6.5rem]">
@@ -75,15 +73,19 @@ export default function Navbar({ session }: NavbarProps) {
             ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div>
+                  <span className="rounded-full border border-secondary-foreground">
                     <Avatar
-                      name={session.user.id}
-                      colors={avatarColorsTheme}
-                      size={38}
-                      variant="beam"
+                      seed={
+                        session?.user.avatarSeed ?? session?.user.id ?? "Anon"
+                      }
+                      size={{
+                        height: 40,
+                        width: 40,
+                      }}
+                      zoom={130}
                     />
                     <span className="sr-only">Toggle user menu</span>
-                  </div>
+                  </span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="mt-2 w-44">
                   <DropdownMenuItem

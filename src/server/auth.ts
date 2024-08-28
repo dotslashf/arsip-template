@@ -26,6 +26,8 @@ declare module "next-auth" {
       // ...other properties
       role: UserRole;
       rank: Rank;
+      avatarSeed: string | null;
+      username: string | null;
       loginProvider?: string;
     } & DefaultSession["user"];
   }
@@ -35,6 +37,8 @@ declare module "next-auth" {
     role: UserRole;
     rankId: string;
     rank: Rank;
+    avatarSeed: string;
+    username: string;
   }
 }
 
@@ -124,6 +128,8 @@ export const authOptions: NextAuthOptions = {
           },
           data: {
             rankId: rank?.id,
+            avatarSeed: user.id,
+            username: user.id.slice(0, 15),
           },
         });
       }
@@ -134,6 +140,8 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           role: user.role,
           rank,
+          avatarSeed: user.avatarSeed,
+          username: user.username,
           loginProvider: account?.provider,
         },
       };

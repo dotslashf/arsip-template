@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.6.0",
+    "@dicebear/collection": "^9.2.1",
+    "@dicebear/core": "^9.2.1",
     "@faker-js/faker": "^8.4.1",
     "@feedback-fish/react": "^1.2.2",
     "@fortawesome/free-brands-svg-icons": "^6.6.0",

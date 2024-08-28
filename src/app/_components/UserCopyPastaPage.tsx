@@ -12,13 +12,13 @@ interface UserCopyPastaProps {
   id: string;
 }
 export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
-  const [user] = api.user.byId.useSuspenseQuery({
-    id,
+  const [user] = api.user.byIdentifier.useSuspenseQuery({
+    identifier: id,
   });
   const [{ pages }, allCopyPastas] =
     api.copyPasta.list.useSuspenseInfiniteQuery(
       {
-        byUserId: id,
+        byUserId: user.id,
         limit: 6,
       },
       {
@@ -40,28 +40,32 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
       rank: user.rank!,
       role: user.role,
       name: user.name,
+      username: user.username,
+      avatarSeed: user.avatarSeed,
       loginProvider: user.accounts[0]?.provider ?? "",
     },
   };
 
   return (
     <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
-      <div className="flex w-full max-w-md items-center justify-center">
+      <div className="flex w-full items-center justify-center lg:max-w-md">
         <UserProfileCard session={session} isPreviewMode={true} />
       </div>
-      <div className="grid flex-1 grid-cols-2 gap-2">
+      <div className="grid w-full flex-1 grid-cols-1 gap-4">
         {pages
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
                 return (
-                  <CopyPastaCardMinimal
-                    key={copy.id}
-                    copyPastaProps={{
-                      ...copy,
-                      isCreatorAndDateShown: false,
-                      isReactionSummaryShown: true,
-                    }}
-                  />
+                  <div className="col-span-3">
+                    <CopyPastaCardMinimal
+                      key={copy.id}
+                      copyPastaProps={{
+                        ...copy,
+                        isCreatorAndDateShown: false,
+                        isReactionSummaryShown: true,
+                      }}
+                    />
+                  </div>
                 );
               }),
             )

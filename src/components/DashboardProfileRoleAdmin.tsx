@@ -2,6 +2,7 @@ import ProfileCopyPastaCard from "~/components/ProfileCopyPastaCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
 import { Badge } from "./ui/badge";
+import { LoaderCircle } from "lucide-react";
 
 export default function DashboardProfileRoleAdmin() {
   const list = api.dashboard.listWaitingApprovedCopyPasta.useInfiniteQuery(
@@ -23,7 +24,8 @@ export default function DashboardProfileRoleAdmin() {
       },
     );
 
-  const [count] = api.dashboard.countCopyPastaAdmin.useSuspenseQuery();
+  const { data: count, isLoading } =
+    api.dashboard.countCopyPastaAdmin.useQuery();
 
   return (
     <div className="w-full lg:w-3/4">
@@ -32,11 +34,16 @@ export default function DashboardProfileRoleAdmin() {
           <TabsTrigger className="w-full" value="disapproved">
             Perlu disetujui{" "}
             <Badge variant={"destructive"} className="ml-2">
-              {count.isNotApproved}
+              {isLoading && <LoaderCircle className="w-3 animate-spin" />}
+              {count && count.isNotApproved}
             </Badge>
           </TabsTrigger>
           <TabsTrigger className="w-full" value="approvedByUserId">
-            Yang disetujui <Badge className="ml-2">{count.isApproved}</Badge>
+            Yang disetujui{" "}
+            <Badge className="ml-2">
+              {isLoading && <LoaderCircle className="w-3 animate-spin" />}
+              {count && count.isApproved}
+            </Badge>
           </TabsTrigger>
         </TabsList>
         <TabsContent

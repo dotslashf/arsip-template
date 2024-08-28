@@ -1,14 +1,13 @@
 import { type Session } from "next-auth";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
-import Avatar from "boring-avatars";
 import { Badge, badgeVariants } from "./ui/badge";
-import { avatarColorsTheme, baseUrl } from "~/lib/constant";
-import { Edit, Share2 } from "lucide-react";
+import { baseUrl, parseErrorMessages } from "~/lib/constant";
+import { Edit, RotateCw, Share2, Undo2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useState } from "react";
+import { type z } from "zod";
+import { useCallback, useEffect, useState } from "react";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import useToast from "./ui/use-react-hot-toast";
@@ -17,6 +16,10 @@ import { cn } from "~/lib/utils";
 import ReactionSummaryProfile from "./ReactionSummaryProfile";
 import Link from "next/link";
 import { sendGAEvent } from "@next/third-parties/google";
+import { v4 as uuidv4 } from "uuid";
+import { editProfile } from "~/server/form/user";
+import { Label } from "./ui/label";
+import Avatar from "./ui/avatar";
 
 interface UserProfileCardProps {
   session: Session | null;
@@ -27,41 +30,6 @@ export default function UserProfileCard({
   session,
   isPreviewMode,
 }: UserProfileCardProps) {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const editProfileName = z.object({
-    name: z.string(),
-  });
-  const form = useForm<z.infer<typeof editProfileName>>({
-    resolver: zodResolver(editProfileName),
-    defaultValues: {
-      name: session?.user.name ?? "Anon",
-    },
-  });
-  const editNameMutation = api.dashboard.editName.useMutation();
-
-  const toast = useToast();
-
-  function onSubmit(values: z.infer<typeof editProfileName>) {
-    if (session?.user.name === values.name) {
-      setIsEditMode(!isEditMode);
-      return;
-    }
-    toast({
-      message: "",
-      promiseFn: editNameMutation.mutateAsync({
-        ...values,
-      }),
-      type: "promise",
-      promiseMsg: {
-        success: "Nama sudah diubah ya!",
-        loading: "🔥 Sedang memasak",
-        error: "Duh, gagal nih",
-      },
-    });
-    session!.user.name = values.name;
-    setIsEditMode(!isEditMode);
-  }
-
   const { data: reactions } = api.reaction.getReactionsByUserId.useQuery(
     {
       userId: session!.user.id,
@@ -70,7 +38,6 @@ export default function UserProfileCard({
       staleTime: Infinity,
     },
   );
-
   const { data: topTags } = api.tag.getTopTagsByUserId.useQuery(
     {
       userId: session!.user.id,
@@ -79,6 +46,81 @@ export default function UserProfileCard({
       staleTime: Infinity,
     },
   );
+  const editNameMutation = api.dashboard.editProfile.useMutation({
+    onSuccess(data) {
+      session!.user.name = data.name;
+      session!.user.username = data.username;
+      session!.user.avatarSeed = data.avatarSeed;
+      setIsEditMode(!isEditMode);
+      setAvatarPreviousState([]);
+    },
+  });
+
+  const [avatarSeed, setAvatarSeed] = useState(
+    session?.user.avatarSeed ?? session?.user.id ?? "Anon",
+  );
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [avatarPreviousState, setAvatarPreviousState] = useState<string[]>([]);
+
+  const form = useForm<z.infer<typeof editProfile>>({
+    resolver: zodResolver(editProfile),
+    defaultValues: {
+      name: session?.user.name ?? "Anon",
+      avatarSeed: session?.user.avatarSeed ?? session?.user.id ?? "Anon",
+      username:
+        session?.user.username ?? session?.user.id.slice(0, 15) ?? "Anon",
+    },
+  });
+
+  const toast = useToast();
+
+  function onSubmit(values: z.infer<typeof editProfile>) {
+    if (
+      session?.user.name === values.name &&
+      session?.user.avatarSeed === avatarSeed &&
+      session.user.username === values.username
+    ) {
+      setIsEditMode(!isEditMode);
+      return;
+    }
+    toast({
+      message: "",
+      promiseFn: editNameMutation.mutateAsync({
+        ...values,
+        avatarSeed,
+      }),
+      type: "promise",
+      promiseMsg: {
+        success: "Profile telah diupdate 🫂",
+        loading: "🔥 Sedang memasak",
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        error: (err) => `${parseErrorMessages(err)}`,
+      },
+    });
+  }
+
+  const handleRandomAvatar = useCallback(() => {
+    const uuid = uuidv4();
+    setAvatarSeed(uuid);
+    setAvatarPreviousState((prev) => {
+      let state = [...prev, avatarSeed];
+      if (state.length > 10) {
+        state = state.slice(1, state.length);
+      }
+      return state;
+    });
+  }, [avatarSeed]);
+
+  const handlePreviousAvatar = useCallback(() => {
+    setAvatarPreviousState((prev) => {
+      const newState = [...prev];
+      const lastSeed = newState.pop();
+      if (lastSeed) {
+        setAvatarSeed(lastSeed);
+      }
+      return newState;
+    });
+  }, []);
 
   function handleShareProfile() {
     navigator.clipboard
@@ -105,10 +147,11 @@ export default function UserProfileCard({
       <CardHeader className="flex flex-col items-center space-y-2 p-6">
         <span className="rounded-full border-2 border-secondary-foreground">
           <Avatar
-            name={session?.user.id ?? "John Doe"}
-            colors={avatarColorsTheme}
-            size={64}
-            variant="beam"
+            size={{
+              width: 110,
+              height: 110,
+            }}
+            seed={avatarSeed}
           />
         </span>
         <div className="w-full space-y-1 text-center">
@@ -117,7 +160,7 @@ export default function UserProfileCard({
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  className="flex w-full flex-col items-center space-y-2"
+                  className="flex w-full flex-col items-center space-y-2 pt-8"
                 >
                   <FormField
                     control={form.control}
@@ -131,9 +174,56 @@ export default function UserProfileCard({
                       </FormItem>
                     )}
                   />
-                  <Button variant={"green"} size={"icon"} type="submit">
-                    <Edit className="h-3 w-3" />
-                  </Button>
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem className="w-full space-y-0">
+                        <Label htmlFor="username" className="sr-only">
+                          Username
+                        </Label>
+                        <div className="relative">
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
+                            @
+                          </span>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="username"
+                              className="pl-7"
+                              aria-label="Enter username"
+                              {...field}
+                            />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="flex w-full justify-between">
+                    <Button variant={"green"} size={"icon"} type="submit">
+                      <Edit className="w-4" />
+                    </Button>
+                    <div className="flex space-x-2">
+                      <Button
+                        variant={"default"}
+                        size={"icon"}
+                        onClick={handlePreviousAvatar}
+                        type="button"
+                        disabled={avatarPreviousState.length === 0}
+                      >
+                        <Undo2 className="w-4" />
+                      </Button>
+                      <Button
+                        variant={"default"}
+                        size={"icon"}
+                        onClick={handleRandomAvatar}
+                        type="button"
+                      >
+                        <RotateCw className="w-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </form>
               </Form>
             ) : (
@@ -141,6 +231,12 @@ export default function UserProfileCard({
                 <span className="py-2 font-bold">
                   {session?.user.name ?? "Anon"}
                 </span>
+                <Badge variant={"ghost"} className="py-1 font-bold">
+                  @
+                  {session?.user.username ??
+                    session?.user.id.slice(0, 15) ??
+                    "Anon"}
+                </Badge>
                 {!isPreviewMode && (
                   <Button
                     variant={"outline"}

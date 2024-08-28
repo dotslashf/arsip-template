@@ -99,6 +99,9 @@ model User {
     rankId    String?
     rank      Rank?      @relation(fields: [rankId], references: [id])
     Reactions Reaction[]
+
+    avatarSeed String?
+    username   String? @unique
 }
 
 model Rank {

@@ -3,6 +3,7 @@ import { type DefaultArgs } from "@prisma/client/runtime/library";
 import { type MiddlewareResult } from "@trpc/server/unstable-core-do-not-import";
 import { type Session } from "next-auth";
 import { type NextRequest } from "next/server";
+import { Renderable, ValueOrFunction } from "react-hot-toast";
 
 export interface DataInterface {
   copyPastas: string[];
@@ -40,7 +41,7 @@ interface ToastType {
   promiseFn?: Promise<unknown>;
   promiseMsg?: {
     success: string;
-    error: string;
+    error: ValueOrFunction<Renderable, any>;
     loading: string;
   };
 }

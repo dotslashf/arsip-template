@@ -18,6 +18,10 @@ export const avatarColorsTheme = [
   "#A5C8E2",
 ];
 
+export const avatarColorsThemeWithoutHash = avatarColorsTheme.map((color) =>
+  color.slice(1, color.length),
+);
+
 export const sourceEnumHash = new Map([
   [
     "Twitter",
@@ -86,3 +90,24 @@ export const robotoSlab = Roboto_Slab({
 });
 
 export const DAYS = 24 * 60 * 60 * 1000;
+
+export const USER_PROFILE = {
+  name: {
+    min: 5,
+    max: 30,
+  },
+  username: {
+    min: 6,
+    max: 15,
+  },
+};
+
+// export const
+export const parseErrorMessages = (error: Record<string, any>) => {
+  const message = error["shape"]["message"] as string;
+  if (message.toLowerCase().includes("unique")) {
+    return "Data sudah ada!";
+  } else {
+    return "Duh, gagal nih! 🤯";
+  }
+};

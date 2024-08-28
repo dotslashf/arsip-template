@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { Badge } from "~/components/ui/badge";
 import {
   Table,
@@ -18,8 +17,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
-import Avatar from "boring-avatars";
-import { avatarColorsTheme } from "~/lib/constant";
+import Link from "next/link";
+import Avatar from "~/components/ui/avatar";
 
 export default function RankingPage() {
   const [rankings] = api.ranking.topUsers.useSuspenseQuery(undefined, {
@@ -28,7 +27,6 @@ export default function RankingPage() {
   const [rankingLists] = api.ranking.list.useSuspenseQuery(undefined, {
     staleTime: Infinity,
   });
-  const router = useRouter();
 
   return (
     <div className="mx-auto w-full">
@@ -68,7 +66,7 @@ export default function RankingPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[50px]"></TableHead>
+              <TableHead className="w-24"></TableHead>
               <TableHead>Tukang Arsip</TableHead>
               <TableHead className="text-center">Rank</TableHead>
               <TableHead className="w-24 text-center"># Arsip</TableHead>
@@ -78,32 +76,32 @@ export default function RankingPage() {
             {rankings.map((rank, i) => {
               const rankPosition = i + 1;
               return (
-                <TableRow
+                <Link
+                  href={`/user/${rank.username ? rank.username : rank.id}`}
+                  prefetch={false}
+                  legacyBehavior
                   key={rank.id}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    router.push(`/user/${rank.id}`);
-                  }}
                 >
-                  <TableCell className="font-medium">{rankPosition}</TableCell>
-                  <TableCell className="flex items-center transition-colors hover:text-blue-500">
-                    <Avatar
-                      name={rank.id}
-                      colors={avatarColorsTheme}
-                      size={38}
-                      variant="beam"
-                    />
-                    <span className="ml-4">
-                      {getMedal(rankPosition)} {rank.name}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Badge>{rank.rank?.title}</Badge>
-                  </TableCell>
-                  <TableCell className="w-24 text-center">
-                    {rank._count.CopyPastaCreatedBy}
-                  </TableCell>
-                </TableRow>
+                  <TableRow className="cursor-pointer">
+                    <TableCell className="text-center font-medium">
+                      {rankPosition}
+                    </TableCell>
+                    <TableCell className="flex items-center">
+                      <span className="mr-4 rounded-full border-2 border-secondary-foreground">
+                        <Avatar seed={rank.avatarSeed ?? rank.id} zoom={130} />
+                      </span>
+                      <Badge variant={"ghost"}>
+                        {getMedal(rankPosition)} {rank.name}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Badge>{rank.rank?.title}</Badge>
+                    </TableCell>
+                    <TableCell className="w-24 text-center">
+                      {rank._count.CopyPastaCreatedBy}
+                    </TableCell>
+                  </TableRow>
+                </Link>
               );
             })}
           </TableBody>

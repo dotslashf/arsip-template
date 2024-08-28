@@ -16,7 +16,7 @@ export async function generateMetadata({
 }: PropsPage): Promise<Metadata> {
   const id = params.id;
 
-  const user = await api.user.byId({ id });
+  const user = await api.user.byIdentifier({ identifier: id });
   if (!user) {
     return notFound();
   }

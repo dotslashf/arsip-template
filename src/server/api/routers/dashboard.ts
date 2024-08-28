@@ -1,10 +1,15 @@
 import { TRPCError } from "@trpc/server";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  protectedProcedureLimited,
+} from "~/server/api/trpc";
 
 import { z } from "zod";
 import { editCopyPastaForm } from "~/server/form/copyPasta";
 import { deleteBucketFile } from "~/server/util/storage";
+import { editProfile } from "~/server/form/user";
 
 export const dashboardRouter = createTRPCRouter({
   list: protectedProcedure
@@ -59,21 +64,20 @@ export const dashboardRouter = createTRPCRouter({
       };
     }),
 
-  editName: protectedProcedure
-    .input(
-      z.object({
-        name: z.string().max(50),
-      }),
-    )
+  editProfile: protectedProcedureLimited
+    .input(editProfile)
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.user.update({
+      const user = await ctx.db.user.update({
         where: {
           id: ctx.session.user.id,
         },
         data: {
           name: input.name,
+          avatarSeed: input.avatarSeed,
+          username: input.username,
         },
       });
+      return user;
     }),
 
   approveById: protectedProcedure
