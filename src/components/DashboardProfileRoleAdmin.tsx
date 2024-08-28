@@ -35,14 +35,14 @@ export default function DashboardProfileRoleAdmin() {
             Perlu disetujui{" "}
             <Badge variant={"destructive"} className="ml-2">
               {isLoading && <LoaderCircle className="w-3 animate-spin" />}
-              {count && count.isNotApproved}
+              {count?.isNotApproved}
             </Badge>
           </TabsTrigger>
           <TabsTrigger className="w-full" value="approvedByUserId">
             Yang disetujui{" "}
             <Badge className="ml-2">
               {isLoading && <LoaderCircle className="w-3 animate-spin" />}
-              {count && count.isApproved}
+              {count?.isApproved}
             </Badge>
           </TabsTrigger>
         </TabsList>

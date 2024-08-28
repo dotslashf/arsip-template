@@ -1,25 +1,27 @@
 import { type Session } from "next-auth";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
-import { Badge, badgeVariants } from "./ui/badge";
+import { Badge } from "./ui/badge";
 import { baseUrl, parseErrorMessages } from "~/lib/constant";
 import { Edit, RotateCw, Share2, Undo2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type z } from "zod";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import useToast from "./ui/use-react-hot-toast";
 import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
 import ReactionSummaryProfile from "./ReactionSummaryProfile";
-import Link from "next/link";
 import { sendGAEvent } from "@next/third-parties/google";
 import { v4 as uuidv4 } from "uuid";
 import { editProfile } from "~/server/form/user";
 import { Label } from "./ui/label";
 import Avatar from "./ui/avatar";
+import Tag from "./ui/tags";
+import { type Tag as TagType } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 interface UserProfileCardProps {
   session: Session | null;
@@ -61,6 +63,7 @@ export default function UserProfileCard({
   );
   const [isEditMode, setIsEditMode] = useState(false);
   const [avatarPreviousState, setAvatarPreviousState] = useState<string[]>([]);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof editProfile>>({
     resolver: zodResolver(editProfile),
@@ -109,6 +112,9 @@ export default function UserProfileCard({
       }
       return state;
     });
+    sendGAEvent("event", "buttonClick", {
+      value: `randomAvatar`,
+    });
   }, [avatarSeed]);
 
   const handlePreviousAvatar = useCallback(() => {
@@ -119,6 +125,9 @@ export default function UserProfileCard({
         setAvatarSeed(lastSeed);
       }
       return newState;
+    });
+    sendGAEvent("event", "buttonClick", {
+      value: "randomAvatarPrevious",
     });
   }, []);
 
@@ -136,6 +145,13 @@ export default function UserProfileCard({
       })
       .catch((err) => console.log(err));
   }
+
+  const handleTagClick = (tag: TagType) => {
+    sendGAEvent("event", "buttonClicked", {
+      value: `tag:${tag.name}`,
+    });
+    return router.push(`/?tag=${tag.id}`);
+  };
 
   return (
     <Card
@@ -288,17 +304,20 @@ export default function UserProfileCard({
           <span>Tags:</span>
           <div className="grid grid-cols-2 gap-2">
             {topTags?.map((tag) => {
+              const now = new Date();
+              const formattedTag = {
+                createdAt: now,
+                id: tag.count.id,
+                name: `${tag.id} (${tag.count.count})`,
+                updatedAt: now,
+              };
               return (
-                <Link
-                  className={cn(
-                    badgeVariants({ variant: "outline" }),
-                    "items-center justify-center",
-                  )}
-                  href={`/?tag=${tag.count.id}`}
+                <Tag
                   key={tag.count.id}
-                >
-                  {tag.id} ({tag.count.count})
-                </Link>
+                  tagContent={formattedTag}
+                  onClick={() => handleTagClick(formattedTag)}
+                  className="rounded-sm shadow-sm hover:bg-primary hover:text-primary-foreground"
+                />
               );
             })}
           </div>

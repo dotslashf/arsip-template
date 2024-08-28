@@ -6,8 +6,7 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import Link from "next/link";
-import { badgeVariants } from "~/components/ui/badge";
-import { type CopyPasta, type Tag, type $Enums } from "@prisma/client";
+import { type Tag as TagType } from "@prisma/client";
 import { cn, formatDateToHuman, trimContent } from "~/lib/utils";
 import { Button, buttonVariants } from "./ui/button";
 import {
@@ -24,7 +23,7 @@ import useToast from "./ui/use-react-hot-toast";
 import { ScrollArea } from "./ui/scroll-area";
 import { sendGAEvent } from "@next/third-parties/google";
 import { robotoSlab, sourceEnumHash } from "~/lib/constant";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Reaction from "./Reaction";
 import ReactionSummary from "./ReactionSummary";
 import {
@@ -42,40 +41,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
-
-export interface CopyPastaCardWithTagsProps extends CopyPasta {
-  CopyPastasOnTags: ({ tags: Tag } & {
-    copyPastaId: string;
-    tagId: string;
-  })[];
-  createdBy?: {
-    id: string;
-    name: string | null;
-  };
-  reactions?: {
-    copyPastaId: string;
-    userId: string;
-    emotion: $Enums.EmotionType;
-    _count: {
-      emotion: number;
-    };
-  }[];
-  isFullMode?: boolean;
-  isCreatorAndDateShown?: boolean;
-  isReactionSummaryShown?: boolean;
-}
-
-export interface CopyPastaProps {
-  copyPastaProps: CopyPastaCardWithTagsProps;
-}
+import {} from "@prisma/client";
+import Tag from "./ui/tags";
+import { type CardCopyPastaMinimalProps } from "~/lib/interface";
 
 export default function CopyPastaCardMinimal({
   copyPastaProps,
-}: CopyPastaProps) {
+}: CardCopyPastaMinimalProps) {
   const toast = useToast();
   const router = useRouter();
   copyPastaProps.isCreatorAndDateShown =
     copyPastaProps.isCreatorAndDateShown ?? true;
+  const searchParams = useSearchParams();
+  const currentTag = searchParams.get("tag");
 
   function handleCopy() {
     navigator.clipboard
@@ -96,10 +74,21 @@ export default function CopyPastaCardMinimal({
     return router.push(`/copy-pasta/${id}`);
   }
 
+  const handleTagClick = (tag: TagType, isActive: boolean) => {
+    const currentParams = new URLSearchParams(searchParams);
+    if (isActive) {
+      currentParams.delete("tag");
+    } else {
+      currentParams.set("tag", tag.id);
+      sendGAEvent("event", "buttonClicked", {
+        value: `tag:${tag.name}`,
+      });
+    }
+    return router.push(`?${currentParams.toString()}`);
+  };
+
   return (
-    <div
-      className={cn("col-span-3 w-full text-justify shadow-sm lg:col-span-1")}
-    >
+    <div className={cn("col-span-3 w-full shadow-sm lg:col-span-1")}>
       <Card className="h-full">
         <CardHeader className="pb-0">
           <CardTitle>
@@ -233,20 +222,23 @@ export default function CopyPastaCardMinimal({
                   <span
                     className={cn(
                       buttonVariants({ variant: "default", size: "xs" }),
+                      "rounded-sm",
                     )}
                   >
                     {sourceEnumHash.get(copyPastaProps.source)?.icon}
                   </span>
-                  {copyPastaProps.CopyPastasOnTags.map((tag) => (
-                    <Link
-                      href={`/?tag=${tag.tags.id}`}
-                      key={tag.tags.id}
-                      className={badgeVariants({ variant: "default" })}
-                      prefetch={false}
-                    >
-                      {tag.tags.name}
-                    </Link>
-                  ))}
+                  {copyPastaProps.CopyPastasOnTags.map((tag) => {
+                    const isActive = currentTag === tag.tags.id;
+                    return (
+                      <Tag
+                        key={tag.tags.id}
+                        onClick={() => handleTagClick(tag.tags, isActive)}
+                        tagContent={tag.tags}
+                        active={isActive}
+                        className="rounded-sm shadow-sm hover:bg-primary hover:text-primary-foreground"
+                      />
+                    );
+                  })}
                 </div>
               ) : null}
               {copyPastaProps.sourceUrl ? (

@@ -6,8 +6,7 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import Link from "next/link";
-import { badgeVariants } from "~/components/ui/badge";
-import { type CopyPasta, type Tag } from "@prisma/client";
+import { type CopyPasta, type Tag as TagType } from "@prisma/client";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { ALargeSmall, ArrowRight, Calendar, Link2, Trash } from "lucide-react";
@@ -18,26 +17,10 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Tag from "./ui/tags";
+import { type CardCopyPastaProps } from "~/lib/interface";
 
-export interface CopyPastaCardWithTagsProps extends CopyPasta {
-  CopyPastasOnTags: ({ tags: Tag } & {
-    copyPastaId: string;
-    tagId: string;
-  })[];
-  createdBy?: {
-    id: string;
-    name: string | null;
-  };
-  fullMode?: boolean;
-  isApprovalMode?: boolean;
-  isCreatorAndDateShown?: boolean;
-}
-
-export interface CopyPastaProps {
-  copyPastaProps: CopyPastaCardWithTagsProps;
-}
-
-export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
+export default function CopyPastaCard({ copyPastaProps }: CardCopyPastaProps) {
   const toast = useToast();
   const router = useRouter();
   copyPastaProps.isCreatorAndDateShown =
@@ -63,7 +46,7 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
   }
 
   return (
-    <div className="col-span-2 w-full text-justify shadow-sm lg:col-span-1">
+    <div className="col-span-2 w-full shadow-sm lg:col-span-1">
       <Card className="relative flex h-full flex-col">
         {copyPastaProps.deletedAt && (
           <div className="absolute right-0 top-0 flex items-center rounded-md rounded-br-none rounded-tl-none bg-destructive p-3 font-mono text-destructive-foreground">
@@ -152,14 +135,12 @@ export default function CopyPastaCard({ copyPastaProps }: CopyPastaProps) {
                     {sourceEnumHash.get(copyPastaProps.source)?.icon}
                   </span>
                   {copyPastaProps.CopyPastasOnTags.map((tag) => (
-                    <Link
-                      href={`/?tag=${tag.tags.id}`}
+                    <Tag
+                      tagContent={tag.tags}
                       key={tag.tags.id}
-                      className={badgeVariants({ variant: "default" })}
-                      prefetch={false}
-                    >
-                      {tag.tags.name}
-                    </Link>
+                      onClick={(_) => null}
+                      className="rounded-sm shadow-sm hover:bg-primary hover:text-primary-foreground"
+                    />
                   ))}
                 </div>
               ) : null}

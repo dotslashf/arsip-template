@@ -1,9 +1,13 @@
-import { type PrismaClient } from "@prisma/client";
+import {
+  type PrismaClient,
+  type Tag as TagType,
+  type CopyPasta,
+} from "@prisma/client";
 import { type DefaultArgs } from "@prisma/client/runtime/library";
 import { type MiddlewareResult } from "@trpc/server/unstable-core-do-not-import";
 import { type Session } from "next-auth";
 import { type NextRequest } from "next/server";
-import { Renderable, ValueOrFunction } from "react-hot-toast";
+import { type Renderable, type ValueOrFunction } from "react-hot-toast";
 
 export interface DataInterface {
   copyPastas: string[];
@@ -44,4 +48,48 @@ interface ToastType {
     error: ValueOrFunction<Renderable, any>;
     loading: string;
   };
+}
+
+export interface CopyPastaCardMinimalProps extends CopyPasta {
+  CopyPastasOnTags: ({ tags: TagType } & {
+    copyPastaId: string;
+    tagId: string;
+  })[];
+  createdBy?: {
+    id: string;
+    name: string | null;
+  };
+  reactions?: {
+    copyPastaId: string;
+    userId: string;
+    emotion: $Enums.EmotionType;
+    _count: {
+      emotion: number;
+    };
+  }[];
+  isFullMode?: boolean;
+  isCreatorAndDateShown?: boolean;
+  isReactionSummaryShown?: boolean;
+}
+
+export interface CopyPastaCardProps extends CopyPasta {
+  CopyPastasOnTags: ({ tags: TagType } & {
+    copyPastaId: string;
+    tagId: string;
+  })[];
+  createdBy?: {
+    id: string;
+    name: string | null;
+  };
+  fullMode?: boolean;
+  isApprovalMode?: boolean;
+  isCreatorAndDateShown?: boolean;
+}
+
+export interface CardCopyPastaMinimalProps {
+  copyPastaProps: CopyPastaCardMinimalProps;
+}
+
+export interface CardCopyPastaProps {
+  copyPastaProps: CopyPastaCardProps;
 }

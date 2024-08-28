@@ -1,12 +1,12 @@
 "use client";
 
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
-import { Badge } from "./ui/badge";
 import { api } from "~/trpc/react";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useRouter, useSearchParams } from "next/navigation";
-import { type Tag } from "@prisma/client";
+import { type Tag as TagType } from "@prisma/client";
 import { DAYS } from "~/lib/constant";
+import Tag from "./ui/tags";
 
 interface ListTagsProps {
   id: string | null;
@@ -20,17 +20,21 @@ export default function ListTags({ id }: ListTagsProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const handleTagClick = (tag: Tag) => {
+  const handleTagClick = (tag: TagType, isActive: boolean) => {
     const currentParams = new URLSearchParams(searchParams);
-    currentParams.set("tag", tag.id);
-    sendGAEvent("event", "buttonClicked", {
-      value: `tag:${tag.name}`,
-    });
-    router.push(`?${currentParams.toString()}`);
+    if (isActive) {
+      currentParams.delete("tag");
+    } else {
+      currentParams.set("tag", tag.id);
+      sendGAEvent("event", "buttonClicked", {
+        value: `tag:${tag.name}`,
+      });
+    }
+    return router.push(`?${currentParams.toString()}`);
   };
 
   return (
-    <ScrollArea className="col-span-3 w-full whitespace-nowrap rounded-md">
+    <ScrollArea className="col-span-3 w-full whitespace-nowrap border-t py-2">
       <div className="flex w-max space-x-2 py-2">
         {[...tags]
           .sort((a, b) => {
@@ -39,16 +43,13 @@ export default function ListTags({ id }: ListTagsProps) {
             return 0;
           })
           .map((tag) => (
-            <Badge
+            <Tag
               key={tag.id}
-              onClick={() => handleTagClick(tag)}
-              className={
-                "shadow-sm hover:bg-primary hover:text-primary-foreground"
-              }
-              variant={id === tag.id ? "default" : "outline"}
-            >
-              {tag.name}
-            </Badge>
+              onClick={() => handleTagClick(tag, id === tag.id)}
+              tagContent={tag}
+              active={id === tag.id}
+              className="rounded-sm shadow-sm hover:bg-primary hover:text-primary-foreground"
+            />
           ))}
       </div>
       <ScrollBar orientation="horizontal" />
