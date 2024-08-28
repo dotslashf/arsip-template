@@ -217,7 +217,7 @@ export default function UserProfileCard({
                     )}
                   />
                   <div className="flex w-full justify-between">
-                    <Button variant={"green"} size={"icon"} type="submit">
+                    <Button variant={"confirm"} size={"icon"} type="submit">
                       <Edit className="w-4" />
                     </Button>
                     <div className="flex space-x-2">

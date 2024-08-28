@@ -38,7 +38,7 @@ export default function Navbar({ session }: NavbarProps) {
   }
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
-      <div className="container px-6 lg:px-[6.5rem]">
+      <div className="container px-4 lg:px-[6.5rem]">
         <div className="flex h-12 items-center">
           <Link
             href={"/"}

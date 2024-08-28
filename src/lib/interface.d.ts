@@ -86,6 +86,29 @@ export interface CopyPastaCardProps extends CopyPasta {
   isCreatorAndDateShown?: boolean;
 }
 
+export interface CardCopyPastaMinimal extends CopyPasta {
+  CopyPastasOnTags: ({ tags: TagType } & {
+    copyPastaId: string;
+    tagId: string;
+  })[];
+  createdBy?: {
+    id: string;
+    name: string | null;
+  };
+  reactions?: {
+    copyPastaId: string;
+    userId: string;
+    emotion: $Enums.EmotionType;
+    _count: {
+      emotion: number;
+    };
+  }[];
+}
+
+export interface CardProps {
+  copyPasta: CardCopyPastaMinimal;
+}
+
 export interface CardCopyPastaMinimalProps {
   copyPastaProps: CopyPastaCardMinimalProps;
 }

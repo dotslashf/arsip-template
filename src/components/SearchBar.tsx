@@ -55,8 +55,8 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="col-span-3 w-full">
-      <div className="col-span-3 flex flex-col">
+    <div className="w-full">
+      <div className="flex flex-col">
         <div className="relative flex-1">
           {isSearching && (
             <div className="absolute z-10 mt-14 flex w-full items-center justify-center rounded-md border bg-primary-foreground px-3 py-2 dark:text-accent">

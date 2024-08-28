@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import { createAvatar } from "@dicebear/core";
-import { notionistsNeutral, notionists } from "@dicebear/collection";
+import { notionists } from "@dicebear/collection";
 import { avatarColorsThemeWithoutHash } from "~/lib/constant";
 
 export default function useAvatar(seed: string, scale = 100) {
@@ -13,7 +13,7 @@ export default function useAvatar(seed: string, scale = 100) {
       scale,
       backgroundColor: avatarColorsThemeWithoutHash,
     }).toDataUri();
-  }, [seed]);
+  }, [scale, seed]);
 
   return avatar;
 }

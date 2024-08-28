@@ -6,7 +6,6 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import Link from "next/link";
-import { type CopyPasta, type Tag as TagType } from "@prisma/client";
 import { cn, formatDateToHuman } from "~/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { ALargeSmall, ArrowRight, Calendar, Link2, Trash } from "lucide-react";

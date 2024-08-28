@@ -34,7 +34,7 @@ export default function ListTags({ id }: ListTagsProps) {
   };
 
   return (
-    <ScrollArea className="col-span-3 w-full whitespace-nowrap border-t py-2">
+    <ScrollArea className="w-full whitespace-nowrap border-b border-t py-2">
       <div className="flex w-max space-x-2 py-2">
         {[...tags]
           .sort((a, b) => {

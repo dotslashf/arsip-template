@@ -8,9 +8,9 @@ import { Suspense } from "react";
 import ListTags from "~/components/ListTags";
 import { sendGAEvent } from "@next/third-parties/google";
 import ListTagsSkeleton from "~/components/ListTagsSkeleton";
-import CopyPastaCardMinimal from "~/components/CopyPastaCardMinimal";
 import dynamic from "next/dynamic";
 import { Skeleton } from "~/components/ui/skeleton";
+import CardMinimal from "~/components/CopyPasta/CardMinimal";
 
 const SearchBar = dynamic(() => import("../../components/SearchBar"), {
   ssr: false,
@@ -54,13 +54,13 @@ export function ListCopyPasta() {
     if (isFetchingNextPage) {
       return (
         <span className="flex items-center">
-          Sedang Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
+          Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
         </span>
       );
     } else if (hasNextPage) {
       return (
         <span className="flex items-center">
-          Muat Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
+          Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
         </span>
       );
     } else {
@@ -74,23 +74,21 @@ export function ListCopyPasta() {
 
   return (
     <div className="flex w-full flex-col gap-4" id="main">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <SearchBar />
-        <Suspense fallback={<ListTagsSkeleton />}>
-          <ListTags id={tag} />
-        </Suspense>
+      <SearchBar />
+      <Suspense fallback={<ListTagsSkeleton />}>
+        <ListTags id={tag} />
+      </Suspense>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-3">
         {pages
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
                 return (
-                  <CopyPastaCardMinimal
+                  <div
                     key={copy.id}
-                    copyPastaProps={{
-                      ...copy,
-                      isCreatorAndDateShown: false,
-                      isReactionSummaryShown: true,
-                    }}
-                  />
+                    className="col-span-3 w-full shadow-sm md:col-span-2 lg:col-span-1"
+                  >
+                    <CardMinimal copyPasta={copy} />
+                  </div>
                 );
               }),
             )

@@ -18,6 +18,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
+        disabled: "cursor-not-allowed text-slate-400",
         link: "text-primary underline-offset-4 hover:underline",
         confirm:
           "focus:outline-none text-white bg-confirm hover:bg-green-800 focus:ring-4 focus:ring-confirm font-medium dark:bg-confirm dark:focus:ring-confirm",
@@ -32,7 +33,7 @@ const buttonVariants = cva(
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
-        url: "h-9 rounded-md text-xs",
+        url: "h-6 text-xs",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         xs: "p-1",

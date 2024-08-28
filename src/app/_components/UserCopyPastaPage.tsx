@@ -56,9 +56,8 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
                 return (
-                  <div className="col-span-3">
+                  <div className="col-span-3" key={copy.id}>
                     <CopyPastaCardMinimal
-                      key={copy.id}
                       copyPastaProps={{
                         ...copy,
                         isCreatorAndDateShown: false,

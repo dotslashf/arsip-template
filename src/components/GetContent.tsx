@@ -11,13 +11,13 @@ export default function GetContent({
   if (isFetchingNextPage) {
     return (
       <span className="flex items-center">
-        Sedang Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
+        Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
       </span>
     );
   } else if (hasNextPage) {
     return (
       <span className="flex items-center">
-        Muat Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
+        Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
       </span>
     );
   } else {

@@ -1,15 +1,14 @@
 import { type InfiniteData } from "@tanstack/react-query";
-import CopyPastaCard, {
-  type CopyPastaCardWithTagsProps,
-} from "./CopyPastaCard";
+import CopyPastaCard from "./CopyPastaCard";
 import SkeletonCopyPasta from "./SkeletonCopyPasta";
 import { Button } from "./ui/button";
 import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
+import { type CopyPastaCardProps } from "~/lib/interface";
 
 interface ProfileCopyPastaCardProps {
   type: "approved" | "disapproved";
   data?: InfiniteData<{
-    copyPastas: CopyPastaCardWithTagsProps[];
+    copyPastas: CopyPastaCardProps[];
     nextCursor: string | undefined;
   }>;
   fn: {
@@ -30,13 +29,13 @@ export default function ProfileCopyPastaCard({
     if (fn.isFetchingNextPage) {
       return (
         <span className="flex items-center">
-          Sedang Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
+          Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
         </span>
       );
     } else if (fn.hasNextPage) {
       return (
         <span className="flex items-center">
-          Muat Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
+          Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
         </span>
       );
     } else {

@@ -34,7 +34,7 @@ export default async function Layout(props: LayoutProps) {
   return (
     <main className="flex min-h-screen flex-col items-center">
       <Navbar session={session} />
-      <div className="container mb-auto flex flex-col items-center justify-center gap-y-10 px-6 pb-10 pt-20 lg:gap-y-14 lg:px-[6.5rem] lg:pt-24">
+      <div className="container mb-auto flex flex-col items-center justify-center gap-y-10 px-4 pb-10 pt-20 lg:gap-y-14 lg:px-[6.5rem] lg:pt-24">
         {childrenWithSession}
       </div>
       <Footer session={session} />

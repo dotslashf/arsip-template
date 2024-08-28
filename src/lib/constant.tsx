@@ -1,6 +1,9 @@
-import { CircleHelp } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import {
+  faTwitter,
+  faFacebook,
+  faDiaspora,
+} from "@fortawesome/free-brands-svg-icons";
 import { EmotionType } from "@prisma/client";
 import {
   FluentEmojiFlatFaceWithSymbolsOnMouth,
@@ -44,7 +47,7 @@ export const sourceEnumHash = new Map([
     {
       label: "Lainnya",
       value: "Other",
-      icon: <CircleHelp className="h-3 w-3" />,
+      icon: <FontAwesomeIcon icon={faDiaspora} className="h-3 w-3" />,
     },
   ],
 ]);
@@ -102,9 +105,9 @@ export const USER_PROFILE = {
   },
 };
 
-// export const
 export const parseErrorMessages = (error: Record<string, any>) => {
-  const message = error["shape"]["message"] as string;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const message = error.shape.message as string;
   if (message.toLowerCase().includes("unique")) {
     return "Data sudah ada!";
   } else {
