@@ -1,9 +1,9 @@
 import { type InfiniteData } from "@tanstack/react-query";
 import SkeletonCopyPasta from "./SkeletonCopyPasta";
 import { Button } from "./ui/button";
-import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 import { type CardCopyPastaMinimal } from "~/lib/interface";
 import CardDashboard from "./CopyPasta/CardDashboard";
+import GetContent from "./GetContent";
 
 interface ProfileCopyPastaCardProps {
   type: "approved" | "disapproved";
@@ -25,28 +25,6 @@ export default function DashboardListCopyPastaCards({
   type,
   isApprovalMode,
 }: ProfileCopyPastaCardProps) {
-  function getContent() {
-    if (fn.isFetchingNextPage) {
-      return (
-        <span className="flex items-center">
-          Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
-        </span>
-      );
-    } else if (fn.hasNextPage) {
-      return (
-        <span className="flex items-center">
-          Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
-        </span>
-      );
-    } else {
-      return (
-        <span className="flex items-center">
-          Tidak Ada Template Lagi <Skull className="ml-2 h-4 w-4" />
-        </span>
-      );
-    }
-  }
-
   return (
     <div className="grid w-full gap-4 rounded-md bg-secondary p-3">
       {data
@@ -70,7 +48,10 @@ export default function DashboardListCopyPastaCards({
         disabled={!fn.hasNextPage || fn.isFetchingNextPage}
         className="w-full"
       >
-        {getContent()}
+        <GetContent
+          hasNextPage={fn.hasNextPage}
+          isFetchingNextPage={fn.isFetchingNextPage}
+        />
       </Button>
     </div>
   );

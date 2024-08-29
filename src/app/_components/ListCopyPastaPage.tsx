@@ -3,7 +3,6 @@
 import { useSearchParams } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
-import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 import { Suspense } from "react";
 import ListTags from "~/components/ListTags";
 import { sendGAEvent } from "@next/third-parties/google";
@@ -12,6 +11,7 @@ import dynamic from "next/dynamic";
 import { Skeleton } from "~/components/ui/skeleton";
 import CardMinimal from "~/components/CopyPasta/CardMinimal";
 import { ANALYTICS_EVENT } from "~/lib/constant";
+import GetContent from "~/components/GetContent";
 
 const SearchBar = dynamic(() => import("../../components/SearchBar"), {
   ssr: false,
@@ -53,28 +53,6 @@ export function ListCopyPasta() {
     });
   }
 
-  function getContent() {
-    if (isFetchingNextPage) {
-      return (
-        <span className="flex items-center">
-          Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
-        </span>
-      );
-    } else if (hasNextPage) {
-      return (
-        <span className="flex items-center">
-          Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
-        </span>
-      );
-    } else {
-      return (
-        <span className="flex items-center">
-          Tidak Ada Template Lagi <Skull className="ml-2 h-4 w-4" />
-        </span>
-      );
-    }
-  }
-
   return (
     <div className="flex w-full flex-col gap-4" id="main">
       <SearchBar />
@@ -101,7 +79,10 @@ export function ListCopyPasta() {
         onClick={handleNextList}
         disabled={!hasNextPage || isFetchingNextPage}
       >
-        {getContent()}
+        <GetContent
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       </Button>
     </div>
   );

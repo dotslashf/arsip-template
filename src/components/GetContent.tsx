@@ -1,4 +1,4 @@
-import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
+import { ArrowDown, CheckCheck, LoaderCircle } from "lucide-react";
 
 interface GetContentProps {
   isFetchingNextPage: boolean;
@@ -23,7 +23,7 @@ export default function GetContent({
   } else {
     return (
       <span className="flex items-center">
-        Tidak Ada Template Lagi <Skull className="ml-2 h-4 w-4" />
+        Udah habis kontennya <CheckCheck className="ml-2 h-4 w-4" />
       </span>
     );
   }
