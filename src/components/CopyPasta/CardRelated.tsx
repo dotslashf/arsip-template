@@ -31,6 +31,13 @@ export default function CardRelated({ copyPasta }: CardProps) {
     return router.push(`/?${currentParams.toString()}`);
   };
 
+  const handleSourceClick = () => {
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `source.${copyPasta.source}`,
+    });
+    return router.push(`?source=${copyPasta.source}`);
+  };
+
   return (
     <Card className="h-full">
       <CardHeader className="pb-0">
@@ -77,6 +84,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
               buttonVariants({ variant: "secondary", size: "xs" }),
               "cursor-pointer gap-2 rounded-sm px-2 text-xs",
             )}
+            onClick={handleSourceClick}
           >
             {sourceEnumHash.get(copyPasta.source)?.icon}{" "}
             {sourceEnumHash.get(copyPasta.source)?.label}

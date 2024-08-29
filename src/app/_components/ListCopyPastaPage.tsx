@@ -12,6 +12,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 import CardMinimal from "~/components/CopyPasta/CardMinimal";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import GetContent from "~/components/GetContent";
+import { OriginSource } from "@prisma/client";
 
 const SearchBar = dynamic(() => import("../../components/SearchBar"), {
   ssr: false,
@@ -31,6 +32,7 @@ export function ListCopyPasta() {
   const search = searchParams.get("search");
   const tag = searchParams.get("tag");
   const byUserId = searchParams.get("byUserId");
+  const source = searchParams.get("source") as OriginSource;
   const [{ pages }, allCopyPastas] =
     api.copyPasta.list.useSuspenseInfiniteQuery(
       {
@@ -38,6 +40,7 @@ export function ListCopyPasta() {
         search,
         tag,
         byUserId,
+        source,
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
