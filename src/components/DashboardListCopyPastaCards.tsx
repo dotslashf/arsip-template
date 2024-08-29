@@ -1,14 +1,14 @@
 import { type InfiniteData } from "@tanstack/react-query";
-import CopyPastaCard from "./CopyPastaCard";
 import SkeletonCopyPasta from "./SkeletonCopyPasta";
 import { Button } from "./ui/button";
 import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
-import { type CopyPastaCardProps } from "~/lib/interface";
+import { type CardCopyPastaMinimal } from "~/lib/interface";
+import CardDashboard from "./CopyPasta/CardDashboard";
 
 interface ProfileCopyPastaCardProps {
   type: "approved" | "disapproved";
   data?: InfiniteData<{
-    copyPastas: CopyPastaCardProps[];
+    copyPastas: CardCopyPastaMinimal[];
     nextCursor: string | undefined;
   }>;
   fn: {
@@ -19,7 +19,7 @@ interface ProfileCopyPastaCardProps {
   isApprovalMode?: boolean;
 }
 
-export default function ProfileCopyPastaCard({
+export default function DashboardListCopyPastaCards({
   data,
   fn,
   type,
@@ -48,20 +48,16 @@ export default function ProfileCopyPastaCard({
   }
 
   return (
-    <>
+    <div className="grid w-full gap-4 rounded-md bg-secondary p-3">
       {data
         ? data.pages.map((page) =>
             page.copyPastas.map((copy) => {
               return (
-                <CopyPastaCard
+                <CardDashboard
+                  copyPasta={copy}
                   key={copy.id}
-                  copyPastaProps={{
-                    ...copy,
-                    isApprovalMode:
-                      type === "disapproved" &&
-                      !copy.fullMode &&
-                      isApprovalMode,
-                  }}
+                  isApprovalMode={type === "disapproved" && isApprovalMode}
+                  type={type}
                 />
               );
             }),
@@ -72,10 +68,10 @@ export default function ProfileCopyPastaCard({
       <Button
         onClick={fn.fetchNextPage}
         disabled={!fn.hasNextPage || fn.isFetchingNextPage}
-        className="col-span-2"
+        className="w-full"
       >
         {getContent()}
       </Button>
-    </>
+    </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { sendGAEvent } from "@next/third-parties/google";
 import { type Session } from "next-auth";
-import CopyPastaCardMinimal from "~/components/CopyPastaCardMinimal";
+import CardMinimal from "~/components/CopyPasta/CardMinimal";
 import GetContent from "~/components/GetContent";
 import { Button } from "~/components/ui/button";
 import UserProfileCard from "~/components/UserProfileCard";
@@ -36,7 +36,7 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
   const session: Session = {
     expires: "",
     user: {
-      id,
+      id: user.id,
       rank: user.rank!,
       role: user.role,
       name: user.name,
@@ -51,19 +51,13 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
       <div className="flex w-full items-center justify-center lg:max-w-md">
         <UserProfileCard session={session} isPreviewMode={true} />
       </div>
-      <div className="grid w-full flex-1 grid-cols-1 gap-4">
+      <div className="grid gap-4">
         {pages
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
                 return (
-                  <div className="col-span-3" key={copy.id}>
-                    <CopyPastaCardMinimal
-                      copyPastaProps={{
-                        ...copy,
-                        isCreatorAndDateShown: false,
-                        isReactionSummaryShown: true,
-                      }}
-                    />
+                  <div className="col-span-2 w-full shadow-sm" key={copy.id}>
+                    <CardMinimal copyPasta={copy} />
                   </div>
                 );
               }),

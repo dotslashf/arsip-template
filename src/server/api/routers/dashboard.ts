@@ -4,6 +4,7 @@ import {
   createTRPCRouter,
   protectedProcedure,
   protectedProcedureLimited,
+  protectedProcedureRoleAdmin,
 } from "~/server/api/trpc";
 
 import { z } from "zod";
@@ -80,7 +81,7 @@ export const dashboardRouter = createTRPCRouter({
       return user;
     }),
 
-  approveById: protectedProcedure
+  approveById: protectedProcedureRoleAdmin
     .input(
       z.object({
         id: z.string().uuid(),
@@ -127,7 +128,7 @@ export const dashboardRouter = createTRPCRouter({
       return copyPasta.id;
     }),
 
-  listWaitingApprovedCopyPasta: protectedProcedure
+  listWaitingApprovedCopyPasta: protectedProcedureRoleAdmin
     .input(
       z.object({
         limit: z.number().min(1).max(10).nullish(),
@@ -207,7 +208,7 @@ export const dashboardRouter = createTRPCRouter({
       return copyPasta;
     }),
 
-  editCopyPasta: protectedProcedure
+  editCopyPasta: protectedProcedureRoleAdmin
     .input(editCopyPastaForm)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.copyPastasOnTags.deleteMany({
@@ -258,6 +259,7 @@ export const dashboardRouter = createTRPCRouter({
           approvedAt: {
             not: null,
           },
+          deletedAt: null,
         },
         orderBy: {
           approvedAt: "desc",
@@ -287,29 +289,83 @@ export const dashboardRouter = createTRPCRouter({
       };
     }),
 
-  countCopyPastaAdmin: protectedProcedure.query(async ({ ctx }) => {
-    const isNotApproved = await ctx.db.copyPasta.count({
-      where: {
-        approvedAt: {
-          equals: null,
+  listDeleted: protectedProcedureRoleAdmin
+    .input(
+      z.object({
+        limit: z.number().min(1).max(10).nullish(),
+        cursor: z.string().nullish(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const copyPastas = await ctx.db.copyPasta.findMany({
+        take: input.limit ?? 1,
+        skip: input.cursor ? 1 : 0,
+        cursor: input.cursor ? { id: input.cursor } : undefined,
+        where: {
+          deletedAt: {
+            not: null,
+          },
         },
-        deletedAt: null,
-      },
-    });
+        orderBy: {
+          approvedAt: "desc",
+        },
+        include: {
+          CopyPastasOnTags: {
+            include: {
+              tags: true,
+            },
+          },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
 
-    const isApproved = await ctx.db.copyPasta.count({
-      where: {
-        approvedById: ctx.session.user.id,
-      },
-    });
+      const nextCursor =
+        copyPastas.length > 0
+          ? copyPastas[copyPastas.length - 1]?.id
+          : undefined;
+      return {
+        copyPastas,
+        nextCursor,
+      };
+    }),
+
+  countCopyPastaAdmin: protectedProcedureRoleAdmin.query(async ({ ctx }) => {
+    const [isNotApproved, isApproved, isDeleted] = await Promise.all([
+      await ctx.db.copyPasta.count({
+        where: {
+          approvedAt: {
+            equals: null,
+          },
+          deletedAt: null,
+        },
+      }),
+      await ctx.db.copyPasta.count({
+        where: {
+          approvedById: ctx.session.user.id,
+        },
+      }),
+      await ctx.db.copyPasta.count({
+        where: {
+          deletedAt: {
+            not: null,
+          },
+        },
+      }),
+    ]);
 
     return {
       isNotApproved,
       isApproved,
+      isDeleted,
     };
   }),
 
-  deleteById: protectedProcedure
+  deleteById: protectedProcedureRoleAdmin
     .input(
       z.object({
         id: z.string().uuid(),

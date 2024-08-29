@@ -109,6 +109,11 @@ export interface CardProps {
   copyPasta: CardCopyPastaMinimal;
 }
 
+export interface CardDashboardProps extends CardProps {
+  isApprovalMode?: boolean;
+  type: "approved" | "disapproved";
+}
+
 export interface CardCopyPastaMinimalProps {
   copyPastaProps: CopyPastaCardMinimalProps;
 }

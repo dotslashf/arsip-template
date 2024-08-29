@@ -24,12 +24,15 @@ export default function CopyPastaCardAction({
     async onSuccess() {
       void utils.dashboard.listWaitingApprovedCopyPasta.invalidate();
       void utils.dashboard.countCopyPastaAdmin.invalidate();
+      void utils.dashboard.listApprovedByUserId.invalidate();
     },
   });
   const deleteMutation = api.dashboard.deleteById.useMutation({
     onSuccess() {
       void utils.dashboard.listWaitingApprovedCopyPasta.invalidate();
       void utils.dashboard.countCopyPastaAdmin.invalidate();
+      void utils.dashboard.listApprovedByUserId.invalidate();
+      setIsSureDelete(false);
     },
   });
 
@@ -69,7 +72,7 @@ export default function CopyPastaCardAction({
     });
   }
   return (
-    <div className="mt-4 flex w-full justify-between gap-x-2">
+    <div className="flex w-full justify-between gap-x-2">
       <div className="flex space-x-2">
         <Button
           variant={"warning"}

@@ -175,6 +175,23 @@ export const protectedProcedure = t.procedure
     });
   });
 
+export const protectedProcedureRoleAdmin = t.procedure
+  .use(timingMiddleware)
+  .use(loggingMiddleware)
+  .use(({ ctx, next }) => {
+    if (!ctx.session || ctx.session.user.role !== "Admin") {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+      });
+    }
+    return next({
+      ctx: {
+        // infers the `session` as non-nullable
+        session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });
+
 export const protectedProcedureLimited = t.procedure
   .use(rateLimiter)
   .use(timingMiddleware)

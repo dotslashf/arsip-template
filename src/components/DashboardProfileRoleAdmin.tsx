@@ -1,13 +1,14 @@
-import ProfileCopyPastaCard from "~/components/ProfileCopyPastaCard";
+import DashboardListCopyPastaCards from "~/components/DashboardListCopyPastaCards";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
 import { Badge } from "./ui/badge";
 import { LoaderCircle } from "lucide-react";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 export default function DashboardProfileRoleAdmin() {
   const list = api.dashboard.listWaitingApprovedCopyPasta.useInfiniteQuery(
     {
-      limit: 10,
+      limit: 5,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -17,40 +18,56 @@ export default function DashboardProfileRoleAdmin() {
   const listApprovedByUserId =
     api.dashboard.listApprovedByUserId.useInfiniteQuery(
       {
-        limit: 10,
+        limit: 3,
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
       },
     );
 
+  const listDeleted = api.dashboard.listDeleted.useInfiniteQuery(
+    {
+      limit: 3,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    },
+  );
+
   const { data: count, isLoading } =
     api.dashboard.countCopyPastaAdmin.useQuery();
 
   return (
-    <div className="w-full lg:w-3/4">
+    <div className="w-full">
       <Tabs defaultValue="disapproved" className="w-full">
-        <TabsList className="w-full bg-secondary-foreground/10">
-          <TabsTrigger className="w-full" value="disapproved">
-            Perlu disetujui{" "}
-            <Badge variant={"destructive"} className="ml-2">
-              {isLoading && <LoaderCircle className="w-3 animate-spin" />}
-              {count?.isNotApproved}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger className="w-full" value="approvedByUserId">
-            Yang disetujui{" "}
-            <Badge className="ml-2">
-              {isLoading && <LoaderCircle className="w-3 animate-spin" />}
-              {count?.isApproved}
-            </Badge>
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent
-          value="disapproved"
-          className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4"
-        >
-          <ProfileCopyPastaCard
+        <ScrollArea className="w-full">
+          <TabsList className="h-14 w-full space-x-2 bg-secondary px-3">
+            <TabsTrigger className="w-full" value="disapproved">
+              Perlu disetujui{" "}
+              <Badge variant={"destructive"} className="ml-2">
+                {isLoading && <LoaderCircle className="w-3 animate-spin" />}
+                {count?.isNotApproved}
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger className="w-full" value="approvedByUserId">
+              Yang disetujui{" "}
+              <Badge className="ml-2">
+                {isLoading && <LoaderCircle className="w-3 animate-spin" />}
+                {count?.isApproved}
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger className="w-full" value="deleted">
+              Terhapus{" "}
+              <Badge className="ml-2">
+                {isLoading && <LoaderCircle className="w-3 animate-spin" />}
+                {count?.isDeleted}
+              </Badge>
+            </TabsTrigger>
+          </TabsList>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+        <TabsContent value="disapproved">
+          <DashboardListCopyPastaCards
             data={list.data}
             fn={{
               isFetchingNextPage: list.isFetchingNextPage,
@@ -62,11 +79,8 @@ export default function DashboardProfileRoleAdmin() {
             isApprovalMode={true}
           />
         </TabsContent>
-        <TabsContent
-          value="approvedByUserId"
-          className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4"
-        >
-          <ProfileCopyPastaCard
+        <TabsContent value="approvedByUserId">
+          <DashboardListCopyPastaCards
             data={listApprovedByUserId.data}
             fn={{
               isFetchingNextPage: listApprovedByUserId.isFetchingNextPage,
@@ -75,6 +89,19 @@ export default function DashboardProfileRoleAdmin() {
               fetchNextPage: listApprovedByUserId.fetchNextPage,
             }}
             type="disapproved"
+            isApprovalMode={true}
+          />
+        </TabsContent>
+        <TabsContent value="deleted">
+          <DashboardListCopyPastaCards
+            data={listDeleted.data}
+            fn={{
+              isFetchingNextPage: listDeleted.isFetchingNextPage,
+              hasNextPage: listDeleted.hasNextPage,
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              fetchNextPage: listDeleted.fetchNextPage,
+            }}
+            type="approved"
             isApprovalMode={true}
           />
         </TabsContent>

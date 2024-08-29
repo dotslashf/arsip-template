@@ -1,4 +1,4 @@
-import ProfileCopyPastaCard from "~/components/ProfileCopyPastaCard";
+import DashboardListCopyPastaCards from "~/components/DashboardListCopyPastaCards";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
 
@@ -26,7 +26,7 @@ export default function DashboardProfileRoleUser() {
   return (
     <div className="w-full lg:w-3/4">
       <Tabs defaultValue="approved" className="w-full">
-        <TabsList className="w-full bg-secondary-foreground/10">
+        <TabsList className="h-14 w-full space-x-2 bg-secondary px-3">
           <TabsTrigger className="w-full" value="approved">
             Disetujui
           </TabsTrigger>
@@ -38,7 +38,7 @@ export default function DashboardProfileRoleUser() {
           value="approved"
           className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4"
         >
-          <ProfileCopyPastaCard
+          <DashboardListCopyPastaCards
             data={listApproved.data}
             fn={{
               isFetchingNextPage: listApproved.isFetchingNextPage,
@@ -53,7 +53,7 @@ export default function DashboardProfileRoleUser() {
           value="disapproved"
           className="grid grid-cols-1 gap-2 lg:grid-cols-2 lg:gap-4"
         >
-          <ProfileCopyPastaCard
+          <DashboardListCopyPastaCards
             data={listNotApproved.data}
             type="disapproved"
             fn={{

@@ -156,7 +156,7 @@ export default function UserProfileCard({
   return (
     <Card
       className={cn(
-        "relative w-full bg-card text-card-foreground shadow-sm lg:w-1/4",
+        "relative w-full bg-card text-card-foreground shadow-sm",
         isPreviewMode && "lg:w-full",
       )}
     >
