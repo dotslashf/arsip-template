@@ -156,7 +156,7 @@ export default function UserProfileCard({
   return (
     <Card
       className={cn(
-        "relative w-full bg-card text-card-foreground shadow-sm",
+        "w-full bg-card text-card-foreground shadow-sm",
         isPreviewMode && "lg:w-full",
       )}
     >
@@ -288,14 +288,7 @@ export default function UserProfileCard({
           </Badge>
         </span>
       </CardContent>
-      <Button
-        onClick={handleShareProfile}
-        className="absolute bottom-0 w-full rounded-t-none"
-        variant={"destructive"}
-      >
-        Share <Share2 className="ml-2 w-4" />
-      </Button>
-      <CardFooter className="mb-8 flex flex-col space-y-2 font-mono text-sm font-semibold">
+      <CardFooter className="flex flex-col space-y-2 font-mono text-sm font-semibold">
         <div className="flex flex-col items-center justify-center space-y-2">
           <span>Reactions:</span>
           <ReactionSummaryProfile reactions={reactions} />
@@ -323,6 +316,13 @@ export default function UserProfileCard({
           </div>
         </div>
       </CardFooter>
+      <Button
+        onClick={handleShareProfile}
+        className="w-full rounded-t-none"
+        variant={"destructive"}
+      >
+        Share <Share2 className="ml-2 w-4" />
+      </Button>
     </Card>
   );
 }
