@@ -99,7 +99,7 @@ export default function CardById({ copyPasta }: CardProps) {
           <Type className="flip h-6 w-6" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col justify-between gap-2 py-2 hover:cursor-auto lg:px-6">
+      <CardContent className="my-6 flex flex-col justify-between gap-2 hover:cursor-auto lg:px-6">
         <div className={cn("overflow-x-hidden text-sm")}>
           <ScrollArea
             className={cn("h-fit rounded-md text-lg", robotoSlab.className)}
@@ -110,7 +110,7 @@ export default function CardById({ copyPasta }: CardProps) {
           </ScrollArea>
         </div>
       </CardContent>
-      <CardFooter className="mt-2 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:mt-8 lg:p-6 lg:pt-0">
+      <CardFooter className="flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:p-6 lg:pt-0">
         {copyPasta.imageUrl && (
           <Accordion
             className="w-full max-w-xs text-sm"
@@ -175,7 +175,7 @@ export default function CardById({ copyPasta }: CardProps) {
           </div>
         </div>
         <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-end">
-          <div className="flex flex-col items-center gap-4 md:items-start">
+          <div className="flex flex-col items-start gap-4">
             <div className="flex items-center justify-center">
               Kejadian <CalendarDays className="mx-2 h-4 w-4" />{" "}
               {formatDateToHuman(copyPasta.postedAt ?? new Date())}
@@ -192,7 +192,28 @@ export default function CardById({ copyPasta }: CardProps) {
               Oleh: {copyPasta.createdBy ? copyPasta.createdBy.name : "Anon"}
             </Link>
           </div>
-          <div className="flex flex-col items-center gap-2 md:items-end">
+          <div className="flex items-center justify-between gap-2 md:flex-col md:items-end">
+            <div>
+              {copyPasta.sourceUrl ? (
+                <Link
+                  href={copyPasta.sourceUrl}
+                  className={cn(buttonVariants({ variant: "outline" }))}
+                  onClick={() =>
+                    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
+                      value: copyPasta.id,
+                    })
+                  }
+                  prefetch={false}
+                  target="__blank"
+                >
+                  Cek Doksli <Link2 className="ml-2 h-4 w-4" />
+                </Link>
+              ) : (
+                <span className={cn(buttonVariants({ variant: "disabled" }))}>
+                  Cek Doksli <Link2 className="ml-2 h-4 w-4" />
+                </span>
+              )}
+            </div>
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <span className={cn(buttonVariants({ variant: "twitter" }))}>
@@ -231,27 +252,6 @@ export default function CardById({ copyPasta }: CardProps) {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <div>
-              {copyPasta.sourceUrl ? (
-                <Link
-                  href={copyPasta.sourceUrl}
-                  className={cn(buttonVariants({ variant: "outline" }))}
-                  onClick={() =>
-                    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
-                      value: copyPasta.id,
-                    })
-                  }
-                  prefetch={false}
-                  target="__blank"
-                >
-                  Cek Doksli <Link2 className="ml-2 h-4 w-4" />
-                </Link>
-              ) : (
-                <span className={cn(buttonVariants({ variant: "disabled" }))}>
-                  Cek Doksli <Link2 className="ml-2 h-4 w-4" />
-                </span>
-              )}
-            </div>
           </div>
         </div>
       </CardFooter>
