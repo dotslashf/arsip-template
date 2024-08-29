@@ -1,6 +1,9 @@
-import { CircleHelp } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import {
+  faTwitter,
+  faFacebook,
+  faDiaspora,
+} from "@fortawesome/free-brands-svg-icons";
 import { EmotionType } from "@prisma/client";
 import {
   FluentEmojiFlatFaceWithSymbolsOnMouth,
@@ -17,6 +20,10 @@ export const avatarColorsTheme = [
   "#E6E8EA",
   "#A5C8E2",
 ];
+
+export const avatarColorsThemeWithoutHash = avatarColorsTheme.map((color) =>
+  color.slice(1, color.length),
+);
 
 export const sourceEnumHash = new Map([
   [
@@ -40,7 +47,7 @@ export const sourceEnumHash = new Map([
     {
       label: "Lainnya",
       value: "Other",
-      icon: <CircleHelp className="h-3 w-3" />,
+      icon: <FontAwesomeIcon icon={faDiaspora} className="h-3 w-3" />,
     },
   ],
 ]);
@@ -86,3 +93,32 @@ export const robotoSlab = Roboto_Slab({
 });
 
 export const DAYS = 24 * 60 * 60 * 1000;
+
+export const USER_PROFILE = {
+  name: {
+    min: 5,
+    max: 30,
+  },
+  username: {
+    min: 6,
+    max: 15,
+  },
+};
+
+export const parseErrorMessages = (error: Record<string, any>) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const message = error.shape.message as string;
+  if (message.toLowerCase().includes("unique")) {
+    return "Data sudah ada!";
+  } else {
+    return "Duh, gagal nih! 🤯";
+  }
+};
+
+export const ANALYTICS_EVENT = {
+  BUTTON_CLICKED: "buttonClicked",
+  DOKSLI: "dokumenAsli",
+  SEARCH: "search",
+  SET_THEME: "setTheme",
+  SHARE: "share",
+};

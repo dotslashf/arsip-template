@@ -3,14 +3,16 @@
 import { useSearchParams } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
-import { ArrowDown, LoaderCircle, Skull } from "lucide-react";
 import { Suspense } from "react";
 import ListTags from "~/components/ListTags";
 import { sendGAEvent } from "@next/third-parties/google";
 import ListTagsSkeleton from "~/components/ListTagsSkeleton";
-import CopyPastaCardMinimal from "~/components/CopyPastaCardMinimal";
 import dynamic from "next/dynamic";
 import { Skeleton } from "~/components/ui/skeleton";
+import CardMinimal from "~/components/CopyPasta/CardMinimal";
+import { ANALYTICS_EVENT } from "~/lib/constant";
+import GetContent from "~/components/GetContent";
+import { OriginSource } from "@prisma/client";
 
 const SearchBar = dynamic(() => import("../../components/SearchBar"), {
   ssr: false,
@@ -30,6 +32,7 @@ export function ListCopyPasta() {
   const search = searchParams.get("search");
   const tag = searchParams.get("tag");
   const byUserId = searchParams.get("byUserId");
+  const source = searchParams.get("source") as OriginSource;
   const [{ pages }, allCopyPastas] =
     api.copyPasta.list.useSuspenseInfiniteQuery(
       {
@@ -37,6 +40,7 @@ export function ListCopyPasta() {
         search,
         tag,
         byUserId,
+        source,
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -47,50 +51,28 @@ export function ListCopyPasta() {
 
   async function handleNextList() {
     await fetchNextPage();
-    sendGAEvent("event", "buttonClicked", { value: "home.nextList" });
-  }
-
-  function getContent() {
-    if (isFetchingNextPage) {
-      return (
-        <span className="flex items-center">
-          Sedang Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
-        </span>
-      );
-    } else if (hasNextPage) {
-      return (
-        <span className="flex items-center">
-          Muat Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
-        </span>
-      );
-    } else {
-      return (
-        <span className="flex items-center">
-          Tidak Ada Template Lagi <Skull className="ml-2 h-4 w-4" />
-        </span>
-      );
-    }
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "home.next",
+    });
   }
 
   return (
     <div className="flex w-full flex-col gap-4" id="main">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <SearchBar />
-        <Suspense fallback={<ListTagsSkeleton />}>
-          <ListTags id={tag} />
-        </Suspense>
+      <SearchBar />
+      <Suspense fallback={<ListTagsSkeleton />}>
+        <ListTags id={tag} />
+      </Suspense>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-3">
         {pages
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
                 return (
-                  <CopyPastaCardMinimal
+                  <div
                     key={copy.id}
-                    copyPastaProps={{
-                      ...copy,
-                      isCreatorAndDateShown: false,
-                      isReactionSummaryShown: true,
-                    }}
-                  />
+                    className="col-span-3 w-full shadow-sm md:col-span-2 lg:col-span-1"
+                  >
+                    <CardMinimal copyPasta={copy} />
+                  </div>
                 );
               }),
             )
@@ -100,7 +82,10 @@ export function ListCopyPasta() {
         onClick={handleNextList}
         disabled={!hasNextPage || isFetchingNextPage}
       >
-        {getContent()}
+        <GetContent
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       </Button>
     </div>
   );

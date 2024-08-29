@@ -191,7 +191,7 @@ export default function EditCopyPasta({ id }: EditCopyPastaProps) {
           <Button
             type="submit"
             className="w-full items-center"
-            variant={"yellow"}
+            variant={"warning"}
           >
             Edit <Pencil className="ml-2 h-4 w-4" />
           </Button>

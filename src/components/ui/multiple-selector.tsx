@@ -407,7 +407,7 @@ const MultipleSelector = React.forwardRef<
                 <Badge
                   key={option.value}
                   className={cn(
-                    "data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground",
+                    "rounded-sm data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground",
                     "hover:cursor-pointer data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
                     badgeClassName,
                   )}
@@ -424,7 +424,7 @@ const MultipleSelector = React.forwardRef<
                   }}
                   onClick={() => handleUnselect(option)}
                 >
-                  {option.label}
+                  #{option.label}
                   <button
                     className={cn(
                       "ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2",
@@ -534,7 +534,7 @@ const MultipleSelector = React.forwardRef<
                                   "cursor-default text-muted-foreground",
                               )}
                             >
-                              {option.label}
+                              #{option.label}
                             </CommandItem>
                           );
                         })}

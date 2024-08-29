@@ -111,9 +111,7 @@ export default function ReactionSummaryChild({
     >
       <Badge
         variant={
-          currentUser && userIds?.includes(currentUser)
-            ? "default"
-            : "secondary"
+          currentUser && userIds?.includes(currentUser) ? "default" : "outline"
         }
       >
         <motion.span

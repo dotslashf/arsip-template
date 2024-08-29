@@ -86,7 +86,7 @@ export default function RootLayout({
               padding: "1rem",
               borderRadius: "0.375rem",
               width: "100%",
-              maxWidth: "28rem",
+              maxWidth: "23.6rem",
             },
             iconTheme: {
               primary: "#0f172a",

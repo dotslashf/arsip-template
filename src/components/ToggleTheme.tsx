@@ -13,6 +13,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import { ANALYTICS_EVENT } from "~/lib/constant";
 
 export function ToggleTheme() {
   const { setTheme } = useTheme();
@@ -20,7 +21,7 @@ export function ToggleTheme() {
 
   function handleSetTheme(theme: "light" | "dark" | "system") {
     setTheme(theme);
-    sendGAEvent("event", "setTheme", { value: theme });
+    sendGAEvent("event", ANALYTICS_EVENT.SET_THEME, { value: theme });
   }
 
   return (

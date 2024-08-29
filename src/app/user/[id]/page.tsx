@@ -16,12 +16,12 @@ export async function generateMetadata({
 }: PropsPage): Promise<Metadata> {
   const id = params.id;
 
-  const user = await api.user.byId({ id });
+  const user = await api.user.byIdentifier({ identifier: id });
   if (!user) {
     return notFound();
   }
 
-  const title = `${trimContent(user.name ?? "", 30)} | arsip-template`;
+  const title = `${trimContent(user.name ?? "", 30)} `;
   const description = `Kumpulan arsip template dari: ${trimContent(user.name ?? "", 30)}`;
   const url = `${baseUrl}/api/og}`;
 

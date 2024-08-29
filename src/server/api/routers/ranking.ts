@@ -14,6 +14,8 @@ export const rankingRouter = createTRPCRouter({
       select: {
         id: true,
         name: true,
+        avatarSeed: true,
+        username: true,
         rank: {
           select: {
             title: true,

@@ -9,6 +9,7 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { api } from "~/trpc/react";
 import { type CopyPasta } from "@prisma/client";
 import { useMediaQuery, useDebounce } from "@uidotdev/usehooks";
+import { ANALYTICS_EVENT } from "~/lib/constant";
 
 export default function SearchBar() {
   const [query, setQuery] = useState<string>("");
@@ -43,7 +44,9 @@ export default function SearchBar() {
   const handleSubmit = () => {
     const currentParams = new URLSearchParams(searchParams);
     currentParams.set("search", query);
-    sendGAEvent("event", "search", { value: currentParams.get("search") });
+    sendGAEvent("event", ANALYTICS_EVENT.SEARCH, {
+      value: currentParams.get("search"),
+    });
     setIsSearchOpen(false);
     router.push(`?${currentParams.toString()}`);
   };
@@ -55,8 +58,8 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="col-span-3 w-full">
-      <div className="col-span-3 flex flex-col">
+    <div className="w-full">
+      <div className="flex flex-col">
         <div className="relative flex-1">
           {isSearching && (
             <div className="absolute z-10 mt-14 flex w-full items-center justify-center rounded-md border bg-primary-foreground px-3 py-2 dark:text-accent">
@@ -140,8 +143,8 @@ function ButtonPlus({
         "item-center",
       )}
       onClick={() => {
-        sendGAEvent("event", "buttonClicked", {
-          value: "create.copyPasta",
+        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: "create",
         });
       }}
     >

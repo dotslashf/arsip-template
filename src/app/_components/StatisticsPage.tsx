@@ -59,7 +59,7 @@ export function StatisticsPage() {
         <CardHeader>
           <CardTitle>Bar chart berdasarkan sumber</CardTitle>
           <CardDescription>
-            Jumlah template yang diarsipkan berdasarkan sumber 2 minggu lalu
+            Jumlah template yang diarsipkan berdasarkan sumber 1 minggu lalu
           </CardDescription>
         </CardHeader>
         <CardContent>
