@@ -3,6 +3,7 @@ import Footer from "./Footer";
 import React, { cloneElement, type ReactElement } from "react";
 import { type Session } from "next-auth";
 import dynamic from "next/dynamic";
+import { Skeleton } from "./ui/skeleton";
 
 const Navbar = dynamic(() => import("./Navbar"), {
   ssr: false,
@@ -10,7 +11,13 @@ const Navbar = dynamic(() => import("./Navbar"), {
     return (
       <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
         <div className="container px-4 md:px-6">
-          <div className="flex h-12 items-center"></div>
+          <div className="flex h-12 items-center">
+            <nav className="ml-auto flex items-center space-x-4">
+              <Skeleton className="h-9 w-9 rounded-md md:w-32" />
+              <Skeleton className="h-9 w-9 rounded-md md:w-32" />
+              <Skeleton className="h-9 w-9 rounded-full" />
+            </nav>
+          </div>
         </div>
       </nav>
     );
