@@ -21,7 +21,7 @@ export async function generateMetadata({
     return notFound();
   }
 
-  const title = `${trimContent(user.name ?? "", 30)} | arsip-template`;
+  const title = `${trimContent(user.name ?? "", 30)} `;
   const description = `Kumpulan arsip template dari: ${trimContent(user.name ?? "", 30)}`;
   const url = `${baseUrl}/api/og}`;
 
