@@ -133,14 +133,16 @@ export default function UserProfileCard({
 
   function handleShareProfile() {
     navigator.clipboard
-      .writeText(`${baseUrl}/user/${session?.user.id}`)
+      .writeText(
+        `${baseUrl}/user/${session?.user.username ?? session?.user.id}`,
+      )
       .then(() => {
         toast({
           message: "Silahkan dishare profilenya yah 🍰",
           type: "success",
         });
         sendGAEvent("event", ANALYTICS_EVENT.SHARE, {
-          value: `profile.${session?.user.name}`,
+          value: `profile.${session?.user.id}`,
         });
       })
       .catch((err) => console.log(err));
