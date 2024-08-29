@@ -111,7 +111,7 @@ export interface CardProps {
 
 export interface CardDashboardProps extends CardProps {
   isApprovalMode?: boolean;
-  type: "approved" | "disapproved";
+  type: "approved" | "disapproved" | "deleted";
 }
 
 export interface CardCopyPastaMinimalProps {

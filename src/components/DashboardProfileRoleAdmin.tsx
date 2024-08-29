@@ -101,7 +101,7 @@ export default function DashboardProfileRoleAdmin() {
               // eslint-disable-next-line @typescript-eslint/no-misused-promises
               fetchNextPage: listDeleted.fetchNextPage,
             }}
-            type="approved"
+            type="deleted"
             isApprovalMode={true}
           />
         </TabsContent>

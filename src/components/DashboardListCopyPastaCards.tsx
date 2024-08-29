@@ -6,7 +6,7 @@ import CardDashboard from "./CopyPasta/CardDashboard";
 import GetContent from "./GetContent";
 
 interface ProfileCopyPastaCardProps {
-  type: "approved" | "disapproved";
+  type: "approved" | "disapproved" | "deleted";
   data?: InfiniteData<{
     copyPastas: CardCopyPastaMinimal[];
     nextCursor: string | undefined;
