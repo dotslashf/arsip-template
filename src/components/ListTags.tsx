@@ -5,7 +5,7 @@ import { api } from "~/trpc/react";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type Tag as TagType } from "@prisma/client";
-import { DAYS } from "~/lib/constant";
+import { ANALYTICS_EVENT, DAYS } from "~/lib/constant";
 import Tag from "./ui/tags";
 
 interface ListTagsProps {
@@ -26,8 +26,8 @@ export default function ListTags({ id }: ListTagsProps) {
       currentParams.delete("tag");
     } else {
       currentParams.set("tag", tag.id);
-      sendGAEvent("event", "buttonClicked", {
-        value: `tag:${tag.name}`,
+      sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+        value: `tag.${tag.name}`,
       });
     }
     return router.push(`?${currentParams.toString()}`);

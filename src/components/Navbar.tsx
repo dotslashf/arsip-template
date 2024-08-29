@@ -25,6 +25,7 @@ import { ToggleTheme } from "./ToggleTheme";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import Avatar from "./ui/avatar";
+import { ANALYTICS_EVENT } from "~/lib/constant";
 
 interface NavbarProps {
   session: Session | null;
@@ -33,7 +34,7 @@ export default function Navbar({ session }: NavbarProps) {
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
 
   function handleSignOut() {
-    sendGAEvent("event", "buttonClicked", { value: `signOut` });
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, { value: `signOut` });
     void signOut();
   }
   return (
@@ -62,7 +63,7 @@ export default function Navbar({ session }: NavbarProps) {
                 className={cn(buttonVariants({ variant: "link" }))}
                 prefetch={false}
                 onClick={() => {
-                  sendGAEvent("event", "buttonClicked", {
+                  sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
                     value: "signIn",
                   });
                 }}
@@ -100,7 +101,7 @@ export default function Navbar({ session }: NavbarProps) {
                       prefetch={false}
                       className="flex w-full items-center justify-between"
                       onClick={() =>
-                        sendGAEvent("event", "buttonClicked", {
+                        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
                           value: "profile",
                         })
                       }
@@ -121,7 +122,7 @@ export default function Navbar({ session }: NavbarProps) {
                       prefetch={false}
                       className="flex w-full items-center justify-between"
                       onClick={() =>
-                        sendGAEvent("event", "buttonClicked", {
+                        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
                           value: "statistics",
                         })
                       }
@@ -143,8 +144,8 @@ export default function Navbar({ session }: NavbarProps) {
                       prefetch={false}
                       className="flex w-full items-center justify-between"
                       onClick={() =>
-                        sendGAEvent("event", "buttonClicked", {
-                          value: "create.copyPasta",
+                        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+                          value: "create",
                         })
                       }
                     >

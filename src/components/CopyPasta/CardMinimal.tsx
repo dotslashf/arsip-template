@@ -9,7 +9,7 @@ import {
 import { sendGAEvent } from "@next/third-parties/google";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { ArrowRight, ImageIcon, Link2, Type } from "lucide-react";
-import { robotoSlab, sourceEnumHash } from "~/lib/constant";
+import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import ReactionSummary from "../ReactionSummary";
 import { buttonVariants } from "../ui/button";
@@ -29,8 +29,8 @@ export default function CardMinimal({ copyPasta }: CardProps) {
       currentParams.delete("tag");
     } else {
       currentParams.set("tag", tag.id);
-      sendGAEvent("event", "buttonClicked", {
-        value: `tag:${tag.name}`,
+      sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+        value: `tag.${tag.name}`,
       });
     }
     return router.push(`?${currentParams.toString()}`);
@@ -107,8 +107,8 @@ export default function CardMinimal({ copyPasta }: CardProps) {
               href={copyPasta.sourceUrl}
               className={cn(buttonVariants({ variant: "link", size: "url" }))}
               onClick={() =>
-                sendGAEvent("event", "doksli", {
-                  value: copyPasta.sourceUrl,
+                sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
+                  value: copyPasta.id,
                 })
               }
               prefetch={false}
@@ -129,7 +129,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
             href={`/copy-pasta/${copyPasta.id}`}
             className={cn(buttonVariants({ variant: "link", size: "url" }))}
             onClick={() =>
-              sendGAEvent("event", "buttonClicked", {
+              sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
                 value: "copyPasta.moreInfo",
               })
             }

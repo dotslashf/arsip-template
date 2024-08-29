@@ -10,10 +10,13 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { sendGAEvent } from "@next/third-parties/google";
+import { ANALYTICS_EVENT } from "~/lib/constant";
 
 export default function SignInSocialProviders() {
   function handleSignIn(platform: string) {
-    sendGAEvent("event", "buttonClicked", { value: `signIn.${platform}` });
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `signIn.${platform}`,
+    });
     void signIn(platform, {
       callbackUrl: "/",
     });

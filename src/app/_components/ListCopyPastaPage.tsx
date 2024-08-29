@@ -11,6 +11,7 @@ import ListTagsSkeleton from "~/components/ListTagsSkeleton";
 import dynamic from "next/dynamic";
 import { Skeleton } from "~/components/ui/skeleton";
 import CardMinimal from "~/components/CopyPasta/CardMinimal";
+import { ANALYTICS_EVENT } from "~/lib/constant";
 
 const SearchBar = dynamic(() => import("../../components/SearchBar"), {
   ssr: false,
@@ -47,7 +48,9 @@ export function ListCopyPasta() {
 
   async function handleNextList() {
     await fetchNextPage();
-    sendGAEvent("event", "buttonClicked", { value: "home.nextList" });
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "home.next",
+    });
   }
 
   function getContent() {

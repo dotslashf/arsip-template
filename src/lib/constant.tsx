@@ -114,3 +114,11 @@ export const parseErrorMessages = (error: Record<string, any>) => {
     return "Duh, gagal nih! 🤯";
   }
 };
+
+export const ANALYTICS_EVENT = {
+  BUTTON_CLICKED: "buttonClicked",
+  DOKSLI: "dokumenAsli",
+  SEARCH: "search",
+  SET_THEME: "setTheme",
+  SHARE: "share",
+};

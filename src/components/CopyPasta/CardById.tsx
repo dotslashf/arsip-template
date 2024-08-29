@@ -21,7 +21,12 @@ import {
 import useToast from "../ui/use-react-hot-toast";
 import { ScrollArea } from "../ui/scroll-area";
 import { sendGAEvent } from "@next/third-parties/google";
-import { robotoSlab, sourceEnumHash } from "~/lib/constant";
+import {
+  ANALYTICS_EVENT,
+  baseUrl,
+  robotoSlab,
+  sourceEnumHash,
+} from "~/lib/constant";
 import { useRouter, useSearchParams } from "next/navigation";
 import Reaction from "../Reaction";
 import {
@@ -58,7 +63,22 @@ export default function CardById({ copyPasta }: CardProps) {
             "Bersiap untuk kejahilan kecil 😼\n Silahkan paste templatenya!",
           type: "info",
         });
-        sendGAEvent("event", "buttonClicked", { value: "copyPasta.copyPaste" });
+        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: `copyPaste.${copyPasta.id}`,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleCopyUrl() {
+    navigator.clipboard
+      .writeText(`${baseUrl}/copy-pasta/${copyPasta.id}`)
+      .then(() => {
+        toast({
+          message: "Url siap dibagikan! ⚓",
+          type: "info",
+        });
+        sendGAEvent("event", ANALYTICS_EVENT.SHARE, { value: "copyPasta.url" });
       })
       .catch((err) => console.log(err));
   }
@@ -66,8 +86,8 @@ export default function CardById({ copyPasta }: CardProps) {
   const handleTagClick = (tag: TagType) => {
     const currentParams = new URLSearchParams(searchParams);
     currentParams.set("tag", tag.id);
-    sendGAEvent("event", "buttonClicked", {
-      value: `tag:${tag.name}`,
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `tag.${tag.name}`,
     });
     return router.push(`/?${currentParams.toString()}`);
   };
@@ -187,7 +207,14 @@ export default function CardById({ copyPasta }: CardProps) {
                   className="flex w-full justify-between"
                   onClick={handleCopy}
                 >
-                  Salin <Clipboard className="ml-2 w-4" />
+                  Salin Template <Clipboard className="ml-2 w-4" />
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="flex w-full justify-between"
+                  onClick={handleCopyUrl}
+                >
+                  Salin Url
+                  <Link2 className="ml-2 w-4" />
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link
@@ -210,8 +237,8 @@ export default function CardById({ copyPasta }: CardProps) {
                   href={copyPasta.sourceUrl}
                   className={cn(buttonVariants({ variant: "outline" }))}
                   onClick={() =>
-                    sendGAEvent("event", "doksli", {
-                      value: copyPasta.sourceUrl,
+                    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
+                      value: copyPasta.id,
                     })
                   }
                   prefetch={false}

@@ -1,7 +1,7 @@
 import { type Session } from "next-auth";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { baseUrl, parseErrorMessages } from "~/lib/constant";
+import { ANALYTICS_EVENT, baseUrl, parseErrorMessages } from "~/lib/constant";
 import { Edit, RotateCw, Share2, Undo2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
@@ -112,7 +112,7 @@ export default function UserProfileCard({
       }
       return state;
     });
-    sendGAEvent("event", "buttonClick", {
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `randomAvatar`,
     });
   }, [avatarSeed]);
@@ -126,7 +126,7 @@ export default function UserProfileCard({
       }
       return newState;
     });
-    sendGAEvent("event", "buttonClick", {
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: "randomAvatarPrevious",
     });
   }, []);
@@ -139,16 +139,16 @@ export default function UserProfileCard({
           message: "Silahkan dishare profilenya yah 🍰",
           type: "success",
         });
-        sendGAEvent("event", "shareProfile", {
-          value: `profile:${session?.user.name}`,
+        sendGAEvent("event", ANALYTICS_EVENT.SHARE, {
+          value: `profile.${session?.user.name}`,
         });
       })
       .catch((err) => console.log(err));
   }
 
   const handleTagClick = (tag: TagType) => {
-    sendGAEvent("event", "buttonClicked", {
-      value: `tag:${tag.name}`,
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `tag.${tag.name}`,
     });
     return router.push(`/?tag=${tag.id}`);
   };

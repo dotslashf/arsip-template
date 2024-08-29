@@ -8,8 +8,8 @@ import {
 } from "../ui/card";
 import { sendGAEvent } from "@next/third-parties/google";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import {  ArrowRight, ImageIcon, Link2, Type } from "lucide-react";
-import { robotoSlab, sourceEnumHash } from "~/lib/constant";
+import { ArrowRight, ImageIcon, Link2, Type } from "lucide-react";
+import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import { buttonVariants } from "../ui/button";
 import Link from "next/link";
@@ -25,8 +25,8 @@ export default function CardRelated({ copyPasta }: CardProps) {
   const handleTagClick = (tag: TagType) => {
     const currentParams = new URLSearchParams(searchParams);
     currentParams.set("tag", tag.id);
-    sendGAEvent("event", "buttonClicked", {
-      value: `tag:${tag.name}`,
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `tag.${tag.name}`,
     });
     return router.push(`/?${currentParams.toString()}`);
   };
@@ -98,8 +98,8 @@ export default function CardRelated({ copyPasta }: CardProps) {
               href={copyPasta.sourceUrl}
               className={cn(buttonVariants({ variant: "link", size: "url" }))}
               onClick={() =>
-                sendGAEvent("event", "doksli", {
-                  value: copyPasta.sourceUrl,
+                sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
+                  value: copyPasta.id,
                 })
               }
               prefetch={false}
@@ -120,7 +120,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
             href={`/copy-pasta/${copyPasta.id}`}
             className={cn(buttonVariants({ variant: "link", size: "url" }))}
             onClick={() =>
-              sendGAEvent("event", "buttonClicked", {
+              sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
                 value: "copyPasta.moreInfo",
               })
             }
