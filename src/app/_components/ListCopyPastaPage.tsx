@@ -3,16 +3,14 @@
 import { useSearchParams } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
-import { Suspense } from "react";
 import ListTags from "~/components/ListTags";
 import { sendGAEvent } from "@next/third-parties/google";
-import ListTagsSkeleton from "~/components/ListTagsSkeleton";
 import dynamic from "next/dynamic";
 import { Skeleton } from "~/components/ui/skeleton";
 import CardMinimal from "~/components/CopyPasta/CardMinimal";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import GetContent from "~/components/GetContent";
-import { OriginSource } from "@prisma/client";
+import { type OriginSource } from "@prisma/client";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 
 const SearchBar = dynamic(() => import("../../components/SearchBar"), {

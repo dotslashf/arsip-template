@@ -1,6 +1,5 @@
 "use client";
 
-import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { api } from "~/trpc/react";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useRouter, useSearchParams } from "next/navigation";

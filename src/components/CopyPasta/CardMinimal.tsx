@@ -8,14 +8,7 @@ import {
 } from "../ui/card";
 import { sendGAEvent } from "@next/third-parties/google";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import {
-  ArrowRight,
-  Clipboard,
-  Copy,
-  ImageIcon,
-  Link2,
-  Type,
-} from "lucide-react";
+import { ArrowRight, Clipboard, ImageIcon, Link2, Type } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import ReactionSummary from "../ReactionSummary";
