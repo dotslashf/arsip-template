@@ -101,6 +101,15 @@ export default function CardDashboard({
               Cek Doksli <Link2 className="ml-2 h-3 w-3" />
             </span>
           )}
+          {isApprovalMode && (
+            <Link
+              href={`/user/${copyPasta.createdById}`}
+              className="font-semibold transition-colors hover:text-primary hover:underline"
+              prefetch={false}
+            >
+              Oleh: {copyPasta.createdBy ? copyPasta.createdBy.name : "Anon"}
+            </Link>
+          )}
           {type === "approved" && (
             <Link
               href={`/copy-pasta/${copyPasta.id}`}

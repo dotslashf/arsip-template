@@ -8,20 +8,22 @@ import {
 } from "../ui/card";
 import { sendGAEvent } from "@next/third-parties/google";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { ArrowRight, ImageIcon, Link2, Type } from "lucide-react";
+import { ArrowRight, Clipboard, ImageIcon, Link2, Type } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import ReactionSummary from "../ReactionSummary";
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type Tag as TagType } from "@prisma/client";
 import Tag from "../ui/tags";
+import useToast from "../ui/use-react-hot-toast";
 
 export default function CardMinimal({ copyPasta }: CardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentTag = searchParams.get("tag");
+  const toast = useToast();
 
   const handleTagClick = (tag: TagType, isActive: boolean) => {
     const currentParams = new URLSearchParams(searchParams);
@@ -43,14 +45,34 @@ export default function CardMinimal({ copyPasta }: CardProps) {
     return router.push(`?source=${copyPasta.source}`);
   };
 
+  function handleCopy() {
+    navigator.clipboard
+      .writeText(copyPasta.content)
+      .then(() => {
+        toast({
+          message:
+            "Bersiap untuk kejahilan kecil 😼\n Silahkan paste templatenya!",
+          type: "info",
+        });
+        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: `copyPaste.${copyPasta.id}`,
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <Card className="h-full">
       <CardHeader className="pb-0">
-        <CardTitle>
+        <CardTitle className="flex w-full items-center justify-between">
           <Type className="h-4 w-4" />
+          <Button variant={"outline"} size={"xs"} onClick={handleCopy}>
+            <span className="text-sm">Salin</span>
+            <Clipboard className="ml-2 w-3" />
+          </Button>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col justify-between gap-2 py-2 hover:cursor-auto">
+      <CardContent className="flex flex-col justify-between gap-2 pb-2 pt-4 hover:cursor-auto">
         <div
           className={cn(
             "overflow-x-hidden text-sm",
@@ -62,7 +84,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
           <ScrollArea
             className={cn("h-36 rounded-md text-sm", robotoSlab.className)}
           >
-            <blockquote className="whitespace-pre-line">
+            <blockquote className="select-none whitespace-pre-line">
               {trimContent(copyPasta.content, 255)}
             </blockquote>
           </ScrollArea>

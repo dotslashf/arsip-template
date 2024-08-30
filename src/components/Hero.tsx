@@ -50,7 +50,7 @@ export default function Hero({ texts }: HeroProps) {
           <Link
             href={"/copy-pasta/create"}
             className={cn(
-              buttonVariants({ variant: "destructive", size: "lg" }),
+              buttonVariants({ variant: "default", size: "lg" }),
               "",
             )}
           >

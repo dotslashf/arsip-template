@@ -58,9 +58,19 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="w-full">
-      <div className="flex flex-col">
-        <div className="relative flex-1">
+    <div className="w-full max-w-3xl items-center justify-center self-center">
+      <div className="flex w-full items-center space-x-4 self-center">
+        <div className="relative flex flex-1">
+          <Input
+            type="search"
+            placeholder="Cari template..."
+            className="flex-1 shadow-sm"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onFocus={() => setIsSearchOpen(true)}
+            onBlur={() => setIsSearchOpen(false)}
+          />
           {isSearching && (
             <div className="absolute z-10 mt-14 flex w-full items-center justify-center rounded-md border bg-primary-foreground px-3 py-2 dark:text-accent">
               <LoaderCircle className="w-4 animate-spin" />
@@ -83,29 +93,17 @@ export default function SearchBar() {
             </ul>
           )}
         </div>
-        <div className="flex w-full items-center space-x-2">
-          <Input
-            type="search"
-            placeholder="Cari template..."
-            className="flex-1 shadow-sm"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onFocus={() => setIsSearchOpen(true)}
-            onBlur={() => setIsSearchOpen(false)}
-          />
-          {isSmallDevice ? (
-            <>
-              <ButtonSearch onClick={handleSubmit} />
-              <ButtonPlus />
-            </>
-          ) : (
-            <>
-              <ButtonSearch onClick={handleSubmit}>Cari</ButtonSearch>
-              <ButtonPlus>Tambah</ButtonPlus>
-            </>
-          )}
-        </div>
+        {isSmallDevice ? (
+          <>
+            <ButtonSearch onClick={handleSubmit} />
+            <ButtonPlus />
+          </>
+        ) : (
+          <div className="space-x-2">
+            <ButtonSearch onClick={handleSubmit}>Cari</ButtonSearch>
+            <ButtonPlus>Tambah</ButtonPlus>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -13,8 +13,8 @@ import { baseUrl } from "~/lib/constant";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | arsip-template",
-    default: "arsip-template",
+    template: "%s | arsip template",
+    default: "arsip template",
   },
   description:
     "Sebuah platform untuk menyimpan dan berbagi template (copy-pasta) menarik dari netizen Indonesia.",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     },
   ],
   openGraph: {
-    title: "arsip-template",
+    title: "arsip template",
     description: "platform buat nyimpan template (copypasta) netizen",
     url: `${baseUrl}`,
     images: [
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "arsip-template",
+    title: "arsip template",
     description: "platform buat nyimpan template (copypasta) netizen",
     creator: "@arsip-mim",
     images: [`${baseUrl}/api/og`],

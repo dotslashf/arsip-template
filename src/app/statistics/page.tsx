@@ -8,7 +8,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 
 export const metadata: Metadata = {
   title: "Statistics",
-  description: "Statistics arsip-template",
+  description: "Statistics arsip template",
 };
 export default function Statistics() {
   return (

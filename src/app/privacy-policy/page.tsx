@@ -5,7 +5,7 @@ import { HydrateClient } from "~/trpc/server";
 
 export const metadata: Metadata = {
   title: "Kebijakan Privasi",
-  description: "Kebijakan Privasi arsip-template",
+  description: "Kebijakan Privasi arsip template",
 };
 export default function PrivacyPolicyPage() {
   return (
