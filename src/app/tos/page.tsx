@@ -5,7 +5,7 @@ import { HydrateClient } from "~/trpc/server";
 
 export const metadata: Metadata = {
   title: "Ketentuan Layanan",
-  description: "Ketentuan Layanan arsip-template",
+  description: "Ketentuan Layanan arsip template",
 };
 export default function TOSPage() {
   return (

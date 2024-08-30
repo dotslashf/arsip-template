@@ -33,7 +33,7 @@ export default function RankingPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Peringkat Tukang Arsip</h1>
         <p className="text-muted-foreground">
-          inilah peringkat tukang arsip di arsip-template
+          inilah peringkat tukang arsip di arsip template
         </p>
 
         <Accordion type="single" collapsible>
