@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import SkeletonListCopyPasta from "~/components/SkeletonListCopyPasta";
 import Hero from "~/components/Hero";
 import { type Metadata } from "next";
+import { baseUrl } from "~/lib/constant";
 
 type Props = {
   params: { id: string };
@@ -16,11 +17,15 @@ export async function generateMetadata({
 }: Props): Promise<Metadata> {
   let content = "";
   const search = searchParams.search as string;
+
+  let tag = null;
+  if (searchParams.tag) {
+    tag = await api.tag.byId({ id: searchParams.tag as string });
+  }
+
   if (searchParams.search && searchParams.tag) {
-    const tag = await api.tag.byId({ id: searchParams.tag as string });
     content = `${tag?.name} | ${search} `;
   } else if (searchParams.tag) {
-    const tag = await api.tag.byId({ id: searchParams.tag as string });
     content = `${tag?.name} | `;
   } else if (searchParams.search) {
     content = `${search} | `;
@@ -28,6 +33,14 @@ export async function generateMetadata({
   const title = `${content}arsip template`;
   return {
     title,
+    alternates: searchParams.tag
+      ? {
+          canonical: `${baseUrl}/?tag=${tag?.id}`,
+        }
+      : {},
+    description: searchParams.tag
+      ? `Arsip template dengan tag: ${tag?.name}`
+      : "",
   };
 }
 
