@@ -72,7 +72,7 @@ export default function RankingPage() {
               <TableHead className="w-24 text-center"># Arsip</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="overflow-y-auto">
             {rankings.map((rank, i) => {
               const rankPosition = i + 1;
               return (
@@ -86,11 +86,11 @@ export default function RankingPage() {
                     <TableCell className="text-center font-medium">
                       {rankPosition}
                     </TableCell>
-                    <TableCell className="flex items-center">
+                    <TableCell className="flex w-64 items-center gap-2 md:w-72">
                       <span className="mr-4 rounded-full border-2 border-secondary-foreground">
                         <Avatar seed={rank.avatarSeed ?? rank.id} zoom={130} />
                       </span>
-                      <Badge variant={"ghost"}>
+                      <Badge variant={"ghost"} className="flex w-fit">
                         {getMedal(rankPosition)} {rank.name}
                       </Badge>
                     </TableCell>
