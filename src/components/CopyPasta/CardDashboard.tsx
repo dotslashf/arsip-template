@@ -105,7 +105,7 @@ export default function CardDashboard({
           )}
           {type === "approved" && (
             <Link
-              href={`/copy-pasta/${copyPasta.id}`}
+              href={`/copy-pasta/${copyPasta.id}?utm_content=user_profile`}
               className={cn(buttonVariants({ variant: "link", size: "url" }))}
               onClick={() =>
                 sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {

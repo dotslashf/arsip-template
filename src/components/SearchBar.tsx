@@ -83,7 +83,7 @@ export default function SearchBar() {
             >
               {results.map((result, index) => (
                 <Link
-                  href={`/copy-pasta/${result.id}`}
+                  href={`/copy-pasta/${result.id}?utm_term=${encodeURIComponent(query)}`}
                   key={index}
                   className="cursor-pointer rounded-md px-4 py-2 transition-colors hover:bg-secondary dark:text-accent dark:hover:bg-accent-foreground"
                 >
@@ -135,7 +135,7 @@ function ButtonPlus({
 }) {
   return (
     <Link
-      href={"/copy-pasta/create"}
+      href={"/copy-pasta/create?utm_content=search"}
       className={cn(
         buttonVariants({ size: children ? "default" : "icon" }),
         "item-center",

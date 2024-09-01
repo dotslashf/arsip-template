@@ -1,9 +1,9 @@
 "use client";
 
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { Hash, TrendingUp } from "lucide-react";
+import { Eye, Hash, TrendingUp } from "lucide-react";
 import Link from "next/link";
-import { cn } from "~/lib/utils";
+import { cn, trimContent } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import { ScrollArea } from "../ui/scroll-area";
 import ListTags from "../ListTags";
@@ -38,30 +38,25 @@ export default function TrendingHome(props: TrendingHomeProps) {
       >
         <AccordionItem value="trendingCopy" className="border-0 p-0">
           <AccordionTrigger className="border-0 py-0">
-            <h2 className="flex items-center gap-2 text-lg font-semibold">
+            <h2 className="flex items-center gap-2 text-lg font-bold">
               <TrendingUp className="w-4" />
               Trending Template
             </h2>
           </AccordionTrigger>
-          <AccordionContent className="mt-4 pb-0">
-            {topCopyPastas.map((copy, index) => {
+          <AccordionContent className="mt-4 flex flex-col space-y-2 pb-0">
+            {topCopyPastas.map((copy) => {
               return (
                 <Link
-                  href={`/copy-pasta/${copy.copyPasta.id}`}
+                  href={`/copy-pasta/${copy.copyPasta.id}?utm_content=trending`}
                   key={copy.copyPasta.id}
-                  className="flex items-center justify-between hover:underline"
+                  className="flex items-center justify-between"
                   prefetch={false}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      {index + 1}
-                    </span>
-                    <span className="text-sm font-medium">
-                      {copy.copyPasta.content}
-                    </span>
-                  </div>
-                  <span className="text-xs text-confirm">
-                    {copy.views} views
+                  <span className="text-sm font-semibold hover:underline">
+                    {trimContent(copy.copyPasta.content ?? "", 30)}
+                  </span>
+                  <span className="ml-4 flex items-center justify-center text-xs text-muted-foreground">
+                    {copy.views} <Eye className="ml-2 w-4" />
                   </span>
                 </Link>
               );
@@ -77,7 +72,7 @@ export default function TrendingHome(props: TrendingHomeProps) {
       >
         <AccordionItem value="trendingTag" className="border-0 p-0">
           <AccordionTrigger className="border-0 py-0">
-            <h2 className="flex items-center gap-2 text-lg font-semibold">
+            <h2 className="flex items-center gap-2 text-lg font-bold">
               <Hash className="w-4" />
               Tags
             </h2>

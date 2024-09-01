@@ -11,7 +11,6 @@ import {
 
 import { faker } from "@faker-js/faker";
 import { getPageViews } from "~/server/util/analytics";
-import { trimContent } from "~/lib/utils";
 
 export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure
@@ -351,7 +350,7 @@ export const copyPastaRouter = createTRPCRouter({
           views: analytic.views,
           copyPasta: {
             id: copyPasta?.id,
-            content: trimContent(copyPasta?.content ?? "", 18),
+            content: copyPasta?.content
           },
         };
       }),

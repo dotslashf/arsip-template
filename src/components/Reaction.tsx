@@ -175,7 +175,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
               <Link
                 key={react.id}
                 className="flex text-primary underline hover:cursor-pointer"
-                href={`/user/${react.user.id}`}
+                href={`/user/${react.user.id}?utm_source=reaction_summary`}
                 prefetch={false}
               >
                 {react.user.name}{" "}

@@ -110,16 +110,15 @@ export default function CardMinimal({ copyPasta }: CardProps) {
           })}
         </div>
         <div className="flex w-full gap-2">
-          <span
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "xs" }),
-              "cursor-pointer gap-2 rounded-sm px-2 text-xs",
-            )}
+          <Button
+            className="cursor-pointer gap-2 rounded-sm px-2 text-xs"
+            variant="secondary"
+            size="xs"
             onClick={handleSourceClick}
           >
             {sourceEnumHash.get(copyPasta.source)?.icon}{" "}
             {sourceEnumHash.get(copyPasta.source)?.label}
-          </span>
+          </Button>
           {copyPasta.imageUrl && (
             <span
               className={cn(
@@ -156,7 +155,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
             </span>
           )}
           <Link
-            href={`/copy-pasta/${copyPasta.id}`}
+            href={`/copy-pasta/${copyPasta.id}?utm_content=timeline`}
             className={cn(buttonVariants({ variant: "link", size: "url" }))}
             onClick={() =>
               sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
