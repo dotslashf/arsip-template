@@ -28,14 +28,7 @@ export default function CardDashboard({
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col justify-between gap-2 py-2 hover:cursor-auto">
-        <div
-          className={cn(
-            "overflow-x-hidden text-sm",
-            copyPasta.CopyPastasOnTags.some(
-              (tag) => tag.tags.name === "NSFW",
-            ) && "blur-sm transition hover:blur-none",
-          )}
-        >
+        <div className="overflow-x-hidden text-sm">
           <blockquote
             className={cn("whitespace-pre-line", robotoSlab.className)}
           >
