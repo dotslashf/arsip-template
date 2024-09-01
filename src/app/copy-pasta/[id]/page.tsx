@@ -2,7 +2,7 @@ import Layout from "~/components/Layout";
 import { api, HydrateClient } from "~/trpc/server";
 import CopyPastaPage from "~/app/_components/CopyPastaByIdPage";
 import { Suspense } from "react";
-import SkeletonCopyPasta from "~/components/Skeleton/SkeletonCopyPasta";
+import SkeletonCopyPasta from "~/components/Skeleton/CopyPasta";
 import { type Metadata } from "next";
 import { trimContent } from "~/lib/utils";
 import { notFound } from "next/navigation";
