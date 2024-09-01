@@ -51,7 +51,7 @@ export default async function Home() {
   return (
     <HydrateClient>
       <Layout>
-        <Hero texts={texts} />
+        <Hero texts={texts} isShowButton={true} />
         <ListCopyPasta />
       </Layout>
     </HydrateClient>

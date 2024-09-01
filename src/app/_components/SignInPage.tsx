@@ -8,7 +8,13 @@ import {
   faDiscord,
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { sendGAEvent } from "@next/third-parties/google";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 
@@ -23,49 +29,47 @@ export default function SignInSocialProviders() {
   }
 
   return (
-    <>
-      <Card className="mx-auto mt-8 w-full max-w-xl items-center justify-center space-y-6 bg-secondary py-6">
-        <CardHeader className="items-center">
-          <CardTitle className="text-3xl">👋 Selamat datang!</CardTitle>
-        </CardHeader>
-        <CardContent className="flex w-full items-center justify-center">
-          <p className="text-md max-w-sm text-center text-secondary-foreground">
-            Masuk dan jadi bagian kontributor pengarsip template (copy-pasta)
-            netizen
-          </p>
-        </CardContent>
-        <CardContent>
-          <div className="space-y-4">
-            <Button
-              variant="twitter"
-              className="w-full"
-              size={"lg"}
-              onClick={() => handleSignIn("twitter")}
-            >
-              <FontAwesomeIcon icon={faTwitter} className="mr-2 h-4 w-4" />
-              Masuk dengan Twitter (X)
-            </Button>
-            <Button
-              variant="discord"
-              className="w-full"
-              size={"lg"}
-              onClick={() => handleSignIn("discord")}
-            >
-              <FontAwesomeIcon icon={faDiscord} className="mr-2 h-4 w-4" />
-              Masuk dengan Discord
-            </Button>
-            <Button
-              variant="google"
-              className="w-full"
-              size={"lg"}
-              onClick={() => handleSignIn("google")}
-            >
-              <FontAwesomeIcon icon={faGoogle} className="mr-2 h-4 w-4" />
-              Masuk dengan Google
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </>
+    <Card className="mx-auto mt-8 w-full max-w-xl items-center justify-center space-y-6 border-0 bg-accent px-4 py-6 shadow-none">
+      <CardHeader className="items-center">
+        <CardTitle className="text-3xl">👋 Halo, Selamat datang!</CardTitle>
+        <CardDescription>
+          Masuk dan jadi bagian kontributor pengarsip template (copy-pasta)
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="mx-auto flex w-2/3 flex-col items-center justify-center self-center">
+        <CardDescription className="mb-2 md:mb-4">
+          Pilih metode untuk masuk ke akun Anda.
+        </CardDescription>
+        <div className="flex w-full flex-col space-y-2 md:space-y-4">
+          <Button
+            variant="twitter"
+            className="w-full"
+            size={"lg"}
+            onClick={() => handleSignIn("twitter")}
+          >
+            <FontAwesomeIcon icon={faTwitter} className="mr-2 h-4 w-4" />
+            Twitter (X)
+          </Button>
+          <Button
+            variant="discord"
+            className="w-full"
+            size={"lg"}
+            onClick={() => handleSignIn("discord")}
+          >
+            <FontAwesomeIcon icon={faDiscord} className="mr-2 h-4 w-4" />
+            Discord
+          </Button>
+          <Button
+            variant="google"
+            className="w-full"
+            size={"lg"}
+            onClick={() => handleSignIn("google")}
+          >
+            <FontAwesomeIcon icon={faGoogle} className="mr-2 h-4 w-4" />
+            Google
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
