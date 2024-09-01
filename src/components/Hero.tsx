@@ -6,8 +6,9 @@ import { cn } from "~/lib/utils";
 
 interface HeroProps {
   texts: string[];
+  isShowButton: boolean;
 }
-export default function Hero({ texts }: HeroProps) {
+export default function Hero({ texts, isShowButton }: HeroProps) {
   const getRandomText = () => {
     const randomIndex = Math.floor(Math.random() * texts.length);
     return texts[randomIndex] + " ";
@@ -43,28 +44,32 @@ export default function Hero({ texts }: HeroProps) {
           <br />
           template
         </Link>
-        <p className="text-md mx-auto max-w-4xl font-bold text-secondary-foreground dark:text-white lg:text-xl">
-          platform berbagi template / copy-pasta menarik dari netizen.
+        <p className="text-md mx-auto max-w-xl font-bold text-secondary-foreground dark:text-white lg:text-xl">
+          platform berbagi template (copy-pasta) dari netizen.
         </p>
-        <div className="mt-6 flex flex-col items-center justify-center gap-4">
-          <Link
-            href={"/copy-pasta/create"}
-            className={cn(
-              buttonVariants({ variant: "default", size: "lg" }),
-              "",
-            )}
-          >
-            Mulai Mengarsipkan
-            <PenBoxIcon className="ml-2 h-4 w-4" />
-          </Link>
-          <Link
-            href={"#main"}
-            className={cn(buttonVariants({ variant: "secondary", size: "lg" }))}
-          >
-            Cari Template
-            <Search className="ml-2 w-4" />
-          </Link>
-        </div>
+        {isShowButton && (
+          <div className="mt-6 flex flex-col items-center justify-center gap-4">
+            <Link
+              href={"/copy-pasta/create"}
+              className={cn(
+                buttonVariants({ variant: "default", size: "lg" }),
+                "",
+              )}
+            >
+              Mulai Mengarsipkan
+              <PenBoxIcon className="ml-2 h-4 w-4" />
+            </Link>
+            <Link
+              href={"#main"}
+              className={cn(
+                buttonVariants({ variant: "secondary", size: "lg" }),
+              )}
+            >
+              Cari Template
+              <Search className="ml-2 w-4" />
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

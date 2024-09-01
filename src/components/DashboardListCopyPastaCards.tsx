@@ -1,5 +1,5 @@
 import { type InfiniteData } from "@tanstack/react-query";
-import SkeletonCopyPasta from "./SkeletonCopyPasta";
+import SkeletonCopyPasta from "./Skeleton/CopyPasta";
 import { Button } from "./ui/button";
 import { type CardCopyPastaMinimal } from "~/lib/interface";
 import CardDashboard from "./CopyPasta/CardDashboard";

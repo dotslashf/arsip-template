@@ -1,23 +1,29 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { Button } from "~/components/ui/button";
-import { api } from "~/trpc/react";
-import ListTags from "~/components/ListTags";
-import { sendGAEvent } from "@next/third-parties/google";
 import dynamic from "next/dynamic";
 import { Skeleton } from "~/components/ui/skeleton";
-import CardMinimal from "~/components/CopyPasta/CardMinimal";
-import { ANALYTICS_EVENT } from "~/lib/constant";
-import GetContent from "~/components/GetContent";
-import { type OriginSource } from "@prisma/client";
-import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
+import SkeletonListCopyPasta from "~/components/Skeleton/ListCopyPasta";
+import { useSearchParams } from "next/navigation";
+import SkeletonTrending from "~/components/Skeleton/Trending";
 
-const SearchBar = dynamic(() => import("../../components/SearchBar"), {
+const TrendingHome = dynamic(() => import("~/components/Trending/Trending"), {
   ssr: false,
   loading() {
     return (
-      <div className="flex w-full max-w-3xl space-x-2 self-center">
+      <div className="order-last col-span-3 flex w-full flex-col gap-4 md:col-span-1">
+        {new Array(2).fill(false).map((_, i) => (
+          <SkeletonTrending key={i} />
+        ))}
+      </div>
+    );
+  },
+});
+
+const SearchBar = dynamic(() => import("~/components/SearchBar"), {
+  ssr: false,
+  loading() {
+    return (
+      <div className="flex w-full max-w-4xl space-x-2 self-center">
         <Skeleton className="h-10 flex-1" />
         <Skeleton className="h-10 w-10" />
         <Skeleton className="h-10 w-10" />
@@ -26,76 +32,24 @@ const SearchBar = dynamic(() => import("../../components/SearchBar"), {
   },
 });
 
+const Lists = dynamic(() => import("~/components/CopyPasta/Lists"), {
+  ssr: false,
+  loading() {
+    return <SkeletonListCopyPasta />;
+  },
+});
+
 export function ListCopyPasta() {
   const searchParams = useSearchParams();
-  const search = searchParams.get("search");
   const tag = searchParams.get("tag");
-  const byUserId = searchParams.get("byUserId");
-  const source = searchParams.get("source") as OriginSource;
-  const [{ pages }, allCopyPastas] =
-    api.copyPasta.list.useSuspenseInfiniteQuery(
-      {
-        limit: 9,
-        search,
-        tag,
-        byUserId,
-        source,
-      },
-      {
-        getNextPageParam: (lastPage) => lastPage.nextCursor,
-      },
-    );
-
-  const { isFetchingNextPage, fetchNextPage, hasNextPage } = allCopyPastas;
-
-  async function handleNextList() {
-    await fetchNextPage();
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "home.next",
-    });
-  }
 
   return (
     <div className="flex w-full flex-col gap-4" id="main">
       <SearchBar />
-      <div className="flex w-full space-x-2 rounded-md border bg-secondary p-3 md:hidden">
-        <span className="font-mono text-sm font-bold">Tags:</span>
-        <ScrollArea className="w-full">
-          <div className="flex space-x-2 whitespace-nowrap">
-            <ListTags id={tag} />
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-      </div>
-      <div className="flex max-w-3xl flex-col gap-4 self-center">
-        <div className="flex w-full gap-4">
-          <div className="flex w-full flex-col gap-4">
-            {pages
-              ? pages.map((page) =>
-                  page.copyPastas.map((copy) => {
-                    return <CardMinimal key={copy.id} copyPasta={copy} />;
-                  }),
-                )
-              : null}
-
-            <Button
-              onClick={handleNextList}
-              disabled={!hasNextPage || isFetchingNextPage}
-            >
-              <GetContent
-                hasNextPage={hasNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-              />
-            </Button>
-          </div>
-          <div className="sticky top-[4.5rem] hidden h-fit w-full max-w-[12.5rem] flex-col space-y-2 rounded-md border bg-secondary px-3 py-1.5 md:flex">
-            <span className="font-mono text-sm font-bold">Tags:</span>
-            <ScrollArea className="h-44">
-              <div className="flex flex-wrap gap-2">
-                <ListTags id={tag} />
-              </div>
-            </ScrollArea>
-          </div>
+      <div className="flex w-full max-w-4xl flex-col gap-4 self-center">
+        <div className="grid w-full grid-cols-3 gap-4">
+          <Lists />
+          <TrendingHome tag={tag} />
         </div>
       </div>
     </div>

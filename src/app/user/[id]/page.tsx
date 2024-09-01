@@ -1,7 +1,6 @@
 import Layout from "~/components/Layout";
 import { api, HydrateClient } from "~/trpc/server";
 import { Suspense } from "react";
-import SkeletonCopyPasta from "~/components/SkeletonCopyPasta";
 import { type Metadata } from "next";
 import { trimContent } from "~/lib/utils";
 import { notFound } from "next/navigation";
@@ -57,15 +56,7 @@ export default function CopyPastaFromUserById({ params }: PropsPage) {
   return (
     <HydrateClient>
       <Layout>
-        <Suspense
-          fallback={
-            <div className="flex w-full flex-col gap-4">
-              <SkeletonCopyPasta />
-            </div>
-          }
-        >
-          <UserCopyPastaPage id={params.id} />
-        </Suspense>
+        <UserCopyPastaPage id={params.id} />
       </Layout>
     </HydrateClient>
   );

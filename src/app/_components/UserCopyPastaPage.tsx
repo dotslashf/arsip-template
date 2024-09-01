@@ -51,7 +51,7 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
 
   return (
     <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
-      <div className="flex w-full items-center justify-center lg:max-w-md">
+      <div className="sticky top-[4.5rem] flex w-full items-center justify-center self-start lg:max-w-md">
         <UserProfileCard session={session} isPreviewMode={true} />
       </div>
       <div className="grid gap-4">
