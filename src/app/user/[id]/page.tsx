@@ -1,6 +1,5 @@
 import Layout from "~/components/Layout";
 import { api, HydrateClient } from "~/trpc/server";
-import { Suspense } from "react";
 import { type Metadata } from "next";
 import { trimContent } from "~/lib/utils";
 import { notFound } from "next/navigation";
