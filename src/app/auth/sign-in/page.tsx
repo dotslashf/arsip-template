@@ -19,11 +19,11 @@ export default async function SignIn() {
 
   return (
     <HydrateClient>
-      <div className="flex min-h-screen flex-col items-center justify-center bg-background md:flex-row md:items-stretch">
-        <div className="mb-8 w-full max-w-3xl self-center md:mb-0 md:mr-6 md:w-3/5">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 md:flex-row md:items-stretch md:p-0">
+        <div className="mb-8 hidden w-full max-w-3xl self-center md:mb-0 md:mr-6 md:flex md:w-3/5">
           <Hero texts={texts} isShowButton={false} />
         </div>
-        <div className="flex w-full items-center justify-center bg-accent md:w-2/5">
+        <div className="flex w-full items-center justify-center rounded-md bg-accent md:w-2/5">
           <SignInSocialProviders />
         </div>
       </div>

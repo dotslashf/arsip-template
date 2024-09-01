@@ -36,7 +36,7 @@ export default function SignInSocialProviders() {
           Masuk dan jadi bagian kontributor pengarsip template (copy-pasta)
         </CardDescription>
       </CardHeader>
-      <CardContent className="mx-auto flex w-2/3 flex-col items-center justify-center self-center">
+      <CardContent className="mx-auto flex flex-col items-center justify-center self-center">
         <CardDescription className="mb-2 md:mb-4">
           Pilih metode untuk masuk ke akun Anda.
         </CardDescription>

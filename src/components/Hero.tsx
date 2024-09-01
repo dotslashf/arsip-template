@@ -44,8 +44,8 @@ export default function Hero({ texts, isShowButton }: HeroProps) {
           <br />
           template
         </Link>
-        <p className="text-md mx-auto max-w-4xl font-bold text-secondary-foreground dark:text-white lg:text-xl">
-          platform berbagi template / copy-pasta menarik dari netizen.
+        <p className="text-md mx-auto max-w-xl font-bold text-secondary-foreground dark:text-white lg:text-xl">
+          platform berbagi template (copy-pasta) dari netizen.
         </p>
         {isShowButton && (
           <div className="mt-6 flex flex-col items-center justify-center gap-4">
