@@ -14,7 +14,7 @@ export function formatDateToHuman(date: Date, formatString = "PPP") {
 
 export function trimContent(content: string, length = 255) {
   return content
-    ? content.slice(0, length) + (content.length > 100 ? "..." : "")
+    ? content.slice(0, length) + (content.length > length ? "..." : "")
     : "😱😱😱";
 }
 
@@ -24,7 +24,7 @@ export function determineSource(url = "Other") {
   if (url === "Other") {
     return OriginSource.Other;
   }
-  const match = url.toLowerCase().match(regex);
+  const match = RegExp(regex).exec(url.toLowerCase());
   if (!match) {
     return OriginSource.Other;
   }

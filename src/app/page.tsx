@@ -1,8 +1,6 @@
 import Layout from "~/components/Layout";
 import { api, HydrateClient } from "~/trpc/server";
 import { ListCopyPasta } from "./_components/ListCopyPastaPage";
-import { Suspense } from "react";
-import SkeletonListCopyPasta from "~/components/SkeletonListCopyPasta";
 import Hero from "~/components/Hero";
 import { type Metadata } from "next";
 import { baseUrl } from "~/lib/constant";
@@ -54,9 +52,7 @@ export default async function Home() {
     <HydrateClient>
       <Layout>
         <Hero texts={texts} />
-        <Suspense fallback={<SkeletonListCopyPasta />}>
-          <ListCopyPasta />
-        </Suspense>
+        <ListCopyPasta />
       </Layout>
     </HydrateClient>
   );

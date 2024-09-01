@@ -2,7 +2,7 @@
 
 import CardById from "~/components/CopyPasta/CardById";
 import CardRelated from "~/components/CopyPasta/CardRelated";
-import SkeletonCopyPasta from "~/components/SkeletonCopyPasta";
+import SkeletonCopyPasta from "~/components/Skeleton/SkeletonCopyPasta";
 import { api } from "~/trpc/react";
 
 interface CopyPastaByIdProps {

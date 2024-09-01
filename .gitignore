@@ -47,3 +47,5 @@ yarn-error.log*
 .idea
 
 service-account.json
+# Million Lint
+.million

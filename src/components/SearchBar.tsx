@@ -58,7 +58,7 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="w-full max-w-3xl items-center justify-center self-center">
+    <div className="w-full max-w-4xl items-center justify-center self-center">
       <div className="flex w-full items-center space-x-4 self-center">
         <div className="relative flex flex-1">
           <Input
