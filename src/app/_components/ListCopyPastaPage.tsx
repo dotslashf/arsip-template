@@ -10,7 +10,7 @@ const TrendingHome = dynamic(() => import("~/components/Trending/Trending"), {
   ssr: false,
   loading() {
     return (
-      <div className="col-span-3 flex w-full flex-col gap-4">
+      <div className="order-last col-span-3 flex w-full flex-col gap-4 md:col-span-1">
         {new Array(2).fill(false).map((_, i) => (
           <SkeletonTrending key={i} />
         ))}
