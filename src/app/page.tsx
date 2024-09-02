@@ -44,7 +44,7 @@ export async function generateMetadata({
 
 export default async function Home() {
   const copyPastas = await api.copyPasta.list({
-    limit: 10,
+    limit: 15,
   });
   const texts = copyPastas.copyPastas.map((copy) => copy.content);
 

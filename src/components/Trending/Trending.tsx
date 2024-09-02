@@ -52,7 +52,7 @@ export default function TrendingHome(props: TrendingHomeProps) {
                   className="flex items-center justify-between"
                   prefetch={false}
                 >
-                  <span className="text-sm font-semibold hover:underline">
+                  <span className="text-sm hover:underline">
                     {trimContent(copy.copyPasta.content ?? "", 30)}
                   </span>
                   <span className="ml-4 flex items-center justify-center text-xs text-muted-foreground">

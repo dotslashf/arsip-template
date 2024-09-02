@@ -42,7 +42,7 @@ export const copyPastaRouter = createTRPCRouter({
   list: publicProcedure
     .input(
       z.object({
-        limit: z.number().min(1).max(10).nullish(),
+        limit: z.number().min(1).max(15).nullish(),
         cursor: z.string().nullish(),
         search: z.string().nullish(),
         tag: z.string().uuid().nullish(),
