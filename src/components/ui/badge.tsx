@@ -17,6 +17,13 @@ const badgeVariants = cva(
         outline:
           "text-foreground hover:bg-primary hover:text-primary-foreground bg-background",
         ghost: "hover:bg-accent hover:text-accent-foreground",
+        gold: "bg-yellow-500 dark:bg-yellow-500 text-yellow-950 dark:text-yellow-950 hover:bg-yellow-600 dark:hover:bg-yellow-400 border-yellow-600 dark:border-yellow-400",
+        silver:
+          "bg-gray-300 dark:bg-gray-400 text-gray-900 dark:text-gray-900 hover:bg-gray-400 dark:hover:bg-gray-300 border-gray-400 dark:border-gray-500",
+        bronze:
+          "bg-amber-700 dark:bg-amber-600 text-amber-50 dark:text-amber-50 hover:bg-amber-800 dark:hover:bg-amber-500 border-amber-800 dark:border-amber-500",
+        white:
+          "bg-white dark:bg-slate-100 text-gray-900 dark:text-slate-800 hover:bg-slate-200 dark:hover:bg-slate-200 border-gray-300 dark:border-gray-600",
       },
     },
     defaultVariants: {
