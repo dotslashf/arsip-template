@@ -28,6 +28,19 @@ export default function RankingPage() {
     staleTime: Infinity,
   });
 
+  function getBadgeVariant(index: number) {
+    switch (index) {
+      case 1:
+        return "gold";
+      case 2:
+        return "silver";
+      case 3:
+        return "bronze";
+      default:
+        return "white";
+    }
+  }
+
   return (
     <div className="mx-auto w-full">
       <div className="mb-8">
@@ -43,15 +56,20 @@ export default function RankingPage() {
             </AccordionTrigger>
             <AccordionContent>
               <ul className="flex flex-col gap-y-2">
-                {rankingLists.map((rank) => {
+                {rankingLists.map((rank, index) => {
                   return (
-                    <li className="py-1 font-mono" key={rank.id}>
+                    <li className="py-1" key={rank.id}>
                       <span className="font-semibold">
-                        <Badge>{rank.title}</Badge>
+                        <Badge
+                          variant={getBadgeVariant(index + 1)}
+                          className="font-bold"
+                        >
+                          {rank.title}
+                        </Badge>
                       </span>{" "}
                       {">"}{" "}
                       <span className="font-bold italic">
-                        <Badge variant={"secondary"}>{rank.minCount}</Badge>
+                        <Badge variant={"ghost"}>{rank.minCount}</Badge>
                       </span>{" "}
                       template
                     </li>
@@ -84,18 +102,21 @@ export default function RankingPage() {
                 >
                   <TableRow className="cursor-pointer">
                     <TableCell className="text-center font-medium">
-                      {rankPosition}
+                      {getMedal(rankPosition)}
                     </TableCell>
                     <TableCell className="flex w-64 items-center gap-2 md:w-72">
                       <span className="mr-4 rounded-full border-2 border-secondary-foreground">
                         <Avatar seed={rank.avatarSeed ?? rank.id} zoom={130} />
                       </span>
-                      <Badge variant={"ghost"} className="flex w-fit">
-                        {getMedal(rankPosition)} {rank.name}
+                      <Badge
+                        variant={getBadgeVariant(rankPosition)}
+                        className="flex w-fit"
+                      >
+                        {rank.name}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-center">
-                      <Badge>{rank.rank?.title}</Badge>
+                      <Badge variant={"ghost"}>{rank.rank?.title}</Badge>
                     </TableCell>
                     <TableCell className="w-24 text-center">
                       {rank._count.CopyPastaCreatedBy}

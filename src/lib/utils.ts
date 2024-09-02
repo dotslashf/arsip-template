@@ -52,7 +52,7 @@ export function getMedal(number: number) {
     case 3:
       return "🥉 ";
     default:
-      return "";
+      return number;
   }
 }
 
