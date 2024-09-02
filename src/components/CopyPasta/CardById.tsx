@@ -72,7 +72,7 @@ export default function CardById({ copyPasta }: CardProps) {
 
   function handleCopyUrl() {
     navigator.clipboard
-      .writeText(`${baseUrl}/copy-pasta/${copyPasta.id}`)
+      .writeText(`${baseUrl}/copy-pasta/${copyPasta.id}?utm_content=shared_url`)
       .then(() => {
         toast({
           message: "Url siap dibagikan! ⚓",
@@ -193,7 +193,7 @@ export default function CardById({ copyPasta }: CardProps) {
               {formatDateToHuman(copyPasta.createdAt ?? new Date())}
             </div>
             <Link
-              href={`/user/${copyPasta.createdById}`}
+              href={`/user/${copyPasta.createdById}?utm_source=copy_pasta_by_id`}
               className="font-semibold transition-colors hover:text-primary hover:underline"
               prefetch={false}
             >
@@ -247,7 +247,7 @@ export default function CardById({ copyPasta }: CardProps) {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link
-                    href={`https://twitter.com/intent/post?text=${trimContent(copyPasta.content, 150)}&url=arsiptemplate.app/copy-pasta/${copyPasta.id}`}
+                    href={`https://twitter.com/intent/post?text=${trimContent(copyPasta.content, 150)}&url=arsiptemplate.app/copy-pasta/${copyPasta.id}?utm_source=twitter&utm_content=tweet`}
                     target="_blank"
                     className="flex w-full items-center justify-between"
                   >

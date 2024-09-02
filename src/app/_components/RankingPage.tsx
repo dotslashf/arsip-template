@@ -77,7 +77,7 @@ export default function RankingPage() {
               const rankPosition = i + 1;
               return (
                 <Link
-                  href={`/user/${rank.username ? rank.username : rank.id}`}
+                  href={`/user/${rank.username ? rank.username : rank.id}?utm_content=ranking`}
                   prefetch={false}
                   legacyBehavior
                   key={rank.id}

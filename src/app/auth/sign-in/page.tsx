@@ -1,4 +1,3 @@
-import Brand from "~/components/Brand";
 import { api, HydrateClient } from "~/trpc/server";
 import SignInSocialProviders from "~/app/_components/SignInPage";
 import { type Metadata } from "next";

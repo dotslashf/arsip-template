@@ -11,7 +11,6 @@ import {
 
 import { faker } from "@faker-js/faker";
 import { getPageViews } from "~/server/util/analytics";
-import { trimContent } from "~/lib/utils";
 
 export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure
@@ -258,26 +257,9 @@ export const copyPastaRouter = createTRPCRouter({
         },
       },
     });
-    const sources = await Promise.all(
-      Object.keys(OriginSource).map(async (key) => {
-        return {
-          source: key,
-          count: await ctx.db.copyPasta.count({
-            where: {
-              approvedAt: {
-                not: null,
-              },
-              source: key as OriginSource,
-            },
-          }),
-          fill: `var(--color-${key.toLowerCase()})`,
-        };
-      }),
-    );
 
     return {
       total,
-      sources,
     };
   }),
 
@@ -351,7 +333,7 @@ export const copyPastaRouter = createTRPCRouter({
           views: analytic.views,
           copyPasta: {
             id: copyPasta?.id,
-            content: trimContent(copyPasta?.content ?? "", 18),
+            content: copyPasta?.content,
           },
         };
       }),

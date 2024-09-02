@@ -10,6 +10,7 @@ import { ThemeProvider } from "~/components/theme-provider";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { env } from "~/env";
 import { baseUrl } from "~/lib/constant";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -65,6 +66,13 @@ export default function RootLayout({
         />
         {!isDevelopment && <GoogleAnalytics gaId="G-2Q26HEWB87" />}
         {!isDevelopment && <GoogleTagManager gtmId="GTM-NG2RHJGW" />}
+        {!isDevelopment && (
+          <Script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id="08afa8e8-cecd-4188-ba68-cdfad14f7294"
+          />
+        )}
         <meta
           name="google-adsense-account"
           content="ca-pub-6938265092429326"

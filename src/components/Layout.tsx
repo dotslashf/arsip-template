@@ -44,7 +44,7 @@ export default async function Layout(props: LayoutProps) {
       <div className="container mb-auto flex flex-col items-center justify-center gap-y-10 px-4 pb-10 pt-20 lg:gap-y-14 lg:px-[6.5rem] lg:pt-24">
         {childrenWithSession}
       </div>
-      <Footer session={session} />
+      <Footer />
     </main>
   );
 }

@@ -16,7 +16,7 @@ export async function getPageViews() {
     dateRanges: [
       {
         startDate: "14daysAgo",
-        endDate: "yesterday",
+        endDate: "today",
       },
     ],
     dimensions: [
