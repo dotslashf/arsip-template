@@ -3,14 +3,13 @@ import { baseUrl } from "~/lib/constant";
 
 export const runtime = "edge";
 
-export const getGeist = async () => {
+const getGeist = async () => {
   const response = await fetch(`${baseUrl}/Geist-Regular.ttf`);
   const geist = await response.arrayBuffer();
 
   return geist;
 };
-
-export const getGeistBold = async () => {
+const getGeistBold = async () => {
   const response = await fetch(`${baseUrl}/Geist-Bold.ttf`);
   const geist = await response.arrayBuffer();
 
