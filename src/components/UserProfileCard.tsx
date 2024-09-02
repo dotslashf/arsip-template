@@ -134,7 +134,7 @@ export default function UserProfileCard({
   function handleShareProfile() {
     navigator.clipboard
       .writeText(
-        `${baseUrl}/user/${session?.user.username ?? session?.user.id}`,
+        `${baseUrl}/user/${session?.user.username ?? session?.user.id}?utm_content=profile`,
       )
       .then(() => {
         toast({
