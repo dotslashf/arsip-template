@@ -19,7 +19,7 @@ interface TrendingHomeProps {
 }
 export default function TrendingHome(props: TrendingHomeProps) {
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
-  const [topCopyPastas] = api.copyPasta.getPopularCopyPasta.useSuspenseQuery();
+  const [topCopyPastas] = api.analytics.getPopularCopyPasta.useSuspenseQuery();
 
   return (
     <div
