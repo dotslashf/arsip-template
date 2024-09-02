@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import { Badge } from "./ui/badge";
-import { reactionsMap } from "~/lib/constant";
+import { ANALYTICS_EVENT, reactionsMap } from "~/lib/constant";
 import useToast from "./ui/use-react-hot-toast";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
 import { type EmotionType } from "@prisma/client";
 import { session } from "./HOCSession";
 import { useEffect, useState } from "react";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface ReactionSummaryChildProps {
   copyPastaId: string;
@@ -25,13 +26,19 @@ export default function ReactionSummaryChild({
   const router = useRouter();
 
   const mutationReaction = api.reaction.reactionByCopyPastaId.useMutation({
-    async onSuccess() {
+    async onSuccess(data) {
       void utils.copyPasta.list.invalidate();
+      sendGAEvent("event", ANALYTICS_EVENT.SUMMARY_REACTION, {
+        value: `reaction.${data.emotion}`,
+      });
     },
   });
   const mutationUnReaction = api.reaction.unReactionByUserId.useMutation({
     async onSuccess() {
       void utils.copyPasta.list.invalidate();
+      sendGAEvent("event", ANALYTICS_EVENT.SUMMARY_REACTION, {
+        value: `reaction.none`,
+      });
     },
   });
 

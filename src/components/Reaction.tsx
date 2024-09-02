@@ -5,11 +5,12 @@ import { api } from "~/trpc/react";
 import { EmotionType } from "@prisma/client";
 import useToast from "./ui/use-react-hot-toast";
 import { Skeleton } from "./ui/skeleton";
-import { reactionsMap } from "~/lib/constant";
+import { ANALYTICS_EVENT, reactionsMap } from "~/lib/constant";
 import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import Link from "next/link";
 import { session } from "./HOCSession";
+import { sendGAEvent } from "@next/third-parties/google";
 
 interface ReactionProps {
   copyPastaId: string;
@@ -19,13 +20,19 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
   const [isHovered, setIsHovered] = useState(false);
   const utils = api.useUtils();
   const mutationReaction = api.reaction.reactionByCopyPastaId.useMutation({
-    async onSuccess() {
+    async onSuccess(data) {
       void utils.reaction.getReactionByCopyPastaId.invalidate();
+      sendGAEvent("event", ANALYTICS_EVENT.REACTION, {
+        value: `reaction.${data.emotion}`,
+      });
     },
   });
   const mutationUnReaction = api.reaction.unReactionById.useMutation({
     async onSuccess() {
       void utils.reaction.getReactionByCopyPastaId.invalidate();
+      sendGAEvent("event", ANALYTICS_EVENT.REACTION, {
+        value: `reaction.none`,
+      });
     },
   });
   const { data: reactionsByCopyPastaId } =
