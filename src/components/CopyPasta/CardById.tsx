@@ -13,6 +13,7 @@ import {
   BookCheck,
   CalendarDays,
   Clipboard,
+  Eye,
   ImageIcon,
   Link2,
   Share2,
@@ -47,12 +48,18 @@ import {
 import {} from "@prisma/client";
 import Tag from "../ui/tags";
 import { type CardProps } from "~/lib/interface";
+import { Badge } from "../ui/badge";
+import { api } from "~/trpc/react";
 
 export default function CardById({ copyPasta }: CardProps) {
   const toast = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentTag = searchParams.get("tag");
+
+  const [analytics] = api.analytics.getPageViewById.useSuspenseQuery({
+    id: copyPasta.id,
+  });
 
   function handleCopy() {
     navigator.clipboard
@@ -102,8 +109,14 @@ export default function CardById({ copyPasta }: CardProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-0 lg:p-6 lg:pb-0">
-        <CardTitle>
+        <CardTitle className="flex w-full items-center justify-between">
           <Type className="flip h-6 w-6" />
+          <Badge
+            variant={"default"}
+            className="flex items-center justify-center md:text-base"
+          >
+            {analytics?.views ?? 0} views <Eye className="ml-2 w-4 md:w-5" />
+          </Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="my-6 flex flex-col justify-between gap-2 hover:cursor-auto lg:px-6">

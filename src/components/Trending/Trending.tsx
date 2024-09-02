@@ -19,7 +19,7 @@ interface TrendingHomeProps {
 }
 export default function TrendingHome(props: TrendingHomeProps) {
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
-  const [topCopyPastas] = api.copyPasta.getPopularCopyPasta.useSuspenseQuery();
+  const [topCopyPastas] = api.analytics.getPopularCopyPasta.useSuspenseQuery();
 
   return (
     <div
@@ -52,7 +52,7 @@ export default function TrendingHome(props: TrendingHomeProps) {
                   className="flex items-center justify-between"
                   prefetch={false}
                 >
-                  <span className="text-sm font-semibold hover:underline">
+                  <span className="text-sm hover:underline">
                     {trimContent(copy.copyPasta.content ?? "", 30)}
                   </span>
                   <span className="ml-4 flex items-center justify-center text-xs text-muted-foreground">

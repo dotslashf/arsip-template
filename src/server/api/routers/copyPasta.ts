@@ -10,7 +10,6 @@ import {
 } from "~/server/api/trpc";
 
 import { faker } from "@faker-js/faker";
-import { getPageViews } from "~/server/util/analytics";
 
 export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure
@@ -42,7 +41,7 @@ export const copyPastaRouter = createTRPCRouter({
   list: publicProcedure
     .input(
       z.object({
-        limit: z.number().min(1).max(10).nullish(),
+        limit: z.number().min(1).max(15).nullish(),
         cursor: z.string().nullish(),
         search: z.string().nullish(),
         tag: z.string().uuid().nullish(),
@@ -315,30 +314,4 @@ export const copyPastaRouter = createTRPCRouter({
 
       return chartData;
     }),
-
-  getPopularCopyPasta: publicProcedure.query(async (opts) => {
-    const analytics = await getPageViews();
-    const result = await Promise.all(
-      analytics.map(async (analytic) => {
-        const copyPasta = await opts.ctx.db.copyPasta.findUnique({
-          where: {
-            id: analytic.path!.toString().replace("/copy-pasta/", ""),
-          },
-          select: {
-            id: true,
-            content: true,
-          },
-        });
-        return {
-          views: analytic.views,
-          copyPasta: {
-            id: copyPasta?.id,
-            content: copyPasta?.content,
-          },
-        };
-      }),
-    );
-
-    return result;
-  }),
 });

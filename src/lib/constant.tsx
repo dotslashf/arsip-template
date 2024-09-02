@@ -116,9 +116,11 @@ export const parseErrorMessages = (error: Record<string, any>) => {
 };
 
 export const ANALYTICS_EVENT = {
-  BUTTON_CLICKED: "buttonClicked",
-  DOKSLI: "dokumenAsli",
+  BUTTON_CLICKED: "button_clicked",
+  DOKSLI: "dokumen_asli",
   SEARCH: "search",
-  SET_THEME: "setTheme",
+  SET_THEME: "set_theme",
   SHARE: "share",
+  REACTION: "reaction",
+  SUMMARY_REACTION: "summary_reaction",
 };
