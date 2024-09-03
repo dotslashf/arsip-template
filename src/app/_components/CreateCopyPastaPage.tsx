@@ -23,7 +23,7 @@ import {
 } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import MultipleSelector, {
   type Option,
@@ -31,7 +31,7 @@ import MultipleSelector, {
 import { badgeVariants } from "~/components/ui/badge";
 import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id } from "date-fns/locale";
-import { DAYS } from "~/lib/constant";
+import { DAYS, parseErrorMessages } from "~/lib/constant";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
@@ -41,6 +41,8 @@ export default function CreateCopyPasta() {
   });
   const createMutation = api.copyPasta.create.useMutation();
   const getUploadUrl = api.upload.getUploadSignedUrl.useMutation();
+
+  const router = useRouter();
 
   const tagOptions: Option[] = tags.map((tag) => {
     return {
@@ -66,9 +68,9 @@ export default function CreateCopyPasta() {
 
   useEffect(() => {
     if (createMutation.isSuccess) {
-      redirect("/dashboard/profile");
+      return router.push("/dashboard/profile");
     }
-  }, [createMutation.isSuccess]);
+  }, [createMutation.isSuccess, router]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -80,7 +82,7 @@ export default function CreateCopyPasta() {
       setFile(selectedFile);
       form.setValue("imageUrl", selectedFile);
     } else {
-      toast({
+      void toast({
         message: "Hanya boleh gambar dan berukuran <= 2MB 🤓",
         type: "danger",
       });
@@ -90,17 +92,18 @@ export default function CreateCopyPasta() {
   async function onSubmit(values: z.infer<typeof createCopyPastaFormClient>) {
     try {
       if (!file) {
-        toast({
-          type: "promise",
+        await toast({
           message: "",
+          type: "promise",
           promiseFn: createMutation.mutateAsync({
             ...values,
             source: determineSource(values.sourceUrl),
           }),
           promiseMsg: {
-            error: "Duh, gagal nih 😢",
             loading: "Sedang memasak 🔥",
             success: "Makasih! Tunggu diapproved ya 😎",
+            // eslint-disable-next-line
+            error: (err) => `${parseErrorMessages(err)}`,
           },
         });
         return;
@@ -119,26 +122,22 @@ export default function CreateCopyPasta() {
         body: file,
       });
 
-      toast({
-        type: "promise",
+      await toast({
         message: "",
+        type: "promise",
         promiseFn: createMutation.mutateAsync({
           ...values,
           source: determineSource(values.sourceUrl),
           imageUrl: url.split("?")[0],
         }),
         promiseMsg: {
-          error: "Duh, gagal nih 😢",
           loading: "Sedang memasak 🔥",
           success: "Makasih! Tunggu diapproved ya 😎",
+          // eslint-disable-next-line
+          error: (err) => `${parseErrorMessages(err)}`,
         },
       });
-    } catch (error) {
-      toast({
-        type: "danger",
-        message: "Duh, gagal nih",
-      });
-    }
+    } catch (error) {}
   }
 
   return (
@@ -174,7 +173,7 @@ export default function CreateCopyPasta() {
                     maxSelected={3}
                     hidePlaceholderWhenSelected
                     onMaxSelected={(maxLimit) => {
-                      toast({
+                      void toast({
                         type: "danger",
                         message: `Maximal tag hanya ${maxLimit}`,
                       });
@@ -207,7 +206,6 @@ export default function CreateCopyPasta() {
                       onChange={field.onChange}
                       granularity="day"
                       placeholder={formatDateToHuman(new Date())}
-                      displayFormat={{ hour24: "PPP" }}
                       locale={id}
                     />
                   </FormControl>
@@ -252,8 +250,13 @@ export default function CreateCopyPasta() {
           </div>
         </div>
         <div className="mt-6 w-full">
-          <Button type="submit" className="w-full items-center">
-            Tambah <PlusIcon className="ml-2 h-4 w-4" />
+          <Button
+            type="submit"
+            className="w-full items-center"
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting ? "Mengarsipkan..." : "Tambah"}
+            <PlusIcon className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </form>

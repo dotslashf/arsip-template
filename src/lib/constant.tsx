@@ -108,7 +108,7 @@ export const USER_PROFILE = {
 export const parseErrorMessages = (error: Record<string, any>) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const message = error.shape.message as string;
-  if (message.toLowerCase().includes("unique")) {
+  if (message.toLowerCase().includes("unique") || message === "BAD_REQUEST") {
     return "Data sudah ada!";
   } else {
     return "Duh, gagal nih! 🤯";
