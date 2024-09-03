@@ -86,7 +86,7 @@ export default function UserProfileCard({
       setIsEditMode(!isEditMode);
       return;
     }
-    toast({
+    void toast({
       message: "",
       promiseFn: editNameMutation.mutateAsync({
         ...values,
@@ -115,6 +115,9 @@ export default function UserProfileCard({
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `randomAvatar`,
     });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `randomAvatar`,
+    });
   }, [avatarSeed]);
 
   const handlePreviousAvatar = useCallback(() => {
@@ -129,6 +132,9 @@ export default function UserProfileCard({
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: "randomAvatarPrevious",
     });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `randomAvatarPrevious`,
+    });
   }, []);
 
   function handleShareProfile() {
@@ -137,11 +143,14 @@ export default function UserProfileCard({
         `${baseUrl}/user/${session?.user.username ?? session?.user.id}?utm_content=profile`,
       )
       .then(() => {
-        toast({
+        void toast({
           message: "Silahkan dishare profilenya yah 🍰",
           type: "success",
         });
         sendGAEvent("event", ANALYTICS_EVENT.SHARE, {
+          value: `profile.${session?.user.id}`,
+        });
+        window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
           value: `profile.${session?.user.id}`,
         });
       })
@@ -150,6 +159,9 @@ export default function UserProfileCard({
 
   const handleTagClick = (tag: TagType) => {
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `tag.${tag.name}`,
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `tag.${tag.name}`,
     });
     return router.push(`/?tag=${tag.id}`);

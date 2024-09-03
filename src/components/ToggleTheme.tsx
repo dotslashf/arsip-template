@@ -22,6 +22,7 @@ export function ToggleTheme() {
   function handleSetTheme(theme: "light" | "dark" | "system") {
     setTheme(theme);
     sendGAEvent("event", ANALYTICS_EVENT.SET_THEME, { value: theme });
+    window.umami?.track(ANALYTICS_EVENT.SET_THEME, { value: theme });
   }
 
   return (

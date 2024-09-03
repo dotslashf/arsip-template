@@ -34,6 +34,9 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `user.${id}.next`,
     });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `user.${id}.next`,
+    });
   }
 
   const session: Session = {

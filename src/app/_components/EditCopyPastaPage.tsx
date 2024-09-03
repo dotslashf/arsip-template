@@ -83,7 +83,7 @@ export default function EditCopyPasta({ id }: EditCopyPastaProps) {
   }, [editMutation.isSuccess, id]);
 
   function onSubmit(values: z.infer<typeof editCopyPastaForm>) {
-    toast({
+    void toast({
       message: "",
       promiseFn: editMutation.mutateAsync({
         ...values,
@@ -132,7 +132,7 @@ export default function EditCopyPasta({ id }: EditCopyPastaProps) {
                     maxSelected={3}
                     hidePlaceholderWhenSelected
                     onMaxSelected={(maxLimit) => {
-                      toast({
+                      void toast({
                         type: "danger",
                         message: `Maximal tag hanya ${maxLimit}`,
                       });

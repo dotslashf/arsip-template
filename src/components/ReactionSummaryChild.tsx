@@ -31,12 +31,18 @@ export default function ReactionSummaryChild({
       sendGAEvent("event", ANALYTICS_EVENT.SUMMARY_REACTION, {
         value: `reaction.${data.emotion}`,
       });
+      window.umami?.track(ANALYTICS_EVENT.REACTION, {
+        value: `reaction.${data.emotion}`,
+      });
     },
   });
   const mutationUnReaction = api.reaction.unReactionByUserId.useMutation({
     async onSuccess() {
       void utils.copyPasta.list.invalidate();
       sendGAEvent("event", ANALYTICS_EVENT.SUMMARY_REACTION, {
+        value: `reaction.none`,
+      });
+      window.umami?.track(ANALYTICS_EVENT.REACTION, {
         value: `reaction.none`,
       });
     },
@@ -55,7 +61,7 @@ export default function ReactionSummaryChild({
 
   async function handleUnReact() {
     if (!currentUser) return;
-    toast({
+    void toast({
       message: "",
       promiseFn: mutationUnReaction.mutateAsync({
         copyPastaId: copyPastaId,
@@ -91,7 +97,7 @@ export default function ReactionSummaryChild({
         reactionName = "setuju";
         break;
     }
-    toast({
+    void toast({
       message: "",
       promiseFn: mutationReaction.mutateAsync({
         copyPastaId,

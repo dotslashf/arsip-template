@@ -22,15 +22,15 @@ export default function Hero({ texts, isShowButton }: HeroProps) {
           {[...Array(45)].map((_, i) => (
             <div
               key={i}
-              className={`${i % 2 === 0 ? "animate-scrollText" : "animate-scrollTextReverse"} whitespace-nowrap text-sm font-semibold text-slate-800 text-opacity-20 dark:text-white/15`}
+              className={`${i % 2 === 0 ? "animate-scrollText" : "animate-scrollTextReverse"} whitespace-nowrap text-base font-semibold text-slate-800 text-opacity-20 dark:text-white/20`}
             >
               {getRandomText()?.repeat(20)}
             </div>
           ))}
         </div>
         {/* Gradient overlay for fading effect on both sides */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white dark:from-card dark:via-transparent dark:to-card"></div>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-transparent to-white dark:from-card dark:via-transparent dark:to-card"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white dark:from-background dark:via-transparent dark:to-background"></div>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-transparent to-white dark:from-background dark:via-transparent dark:to-background"></div>
       </div>
 
       {/* Main content */}

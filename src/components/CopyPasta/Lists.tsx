@@ -34,6 +34,9 @@ export default function Lists() {
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: "home.next",
     });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "home.next",
+    });
   }
 
   return (

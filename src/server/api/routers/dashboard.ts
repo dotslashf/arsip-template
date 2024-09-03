@@ -307,7 +307,7 @@ export const dashboardRouter = createTRPCRouter({
           },
         },
         orderBy: {
-          approvedAt: "desc",
+          deletedAt: "desc",
         },
         include: {
           CopyPastasOnTags: {

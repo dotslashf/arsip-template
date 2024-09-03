@@ -15,6 +15,21 @@ export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure
     .input(createCopyPastaFormServer)
     .mutation(async ({ ctx, input }) => {
+      const existCopyPasta = await ctx.db.copyPasta.findFirst({
+        where: {
+          content: input.content,
+        },
+        select: {
+          content: true,
+        },
+      });
+
+      if (existCopyPasta) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
+
       const copyPasta = await ctx.db.copyPasta.create({
         data: {
           content: input.content,
