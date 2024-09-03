@@ -55,7 +55,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
     navigator.clipboard
       .writeText(copyPasta.content)
       .then(() => {
-        toast({
+        void toast({
           message:
             "Bersiap untuk kejahilan kecil 😼\n Silahkan paste templatenya!",
           type: "info",

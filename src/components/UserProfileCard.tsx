@@ -86,7 +86,7 @@ export default function UserProfileCard({
       setIsEditMode(!isEditMode);
       return;
     }
-    toast({
+    void toast({
       message: "",
       promiseFn: editNameMutation.mutateAsync({
         ...values,
@@ -143,7 +143,7 @@ export default function UserProfileCard({
         `${baseUrl}/user/${session?.user.username ?? session?.user.id}?utm_content=profile`,
       )
       .then(() => {
-        toast({
+        void toast({
           message: "Silahkan dishare profilenya yah 🍰",
           type: "success",
         });

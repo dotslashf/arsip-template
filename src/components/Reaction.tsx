@@ -54,7 +54,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
   async function handleUnReact(id?: string) {
     if (!id) return;
 
-    toast({
+    void toast({
       message: "",
       promiseFn: mutationUnReaction.mutateAsync({
         id,
@@ -89,7 +89,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
         reactionName = "setuju";
         break;
     }
-    toast({
+    void toast({
       message: "",
       promiseFn: mutationReaction.mutateAsync({
         copyPastaId,

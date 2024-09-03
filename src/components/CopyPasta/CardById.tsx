@@ -65,7 +65,7 @@ export default function CardById({ copyPasta }: CardProps) {
     navigator.clipboard
       .writeText(copyPasta.content)
       .then(() => {
-        toast({
+        void toast({
           message:
             "Bersiap untuk kejahilan kecil 😼\n Silahkan paste templatenya!",
           type: "info",
@@ -84,7 +84,7 @@ export default function CardById({ copyPasta }: CardProps) {
     navigator.clipboard
       .writeText(`${baseUrl}/copy-pasta/${copyPasta.id}?utm_content=shared_url`)
       .then(() => {
-        toast({
+        void toast({
           message: "Url siap dibagikan! ⚓",
           type: "info",
         });

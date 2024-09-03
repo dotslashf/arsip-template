@@ -61,7 +61,7 @@ export default function ReactionSummaryChild({
 
   async function handleUnReact() {
     if (!currentUser) return;
-    toast({
+    void toast({
       message: "",
       promiseFn: mutationUnReaction.mutateAsync({
         copyPastaId: copyPastaId,
@@ -97,7 +97,7 @@ export default function ReactionSummaryChild({
         reactionName = "setuju";
         break;
     }
-    toast({
+    void toast({
       message: "",
       promiseFn: mutationReaction.mutateAsync({
         copyPastaId,

@@ -41,7 +41,7 @@ export default function CopyPastaCardAction({
   const toast = useToast();
 
   async function handleApprove() {
-    toast({
+    void toast({
       message: "",
       promiseFn: approveMutation.mutateAsync({
         id,
@@ -60,7 +60,7 @@ export default function CopyPastaCardAction({
   }
 
   async function handleDelete() {
-    toast({
+    void toast({
       message: "",
       type: "promise",
       promiseFn: deleteMutation.mutateAsync({
