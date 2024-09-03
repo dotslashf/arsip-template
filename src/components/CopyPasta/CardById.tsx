@@ -73,6 +73,9 @@ export default function CardById({ copyPasta }: CardProps) {
         sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
           value: `copyPaste.${copyPasta.id}`,
         });
+        window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: `copyPaste.${copyPasta.id}`,
+        });
       })
       .catch((err) => console.log(err));
   }
@@ -86,6 +89,7 @@ export default function CardById({ copyPasta }: CardProps) {
           type: "info",
         });
         sendGAEvent("event", ANALYTICS_EVENT.SHARE, { value: "copyPasta.url" });
+        window.umami?.track(ANALYTICS_EVENT.SHARE, { value: "copyPasta.url" });
       })
       .catch((err) => console.log(err));
   }
@@ -96,6 +100,9 @@ export default function CardById({ copyPasta }: CardProps) {
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `tag.${tag.name}`,
     });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `tag.${tag.name}`,
+    });
     return router.push(`/?${currentParams.toString()}`);
   };
 
@@ -103,8 +110,20 @@ export default function CardById({ copyPasta }: CardProps) {
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `source.${copyPasta.source}`,
     });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `source.${copyPasta.source}`,
+    });
     return router.push(`?source=${copyPasta.source}`);
   };
+
+  function handleDoksli() {
+    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
+      value: copyPasta.id,
+    });
+    window.umami?.track(ANALYTICS_EVENT.DOKSLI, {
+      value: copyPasta.id,
+    });
+  }
 
   return (
     <Card className="h-full">
@@ -219,11 +238,7 @@ export default function CardById({ copyPasta }: CardProps) {
                 <Link
                   href={copyPasta.sourceUrl}
                   className={cn(buttonVariants({ variant: "outline" }))}
-                  onClick={() =>
-                    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
-                      value: copyPasta.id,
-                    })
-                  }
+                  onClick={handleDoksli}
                   prefetch={false}
                   target="__blank"
                 >

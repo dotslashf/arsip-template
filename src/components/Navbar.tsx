@@ -35,8 +35,46 @@ export default function Navbar({ session }: NavbarProps) {
 
   function handleSignOut() {
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, { value: `signOut` });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, { value: "signOut" });
     void signOut();
   }
+
+  function handleSignIn() {
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "signIn",
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "signIn",
+    });
+  }
+
+  function handleProfile() {
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "profile",
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "profile",
+    });
+  }
+
+  function handleStatistics() {
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "statistics",
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "statistics",
+    });
+  }
+
+  function handleCreate() {
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "create",
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "create",
+    });
+  }
+
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
       <div className="container px-4 lg:px-[6.5rem]">
@@ -62,11 +100,7 @@ export default function Navbar({ session }: NavbarProps) {
                 href="/auth/sign-in"
                 className={cn(buttonVariants({ variant: "link" }))}
                 prefetch={false}
-                onClick={() => {
-                  sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-                    value: "signIn",
-                  });
-                }}
+                onClick={handleSignIn}
               >
                 Masuk
                 <LogIn className="ml-2 w-4" />
@@ -100,11 +134,7 @@ export default function Navbar({ session }: NavbarProps) {
                       href="/dashboard/profile"
                       prefetch={false}
                       className="flex w-full items-center justify-between"
-                      onClick={() =>
-                        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-                          value: "profile",
-                        })
-                      }
+                      onClick={handleProfile}
                     >
                       Profile
                       <UserRound className="w-4" />
@@ -121,11 +151,7 @@ export default function Navbar({ session }: NavbarProps) {
                       href="/statistics"
                       prefetch={false}
                       className="flex w-full items-center justify-between"
-                      onClick={() =>
-                        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-                          value: "statistics",
-                        })
-                      }
+                      onClick={handleStatistics}
                     >
                       Statistik
                       <ChartNoAxesCombined className="w-4" />
@@ -143,11 +169,7 @@ export default function Navbar({ session }: NavbarProps) {
                       href="/copy-pasta/create"
                       prefetch={false}
                       className="flex w-full items-center justify-between"
-                      onClick={() =>
-                        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-                          value: "create",
-                        })
-                      }
+                      onClick={handleCreate}
                     >
                       Tambah
                       <PlusIcon className="w-4" />

@@ -25,12 +25,18 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
       sendGAEvent("event", ANALYTICS_EVENT.REACTION, {
         value: `reaction.${data.emotion}`,
       });
+      window.umami?.track(ANALYTICS_EVENT.REACTION, {
+        value: `reaction.${data.emotion}`,
+      });
     },
   });
   const mutationUnReaction = api.reaction.unReactionById.useMutation({
     async onSuccess() {
       void utils.reaction.getReactionByCopyPastaId.invalidate();
       sendGAEvent("event", ANALYTICS_EVENT.REACTION, {
+        value: `reaction.none`,
+      });
+      window.umami?.track(ANALYTICS_EVENT.REACTION, {
         value: `reaction.none`,
       });
     },

@@ -20,6 +20,24 @@ export default function CardDashboard({
   isApprovalMode,
   type,
 }: CardDashboardProps) {
+  function handleDoksli() {
+    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
+      value: copyPasta.id,
+    });
+    window.umami?.track(ANALYTICS_EVENT.DOKSLI, {
+      value: copyPasta.id,
+    });
+  }
+
+  function handleMoreInfo() {
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "copyPasta.moreInfo",
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "copyPasta.moreInfo",
+    });
+  }
+
   return (
     <Card className="h-full">
       <CardHeader className="pb-0">
@@ -75,11 +93,7 @@ export default function CardDashboard({
             <Link
               href={copyPasta.sourceUrl}
               className={cn(buttonVariants({ variant: "link", size: "url" }))}
-              onClick={() =>
-                sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
-                  value: copyPasta.id,
-                })
-              }
+              onClick={handleDoksli}
               prefetch={false}
               target="__blank"
             >
@@ -107,11 +121,7 @@ export default function CardDashboard({
             <Link
               href={`/copy-pasta/${copyPasta.id}?utm_content=user_profile`}
               className={cn(buttonVariants({ variant: "link", size: "url" }))}
-              onClick={() =>
-                sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-                  value: "copyPasta.moreInfo",
-                })
-              }
+              onClick={handleMoreInfo}
             >
               Lebih Lanjut <ArrowRight className="ml-2 h-3 w-3" />
             </Link>

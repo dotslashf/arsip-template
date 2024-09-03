@@ -31,12 +31,18 @@ export default function ReactionSummaryChild({
       sendGAEvent("event", ANALYTICS_EVENT.SUMMARY_REACTION, {
         value: `reaction.${data.emotion}`,
       });
+      window.umami?.track(ANALYTICS_EVENT.REACTION, {
+        value: `reaction.${data.emotion}`,
+      });
     },
   });
   const mutationUnReaction = api.reaction.unReactionByUserId.useMutation({
     async onSuccess() {
       void utils.copyPasta.list.invalidate();
       sendGAEvent("event", ANALYTICS_EVENT.SUMMARY_REACTION, {
+        value: `reaction.none`,
+      });
+      window.umami?.track(ANALYTICS_EVENT.REACTION, {
         value: `reaction.none`,
       });
     },

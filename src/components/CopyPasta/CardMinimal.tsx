@@ -34,12 +34,18 @@ export default function CardMinimal({ copyPasta }: CardProps) {
       sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
         value: `tag.${tag.name}`,
       });
+      window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+        value: `tag.${tag.name}`,
+      });
     }
     return router.push(`?${currentParams.toString()}`);
   };
 
   const handleSourceClick = () => {
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `source.${copyPasta.source}`,
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `source.${copyPasta.source}`,
     });
     return router.push(`?source=${copyPasta.source}`);
@@ -57,8 +63,29 @@ export default function CardMinimal({ copyPasta }: CardProps) {
         sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
           value: `copyPaste.${copyPasta.id}`,
         });
+        window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: `copyPaste.${copyPasta.id}`,
+        });
       })
       .catch((err) => console.log(err));
+  }
+
+  function handleDoksli() {
+    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
+      value: copyPasta.id,
+    });
+    window.umami?.track(ANALYTICS_EVENT.DOKSLI, {
+      value: copyPasta.id,
+    });
+  }
+
+  function handleMoreInfo() {
+    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "copyPasta.moreInfo",
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: "copyPasta.moreInfo",
+    });
   }
 
   return (
@@ -135,11 +162,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
             <Link
               href={copyPasta.sourceUrl}
               className={cn(buttonVariants({ variant: "link", size: "url" }))}
-              onClick={() =>
-                sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
-                  value: copyPasta.id,
-                })
-              }
+              onClick={handleDoksli}
               prefetch={false}
               target="__blank"
             >
@@ -157,11 +180,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
           <Link
             href={`/copy-pasta/${copyPasta.id}?utm_content=timeline`}
             className={cn(buttonVariants({ variant: "link", size: "url" }))}
-            onClick={() =>
-              sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-                value: "copyPasta.moreInfo",
-              })
-            }
+            onClick={handleMoreInfo}
           >
             Lebih Lanjut <ArrowRight className="ml-2 h-3 w-3" />
           </Link>

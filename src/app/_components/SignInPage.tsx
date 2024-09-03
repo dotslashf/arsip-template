@@ -23,6 +23,9 @@ export default function SignInSocialProviders() {
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `signIn.${platform}`,
     });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `signIn.${platform}`,
+    });
     void signIn(platform, {
       callbackUrl: "/",
     });

@@ -47,6 +47,9 @@ export default function SearchBar() {
     sendGAEvent("event", ANALYTICS_EVENT.SEARCH, {
       value: currentParams.get("search"),
     });
+    window.umami?.track(ANALYTICS_EVENT.SEARCH, {
+      value: currentParams.get("search") ?? "",
+    });
     setIsSearchOpen(false);
     router.push(`?${currentParams.toString()}`);
   };
@@ -142,6 +145,9 @@ function ButtonPlus({
       )}
       onClick={() => {
         sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: "create",
+        });
+        window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
           value: "create",
         });
       }}

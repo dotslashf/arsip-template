@@ -115,6 +115,9 @@ export default function UserProfileCard({
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `randomAvatar`,
     });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `randomAvatar`,
+    });
   }, [avatarSeed]);
 
   const handlePreviousAvatar = useCallback(() => {
@@ -128,6 +131,9 @@ export default function UserProfileCard({
     });
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: "randomAvatarPrevious",
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `randomAvatarPrevious`,
     });
   }, []);
 
@@ -144,12 +150,18 @@ export default function UserProfileCard({
         sendGAEvent("event", ANALYTICS_EVENT.SHARE, {
           value: `profile.${session?.user.id}`,
         });
+        window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: `profile.${session?.user.id}`,
+        });
       })
       .catch((err) => console.log(err));
   }
 
   const handleTagClick = (tag: TagType) => {
     sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `tag.${tag.name}`,
+    });
+    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `tag.${tag.name}`,
     });
     return router.push(`/?tag=${tag.id}`);

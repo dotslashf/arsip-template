@@ -28,6 +28,9 @@ export default function ListTags({ id }: ListTagsProps) {
       sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
         value: `tag.${tag.name}`,
       });
+      window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+        value: `tag.${tag.name}`,
+      });
     }
     return router.push(`?${currentParams.toString()}`);
   };
