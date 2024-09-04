@@ -1,6 +1,8 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Badge } from "./ui/badge";
-import { ANALYTICS_EVENT, reactionsMap } from "~/lib/constant";
+import { ANALYTICS_EVENT } from "~/lib/constant";
 import useToast from "./ui/use-react-hot-toast";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
@@ -8,6 +10,7 @@ import { type EmotionType } from "@prisma/client";
 import { session } from "./HOCSession";
 import { useEffect, useState } from "react";
 import { sendGAEvent } from "@next/third-parties/google";
+import { cn } from "~/lib/utils";
 
 interface ReactionSummaryChildProps {
   copyPastaId: string;
@@ -139,10 +142,42 @@ export default function ReactionSummaryChild({
             },
           }}
         >
-          {reactionsMap(emotion, "w-4 mr-2")?.child}
+          <ReactionChildWrapper className="mr-2 text-sm" type={emotion} />
         </motion.span>
         {count}
       </Badge>
     </motion.div>
+  );
+}
+
+interface ReactionChildWrapperProp {
+  className?: string;
+  type: string;
+}
+export function ReactionChildWrapper({
+  className,
+  type,
+}: ReactionChildWrapperProp) {
+  let emotion = "";
+  switch (type) {
+    case "Kocak":
+      emotion = "🤣";
+      break;
+    case "Marah":
+      emotion = "🤬";
+      break;
+    case "Setuju":
+      emotion = "💯";
+      break;
+    case "Hah":
+      emotion = "🤯";
+      break;
+    default:
+      break;
+  }
+  return (
+    <span className={cn("flex items-center justify-center", className)}>
+      {emotion}
+    </span>
   );
 }

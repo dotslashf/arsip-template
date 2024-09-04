@@ -1,7 +1,7 @@
 import { EmotionType, type Prisma } from "@prisma/client";
 import { Badge } from "./ui/badge";
 import { motion } from "framer-motion";
-import { reactionsMap } from "~/lib/constant";
+import { ReactionChildWrapper } from "./ReactionSummaryChild";
 
 interface ReactionSummaryProfileProps {
   reactions?: (Prisma.PickEnumerable<
@@ -34,7 +34,10 @@ export default function ReactionSummaryProfile({
                   },
                 }}
               >
-                {reactionsMap(reaction, "w-4 mr-2")?.child}
+                <ReactionChildWrapper
+                  className="mr-2 text-sm"
+                  type={reaction}
+                />
               </motion.span>
               {reactions?.find((react) => react.emotion === reaction)?._count
                 .emotion ?? 0}
