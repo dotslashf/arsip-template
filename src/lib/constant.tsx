@@ -8,16 +8,12 @@ import { EmotionType } from "@prisma/client";
 import { Roboto_Slab } from "next/font/google";
 
 export const avatarColorsTheme = [
-  "#4D7CDB",
-  "#D51010",
-  "#FFFFFF",
-  "#E6E8EA",
-  "#A5C8E2",
+  "4D7CDB",
+  "D51010",
+  "FFFFFF",
+  "E6E8EA",
+  "A5C8E2",
 ];
-
-export const avatarColorsThemeWithoutHash = avatarColorsTheme.map((color) =>
-  color.slice(1, color.length),
-);
 
 export const sourceEnumHash = new Map([
   [
