@@ -2,9 +2,11 @@
 
 import { Dot } from "lucide-react";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { api } from "~/trpc/react";
 import { DAYS } from "~/lib/constant";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 export default function Footer() {
   const [count] = api.copyPasta.count.useSuspenseQuery(undefined, {
@@ -43,6 +45,13 @@ export default function Footer() {
             <Button variant={"outline"}>
               {count.total} template telah diarsipkan
             </Button>
+            <Link
+              href={"https://github.com/dotslashf/arsip-template"}
+              target="__blank"
+              className={buttonVariants({ variant: "secondary", size: "icon" })}
+            >
+              <FontAwesomeIcon className="h-6 w-6" icon={faGithub} />
+            </Link>
           </div>
         </div>
       </div>
