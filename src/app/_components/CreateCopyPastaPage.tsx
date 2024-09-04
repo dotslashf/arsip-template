@@ -68,7 +68,7 @@ export default function CreateCopyPasta() {
 
   useEffect(() => {
     if (createMutation.isSuccess) {
-      return router.push("/dashboard/profile");
+      return router.push("/dashboard/profile?utm_content=create_copy_pasta");
     }
   }, [createMutation.isSuccess, router]);
 

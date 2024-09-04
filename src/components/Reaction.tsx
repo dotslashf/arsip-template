@@ -72,7 +72,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
   async function handleReaction(reaction: EmotionType) {
     const isSession = await session;
     if (!isSession) {
-      return router.push("/auth/sign-in");
+      return router.push("/auth/sign-in?utm_content=button_reaction");
     }
 
     let reactionName;

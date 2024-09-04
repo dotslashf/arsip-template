@@ -32,7 +32,7 @@ export default function ListTags({ id }: ListTagsProps) {
         value: `tag.${tag.name}`,
       });
     }
-    return router.push(`?${currentParams.toString()}`);
+    return router.push(`?${currentParams.toString()}&utm_content=list_tags`);
   };
 
   return (

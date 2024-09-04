@@ -170,7 +170,7 @@ export default function UserProfileCard({
     window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `tag.${tag.name}`,
     });
-    return router.push(`/?tag=${tag.id}`);
+    return router.push(`/?tag=${tag.id}&utm_content=profile`);
   };
 
   return (

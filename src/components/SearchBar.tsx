@@ -51,7 +51,9 @@ export default function SearchBar() {
       value: currentParams.get("search") ?? "",
     });
     setIsSearchOpen(false);
-    router.push(`?${currentParams.toString()}`);
+    router.push(
+      `?${currentParams.toString()}&utm_term=${encodeURIComponent(query)}`,
+    );
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
