@@ -11,6 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import Link from "next/link";
 import { session } from "./HOCSession";
 import { sendGAEvent } from "@next/third-parties/google";
+import { ReactionChildWrapper } from "./ReactionSummaryChild";
 
 interface ReactionProps {
   copyPastaId: string;
@@ -107,12 +108,14 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
   function getReactionChild() {
     if (reactionsByCopyPastaId) {
       if (isUserReacted && reactionsByCopyPastaId.currentUserReaction) {
-        return reactionsMap(
-          reactionsByCopyPastaId.currentUserReaction.emotion,
-          "w-5",
-        )?.child;
+        return (
+          <ReactionChildWrapper
+            className="text-lg"
+            type={reactionsByCopyPastaId.currentUserReaction.emotion}
+          />
+        );
       }
-      return reactionsMap("Kocak", "w-5")?.child;
+      return <ReactionChildWrapper className="text-lg" type={"Kocak"} />;
     }
     return <Skeleton className="h-5 w-5 rounded-full" />;
   }
@@ -139,7 +142,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
                   <Button
                     variant={
                       isUserReacted &&
-                      currentUserReaction === reactionsMap(key, "w-5")!.name
+                      currentUserReaction === reactionsMap(key)!.name
                         ? "white"
                         : "ghost"
                     }
@@ -147,11 +150,11 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
                     className="rounded-full hover:bg-secondary"
                     onClick={() =>
                       isUserReacted &&
-                      currentUserReaction === reactionsMap(key, "w-5")!.name
+                      currentUserReaction === reactionsMap(key)!.name
                         ? handleUnReact(
                             reactionsByCopyPastaId.currentUserReaction?.id,
                           )
-                        : handleReaction(reactionsMap(key, "w-5")!.name)
+                        : handleReaction(reactionsMap(key)!.name)
                     }
                   >
                     <motion.span
@@ -163,7 +166,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
                         },
                       }}
                     >
-                      {reactionsMap(key, "w-5")!.child}
+                      <ReactionChildWrapper className="text-lg" type={key} />
                     </motion.span>
                   </Button>
                 </motion.div>
@@ -191,8 +194,11 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
                 href={`/user/${react.user.id}?utm_source=reaction_summary`}
                 prefetch={false}
               >
+                <ReactionChildWrapper
+                  className="mr-2 text-sm"
+                  type={react.emotion}
+                />
                 {react.user.name}{" "}
-                {reactionsMap(react.emotion, "w-4 ml-2")?.child}
               </Link>
             ))}
             {reactionsByCopyPastaId &&
