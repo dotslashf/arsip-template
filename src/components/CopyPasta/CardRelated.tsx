@@ -31,7 +31,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
     window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `tag.${tag.name}`,
     });
-    return router.push(`/?${currentParams.toString()}`);
+    return router.push(`/?${currentParams.toString()}&=utm_content=card_related`);
   };
 
   const handleSourceClick = () => {
@@ -41,7 +41,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
     window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `source.${copyPasta.source}`,
     });
-    return router.push(`?source=${copyPasta.source}`);
+    return router.push(`/?source=${copyPasta.source}&=utm_content=card_related`);
   };
 
   function handleDoksli() {

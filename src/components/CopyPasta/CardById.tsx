@@ -103,7 +103,7 @@ export default function CardById({ copyPasta }: CardProps) {
     window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `tag.${tag.name}`,
     });
-    return router.push(`/?${currentParams.toString()}`);
+    return router.push(`/?${currentParams.toString()}&utm_content=card_by_id`);
   };
 
   const handleSourceClick = () => {
@@ -113,7 +113,7 @@ export default function CardById({ copyPasta }: CardProps) {
     window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `source.${copyPasta.source}`,
     });
-    return router.push(`?source=${copyPasta.source}`);
+    return router.push(`/?source=${copyPasta.source}&utm_content=card_by_id`);
   };
 
   function handleDoksli() {
