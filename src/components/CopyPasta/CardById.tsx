@@ -275,7 +275,7 @@ export default function CardById({ copyPasta }: CardProps) {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link
-                    href={`https://twitter.com/intent/post?text=${trimContent(encodeURIComponent(copyPasta.content), 150)}&url=arsiptemplate.app/copy-pasta/${copyPasta.id}?utm_source=twitter&utm_content=tweet`}
+                    href={`https://twitter.com/intent/post?text=${trimContent(encodeURIComponent(copyPasta.content), 280)}&url=arsiptemplate.app/copy-pasta/${copyPasta.id}?utm_source=twitter&utm_content=tweet`}
                     target="_blank"
                     className="flex w-full items-center justify-between"
                   >
