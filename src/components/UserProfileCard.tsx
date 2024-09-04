@@ -54,13 +54,19 @@ export default function UserProfileCard({
       staleTime: Infinity,
     },
   );
-  const editNameMutation = api.dashboard.editProfile.useMutation({
+  const editProfileMutation = api.dashboard.editProfile.useMutation({
     onSuccess(data) {
       session!.user.name = data.name;
       session!.user.username = data.username;
       session!.user.avatarSeed = data.avatarSeed;
       setIsEditMode(!isEditMode);
       setAvatarPreviousState([]);
+      sendGAEvent("event", ANALYTICS_EVENT.PROFILE_UPDATED, {
+        value: `profileUpdated.${data.name}.${data.username}`,
+      });
+      window.umami?.track(ANALYTICS_EVENT.PROFILE_UPDATED, {
+        value: `profileUpdated.${data.name}.${data.username}`,
+      });
     },
   });
 
@@ -94,7 +100,7 @@ export default function UserProfileCard({
     }
     void toast({
       message: "",
-      promiseFn: editNameMutation.mutateAsync({
+      promiseFn: editProfileMutation.mutateAsync({
         ...values,
         avatarSeed,
       }),
@@ -118,12 +124,6 @@ export default function UserProfileCard({
       }
       return state;
     });
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `randomAvatar`,
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `randomAvatar`,
-    });
   }, [avatarSeed]);
 
   const handlePreviousAvatar = useCallback(() => {
@@ -134,12 +134,6 @@ export default function UserProfileCard({
         setAvatarSeed(lastSeed);
       }
       return newState;
-    });
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "randomAvatarPrevious",
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `randomAvatarPrevious`,
     });
   }, []);
 

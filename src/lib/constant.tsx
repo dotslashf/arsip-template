@@ -108,4 +108,5 @@ export const ANALYTICS_EVENT = {
   SHARE: "share",
   REACTION: "reaction",
   SUMMARY_REACTION: "summary_reaction",
+  PROFILE_UPDATED: "profile_updated",
 };
