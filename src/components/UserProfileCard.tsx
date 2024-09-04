@@ -1,5 +1,11 @@
 import { type Session } from "next-auth";
-import { Card, CardHeader, CardContent, CardFooter } from "./ui/card";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+  CardTitle,
+} from "./ui/card";
 import { Badge } from "./ui/badge";
 import { ANALYTICS_EVENT, baseUrl, parseErrorMessages } from "~/lib/constant";
 import { Edit, RotateCw, Share2, Undo2 } from "lucide-react";
@@ -170,11 +176,21 @@ export default function UserProfileCard({
   return (
     <Card
       className={cn(
-        "w-full bg-card text-card-foreground shadow-sm",
+        "relative w-full bg-card text-card-foreground shadow-sm",
         isPreviewMode && "lg:w-full",
       )}
     >
-      <CardHeader className="flex flex-col items-center space-y-2 p-6">
+      <CardTitle className="absolute right-0 top-0 pr-3 pt-3">
+        <Button
+          variant={"destructive"}
+          size={"sm"}
+          onClick={handleShareProfile}
+        >
+          <span className="text-sm">Share</span>
+          <Share2 className="ml-2 w-3" />
+        </Button>
+      </CardTitle>
+      <CardHeader className="flex flex-col items-center space-y-2 p-3">
         <span className="rounded-full border-2 border-secondary-foreground">
           <Avatar
             size={{
@@ -190,7 +206,7 @@ export default function UserProfileCard({
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  className="flex w-full flex-col items-center space-y-2 pt-8"
+                  className="flex w-full flex-col items-center space-y-2 pt-4"
                 >
                   <FormField
                     control={form.control}
@@ -258,7 +274,7 @@ export default function UserProfileCard({
               </Form>
             ) : (
               <div className="flex flex-col items-center space-y-2">
-                <span className="py-2 font-bold">
+                <span className="font-bold">
                   {session?.user.name ?? "Anon"}
                 </span>
                 <Badge variant={"ghost"} className="py-1 font-bold">
@@ -282,9 +298,6 @@ export default function UserProfileCard({
         </div>
       </CardHeader>
       <CardContent className="flex flex-col items-center space-y-2 font-mono text-sm font-semibold">
-        <span className="flex w-full justify-between">
-          Role: <Badge>{session?.user.role ?? "User"}</Badge>
-        </span>
         <span className="flex w-full justify-between">
           Rank:
           <Badge>{session?.user.rank?.title ?? "User"}</Badge>
@@ -330,13 +343,6 @@ export default function UserProfileCard({
           </div>
         </div>
       </CardFooter>
-      <Button
-        onClick={handleShareProfile}
-        className="w-full rounded-t-none"
-        variant={"destructive"}
-      >
-        Share <Share2 className="ml-2 w-4" />
-      </Button>
     </Card>
   );
 }
