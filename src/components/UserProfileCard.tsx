@@ -309,7 +309,7 @@ export default function UserProfileCard({
         </div>
         <div className="flex flex-col items-center justify-center space-y-2">
           <span>Tags:</span>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             {topTags?.map((tag) => {
               const now = new Date();
               const formattedTag = {
