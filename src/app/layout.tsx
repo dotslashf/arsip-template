@@ -69,8 +69,8 @@ export default function RootLayout({
         {!isDevelopment && (
           <Script
             defer
-            src="https://cloud.umami.is/script.js"
-            data-website-id="08afa8e8-cecd-4188-ba68-cdfad14f7294"
+            src="https://umami-arsip-template.koyeb.app/script.js"
+            data-website-id="3d005c97-2e3d-4e52-be52-bf933e5b6efd"
           />
         )}
         <meta
