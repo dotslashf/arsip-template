@@ -6,6 +6,7 @@ import { api } from "~/trpc/react";
 import useToast from "./ui/use-react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import { useSession } from "./SessionContext";
 
 type CopyPastaCardActionProps = {
   id: string;
@@ -18,6 +19,8 @@ export default function CopyPastaCardAction({
   isApproved,
   isDeleted,
 }: CopyPastaCardActionProps) {
+  const session = useSession();
+
   const utils = api.useUtils();
   const router = useRouter();
   const [isSureDelete, setIsSureDelete] = useState(false);
@@ -102,26 +105,30 @@ export default function CopyPastaCardAction({
           Edit
           <Pencil className="ml-2 w-4" />
         </Button>
-        {isSureDelete ? (
-          <Button
-            ref={deleteButtonRef}
-            variant={"destructive"}
-            onClick={handleDelete}
-            size={"sm"}
-          >
-            Yakin
-            <Check className="ml-2 w-4" />
-          </Button>
-        ) : (
-          <Button
-            variant={"destructive"}
-            onClick={() => setIsSureDelete(true)}
-            size={"sm"}
-            disabled={isDeleted}
-          >
-            Hapus
-            <Trash className="ml-2 w-4" />
-          </Button>
+        {session?.user.role === "SuperAdmin" && (
+          <>
+            {isSureDelete ? (
+              <Button
+                ref={deleteButtonRef}
+                variant={"destructive"}
+                onClick={handleDelete}
+                size={"sm"}
+              >
+                Yakin
+                <Check className="ml-2 w-4" />
+              </Button>
+            ) : (
+              <Button
+                variant={"destructive"}
+                onClick={() => setIsSureDelete(true)}
+                size={"sm"}
+                disabled={isDeleted}
+              >
+                Hapus
+                <Trash className="ml-2 w-4" />
+              </Button>
+            )}
+          </>
         )}
       </div>
       <Button
