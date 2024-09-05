@@ -1,9 +1,9 @@
 import { type InfiniteData } from "@tanstack/react-query";
-import SkeletonCopyPasta from "./Skeleton/CopyPasta";
-import { Button } from "./ui/button";
+import SkeletonCopyPasta from "../Skeleton/CopyPasta";
+import { Button } from "../ui/button";
 import { type CardCopyPastaMinimal } from "~/lib/interface";
-import CardDashboard from "./CopyPasta/CardDashboard";
-import GetContent from "./GetContent";
+import CardDashboard from "../CopyPasta/CardDashboard";
+import GetContent from "../GetContent";
 
 interface ProfileCopyPastaCardProps {
   type: "approved" | "disapproved" | "deleted";
@@ -34,7 +34,10 @@ export default function DashboardListCopyPastaCards({
                 <CardDashboard
                   copyPasta={copy}
                   key={copy.id}
-                  isApprovalMode={type === "disapproved" && isApprovalMode}
+                  isApprovalMode={
+                    (type === "disapproved" || type === "approved") &&
+                    isApprovalMode
+                  }
                   type={type}
                 />
               );

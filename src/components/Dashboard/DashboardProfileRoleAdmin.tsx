@@ -1,9 +1,9 @@
-import DashboardListCopyPastaCards from "~/components/DashboardListCopyPastaCards";
+import DashboardListCopyPastaCards from "~/components/Dashboard/DashboardListCopyPastaCards";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
-import { Badge } from "./ui/badge";
+import { Badge } from "../ui/badge";
 import { LoaderCircle } from "lucide-react";
-import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 export default function DashboardProfileRoleAdmin() {
   const list = api.dashboard.listWaitingApprovedCopyPasta.useInfiniteQuery(
@@ -88,7 +88,7 @@ export default function DashboardProfileRoleAdmin() {
               // eslint-disable-next-line @typescript-eslint/no-misused-promises
               fetchNextPage: listApprovedByUserId.fetchNextPage,
             }}
-            type="disapproved"
+            type="approved"
             isApprovalMode={true}
           />
         </TabsContent>
