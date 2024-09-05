@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { sendGAEvent } from "@next/third-parties/google";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { ArrowRight, ImageIcon, Link2, Type } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
@@ -16,6 +15,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type Tag as TagType } from "@prisma/client";
 import Tag from "../ui/tags";
+import { trackEvent } from "~/lib/track";
 
 export default function CardRelated({ copyPasta }: CardProps) {
   const router = useRouter();
@@ -25,40 +25,40 @@ export default function CardRelated({ copyPasta }: CardProps) {
   const handleTagClick = (tag: TagType) => {
     const currentParams = new URLSearchParams(searchParams);
     currentParams.set("tag", tag.id);
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `tag.${tag.name}`,
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `${tag.id}`,
+      button: "tag.related",
+      path: "/copy-pasta/*",
     });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `tag.${tag.name}`,
-    });
-    return router.push(`/?${currentParams.toString()}&=utm_content=card_related`);
+    return router.push(
+      `/?${currentParams.toString()}&=utm_content=card_related`,
+    );
   };
 
   const handleSourceClick = () => {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `source.${copyPasta.source}`,
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `${copyPasta.source}`,
+      button: "source.related",
+      path: "/copy-pasta/*",
     });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `source.${copyPasta.source}`,
-    });
-    return router.push(`/?source=${copyPasta.source}&=utm_content=card_related`);
+    return router.push(
+      `/?source=${copyPasta.source}&=utm_content=card_related`,
+    );
   };
 
   function handleDoksli() {
-    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
-      value: copyPasta.id,
-    });
-    window.umami?.track(ANALYTICS_EVENT.DOKSLI, {
-      value: copyPasta.id,
+    void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+      value: `${copyPasta.id}`,
+      button: "original_document.related",
+      path: "/copy-pasta/*",
     });
   }
 
   function handleMoreInfo() {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "copyPasta.moreInfo",
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "copyPasta.moreInfo",
+    void trackEvent(ANALYTICS_EVENT.VIEW_FULL_COPY_PASTA, {
+      button: "more_info.related",
+      value: `${copyPasta.id}`,
+      path: "/copy-pasta/*",
     });
   }
 

@@ -100,12 +100,34 @@ export const parseErrorMessages = (error: Record<string, any>) => {
   }
 };
 
+// User Interaction Events
+export const USER_INTERACTION_EVENT = {
+  BUTTON_CLICKED: "user_interaction.button_clicked",
+  SEARCH: "user_interaction.search_performed",
+  SHARE: "user_interaction.content_shared",
+  REACTION: "user_interaction.reaction_given",
+};
+
+// Content Engagement Events
+const CONTENT_ENGAGEMENT_EVENT = {
+  VIEW_ORIGINAL_DOCUMENT: "content_engagement.view_original_document",
+  VIEW_FULL_COPY_PASTA: "content_engagement.view_full_copy_pasta",
+};
+
+// User Profile Events
+const USER_PROFILE_EVENT = {
+  PROFILE_UPDATED: "user_profile.profile_updated",
+};
+
+// System Events
+const SYSTEM_EVENT = {
+  SET_THEME: "system.theme_changed",
+};
+
+// Aggregate object for easy export
 export const ANALYTICS_EVENT = {
-  BUTTON_CLICKED: "button_clicked",
-  DOKSLI: "dokumen_asli",
-  SEARCH: "search",
-  SET_THEME: "set_theme",
-  SHARE: "share",
-  REACTION: "reaction",
-  SUMMARY_REACTION: "summary_reaction",
+  ...USER_INTERACTION_EVENT,
+  ...CONTENT_ENGAGEMENT_EVENT,
+  ...USER_PROFILE_EVENT,
+  ...SYSTEM_EVENT,
 };

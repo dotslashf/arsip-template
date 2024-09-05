@@ -9,8 +9,8 @@ import { api } from "~/trpc/react";
 import { type EmotionType } from "@prisma/client";
 import { session } from "./HOCSession";
 import { useEffect, useState } from "react";
-import { sendGAEvent } from "@next/third-parties/google";
 import { cn } from "~/lib/utils";
+import { trackEvent } from "~/lib/track";
 
 interface ReactionSummaryChildProps {
   copyPastaId: string;
@@ -31,22 +31,22 @@ export default function ReactionSummaryChild({
   const mutationReaction = api.reaction.reactionByCopyPastaId.useMutation({
     async onSuccess(data) {
       void utils.copyPasta.list.invalidate();
-      sendGAEvent("event", ANALYTICS_EVENT.SUMMARY_REACTION, {
-        value: `reaction.${data.emotion}`,
-      });
-      window.umami?.track(ANALYTICS_EVENT.REACTION, {
-        value: `reaction.${data.emotion}`,
+      void trackEvent(ANALYTICS_EVENT.REACTION, {
+        path: `/copy-pasta/${copyPastaId}`,
+        value: `${data.emotion}`,
+        button: "reaction_summary",
+        userId: data.userId,
       });
     },
   });
   const mutationUnReaction = api.reaction.unReactionByUserId.useMutation({
-    async onSuccess() {
+    async onSuccess(data) {
       void utils.copyPasta.list.invalidate();
-      sendGAEvent("event", ANALYTICS_EVENT.SUMMARY_REACTION, {
-        value: `reaction.none`,
-      });
-      window.umami?.track(ANALYTICS_EVENT.REACTION, {
-        value: `reaction.none`,
+      void trackEvent(ANALYTICS_EVENT.REACTION, {
+        path: `/copy-pasta/${copyPastaId}`,
+        value: `none`,
+        button: "reaction_summary",
+        userId: data,
       });
     },
   });

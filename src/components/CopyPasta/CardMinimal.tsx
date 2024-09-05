@@ -6,10 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { sendGAEvent } from "@next/third-parties/google";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { ArrowRight, Clipboard, ImageIcon, Link2, Type } from "lucide-react";
-import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
+import {
+  ANALYTICS_EVENT,
+  robotoSlab,
+  sourceEnumHash,
+} from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import ReactionSummary from "../ReactionSummary";
 import { Button, buttonVariants } from "../ui/button";
@@ -18,6 +21,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { type Tag as TagType } from "@prisma/client";
 import Tag from "../ui/tags";
 import useToast from "../ui/use-react-hot-toast";
+import { trackEvent } from "~/lib/track";
 
 export default function CardMinimal({ copyPasta }: CardProps) {
   const router = useRouter();
@@ -31,22 +35,20 @@ export default function CardMinimal({ copyPasta }: CardProps) {
       currentParams.delete("tag");
     } else {
       currentParams.set("tag", tag.id);
-      sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-        value: `tag.${tag.name}`,
-      });
-      window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-        value: `tag.${tag.name}`,
+      void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+        value: `${tag.id}`,
+        button: "tag",
+        path: "/",
       });
     }
     return router.push(`?${currentParams.toString()}&utm_content=card_minimal`);
   };
 
   const handleSourceClick = () => {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `source.${copyPasta.source}`,
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `source.${copyPasta.source}`,
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `${copyPasta.source}`,
+      button: "source",
+      path: "/",
     });
     return router.push(`?source=${copyPasta.source}&utm_content=card_minimal`);
   };
@@ -60,31 +62,28 @@ export default function CardMinimal({ copyPasta }: CardProps) {
             "Bersiap untuk kejahilan kecil 😼\n Silahkan paste templatenya!",
           type: "info",
         });
-        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-          value: `copyPaste.${copyPasta.id}`,
-        });
-        window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-          value: `copyPaste.${copyPasta.id}`,
+        void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: `${copyPasta.id}`,
+          button: "copy_paste",
+          path: "/",
         });
       })
       .catch((err) => console.log(err));
   }
 
   function handleDoksli() {
-    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
-      value: copyPasta.id,
-    });
-    window.umami?.track(ANALYTICS_EVENT.DOKSLI, {
-      value: copyPasta.id,
+    void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+      value: `${copyPasta.id}`,
+      button: "original_document",
+      path: "/",
     });
   }
 
   function handleMoreInfo() {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "copyPasta.moreInfo",
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "copyPasta.moreInfo",
+    void trackEvent(ANALYTICS_EVENT.VIEW_FULL_COPY_PASTA, {
+      button: "more_info",
+      value: `${copyPasta.id}`,
+      path: "/",
     });
   }
 

@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { sendGAEvent } from "@next/third-parties/google";
 import { ArrowRight, ImageIcon, Link2, Type } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn } from "~/lib/utils";
@@ -14,6 +13,7 @@ import { buttonVariants } from "../ui/button";
 import Link from "next/link";
 import Tag from "../ui/tags";
 import CopyPastaCardAction from "../CopyPastaCardAction";
+import { trackEvent } from "~/lib/track";
 
 export default function CardDashboard({
   copyPasta,
@@ -21,20 +21,18 @@ export default function CardDashboard({
   type,
 }: CardDashboardProps) {
   function handleDoksli() {
-    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
-      value: copyPasta.id,
-    });
-    window.umami?.track(ANALYTICS_EVENT.DOKSLI, {
-      value: copyPasta.id,
+    void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+      value: `${copyPasta.id}`,
+      button: "original_document",
+      path: "/dashboard/profile",
     });
   }
 
   function handleMoreInfo() {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "copyPasta.moreInfo",
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "copyPasta.moreInfo",
+    void trackEvent(ANALYTICS_EVENT.VIEW_FULL_COPY_PASTA, {
+      button: "more_info",
+      value: `${copyPasta.id}`,
+      path: "/dashboard/profile",
     });
   }
 
@@ -119,7 +117,7 @@ export default function CardDashboard({
           )}
           {type === "approved" && (
             <Link
-              href={`/copy-pasta/${copyPasta.id}?utm_content=user_profile`}
+              href={`/copy-pasta/${copyPasta.id}?utm_content=dashboard_card`}
               className={cn(buttonVariants({ variant: "link", size: "url" }))}
               onClick={handleMoreInfo}
             >

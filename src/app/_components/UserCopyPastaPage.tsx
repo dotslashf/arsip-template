@@ -1,12 +1,12 @@
 "use client";
 
-import { sendGAEvent } from "@next/third-parties/google";
 import { type Session } from "next-auth";
 import CardMinimal from "~/components/CopyPasta/CardMinimal";
 import GetContent from "~/components/GetContent";
 import { Button } from "~/components/ui/button";
 import UserProfileCard from "~/components/UserProfileCard";
 import { ANALYTICS_EVENT } from "~/lib/constant";
+import { trackEvent } from "~/lib/track";
 import { api } from "~/trpc/react";
 
 interface UserCopyPastaProps {
@@ -31,11 +31,9 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
 
   async function handleNextList() {
     await fetchNextPage();
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `user.${id}.next`,
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `user.${id}.next`,
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      button: `next`,
+      path: `/user/${user.id}`,
     });
   }
 

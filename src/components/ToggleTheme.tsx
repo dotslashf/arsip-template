@@ -11,9 +11,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { sendGAEvent } from "@next/third-parties/google";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { ANALYTICS_EVENT } from "~/lib/constant";
+import { trackEvent } from "~/lib/track";
 
 export function ToggleTheme() {
   const { setTheme } = useTheme();
@@ -21,8 +21,7 @@ export function ToggleTheme() {
 
   function handleSetTheme(theme: "light" | "dark" | "system") {
     setTheme(theme);
-    sendGAEvent("event", ANALYTICS_EVENT.SET_THEME, { value: theme });
-    window.umami?.track(ANALYTICS_EVENT.SET_THEME, { value: theme });
+    void trackEvent(ANALYTICS_EVENT.SET_THEME, { value: theme, isSmallDevice });
   }
 
   return (
