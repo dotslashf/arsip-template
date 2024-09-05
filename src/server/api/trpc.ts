@@ -20,7 +20,7 @@ import {
   defaultFingerPrint,
 } from "@trpc-limiter/redis";
 import { type NextRequest } from "next/server";
-import { logTRPCRequest } from "../middleware";
+import { logTRPCRequest } from "../middleware/logger";
 
 export const redis = createClient({
   password: env.REDIS_PASSWORD,

@@ -18,6 +18,8 @@ export function logTRPCRequest({
     errorMessage = result instanceof TRPCError ? result.message : "",
     userAgent = ctx.req?.headers.get("user-agent") ?? "Unknown",
     method = ctx.req?.method ?? "Unknown";
+
+  if (userAgent === "node") return;
   console.log(
     `${chalk.bgBlueBright.black(" TRPC ")} ${chalk.grey(timestamp)} | 🛣️ ${chalk.cyan(path)} | 🛠️ ${chalk.cyan(type)} | 🚨 ${chalk.cyan(method)} | ⏱️ ${chalk.cyan(`${duration}ms`)} | 👤 ${chalk.magenta(userId)} | ${status === "error" ? "❌" : "✅"} ${status === "error" ? chalk.red(status) : chalk.green(status)}${errorMessage ? ` | 🛑 ${chalk.red(errorMessage)}` : ""} | 🖥️ ${chalk.grey(userAgent)} | 🔍 ${chalk.grey(JSON.stringify(input ?? null).slice(0, 100))}`,
   );
