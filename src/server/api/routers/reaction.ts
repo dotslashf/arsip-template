@@ -62,7 +62,7 @@ export const reactionRouter = createTRPCRouter({
         },
       });
 
-      return true;
+      return ctx.session.user.id;
     }),
 
   unReactionByUserId: protectedProcedureLimited

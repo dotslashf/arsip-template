@@ -10,8 +10,8 @@ import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import Link from "next/link";
 import { session } from "./HOCSession";
-import { sendGAEvent } from "@next/third-parties/google";
 import { ReactionChildWrapper } from "./ReactionSummaryChild";
+import { trackEvent } from "~/lib/track";
 
 interface ReactionProps {
   copyPastaId: string;
@@ -23,22 +23,22 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
   const mutationReaction = api.reaction.reactionByCopyPastaId.useMutation({
     async onSuccess(data) {
       void utils.reaction.getReactionByCopyPastaId.invalidate();
-      sendGAEvent("event", ANALYTICS_EVENT.REACTION, {
-        value: `reaction.${data.emotion}`,
-      });
-      window.umami?.track(ANALYTICS_EVENT.REACTION, {
-        value: `reaction.${data.emotion}`,
+      void trackEvent(ANALYTICS_EVENT.REACTION, {
+        path: `/copy-pasta/${copyPastaId}`,
+        value: `${data.emotion}`,
+        button: "reaction",
+        userId: data.userId,
       });
     },
   });
   const mutationUnReaction = api.reaction.unReactionById.useMutation({
-    async onSuccess() {
+    async onSuccess(data) {
       void utils.reaction.getReactionByCopyPastaId.invalidate();
-      sendGAEvent("event", ANALYTICS_EVENT.REACTION, {
-        value: `reaction.none`,
-      });
-      window.umami?.track(ANALYTICS_EVENT.REACTION, {
-        value: `reaction.none`,
+      void trackEvent(ANALYTICS_EVENT.REACTION, {
+        path: `/copy-pasta/${copyPastaId}`,
+        value: `none`,
+        button: "reaction",
+        userId: data,
       });
     },
   });

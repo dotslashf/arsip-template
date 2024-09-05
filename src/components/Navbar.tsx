@@ -22,10 +22,10 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { ToggleTheme } from "./ToggleTheme";
-import { sendGAEvent } from "@next/third-parties/google";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import Avatar from "./ui/avatar";
 import { ANALYTICS_EVENT } from "~/lib/constant";
+import { trackEvent } from "~/lib/track";
 
 interface NavbarProps {
   session: Session | null;
@@ -34,43 +34,37 @@ export default function Navbar({ session }: NavbarProps) {
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
 
   function handleSignOut() {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, { value: `signOut` });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, { value: "signOut" });
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      button: "navbar",
+      value: "signOut",
+    });
     void signOut();
   }
 
   function handleSignIn() {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "signIn",
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      button: "navbar",
       value: "signIn",
     });
   }
 
   function handleProfile() {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "profile",
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      button: "navbar",
       value: "profile",
     });
   }
 
   function handleStatistics() {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "statistics",
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      button: "navbar",
       value: "statistics",
     });
   }
 
   function handleCreate() {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "create",
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      button: "navbar",
       value: "create",
     });
   }

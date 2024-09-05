@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import useToast from "../ui/use-react-hot-toast";
 import { ScrollArea } from "../ui/scroll-area";
-import { sendGAEvent } from "@next/third-parties/google";
 import {
   ANALYTICS_EVENT,
   baseUrl,
@@ -50,6 +49,7 @@ import Tag from "../ui/tags";
 import { type CardProps } from "~/lib/interface";
 import { Badge } from "../ui/badge";
 import { api } from "~/trpc/react";
+import { trackEvent } from "~/lib/track";
 
 export default function CardById({ copyPasta }: CardProps) {
   const toast = useToast();
@@ -70,11 +70,10 @@ export default function CardById({ copyPasta }: CardProps) {
             "Bersiap untuk kejahilan kecil 😼\n Silahkan paste templatenya!",
           type: "info",
         });
-        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-          value: `copyPaste.${copyPasta.id}`,
-        });
-        window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-          value: `copyPaste.${copyPasta.id}`,
+        void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: `${copyPasta.id}`,
+          button: "copy_paste",
+          path: "/copy-pasta/*",
         });
       })
       .catch((err) => console.log(err));
@@ -88,8 +87,11 @@ export default function CardById({ copyPasta }: CardProps) {
           message: "Url siap dibagikan! ⚓",
           type: "info",
         });
-        sendGAEvent("event", ANALYTICS_EVENT.SHARE, { value: "copyPasta.url" });
-        window.umami?.track(ANALYTICS_EVENT.SHARE, { value: "copyPasta.url" });
+        void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+          value: `${copyPasta.id}`,
+          button: "share_url",
+          path: "/copy-pasta/*",
+        });
       })
       .catch((err) => console.log(err));
   }
@@ -97,31 +99,28 @@ export default function CardById({ copyPasta }: CardProps) {
   const handleTagClick = (tag: TagType) => {
     const currentParams = new URLSearchParams(searchParams);
     currentParams.set("tag", tag.id);
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `tag.${tag.name}`,
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `tag.${tag.name}`,
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `${tag.id}`,
+      button: "tag",
+      path: "/copy-pasta/*",
     });
     return router.push(`/?${currentParams.toString()}&utm_content=card_by_id`);
   };
 
   const handleSourceClick = () => {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `source.${copyPasta.source}`,
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `source.${copyPasta.source}`,
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      value: `${copyPasta.source}`,
+      button: "source",
+      path: "/copy-pasta/*",
     });
     return router.push(`/?source=${copyPasta.source}&utm_content=card_by_id`);
   };
 
   function handleDoksli() {
-    sendGAEvent("event", ANALYTICS_EVENT.DOKSLI, {
-      value: copyPasta.id,
-    });
-    window.umami?.track(ANALYTICS_EVENT.DOKSLI, {
-      value: copyPasta.id,
+    void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+      value: `${copyPasta.id}`,
+      button: "original_document",
+      path: "/copy-pasta/*",
     });
   }
 

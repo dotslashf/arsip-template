@@ -7,7 +7,11 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { ANALYTICS_EVENT, baseUrl, parseErrorMessages } from "~/lib/constant";
+import {
+  ANALYTICS_EVENT,
+  baseUrl,
+  parseErrorMessages,
+} from "~/lib/constant";
 import { Edit, RotateCw, Share2, Undo2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
@@ -20,7 +24,6 @@ import useToast from "./ui/use-react-hot-toast";
 import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
 import ReactionSummaryProfile from "./ReactionSummaryProfile";
-import { sendGAEvent } from "@next/third-parties/google";
 import { v4 as uuidv4 } from "uuid";
 import { editProfile } from "~/server/form/user";
 import { Label } from "./ui/label";
@@ -28,6 +31,7 @@ import Avatar from "./ui/avatar";
 import Tag from "./ui/tags";
 import { type Tag as TagType } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { trackEvent } from "~/lib/track";
 
 interface UserProfileCardProps {
   session: Session | null;
@@ -61,11 +65,13 @@ export default function UserProfileCard({
       session!.user.avatarSeed = data.avatarSeed;
       setIsEditMode(!isEditMode);
       setAvatarPreviousState([]);
-      sendGAEvent("event", ANALYTICS_EVENT.PROFILE_UPDATED, {
-        value: `profileUpdated.${data.name}.${data.username}`,
-      });
-      window.umami?.track(ANALYTICS_EVENT.PROFILE_UPDATED, {
-        value: `profileUpdated.${data.name}.${data.username}`,
+      void trackEvent(ANALYTICS_EVENT.PROFILE_UPDATED, {
+        data: {
+          name: data.name,
+          username: data.username,
+          avatarSeed: data.avatarSeed,
+        },
+        userId: data.id,
       });
     },
   });
@@ -147,24 +153,19 @@ export default function UserProfileCard({
           message: "Silahkan dishare profilenya yah 🍰",
           type: "success",
         });
-        sendGAEvent("event", ANALYTICS_EVENT.SHARE, {
-          value: `profile.${session?.user.id}`,
-        });
-        window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-          value: `profile.${session?.user.id}`,
+        void trackEvent(ANALYTICS_EVENT.SHARE, {
+          userId: session?.user.id,
         });
       })
       .catch((err) => console.log(err));
   }
 
   const handleTagClick = (tag: TagType) => {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `tag.${tag.name}`,
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      button: "tag_user_profile_card",
+      value: `${tag.name}`,
     });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `tag.${tag.name}`,
-    });
-    return router.push(`/?tag=${tag.id}&utm_content=profile`);
+    return router.push(`/?tag=${tag.id}&utm_content=tag_user_profile`);
   };
 
   return (

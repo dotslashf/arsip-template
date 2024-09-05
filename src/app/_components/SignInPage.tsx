@@ -15,16 +15,14 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { sendGAEvent } from "@next/third-parties/google";
 import { ANALYTICS_EVENT } from "~/lib/constant";
+import { trackEvent } from "~/lib/track";
 
 export default function SignInSocialProviders() {
   function handleSignIn(platform: string) {
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `signIn.${platform}`,
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: `signIn.${platform}`,
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      button: `signIn.${platform}`,
+      path: "/auth/sign-in",
     });
     void signIn(platform, {
       callbackUrl: "/",

@@ -5,11 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn, trimContent } from "~/lib/utils";
-import { sendGAEvent } from "@next/third-parties/google";
 import { api } from "~/trpc/react";
 import { type CopyPasta } from "@prisma/client";
 import { useMediaQuery, useDebounce } from "@uidotdev/usehooks";
 import { ANALYTICS_EVENT } from "~/lib/constant";
+import { trackEvent } from "~/lib/track";
 
 export default function SearchBar() {
   const [query, setQuery] = useState<string>("");
@@ -44,10 +44,7 @@ export default function SearchBar() {
   const handleSubmit = () => {
     const currentParams = new URLSearchParams(searchParams);
     currentParams.set("search", query);
-    sendGAEvent("event", ANALYTICS_EVENT.SEARCH, {
-      value: currentParams.get("search"),
-    });
-    window.umami?.track(ANALYTICS_EVENT.SEARCH, {
+    void trackEvent(ANALYTICS_EVENT.SEARCH, {
       value: currentParams.get("search") ?? "",
     });
     setIsSearchOpen(false);
@@ -146,11 +143,9 @@ function ButtonPlus({
         "item-center",
       )}
       onClick={() => {
-        sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-          value: "create",
-        });
-        window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-          value: "create",
+        void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+          button: "create",
+          path: "/",
         });
       }}
     >

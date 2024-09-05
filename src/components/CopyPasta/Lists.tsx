@@ -1,4 +1,3 @@
-import { sendGAEvent } from "@next/third-parties/google";
 import { type OriginSource } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { ANALYTICS_EVENT } from "~/lib/constant";
@@ -6,6 +5,7 @@ import { api } from "~/trpc/react";
 import CardMinimal from "./CardMinimal";
 import { Button } from "~/components/ui/button";
 import GetContent from "../GetContent";
+import { trackEvent } from "~/lib/track";
 
 export default function Lists() {
   const searchParams = useSearchParams();
@@ -31,11 +31,9 @@ export default function Lists() {
 
   async function handleNextList() {
     await fetchNextPage();
-    sendGAEvent("event", ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "home.next",
-    });
-    window.umami?.track(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      value: "home.next",
+    void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+      button: "next",
+      path: "/",
     });
   }
 
