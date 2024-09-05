@@ -179,7 +179,7 @@ export const protectedProcedureRoleAdmin = t.procedure
   .use(timingMiddleware)
   .use(loggingMiddleware)
   .use(({ ctx, next }) => {
-    if (!ctx.session || ctx.session.user.role !== "Admin") {
+    if (!ctx.session || ctx.session.user.role === "User") {
       throw new TRPCError({
         code: "UNAUTHORIZED",
       });

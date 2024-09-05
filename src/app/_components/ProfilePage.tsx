@@ -15,6 +15,8 @@ export default function ProfilePage() {
         return <DashboardProfileRoleUser />;
       case "Admin":
         return <DashboardProfileRoleAdmin />;
+      case "SuperAdmin":
+        return <DashboardProfileRoleAdmin />;
       default:
         break;
     }
