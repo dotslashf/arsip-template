@@ -8,16 +8,12 @@ import {
 } from "../ui/card";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { ArrowRight, Clipboard, ImageIcon, Link2, Type } from "lucide-react";
-import {
-  ANALYTICS_EVENT,
-  robotoSlab,
-  sourceEnumHash,
-} from "~/lib/constant";
+import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import ReactionSummary from "../ReactionSummary";
 import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { type Tag as TagType } from "@prisma/client";
 import Tag from "../ui/tags";
 import useToast from "../ui/use-react-hot-toast";
@@ -26,6 +22,7 @@ import { trackEvent } from "~/lib/track";
 export default function CardMinimal({ copyPasta }: CardProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const currentTag = searchParams.get("tag");
   const toast = useToast();
 
@@ -38,7 +35,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
       void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
         value: `${tag.id}`,
         button: "tag",
-        path: "/",
+        path: pathname,
       });
     }
     return router.push(`?${currentParams.toString()}&utm_content=card_minimal`);
@@ -48,7 +45,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `${copyPasta.source}`,
       button: "source",
-      path: "/",
+      path: pathname,
     });
     return router.push(`?source=${copyPasta.source}&utm_content=card_minimal`);
   };
@@ -65,7 +62,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
         void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
           value: `${copyPasta.id}`,
           button: "copy_paste",
-          path: "/",
+          path: pathname,
         });
       })
       .catch((err) => console.log(err));
@@ -75,7 +72,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
       value: `${copyPasta.id}`,
       button: "original_document",
-      path: "/",
+      path: pathname,
     });
   }
 
@@ -83,7 +80,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.VIEW_FULL_COPY_PASTA, {
       button: "more_info",
       value: `${copyPasta.id}`,
-      path: "/",
+      path: pathname,
     });
   }
 
@@ -177,7 +174,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
             </span>
           )}
           <Link
-            href={`/copy-pasta/${copyPasta.id}?utm_content=timeline`}
+            href={`/copy-pasta/${copyPasta.id}?utm_content=${pathname.includes("user") ? "profile_timeline" : "timeline"}`}
             className={cn(buttonVariants({ variant: "link", size: "url" }))}
             onClick={handleMoreInfo}
           >
