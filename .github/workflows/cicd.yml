@@ -31,10 +31,14 @@ jobs:
       - name: Build and push Docker image
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GITHUB_SHA: ${{ github.sha }}
+          GCE_REGION: ${{ secrets.GCE_REGION }}
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
         run: |
-          echo "${{ secrets.GCP_SA_KEY }}" > gcp-service-account-key.json
-          docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=${{ secrets.GCS_BUCKET_NAME }} --build-arg GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}" -t ${{ secrets.GCE_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA .
-          docker push ${{ secrets.GCE_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA
+          echo "$GCP_SA_KEY" > gcp-service-account-key.json
+          docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=$BUCKET --build-arg GCP_SA_KEY="$GCP_SA_KEY" -t $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA .
+          docker push $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -44,7 +48,7 @@ jobs:
       - name: Deploy to SSH server
         env:
           REGION: ${{ secrets.GCE_REGION }}
-          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GITHUB_SHA: ${{ github.sha }}
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
@@ -52,7 +56,7 @@ jobs:
             cd /path/to/your/project
 
             export REGION=${{ secrets.GCE_REGION }}
-            export PROJECT_ID=${{ secrets.PROJECT_ID }}
+            export PROJECT_ID=$PROJECT_ID
             export GITHUB_SHA=${{ github.sha }}
             export GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}"
 
