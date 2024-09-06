@@ -60,8 +60,8 @@ jobs:
               exit 1
             fi
 
-            export REGION=$REGION
-            export PROJECT_ID=$PROJECT_ID
+            export REGION=${{ env.REGION }}
+            export PROJECT_ID=${{ env.PROJECT_ID }}
             export GITHUB_SHA=${{ github.sha }}
             export GCP_SA_KEY="$GCP_SA_KEY"
 
