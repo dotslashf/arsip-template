@@ -27,8 +27,8 @@ export default function Statistics() {
                 <p>
                   Saya sangat menghargai setiap kunjungan, komen, dan dukungan
                   yang kalian berikan. Platform ini saya buat dengan penuh
-                  dedikasi untuk "mengarsipkan" konten template yang bermanfaat
-                  dan menghibur bagi kalian semua.
+                  dedikasi untuk `&quot;`mengarsipkan`&quot;` konten template
+                  yang bermanfaat dan menghibur bagi kalian semua.
                 </p>
                 <p>
                   Jika kalian merasa senang atau terbantu dengan platform ini,
