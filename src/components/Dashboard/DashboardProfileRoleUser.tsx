@@ -1,4 +1,4 @@
-import DashboardListCopyPastaCards from "~/components/DashboardListCopyPastaCards";
+import DashboardListCopyPastaCards from "~/components/Dashboard/DashboardListCopyPastaCards";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
 

@@ -28,7 +28,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `${tag.id}`,
       button: "tag.related",
-      path: "/copy-pasta/*",
+      path: `/copy-pasta/${copyPasta.id}`,
     });
     return router.push(
       `/?${currentParams.toString()}&=utm_content=card_related`,
@@ -39,7 +39,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `${copyPasta.source}`,
       button: "source.related",
-      path: "/copy-pasta/*",
+      path: `/copy-pasta/${copyPasta.id}`,
     });
     return router.push(
       `/?source=${copyPasta.source}&=utm_content=card_related`,
@@ -50,7 +50,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
       value: `${copyPasta.id}`,
       button: "original_document.related",
-      path: "/copy-pasta/*",
+      path: `/copy-pasta/${copyPasta.id}`,
     });
   }
 
@@ -58,7 +58,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.VIEW_FULL_COPY_PASTA, {
       button: "more_info.related",
       value: `${copyPasta.id}`,
-      path: "/copy-pasta/*",
+      path: `/copy-pasta/${copyPasta.id}`,
     });
   }
 

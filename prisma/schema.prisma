@@ -147,4 +147,5 @@ enum OriginSource {
 enum UserRole {
     User
     Admin
+    SuperAdmin
 }

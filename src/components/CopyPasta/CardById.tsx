@@ -73,7 +73,7 @@ export default function CardById({ copyPasta }: CardProps) {
         void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
           value: `${copyPasta.id}`,
           button: "copy_paste",
-          path: "/copy-pasta/*",
+          path: `/copy-pasta/${copyPasta.id}`,
         });
       })
       .catch((err) => console.log(err));
@@ -90,7 +90,7 @@ export default function CardById({ copyPasta }: CardProps) {
         void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
           value: `${copyPasta.id}`,
           button: "share_url",
-          path: "/copy-pasta/*",
+          path: `/copy-pasta/${copyPasta.id}`,
         });
       })
       .catch((err) => console.log(err));
@@ -102,7 +102,7 @@ export default function CardById({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `${tag.id}`,
       button: "tag",
-      path: "/copy-pasta/*",
+      path: `/copy-pasta/${copyPasta.id}`,
     });
     return router.push(`/?${currentParams.toString()}&utm_content=card_by_id`);
   };
@@ -111,7 +111,7 @@ export default function CardById({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
       value: `${copyPasta.source}`,
       button: "source",
-      path: "/copy-pasta/*",
+      path: `/copy-pasta/${copyPasta.id}`,
     });
     return router.push(`/?source=${copyPasta.source}&utm_content=card_by_id`);
   };
@@ -120,7 +120,7 @@ export default function CardById({ copyPasta }: CardProps) {
     void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
       value: `${copyPasta.id}`,
       button: "original_document",
-      path: "/copy-pasta/*",
+      path: `/copy-pasta/${copyPasta.id}`,
     });
   }
 

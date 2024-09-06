@@ -1,8 +1,8 @@
 "use client";
 
 import { type UserRole } from "@prisma/client";
-import DashboardProfileRoleAdmin from "~/components/DashboardProfileRoleAdmin";
-import DashboardProfileRoleUser from "~/components/DashboardProfileRoleUser";
+import DashboardProfileRoleAdmin from "~/components/Dashboard/DashboardProfileRoleAdmin";
+import DashboardProfileRoleUser from "~/components/Dashboard/DashboardProfileRoleUser";
 import { useSession } from "~/components/SessionContext";
 import UserProfileCard from "~/components/UserProfileCard";
 
@@ -14,6 +14,8 @@ export default function ProfilePage() {
       case "User":
         return <DashboardProfileRoleUser />;
       case "Admin":
+        return <DashboardProfileRoleAdmin />;
+      case "SuperAdmin":
         return <DashboardProfileRoleAdmin />;
       default:
         break;
