@@ -43,8 +43,8 @@ jobs:
       - name: Build and push Docker image
         run: |
           echo "${{ env.GCP_SA_KEY }}" > gcp-service-account-key.json
-          docker buildx build --build-arg DATABASE_URL=${{ env.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=${{ env.GCS_BUCKET_NAME }} --build-arg GCP_SA_KEY="${{ env.GCP_SA_KEY }}" -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA .
-          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA
+          docker build --build-arg DATABASE_URL=${{ env.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=${{ env.GCS_BUCKET_NAME }} --build-arg GCP_SA_KEY="${{ env.GCP_SA_KEY }}" -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:$${{ github.sha }} .
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:$${{ github.sha }}
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
