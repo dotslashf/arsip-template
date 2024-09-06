@@ -63,14 +63,7 @@ jobs:
             export REGION=${{ env.REGION }}
             export PROJECT_ID=${{ env.PROJECT_ID }}
             export GITHUB_SHA=${{ github.sha }}
-            export GCP_SA_KEY="$GCP_SA_KEY"
-
-            # Create a temporary file for the GCP service account key
-            echo "$GCP_SA_KEY" > /tmp/gcp-sa-key.json
-
-            # Authenticate with Google Cloud
-            gcloud auth activate-service-account --key-file=/tmp/gcp-sa-key.json
-            gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+            export GCP_SA_KEY="${{ env.GCP_SA_KEY }}"
 
             # Update docker-compose.yml to include GCP_SA_KEY
             sed -i "s|GCP_SA_KEY=.*|GCP_SA_KEY=$GCP_SA_KEY|g" docker-compose.yml
@@ -78,6 +71,4 @@ jobs:
             docker-compose pull
             docker-compose down
             docker-compose up -d
-
-            rm /tmp/gcp-sa-key.json
           '
