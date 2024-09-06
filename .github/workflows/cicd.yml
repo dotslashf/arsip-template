@@ -51,13 +51,12 @@ jobs:
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GITHUB_SHA: ${{ github.sha }}
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
-            cd $PROJECT_PATH
+            cd ${{ secrets.PROJECT_PATH }}
 
             if [ ! -f docker-compose.yml ]; then
-              echo "docker-compose.yml not found in $PROJECT_PATH"
+              echo "docker-compose.yml not found in ${{ secrets.PROJECT_PATH }}
               exit 1
             fi
 
