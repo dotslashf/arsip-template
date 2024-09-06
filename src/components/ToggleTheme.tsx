@@ -27,14 +27,9 @@ export function ToggleTheme() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size={isSmallDevice ? "icon" : "default"}>
-          {isSmallDevice ? "" : "Tema"}
-          <Sun
-            className={`h-4 w-4 dark:hidden ${!isSmallDevice ? "ml-2" : null}`}
-          />
-          <Moon
-            className={`hidden h-4 w-4 dark:block ${!isSmallDevice ? "ml-2" : null}`}
-          />
+        <Button variant="outline" size={"icon"}>
+          <Sun className={`h-4 w-4 dark:hidden`} />
+          <Moon className={`hidden h-4 w-4 dark:block`} />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
