@@ -5,15 +5,21 @@ on:
     branches:
       - main
 
-env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
-  GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
-  REGION: ${{ secrets.GCE_REGION }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
+      GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
+      REGION: ${{ secrets.GCE_REGION }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      GCS_BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
 
     steps:
       - name: Checkout code
@@ -32,28 +38,26 @@ jobs:
 
       - name: Configure Docker for Artifact Registry
         run: |
-          gcloud auth configure-docker $REGION-docker.pkg.dev
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
       - name: Build and push Docker image
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
-          echo "$GCP_SA_KEY" > gcp-service-account-key.json
-          docker build --build-arg DATABASE_URL=${{secrets.DATABASE_URL}} --build-arg GCS_BUCKET_NAME=${{secrets.BUCKET_NAME}} --build-arg GCP_SA_KEY="$GCP_SA_KEY" -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
-          docker push $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }}
+          echo "${{ env.GCP_SA_KEY }}" > gcp-service-account-key.json
+          docker build --build-arg DATABASE_URL=${{ env.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=${{ env.GCS_BUCKET_NAME }} --build-arg GCP_SA_KEY="${{ env.GCP_SA_KEY }}" -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA .
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA
 
-      - name: Deploy to VM
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to SSH server
         run: |
-          gcloud compute ssh --zone $GCE_INSTANCE_ZONE $GCE_INSTANCE --command '
-            cd ${{ secrets.PROJECT_PATH }}
-
-            export REGION=${{ secrets.GCE_REGION }}
-            export PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
-            export GITHUB_SHA=${{ github.sha }}
-            export GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}"
+          ssh -o StrictHostKeyChecking=no ${{ env.SSH_USER }}@${{ env.SSH_HOST }} '
+            cd /path/to/your/project
 
             # Update docker-compose.yml to include GCP_SA_KEY
-            sed -i "s|GCP_SA_KEY=.*|GCP_SA_KEY=$GCP_SA_KEY|g" docker-compose.yml
+            sed -i "s|GCP_SA_KEY=.*|GCP_SA_KEY=${{ env.GCP_SA_KEY }}|g" docker-compose.yml
 
             docker-compose pull
             docker-compose down
