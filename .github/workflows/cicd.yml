@@ -45,7 +45,7 @@ jobs:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
           echo "$GCP_SA_KEY" > gcp-service-account-key.json
-          docker build --build-arg DATABASE_URL=${{secrets.DATABASE_URL}} --build-arg GCS_BUCKET_NAME=${{secrets.BUCKET_NAME}} --build-arg GCP_SA_KEY="$GCP_SA_KEY" -t $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }} .
+          docker build --build-arg DATABASE_URL=${{secrets.DATABASE_URL}} --build-arg GCS_BUCKET_NAME=${{secrets.BUCKET_NAME}} --build-arg GCP_SA_KEY="$GCP_SA_KEY" -t $REGION-docker.pkg.dev/${{env.PROJECT_ID}}/arsip-template/app:${{ github.sha }} .
           docker push $REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:${{ github.sha }}
 
       - name: Setup SSH
