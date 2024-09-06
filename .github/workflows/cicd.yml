@@ -63,7 +63,7 @@ jobs:
             export REGION=${{ env.REGION }}
             export PROJECT_ID=${{ env.PROJECT_ID }}
             export GITHUB_SHA=${{ github.sha }}
-            export GCP_SA_KEY="${{ env.GCP_SA_KEY }}"
+            export GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}"
 
             # Update docker-compose.yml to include GCP_SA_KEY
             sed -i "s|GCP_SA_KEY=.*|GCP_SA_KEY=$GCP_SA_KEY|g" docker-compose.yml
