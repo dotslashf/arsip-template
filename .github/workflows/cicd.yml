@@ -54,6 +54,7 @@ jobs:
           PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+            pwd
             cd $PROJECT_PATH
 
             export REGION=$REGION
