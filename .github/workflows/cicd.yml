@@ -26,15 +26,15 @@ jobs:
 
       - name: Configure Docker for Artifact Registry
         run: |
-          gcloud auth configure-docker ${{ secrets.REGION }}-docker.pkg.dev
+          gcloud auth configure-docker ${{ secrets.GCE_REGION }}-docker.pkg.dev
 
       - name: Build and push Docker image
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
           echo "${{ secrets.GCP_SA_KEY }}" > gcp-service-account-key.json
-          docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=${{ secrets.GCS_BUCKET_NAME }} --build-arg GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}" -t ${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA .
-          docker push ${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA
+          docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=${{ secrets.GCS_BUCKET_NAME }} --build-arg GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}" -t ${{ secrets.GCE_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA .
+          docker push ${{ secrets.GCE_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/arsip-template/app:$GITHUB_SHA
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -43,7 +43,7 @@ jobs:
 
       - name: Deploy to SSH server
         env:
-          REGION: ${{ secrets.REGION }}
+          REGION: ${{ secrets.GCE_REGION }}
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
           GITHUB_SHA: ${{ github.sha }}
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
@@ -51,7 +51,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
             cd /path/to/your/project
 
-            export REGION=${{ secrets.REGION }}
+            export REGION=${{ secrets.GCE_REGION }}
             export PROJECT_ID=${{ secrets.PROJECT_ID }}
             export GITHUB_SHA=${{ github.sha }}
             export GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}"
