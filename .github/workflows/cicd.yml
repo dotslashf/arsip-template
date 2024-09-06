@@ -56,7 +56,7 @@ jobs:
             cd ${{ secrets.PROJECT_PATH }}
 
             if [ ! -f docker-compose.yml ]; then
-              echo "docker-compose.yml not found in ${{ secrets.PROJECT_PATH }}
+              echo "docker-compose.yml not found in ${{ secrets.PROJECT_PATH }}"
               exit 1
             fi
 
