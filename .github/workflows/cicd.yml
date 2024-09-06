@@ -51,14 +51,15 @@ jobs:
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GITHUB_SHA: ${{ github.sha }}
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
-            cd /path/to/your/project
+            cd $PROJECT_PATH
 
-            export REGION=${{ secrets.GCE_REGION }}
+            export REGION=$REGION
             export PROJECT_ID=$PROJECT_ID
             export GITHUB_SHA=${{ github.sha }}
-            export GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}"
+            export GCP_SA_KEY="$GCP_SA_KEY"
 
             # Update docker-compose.yml to include GCP_SA_KEY
             sed -i "s|GCP_SA_KEY=.*|GCP_SA_KEY=$GCP_SA_KEY|g" docker-compose.yml
