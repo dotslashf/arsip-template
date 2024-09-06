@@ -54,6 +54,13 @@ jobs:
           PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+            cd $PROJECT_PATH
+
+            if [ ! -f docker-compose.yml ]; then
+              echo "docker-compose.yml not found in $PROJECT_PATH"
+              exit 1
+            fi
+
             export REGION=$REGION
             export PROJECT_ID=$PROJECT_ID
             export GITHUB_SHA=${{ github.sha }}
