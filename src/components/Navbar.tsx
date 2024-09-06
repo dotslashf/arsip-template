@@ -10,6 +10,7 @@ import {
   Package,
   PlusIcon,
   UserRound,
+  Wallet,
 } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
@@ -84,9 +85,15 @@ export default function Navbar({ session }: NavbarProps) {
           </Link>
           <nav className="ml-auto flex items-center space-x-4">
             {isSmallDevice ? (
-              <ButtonRanking />
+              <>
+                <ButtonRanking />
+                <ButtonSupportMe />
+              </>
             ) : (
-              <ButtonRanking>Leaderboard</ButtonRanking>
+              <>
+                <ButtonRanking>Leaderboard</ButtonRanking>
+                <ButtonSupportMe>Support Me</ButtonSupportMe>
+              </>
             )}
             <ToggleTheme />
             {!session?.user ? (
@@ -208,6 +215,28 @@ function ButtonRanking({
     >
       {children}
       <Medal className={`w-4 ${children ? "ml-2" : null}`} />
+    </Link>
+  );
+}
+
+function ButtonSupportMe({
+  children,
+}: {
+  children?: JSX.Element | JSX.Element[] | string;
+}) {
+  return (
+    <Link
+      href={"/support"}
+      className={cn(
+        buttonVariants({
+          size: children ? "default" : "icon",
+          variant: "secondary",
+        }),
+        "item-center",
+      )}
+    >
+      {children}
+      <Wallet className={`w-4 ${children ? "ml-2" : null}`} />
     </Link>
   );
 }
