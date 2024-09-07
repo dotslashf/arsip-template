@@ -44,14 +44,19 @@ export async function generateMetadata({
 
 export default async function Home() {
   const copyPastas = await api.copyPasta.list({
-    limit: 15,
+    limit: 10,
   });
-  const texts = copyPastas.copyPastas.map((copy) => copy.content);
+  const copyPastasFormatted = copyPastas.copyPastas.map((copy) => {
+    return {
+      content: copy.content,
+      tags: copy.CopyPastasOnTags.map((tag) => tag.tags),
+    };
+  });
 
   return (
     <HydrateClient>
       <Layout>
-        <Hero texts={texts} isShowButton={true} />
+        <Hero copyPastas={copyPastasFormatted} isShowButton={true} />
         <ListCopyPasta />
       </Layout>
     </HydrateClient>

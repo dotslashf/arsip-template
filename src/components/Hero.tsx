@@ -1,40 +1,67 @@
+"use client";
+
 import { Package, PenBoxIcon, Search } from "lucide-react";
 import React from "react";
 import { buttonVariants } from "./ui/button";
 import Link from "next/link";
-import { cn } from "~/lib/utils";
+import { cn, trimContent } from "~/lib/utils";
+import Marquee from "./magicui/marquee";
+import { Card, CardContent, CardFooter } from "./ui/card";
+import Tag from "./ui/tags";
+
+const CardDisplay = ({
+  content,
+  tags,
+}: {
+  content: string;
+  tags: {
+    id: string;
+    name: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
+}) => {
+  return (
+    <Card className="flex w-fit flex-col justify-between">
+      <CardContent className="flex flex-col justify-between gap-2 overflow-x-hidden pb-2 pt-4 text-sm hover:cursor-auto">
+        <blockquote className="w-full">{trimContent(content, 35)}</blockquote>
+      </CardContent>
+      <CardFooter>
+        <div className="flex w-full space-x-2">
+          {tags.map((tag) => {
+            return (
+              <Tag
+                key={tag.id}
+                tagContent={tag}
+                className="rounded-sm shadow-sm hover:bg-primary hover:text-primary-foreground"
+                onClick={() => null}
+              />
+            );
+          })}
+        </div>
+      </CardFooter>
+    </Card>
+  );
+};
 
 interface HeroProps {
-  texts: string[];
+  copyPastas: {
+    content: string;
+    tags: {
+      id: string;
+      name: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }[];
+  }[];
   isShowButton: boolean;
 }
-export default function Hero({ texts, isShowButton }: HeroProps) {
-  const getRandomText = () => {
-    const randomIndex = Math.floor(Math.random() * texts.length);
-    return texts[randomIndex] + " ";
-  };
-
+export default function Hero({ copyPastas, isShowButton }: HeroProps) {
+  const firstRow = copyPastas.slice(0, copyPastas.length / 2);
+  const secondRow = copyPastas.slice(copyPastas.length / 2);
   return (
-    <div className="relative flex min-h-96 w-full items-center justify-center overflow-hidden rounded-lg bg-white text-gray-900 transition-colors duration-300 dark:bg-card dark:text-white">
-      {/* Background with infinite running text */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 -right-36 -top-36 rotate-45 transform">
-          {[...Array(45)].map((_, i) => (
-            <div
-              key={i}
-              className={`${i % 2 === 0 ? "animate-scrollText" : "animate-scrollTextReverse"} whitespace-nowrap text-base font-semibold text-slate-800 text-opacity-20 dark:text-white/20`}
-            >
-              {getRandomText()?.repeat(20)}
-            </div>
-          ))}
-        </div>
-        {/* Gradient overlay for fading effect on both sides */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white dark:from-background dark:via-transparent dark:to-background"></div>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white via-transparent to-white dark:from-background dark:via-transparent dark:to-background"></div>
-      </div>
-
-      {/* Main content */}
-      <div className="relative z-10 px-4 text-center">
+    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden bg-background md:shadow-xl">
+      <div className="absolute top-8 z-10 px-4 text-center md:top-6">
         <Link
           href={"/"}
           className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/90 to-primary/80 bg-clip-text text-left text-3xl font-bold text-transparent lg:text-5xl"
@@ -47,8 +74,9 @@ export default function Hero({ texts, isShowButton }: HeroProps) {
         <p className="text-md mx-auto max-w-xl font-bold text-secondary-foreground dark:text-white lg:text-xl">
           platform berbagi template (copy-pasta) dari netizen.
         </p>
+
         {isShowButton && (
-          <div className="mt-6 flex flex-col items-center justify-center gap-4">
+          <div className="mt-4 flex flex-col items-center justify-center gap-4 md:flex-row">
             <Link
               href={"/copy-pasta/create"}
               className={cn(
@@ -71,6 +99,20 @@ export default function Hero({ texts, isShowButton }: HeroProps) {
           </div>
         )}
       </div>
+      <div className="absolute bottom-0">
+        <Marquee pauseOnHover className="[--duration:40s]">
+          {firstRow.map((copy) => (
+            <CardDisplay key={copy.content} {...copy} />
+          ))}
+        </Marquee>
+        <Marquee reverse pauseOnHover className="[--duration:40s]">
+          {secondRow.map((copy) => (
+            <CardDisplay key={copy.content} {...copy} />
+          ))}
+        </Marquee>
+      </div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
     </div>
   );
 }

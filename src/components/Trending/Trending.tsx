@@ -13,13 +13,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import { DAYS } from "~/lib/constant";
 
 interface TrendingHomeProps {
   tag: string | null;
 }
 export default function TrendingHome(props: TrendingHomeProps) {
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
-  const [topCopyPastas] = api.analytics.getPopularCopyPasta.useSuspenseQuery();
+  const [topCopyPastas] = api.analytics.getPopularCopyPasta.useSuspenseQuery(
+    undefined,
+    {
+      staleTime: 7 * DAYS,
+      gcTime: 7 * DAYS,
+    },
+  );
 
   return (
     <div
