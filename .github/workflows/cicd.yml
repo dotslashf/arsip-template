@@ -65,15 +65,6 @@ jobs:
             export GITHUB_SHA=${{ github.sha }}
             export GCP_SA_KEY="${{ secrets.GCP_SA_KEY }}"
 
-            # Update docker-compose.yml to include GCP_SA_KEY
-            awk -v key="$GCP_SA_KEY" '
-            /GCP_SA_KEY=/ {
-              print "      GCP_SA_KEY=" key
-              next
-            }
-            {print}
-            ' docker-compose.yml > docker-compose.yml.tmp && mv docker-compose.yml.tmp docker-compose.yml
-
             docker-compose pull
             docker-compose down
             docker-compose up -d

@@ -21,36 +21,31 @@ export default function Statistics() {
           </CardHeader>
           <CardContent className="flex flex-col items-center space-y-6">
             <div className="max-w-md space-y-4 text-center">
-              <p className="font-bold">Halo 👋,</p>
-              <p>Terima kasih sudah menjadi bagian dari plaatform ini!</p>
+              <p>Halo 👋</p>
+              <p>Terima kasih sudah menjadi bagian dari platform ini!</p>
               <p>
                 Saya sangat menghargai setiap kunjungan, komen, dan dukungan
                 yang kalian berikan. Platform ini saya buat dengan penuh
-                dedikasi untuk `&quot;`mengarsipkan`&quot;` konten template yang
-                bermanfaat dan menghibur bagi kalian semua.
+                dedikasi untuk &quot;mengarsipkan&quot; konten template
+                (copy-pasta) netizen yang bisa menghibur bagi kalian semua.
               </p>
               <p>
                 Jika kalian merasa senang atau terbantu dengan platform ini,
                 adapun cara sederhana untuk menunjukkan dukungan kalian. Kalian
                 bisa membantu saya untuk membayar biaya server dan pemeliharaan
-                platform ini dengan memindai QR code di bawah. Setiap
+                server platform ini dengan memindai QR code di bawah. Setiap
                 kontribusi, sekecil apapun, sangat berarti dan membantu saya
                 untuk terus menjalankan platform ini.
               </p>
               <p>
                 Dukungan kalian tidak hanya membantu menjaga platform ini tetap
                 berjalan, tetapi juga memberi saya semangat untuk terus berkarya
-                dan mengembangkan lebih banyak fitur yang menarik.
+                dan mengembangkan lebih banyak fitur yang menarik lagi.
               </p>
+              <p>Terimakasih! 👋</p>
             </div>
-            <div className="relative h-64 w-64">
-              <Image
-                src={"/qr.png"}
-                alt="qr code"
-                width={250}
-                height={250}
-                className="rounded-md bg-white"
-              />
+            <div className="relative h-64 w-64 rounded-md bg-white p-4">
+              <Image src={"/qr.png"} alt="qr code" width={250} height={250} />
             </div>
           </CardContent>
         </Card>
