@@ -1,6 +1,6 @@
 "use client";
 
-import { Dot } from "lucide-react";
+import { ChartColumn, Dot } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
 import { api } from "~/trpc/react";
@@ -45,6 +45,15 @@ export default function Footer() {
             <Button variant={"outline"}>
               {count.total} template telah diarsipkan
             </Button>
+            <Link
+              href={
+                "https://umami-arsip-template.koyeb.app/share/Jjaaozgtll3OpRxF/arsiptemplate.app"
+              }
+              target="__blank"
+              className={buttonVariants({ variant: "outline" })}
+            >
+              Analytics <ChartColumn className="ml-2 w-4" />
+            </Link>
             <Link
               href={"https://github.com/dotslashf/arsip-template"}
               target="__blank"
