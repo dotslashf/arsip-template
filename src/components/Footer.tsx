@@ -47,7 +47,7 @@ export default function Footer() {
           </Link>
           <div className="flex flex-col items-center justify-center gap-2 lg:ml-auto lg:flex-row">
             <Button variant={"outline"}>
-              {count.total} template telah diarsipkan
+              {count.total} template diarsipkan
             </Button>
             <Link
               href={
