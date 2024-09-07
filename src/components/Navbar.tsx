@@ -4,13 +4,13 @@ import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import {
   ChartNoAxesCombined,
+  HandCoins,
   LogIn,
   LogOut,
   Medal,
   Package,
   PlusIcon,
   UserRound,
-  Wallet,
 } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
@@ -72,8 +72,8 @@ export default function Navbar({ session }: NavbarProps) {
 
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
-      <div className="container px-4 lg:px-[6.5rem]">
-        <div className="flex h-12 items-center">
+      <div className="container mx-auto px-4 lg:px-[6.5rem]">
+        <div className="mx-auto flex h-12 w-full max-w-4xl items-center">
           <Link
             href={"/"}
             className="flex items-center justify-center font-bold leading-4 text-primary"
@@ -83,16 +83,16 @@ export default function Navbar({ session }: NavbarProps) {
             <br />
             template
           </Link>
-          <nav className="ml-auto flex items-center space-x-4">
+          <nav className="ml-auto flex items-center space-x-2">
             {isSmallDevice ? (
               <>
                 <ButtonRanking />
-                <ButtonSupportMe />
+                <ButtonSupport />
               </>
             ) : (
               <>
                 <ButtonRanking>Leaderboard</ButtonRanking>
-                <ButtonSupportMe>Support Me</ButtonSupportMe>
+                <ButtonSupport>Support</ButtonSupport>
               </>
             )}
             <ToggleTheme />
@@ -215,7 +215,7 @@ function ButtonRanking({
   );
 }
 
-function ButtonSupportMe({
+function ButtonSupport({
   children,
 }: {
   children?: JSX.Element | JSX.Element[] | string;
@@ -226,13 +226,13 @@ function ButtonSupportMe({
       className={cn(
         buttonVariants({
           size: children ? "default" : "icon",
-          variant: "secondary",
+          variant: "gold",
         }),
         "item-center",
       )}
     >
       {children}
-      <Wallet className={`w-4 ${children ? "ml-2" : null}`} />
+      <HandCoins className={`w-4 ${children ? "ml-2" : null}`} />
     </Link>
   );
 }

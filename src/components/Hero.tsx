@@ -61,7 +61,12 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
   const firstRow = copyPastas.slice(0, copyPastas.length / 2);
   const secondRow = copyPastas.slice(copyPastas.length / 2);
   return (
-    <div className="relative flex h-[500px] w-full flex-col overflow-hidden bg-background">
+    <div
+      className={cn(
+        "relative flex w-full max-w-4xl flex-col overflow-hidden bg-background",
+        isShowButton ? "h-[500px]" : "h-screen py-16",
+      )}
+    >
       <div className="z-10 flex w-full flex-grow flex-col items-center justify-center px-4 text-center">
         <Link
           href={"/"}
@@ -119,7 +124,7 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
         cy={1}
         cr={1}
         className={cn(
-          "[mask-image:radial-gradient(750px_circle_at_top,white,transparent)]",
+          "[mask-image:radial-gradient(550px_circle_at_top,white,transparent)]",
         )}
       />
       <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>

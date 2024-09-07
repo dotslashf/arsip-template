@@ -21,7 +21,7 @@ export default function Footer() {
   return (
     <footer className="w-full bg-white py-6 shadow dark:bg-card">
       <div className="container flex items-center justify-center gap-4 px-4 lg:px-[6.5rem]">
-        <div className="flex w-full flex-col items-center gap-4 lg:flex-row">
+        <div className="flex w-full max-w-4xl flex-col items-center gap-4 lg:flex-row">
           <Link
             href="/tos"
             className="text-sm hover:underline"

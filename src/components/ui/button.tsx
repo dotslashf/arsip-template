@@ -29,6 +29,7 @@ const buttonVariants = cva(
         twitter:
           "bg-twitter text-white hover:bg-twitter-hover focus:ring-twitter",
         google: "bg-google text-white hover:bg-google/80 focus:ring-google",
+        gold: "bg-yellow-500 dark:bg-yellow-500 text-yellow-950 dark:text-yellow-950 hover:bg-yellow-600 dark:hover:bg-yellow-400 border-yellow-600 dark:border-yellow-400",
       },
       size: {
         default: "h-10 px-4 py-2",
