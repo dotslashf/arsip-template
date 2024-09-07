@@ -4,15 +4,19 @@ import { ChartColumn, Dot } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
 import { api } from "~/trpc/react";
-import { DAYS } from "~/lib/constant";
+import { ANALYTICS_EVENT, DAYS } from "~/lib/constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { trackEvent } from "~/lib/track";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const [count] = api.copyPasta.count.useSuspenseQuery(undefined, {
     staleTime: 1 * DAYS,
     gcTime: 1 * DAYS,
   });
+
+  const pathname = usePathname();
 
   return (
     <footer className="w-full bg-white py-6 shadow dark:bg-card">
@@ -51,6 +55,12 @@ export default function Footer() {
               }
               target="__blank"
               className={buttonVariants({ variant: "outline" })}
+              onClick={() => {
+                void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
+                  button: `analytics`,
+                  path: pathname,
+                });
+              }}
             >
               Analytics <ChartColumn className="ml-2 w-4" />
             </Link>
