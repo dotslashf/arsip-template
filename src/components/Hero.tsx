@@ -8,6 +8,7 @@ import { cn, trimContent } from "~/lib/utils";
 import Marquee from "./magicui/marquee";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import Tag from "./ui/tags";
+import DotPattern from "./magicui/dot-pattern";
 
 const CardDisplay = ({
   content,
@@ -60,8 +61,8 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
   const firstRow = copyPastas.slice(0, copyPastas.length / 2);
   const secondRow = copyPastas.slice(copyPastas.length / 2);
   return (
-    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden bg-background md:shadow-xl">
-      <div className="absolute top-8 z-10 px-4 text-center md:top-6">
+    <div className="relative flex h-[500px] w-full flex-col overflow-hidden bg-background">
+      <div className="z-10 flex w-full flex-grow flex-col items-center justify-center px-4 text-center">
         <Link
           href={"/"}
           className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/90 to-primary/80 bg-clip-text text-left text-3xl font-bold text-transparent lg:text-5xl"
@@ -99,7 +100,7 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
           </div>
         )}
       </div>
-      <div className="absolute bottom-0">
+      <div className="z-10 mt-auto">
         <Marquee pauseOnHover className="[--duration:40s]">
           {firstRow.map((copy) => (
             <CardDisplay key={copy.content} {...copy} />
@@ -111,6 +112,16 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
           ))}
         </Marquee>
       </div>
+      <DotPattern
+        width={15}
+        height={15}
+        cx={1}
+        cy={1}
+        cr={1}
+        className={cn(
+          "[mask-image:radial-gradient(750px_circle_at_top,white,transparent)]",
+        )}
+      />
       <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
       <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
     </div>
