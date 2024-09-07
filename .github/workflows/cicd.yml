@@ -46,15 +46,16 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy to SSH server
-        env:
-          REGION: ${{ secrets.GCE_REGION }}
-          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          GITHUB_SHA: ${{ github.sha }}
-        run: |
-          # Base64 encode the GCP_SA_KEY to avoid issues with special characters
-          GCP_SA_KEY_BASE64=$(echo '${{ secrets.GCP_SA_KEY }}' | base64 -w 0)
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            REGION=${{ secrets.GCE_REGION }}
+            PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
+            GITHUB_SHA=${{ github.sha }}
 
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
             cd ${{ secrets.PROJECT_PATH }}
 
             if [ ! -f docker-compose.yml ]; then
@@ -62,24 +63,12 @@ jobs:
               exit 1
             fi
 
-            # Decode the GCP_SA_KEY and save it to a file
-            echo "$GCP_SA_KEY_BASE64" | base64 --decode > gcp-sa-key.json
+            # Pull the latest image from Google Artifact Registry
+            docker pull ${REGION}-docker.pkg.dev/${PROJECT_ID}/arsip-template/app:${GITHUB_SHA}
 
-            # Authenticate Docker with Google Cloud
-            cat gcp-sa-key.json | docker login -u _json_key --password-stdin https://${{ secrets.GCE_REGION }}-docker.pkg.dev
+            # Update the docker-compose.yml file with the new image tag
+            sed -i "s|image: .*|image: ${REGION}-docker.pkg.dev/${PROJECT_ID}/arsip-template/app:${GITHUB_SHA}|g" docker-compose.yml
 
-            # Update docker-compose.yml to use the key file
-            sed -i 's|GCP_SA_KEY=.*|GCP_SA_KEY=/path/to/gcp-sa-key.json|g' docker-compose.yml
-
-            # Set other environment variables
-            sed -i 's|REGION=.*|REGION=${{ env.REGION }}|g' docker-compose.yml
-            sed -i 's|PROJECT_ID=.*|PROJECT_ID=${{ env.PROJECT_ID }}|g' docker-compose.yml
-            sed -i 's|GITHUB_SHA=.*|GITHUB_SHA=${{ github.sha }}|g' docker-compose.yml
-
-            # Pull and restart containers
-            docker-compose pull
+            # Restart the Docker Compose services
             docker-compose down
             docker-compose up -d
-
-            # Clean up the key file
-            rm gcp-sa-key.json
