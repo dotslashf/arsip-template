@@ -61,7 +61,7 @@ export default function SearchBar() {
 
   return (
     <div className="w-full items-center justify-center self-center">
-      <div className="flex w-full items-center space-x-4 self-center">
+      <div className="flex w-full items-center space-x-2 self-center">
         <div className="relative flex flex-1">
           <Input
             type="search"
@@ -87,7 +87,7 @@ export default function SearchBar() {
                 <Link
                   href={`/copy-pasta/${result.id}?utm_term=${encodeURIComponent(query)}`}
                   key={index}
-                  className="cursor-pointer rounded-md px-4 py-2 transition-colors hover:bg-secondary dark:text-accent dark:hover:bg-accent-foreground"
+                  className="cursor-pointer overflow-hidden rounded-md px-4 py-2 transition-colors hover:bg-secondary dark:text-accent dark:hover:bg-accent-foreground"
                 >
                   {trimContent(result.content, 100)}
                 </Link>
