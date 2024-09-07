@@ -1,4 +1,51 @@
-- name: Deploy to SSH server
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GCP_SA_KEY }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ secrets.GCE_REGION }}-docker.pkg.dev
+
+      - name: Build and push Docker image
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GITHUB_SHA: ${{ github.sha }}
+          GCE_REGION: ${{ secrets.GCE_REGION }}
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+        run: |
+          echo "$GCP_SA_KEY" > gcp-service-account-key.json
+          docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=$BUCKET_NAME --build-arg GCP_SA_KEY="$GCP_SA_KEY" -t $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA .
+          docker push $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to SSH server
         env:
           REGION: ${{ secrets.GCE_REGION }}
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
