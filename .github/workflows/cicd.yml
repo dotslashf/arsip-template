@@ -40,11 +40,6 @@ jobs:
           docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=$BUCKET_NAME --build-arg GCP_SA_KEY="$GCP_SA_KEY" -t $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA .
           docker push $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA
 
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: Deploy to SSH server
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -65,10 +60,5 @@ jobs:
 
             # Pull the latest image from Google Artifact Registry
             docker pull ${REGION}-docker.pkg.dev/${PROJECT_ID}/arsip-template/app:${GITHUB_SHA}
-
-            # Update the docker-compose.yml file with the new image tag
-            sed -i "s|image: .*|image: ${REGION}-docker.pkg.dev/${PROJECT_ID}/arsip-template/app:${GITHUB_SHA}|g" docker-compose.yml
-
-            # Restart the Docker Compose services
             docker-compose down
             docker-compose up -d
