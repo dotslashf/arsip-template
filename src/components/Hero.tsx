@@ -70,9 +70,9 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
       <div className="z-10 flex w-full flex-grow flex-col items-center justify-center px-4 text-center">
         <Link
           href={"/"}
-          className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/90 to-primary/80 bg-clip-text text-left text-3xl font-bold text-transparent lg:text-5xl"
+          className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/90 to-primary/80 bg-clip-text text-left text-4xl font-bold text-transparent lg:text-5xl"
         >
-          <Package className="mr-1 h-5 w-5 text-primary lg:mr-3 lg:h-9 lg:w-9" />
+          <Package className="mr-1 h-8 w-8 text-primary lg:mr-3 lg:h-9 lg:w-9" />
           arsip
           <br />
           template
