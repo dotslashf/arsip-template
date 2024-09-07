@@ -97,15 +97,11 @@ export default function Navbar({ session }: NavbarProps) {
             )}
             <ToggleTheme />
             {!session?.user ? (
-              <Link
-                href="/auth/sign-in"
-                className={cn(buttonVariants({ variant: "link" }))}
-                prefetch={false}
-                onClick={handleSignIn}
-              >
-                Masuk
-                <LogIn className="ml-2 w-4" />
-              </Link>
+              isSmallDevice ? (
+                <ButtonSignIn onClick={handleSignIn} />
+              ) : (
+                <ButtonSignIn onClick={handleSignIn}>Masuk</ButtonSignIn>
+              )
             ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -237,6 +233,31 @@ function ButtonSupportMe({
     >
       {children}
       <Wallet className={`w-4 ${children ? "ml-2" : null}`} />
+    </Link>
+  );
+}
+
+function ButtonSignIn({
+  children,
+  onClick,
+}: {
+  onClick: () => void;
+  children?: JSX.Element | JSX.Element[] | string;
+}) {
+  return (
+    <Link
+      href="/auth/sign-in"
+      className={cn(
+        buttonVariants({
+          size: children ? "default" : "icon",
+          variant: "secondary",
+        }),
+        "item-center",
+      )}
+      onClick={onClick}
+    >
+      {children}
+      <LogIn className={`w-4 ${children ? "ml-2" : null}`} />
     </Link>
   );
 }

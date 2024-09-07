@@ -88,9 +88,6 @@ export const dashboardRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      if (ctx.session.user.role !== "Admin") {
-        return false;
-      }
       const copyPasta = await ctx.db.copyPasta.update({
         where: {
           id: input.id,
