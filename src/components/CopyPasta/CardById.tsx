@@ -176,7 +176,7 @@ export default function CardById({ copyPasta }: CardProps) {
           </Accordion>
         )}
         <Reaction copyPastaId={copyPasta.id} />
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap gap-2">
           {copyPasta.CopyPastasOnTags.map((tag) => {
             const isActive = currentTag === tag.tags.id;
             return (

@@ -13,13 +13,21 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import { DAYS } from "~/lib/constant";
+import NumberTicker from "../magicui/number-ticker";
 
 interface TrendingHomeProps {
   tag: string | null;
 }
 export default function TrendingHome(props: TrendingHomeProps) {
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
-  const [topCopyPastas] = api.analytics.getPopularCopyPasta.useSuspenseQuery();
+  const [topCopyPastas] = api.analytics.getPopularCopyPasta.useSuspenseQuery(
+    undefined,
+    {
+      staleTime: 7 * DAYS,
+      gcTime: 7 * DAYS,
+    },
+  );
 
   return (
     <div
@@ -56,7 +64,10 @@ export default function TrendingHome(props: TrendingHomeProps) {
                     {trimContent(copy.copyPasta.content ?? "", 30)}
                   </span>
                   <span className="ml-4 flex items-center justify-center text-xs text-muted-foreground">
-                    {copy.views} <Eye className="ml-2 w-4" />
+                    <NumberTicker
+                      value={parseInt((copy.views as string) ?? "0")}
+                    />{" "}
+                    <Eye className="ml-2 w-4" />
                   </span>
                 </Link>
               );

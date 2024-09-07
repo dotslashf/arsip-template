@@ -23,7 +23,7 @@ const SearchBar = dynamic(() => import("~/components/SearchBar"), {
   ssr: false,
   loading() {
     return (
-      <div className="flex w-full max-w-4xl space-x-2 self-center">
+      <div className="flex w-full space-x-2 self-center">
         <Skeleton className="h-10 flex-1" />
         <Skeleton className="h-10 w-10" />
         <Skeleton className="h-10 w-10" />
@@ -46,7 +46,7 @@ export function ListCopyPasta() {
   return (
     <div className="flex w-full flex-col gap-4" id="main">
       <SearchBar />
-      <div className="flex w-full max-w-4xl flex-col gap-4 self-center">
+      <div className="flex w-full flex-col gap-4 self-center">
         <div className="grid w-full grid-cols-3 gap-4">
           <Lists />
           <TrendingHome tag={tag} />
