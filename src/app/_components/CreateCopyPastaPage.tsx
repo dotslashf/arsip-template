@@ -207,6 +207,7 @@ export default function CreateCopyPasta() {
                       granularity="day"
                       placeholder={formatDateToHuman(new Date())}
                       locale={id}
+                      displayFormat={{ hour24: "PPP" }}
                     />
                   </FormControl>
                 </div>

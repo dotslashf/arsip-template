@@ -47,9 +47,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            REGION=${{ secrets.GCE_REGION }}
-            PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
-            GITHUB_SHA=${{ github.sha }}
+            export REGION=${{ secrets.GCE_REGION }}
+            export PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
+            export GITHUB_SHA=${{ github.sha }}
 
             cd ${{ secrets.PROJECT_PATH }}
 
@@ -59,6 +59,6 @@ jobs:
             fi
 
             # Pull the latest image from Google Artifact Registry
-            docker pull ${REGION}-docker.pkg.dev/${PROJECT_ID}/arsip-template/app:${GITHUB_SHA}
+            docker-compose pull
             docker-compose down
             docker-compose up -d
