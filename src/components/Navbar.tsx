@@ -37,7 +37,7 @@ export default function Navbar({ session }: NavbarProps) {
   function handleSignOut() {
     void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
       button: "navbar",
-      value: "signOut",
+      value: "sign_out",
     });
     void signOut();
   }
@@ -45,7 +45,7 @@ export default function Navbar({ session }: NavbarProps) {
   function handleSignIn() {
     void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
       button: "navbar",
-      value: "signIn",
+      value: "sign_in",
     });
   }
 

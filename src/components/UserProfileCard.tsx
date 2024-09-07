@@ -7,11 +7,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Badge } from "./ui/badge";
-import {
-  ANALYTICS_EVENT,
-  baseUrl,
-  parseErrorMessages,
-} from "~/lib/constant";
+import { ANALYTICS_EVENT, baseUrl, parseErrorMessages } from "~/lib/constant";
 import { Edit, RotateCw, Share2, Undo2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
@@ -66,12 +62,10 @@ export default function UserProfileCard({
       setIsEditMode(!isEditMode);
       setAvatarPreviousState([]);
       void trackEvent(ANALYTICS_EVENT.PROFILE_UPDATED, {
-        data: {
-          name: data.name,
-          username: data.username,
-          avatarSeed: data.avatarSeed,
-        },
-        userId: data.id,
+        name: data.name,
+        username: data.username,
+        avatar_seed: data.avatarSeed,
+        user_id: data.id,
       });
     },
   });
@@ -154,7 +148,7 @@ export default function UserProfileCard({
           type: "success",
         });
         void trackEvent(ANALYTICS_EVENT.SHARE, {
-          userId: session?.user.id,
+          user_id: session?.user.id,
         });
       })
       .catch((err) => console.log(err));

@@ -21,7 +21,7 @@ import { trackEvent } from "~/lib/track";
 export default function SignInSocialProviders() {
   function handleSignIn(platform: string) {
     void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
-      button: `signIn.${platform}`,
+      button: `sign_in.${platform}`,
       path: "/auth/sign-in",
     });
     void signIn(platform, {
