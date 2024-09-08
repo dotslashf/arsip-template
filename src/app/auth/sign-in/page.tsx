@@ -16,6 +16,7 @@ export default async function SignIn() {
   });
   const copyPastasFormatted = copyPastas.copyPastas.map((copy) => {
     return {
+      id: copy.id,
       content: copy.content,
       tags: copy.CopyPastasOnTags.map((tag) => tag.tags),
     };
