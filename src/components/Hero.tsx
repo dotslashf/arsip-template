@@ -127,8 +127,8 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
           "[mask-image:radial-gradient(550px_circle_at_top,white,transparent)]",
         )}
       />
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-1/4 bg-gradient-to-r from-white dark:from-background"></div>
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-1/4 bg-gradient-to-l from-white dark:from-background"></div>
     </div>
   );
 }

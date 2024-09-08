@@ -105,7 +105,7 @@ export default function Navbar({ session }: NavbarProps) {
             ) : (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <span className="rounded-full border border-secondary-foreground">
+                  <span className="rounded-full">
                     <Avatar
                       seed={
                         session?.user.avatarSeed ?? session?.user.id ?? "Anon"

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChartColumn, Dot } from "lucide-react";
+import { Dot } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
 import { api } from "~/trpc/react";
@@ -62,7 +62,7 @@ export default function Footer() {
                 });
               }}
             >
-              Analytics <ChartColumn className="ml-2 w-4" />
+              Analytics
             </Link>
             <Link
               href={"https://github.com/dotslashf/arsip-template"}
