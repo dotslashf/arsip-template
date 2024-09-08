@@ -67,7 +67,7 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
         isShowButton ? "h-[500px]" : "h-screen py-16",
       )}
     >
-      <div className="z-10 flex w-full flex-grow flex-col items-center justify-center px-4 text-center">
+      <div className="z-30 flex w-full flex-grow flex-col items-center justify-center px-4 text-center">
         <Link
           href={"/"}
           className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/90 to-primary/80 bg-clip-text text-left text-4xl font-bold text-transparent lg:text-5xl"
