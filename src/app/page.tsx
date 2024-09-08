@@ -44,14 +44,20 @@ export async function generateMetadata({
 
 export default async function Home() {
   const copyPastas = await api.copyPasta.list({
-    limit: 10,
+    limit: 12,
   });
-  const copyPastasFormatted = copyPastas.copyPastas.map((copy) => {
-    return {
-      content: copy.content,
-      tags: copy.CopyPastasOnTags.map((tag) => tag.tags),
-    };
-  });
+  const copyPastasFormatted = copyPastas.copyPastas
+    .filter(
+      (copy) =>
+        !copy.CopyPastasOnTags.some((tag) => tag.tags.name === "ASCII Art"),
+    )
+    .map((copy) => {
+      return {
+        id: copy.id,
+        content: copy.content,
+        tags: copy.CopyPastasOnTags.map((tag) => tag.tags),
+      };
+    });
 
   return (
     <HydrateClient>

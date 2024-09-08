@@ -190,7 +190,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
             {reactionsByCopyPastaId?.reactions.map((react) => (
               <Link
                 key={react.id}
-                className="flex text-primary underline hover:cursor-pointer"
+                className="flex text-primary hover:cursor-pointer"
                 href={`/user/${react.user.id}?utm_source=reaction_summary`}
                 prefetch={false}
               >

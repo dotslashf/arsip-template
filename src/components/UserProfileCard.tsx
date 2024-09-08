@@ -6,13 +6,9 @@ import {
   CardFooter,
   CardTitle,
 } from "./ui/card";
-import { Badge } from "./ui/badge";
-import {
-  ANALYTICS_EVENT,
-  baseUrl,
-  parseErrorMessages,
-} from "~/lib/constant";
-import { Edit, RotateCw, Share2, Undo2 } from "lucide-react";
+import { Badge, badgeVariants } from "./ui/badge";
+import { ANALYTICS_EVENT, baseUrl, parseErrorMessages } from "~/lib/constant";
+import { Edit, RotateCw, Save, Share2, Undo2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,6 +28,7 @@ import Tag from "./ui/tags";
 import { type Tag as TagType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { trackEvent } from "~/lib/track";
+import Link from "next/link";
 
 interface UserProfileCardProps {
   session: Session | null;
@@ -66,12 +63,10 @@ export default function UserProfileCard({
       setIsEditMode(!isEditMode);
       setAvatarPreviousState([]);
       void trackEvent(ANALYTICS_EVENT.PROFILE_UPDATED, {
-        data: {
-          name: data.name,
-          username: data.username,
-          avatarSeed: data.avatarSeed,
-        },
-        userId: data.id,
+        name: data.name,
+        username: data.username,
+        avatar_seed: data.avatarSeed,
+        user_id: data.id,
       });
     },
   });
@@ -154,7 +149,7 @@ export default function UserProfileCard({
           type: "success",
         });
         void trackEvent(ANALYTICS_EVENT.SHARE, {
-          userId: session?.user.id,
+          user_id: session?.user.id,
         });
       })
       .catch((err) => console.log(err));
@@ -176,21 +171,16 @@ export default function UserProfileCard({
       )}
     >
       <CardTitle className="absolute right-0 top-0 pr-3 pt-3">
-        <Button
-          variant={"destructive"}
-          size={"sm"}
-          onClick={handleShareProfile}
-        >
-          <span className="text-sm">Share</span>
-          <Share2 className="ml-2 w-3" />
+        <Button variant={"default"} size={"icon"} onClick={handleShareProfile}>
+          <Share2 className="w-4" />
         </Button>
       </CardTitle>
       <CardHeader className="flex flex-col items-center space-y-2 p-3">
         <span className="rounded-full border-2 border-secondary-foreground">
           <Avatar
             size={{
-              width: 110,
-              height: 110,
+              width: 95,
+              height: 95,
             }}
             seed={avatarSeed}
           />
@@ -243,7 +233,7 @@ export default function UserProfileCard({
                   />
                   <div className="flex w-full justify-between">
                     <Button variant={"confirm"} size={"icon"} type="submit">
-                      <Edit className="w-4" />
+                      <Save className="w-4" />
                     </Button>
                     <div className="flex space-x-2">
                       <Button
@@ -272,19 +262,34 @@ export default function UserProfileCard({
                 <span className="font-bold">
                   {session?.user.name ?? "Anon"}
                 </span>
-                <Badge variant={"ghost"} className="py-1 font-bold">
+                <Link
+                  href={`/user/${session?.user.username}`}
+                  className={cn(
+                    badgeVariants({
+                      variant: "ghost",
+                      className: "py1 font-bold",
+                    }),
+                  )}
+                >
                   @
                   {session?.user.username ??
                     session?.user.id.slice(0, 15) ??
                     "Anon"}
-                </Badge>
+                </Link>
+                {/* <Badge variant={"ghost"} className="py-1 font-bold">
+                  @
+                  {session?.user.username ??
+                    session?.user.id.slice(0, 15) ??
+                    "Anon"}
+                </Badge> */}
                 {!isPreviewMode && (
                   <Button
                     variant={"outline"}
-                    size={"icon"}
+                    size={"sm"}
                     onClick={() => setIsEditMode(!isEditMode)}
                   >
-                    <Edit className="h-3 w-3" />
+                    <span className="text-sm">Edit Profile</span>
+                    <Edit className="ml-2 h-3 w-3" />
                   </Button>
                 )}
               </div>

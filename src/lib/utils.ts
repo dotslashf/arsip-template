@@ -13,9 +13,12 @@ export function formatDateToHuman(date: Date, formatString = "PPP") {
 }
 
 export function trimContent(content: string, length = 255) {
-  return content
-    ? content.slice(0, length) + (content.length > length ? "..." : "")
-    : "😱😱😱";
+  if (!content) {
+    return "😱😱😱";
+  }
+
+  const trimmedContent = content.slice(0, length).trimEnd();
+  return trimmedContent + (content.length > length ? "..." : "");
 }
 
 export function determineSource(url = "Other") {

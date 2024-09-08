@@ -4,49 +4,14 @@ import { Package, PenBoxIcon, Search } from "lucide-react";
 import React from "react";
 import { buttonVariants } from "./ui/button";
 import Link from "next/link";
-import { cn, trimContent } from "~/lib/utils";
+import { cn } from "~/lib/utils";
 import Marquee from "./magicui/marquee";
-import { Card, CardContent, CardFooter } from "./ui/card";
-import Tag from "./ui/tags";
 import DotPattern from "./magicui/dot-pattern";
-
-const CardDisplay = ({
-  content,
-  tags,
-}: {
-  content: string;
-  tags: {
-    id: string;
-    name: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }[];
-}) => {
-  return (
-    <Card className="flex w-fit flex-col justify-between">
-      <CardContent className="flex flex-col justify-between gap-2 overflow-x-hidden pb-2 pt-4 text-sm hover:cursor-auto">
-        <blockquote className="w-full">{trimContent(content, 35)}</blockquote>
-      </CardContent>
-      <CardFooter>
-        <div className="flex w-full space-x-2">
-          {tags.map((tag) => {
-            return (
-              <Tag
-                key={tag.id}
-                tagContent={tag}
-                className="rounded-sm shadow-sm hover:bg-primary hover:text-primary-foreground"
-                onClick={() => null}
-              />
-            );
-          })}
-        </div>
-      </CardFooter>
-    </Card>
-  );
-};
+import CardDisplay from "./CopyPasta/CardDisplay";
 
 interface HeroProps {
   copyPastas: {
+    id: string;
     content: string;
     tags: {
       id: string;
@@ -67,7 +32,7 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
         isShowButton ? "h-[500px]" : "h-screen py-16",
       )}
     >
-      <div className="z-10 flex w-full flex-grow flex-col items-center justify-center px-4 text-center">
+      <div className="z-30 flex w-full flex-grow flex-col items-center justify-center px-4 text-center">
         <Link
           href={"/"}
           className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/90 to-primary/80 bg-clip-text text-left text-4xl font-bold text-transparent lg:text-5xl"
@@ -106,12 +71,12 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
         )}
       </div>
       <div className="z-10 mt-auto">
-        <Marquee pauseOnHover className="[--duration:40s]">
+        <Marquee pauseOnHover className="[--duration:60s]">
           {firstRow.map((copy) => (
             <CardDisplay key={copy.content} {...copy} />
           ))}
         </Marquee>
-        <Marquee reverse pauseOnHover className="[--duration:40s]">
+        <Marquee reverse pauseOnHover className="[--duration:60s]">
           {secondRow.map((copy) => (
             <CardDisplay key={copy.content} {...copy} />
           ))}
@@ -127,8 +92,8 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
           "[mask-image:radial-gradient(550px_circle_at_top,white,transparent)]",
         )}
       />
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-1/4 bg-gradient-to-r from-white dark:from-background"></div>
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-1/4 bg-gradient-to-l from-white dark:from-background"></div>
     </div>
   );
 }

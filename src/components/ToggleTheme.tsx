@@ -21,7 +21,10 @@ export function ToggleTheme() {
 
   function handleSetTheme(theme: "light" | "dark" | "system") {
     setTheme(theme);
-    void trackEvent(ANALYTICS_EVENT.SET_THEME, { value: theme, isSmallDevice });
+    void trackEvent(ANALYTICS_EVENT.SET_THEME, {
+      value: theme,
+      is_small_device: isSmallDevice,
+    });
   }
 
   return (
