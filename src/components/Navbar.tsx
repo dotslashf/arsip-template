@@ -39,7 +39,9 @@ export default function Navbar({ session }: NavbarProps) {
       button: "navbar",
       value: "sign_out",
     });
-    void signOut();
+    void signOut({
+      callbackUrl: "/",
+    });
   }
 
   function handleSignIn() {
