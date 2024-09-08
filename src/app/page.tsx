@@ -53,6 +53,7 @@ export default async function Home() {
     )
     .map((copy) => {
       return {
+        id: copy.id,
         content: copy.content,
         tags: copy.CopyPastasOnTags.map((tag) => tag.tags),
       };
