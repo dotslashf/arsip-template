@@ -50,12 +50,15 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
     },
   };
 
+  const isCopyPastaEmpty =
+    pages.flatMap((page) => page.copyPastas).length === 0;
+
   return (
     <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
-      <div className="flex w-full items-center justify-center self-start md:sticky md:top-[4.5rem] lg:max-w-md">
+      <div className="flex w-full items-center justify-center self-start lg:sticky lg:top-[4.5rem] lg:max-w-xs">
         <UserProfileCard session={session} isPreviewMode={true} />
       </div>
-      <div className="grid gap-4">
+      <div className="grid w-full gap-4">
         {pages
           ? pages.map((page) =>
               page.copyPastas.map((copy) => {
@@ -67,18 +70,24 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
               }),
             )
           : null}
-        <div className="col-span-2 w-full">
-          <Button
-            onClick={handleNextList}
-            disabled={!hasNextPage || isFetchingNextPage}
-            className="w-full"
-          >
-            <GetContent
-              hasNextPage={hasNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-            />
-          </Button>
-        </div>
+        {isCopyPastaEmpty ? (
+          <span className="col-span-2 flex h-24 w-full items-center justify-center rounded-md border bg-secondary">
+            User ini belum pernah arsipin template 😢
+          </span>
+        ) : (
+          <div className="col-span-2 w-full">
+            <Button
+              onClick={handleNextList}
+              disabled={!hasNextPage || isFetchingNextPage}
+              className="w-full"
+            >
+              <GetContent
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+              />
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
