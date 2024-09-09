@@ -9,7 +9,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-import { faker } from "@faker-js/faker";
+import { getRandomElement } from "~/lib/utils";
 
 export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure
@@ -221,8 +221,8 @@ export const copyPastaRouter = createTRPCRouter({
         (field) => field !== "approvedById" && field !== "createdById",
       );
       const sorts = {
-        field: faker.helpers.arrayElement(fields),
-        direction: faker.helpers.arrayElement(["asc", "desc"]),
+        field: getRandomElement(fields)!,
+        direction: getRandomElement(["asc", "desc"]),
       };
 
       const random = await ctx.db.copyPastasOnTags.findMany({

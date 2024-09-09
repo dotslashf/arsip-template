@@ -7,3 +7,12 @@ services:
     restart: always
     env_file:
       - .env.production
+    deploy:
+      resources:
+        limits:
+          memory: 1024G
+    healthcheck:
+      test: ["CMD-SHELL", "free | awk '/Mem/ {exit ($3/$2*100 > 80)}'"]
+      interval: 1m
+      timeout: 10s
+      retries: 3

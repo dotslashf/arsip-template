@@ -21,6 +21,13 @@ export function trimContent(content: string, length = 255) {
   return trimmedContent + (content.length > length ? "..." : "");
 }
 
+export function getRandomElement(array: string[]) {
+  if (array.length === 0) {
+    throw new Error("Array cannot be empty");
+  }
+  return array[Math.floor(Math.random() * array.length)];
+}
+
 export function determineSource(url = "Other") {
   const regex =
     /((https?:\/\/)?(?:www\.)?(facebook\.com|fb\.me|twitter\.com|t\.co|x\.com)\/[^\s]+)/;
