@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "docker-compose.yml"
-          target: "${{ secrets.PROJECT_PATH }}/docker-compose.yml"
+          target: "/root/projects/docker-compose.yml"
 
       - name: Deploy to SSH server
         uses: appleboy/ssh-action@v0.1.7
@@ -60,10 +60,10 @@ jobs:
             export PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
             export GITHUB_SHA=${{ github.sha }}
 
-            cd ${{ secrets.PROJECT_PATH }}
+            cd /root/projects
 
             if [ ! -f docker-compose.yml ]; then
-              echo "docker-compose.yml not found in ${{ secrets.PROJECT_PATH }}"
+              echo "docker-compose.yml not found in /root/projects"
               exit 1
             fi
 
