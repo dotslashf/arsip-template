@@ -47,6 +47,7 @@ RUN \
 
 # RUNNER
 FROM --platform=linux/amd64 node:20-slim AS runner
+RUN apt-get update && apt-get install -y openssl
 WORKDIR /app
 
 ENV NODE_ENV production
