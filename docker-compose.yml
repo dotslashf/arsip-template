@@ -10,7 +10,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1024G
+          memory: 1G
     healthcheck:
       test: ["CMD-SHELL", "free | awk '/Mem/ {exit ($3/$2*100 > 80)}'"]
       interval: 1m
