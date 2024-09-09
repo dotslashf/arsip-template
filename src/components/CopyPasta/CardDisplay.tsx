@@ -45,7 +45,7 @@ export default function CardDisplay({ id, content, tags }: CardDisplayProps) {
             })}
           </div>
           <Link
-            href={`/copy-pasta/${id}?utm_content="hero"`}
+            href={`/copy-pasta/${id}?utm_content=hero`}
             className={cn(
               buttonVariants({ variant: "link", size: "url" }),
               "ml-2",
