@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "build:debug-memory": "next build --experimental-debug-memory-usage",
+    "build:inspect": "NODE_OPTIONS=--inspect next build",
     "db:generate": "prisma migrate dev",
     "db:migrate": "prisma migrate deploy",
     "db:push": "prisma db push",
@@ -18,7 +20,6 @@
     "@auth/prisma-adapter": "^1.6.0",
     "@dicebear/collection": "^9.2.1",
     "@dicebear/core": "^9.2.1",
-    "@faker-js/faker": "^8.4.1",
     "@feedback-fish/react": "^1.2.2",
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",

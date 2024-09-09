@@ -21,6 +21,9 @@ const config = {
       },
     ],
   },
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
 };
 
 export default config;

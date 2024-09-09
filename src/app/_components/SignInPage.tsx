@@ -30,7 +30,7 @@ export default function SignInSocialProviders() {
   }
 
   return (
-    <Card className="mx-auto mt-8 w-full max-w-xl items-center justify-center space-y-6 border-0 bg-accent px-4 py-6 shadow-none">
+    <Card className="mx-auto w-full max-w-xl items-center justify-center space-y-6 border-0 bg-accent px-4 py-6 shadow-none">
       <CardHeader className="items-center">
         <CardTitle className="text-3xl">👋 Halo, Selamat datang!</CardTitle>
         <CardDescription>

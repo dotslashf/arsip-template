@@ -4,10 +4,10 @@ import { HydrateClient } from "~/trpc/server";
 import SupportPage from "../_components/SupportPage";
 
 export const metadata: Metadata = {
-  title: "Statistics",
-  description: "Statistics arsip template",
+  title: "Support this platform",
+  description: "Support this platform",
 };
-export default function Statistics() {
+export default function Support() {
   return (
     <HydrateClient>
       <Layout>
