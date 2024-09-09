@@ -12,10 +12,9 @@ const Navbar = dynamic(() => import("./Navbar"), {
       <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
         <div className="container px-4 md:px-6">
           <div className="flex h-12 items-center">
+            <Skeleton className="h-9 w-9 rounded-md md:w-20" />
             <nav className="ml-auto flex items-center space-x-4">
-              <Skeleton className="h-9 w-9 rounded-md md:w-32" />
-              <Skeleton className="h-9 w-9 rounded-md md:w-32" />
-              <Skeleton className="h-9 w-9 rounded-full" />
+              <Skeleton className="h-9 w-9 rounded-md md:w-20" />
             </nav>
           </div>
         </div>

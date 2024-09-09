@@ -1,0 +1,215 @@
+import {
+  ChartNoAxesColumn,
+  HandCoins,
+  House,
+  LibraryBig,
+  LogIn,
+  LogOut,
+  Medal,
+  Menu,
+  MonitorSmartphone,
+  Moon,
+  Palette,
+  Plus,
+  Sun,
+  User,
+} from "lucide-react";
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from "./ui/dropdown-menu";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useMediaQuery } from "@uidotdev/usehooks";
+import { trackEvent } from "~/lib/track";
+import { ANALYTICS_EVENT } from "~/lib/constant";
+import { type Session } from "next-auth";
+import Avatar from "./ui/avatar";
+import { cn } from "~/lib/utils";
+import { signOut } from "next-auth/react";
+
+interface NavbarDropDownProps {
+  session: Session | null;
+}
+export default function NavbarDropDown({ session }: NavbarDropDownProps) {
+  const { setTheme } = useTheme();
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+
+  function handleSetTheme(theme: "light" | "dark" | "system") {
+    setTheme(theme);
+    void trackEvent(
+      ANALYTICS_EVENT.SET_THEME,
+      {
+        value: theme,
+        is_small_device: isSmallDevice,
+      },
+      session?.user.id,
+    );
+  }
+
+  function handleSignOut() {
+    void trackEvent(
+      ANALYTICS_EVENT.BUTTON_CLICKED,
+      {
+        button: "navbar",
+        value: "sign_out",
+      },
+      session?.user.id,
+    );
+    void signOut({
+      callbackUrl: "/",
+    });
+  }
+
+  function handleProfile() {
+    void trackEvent(
+      ANALYTICS_EVENT.BUTTON_CLICKED,
+      {
+        button: "navbar",
+        value: "profile",
+      },
+      session?.user.id,
+    );
+  }
+
+  function handleCreate() {
+    void trackEvent(
+      ANALYTICS_EVENT.BUTTON_CLICKED,
+      {
+        button: "navbar",
+        value: "create",
+      },
+      session?.user.id,
+    );
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size={isSmallDevice ? "icon" : "default"}>
+          <span className="hidden md:inline">Menu</span>
+          <Menu className="h-4 w-4 md:ml-2" />
+          <span className="sr-only">Open menu</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        {session?.user ? (
+          <>
+            <div className="flex items-center px-2 py-2">
+              <span className="mr-2 rounded-full">
+                <Avatar
+                  seed={session?.user.avatarSeed ?? session?.user.id ?? "Anon"}
+                  size={{
+                    height: 40,
+                    width: 40,
+                  }}
+                  zoom={130}
+                />
+                <span className="sr-only">Toggle user menu</span>
+              </span>
+              <span className="text-sm font-medium">{session.user.name}</span>
+            </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Profil</DropdownMenuLabel>
+            <DropdownMenuItem asChild onClick={handleProfile}>
+              <Link href="/dashboard/profile" className="flex items-center">
+                <User className="mr-2 h-4 w-4" />
+                Dashboard
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild onClick={handleCreate}>
+              <Link href="/copy-pasta/create" className="flex items-center">
+                <Plus className="mr-2 h-4 w-4" />
+                Tambah Template
+              </Link>
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <>
+            <DropdownMenuLabel>Profile</DropdownMenuLabel>
+            <DropdownMenuItem asChild>
+              <Link href="/auth/sign-in" className="flex items-center">
+                <LogIn className="mr-2 w-4" />
+                Masuk
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <Palette className="mr-2 h-4 w-4" />
+            <span>Tema</span>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem onClick={() => handleSetTheme("light")}>
+                <Sun className="mr-2 w-4" />
+                Light
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleSetTheme("dark")}>
+                <Moon className="mr-2 w-4" />
+                Dark
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleSetTheme("system")}>
+                <MonitorSmartphone className="mr-2 w-4" />
+                System
+              </DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuPortal>
+        </DropdownMenuSub>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>Navigasi</DropdownMenuLabel>
+        <DropdownMenuItem asChild>
+          <Link href="/" className="flex items-center">
+            <House className="mr-2 w-4" />
+            Beranda
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/collections" className="flex items-center">
+            <LibraryBig className="mr-2 w-4" />
+            Koleksi
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/leaderboard" className="flex items-center">
+            <Medal className="mr-2 w-4" />
+            Peringkat
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/statistics" className="flex items-center">
+            <ChartNoAxesColumn className="mr-2 h-4 w-4" />
+            Statistik
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/support" className="flex items-center">
+            <HandCoins className="mr-2 w-4" />
+            Beri Dukungan
+          </Link>
+        </DropdownMenuItem>
+        {session?.user && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild onClick={handleSignOut}>
+              <div className="flex items-center">
+                <LogOut className="mr-2 w-4" />
+                Keluar
+              </div>
+            </DropdownMenuItem>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
