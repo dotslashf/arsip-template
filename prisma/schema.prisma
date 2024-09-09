@@ -8,10 +8,6 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("DATABASE_URL")
 }
 
@@ -31,10 +27,11 @@ model CopyPasta {
     approvedBy   User?   @relation(name: "approvedBy", fields: [approvedById], references: [id])
     approvedById String?
 
-    createdBy        User               @relation(name: "createdBy", fields: [createdById], references: [id])
+    createdBy        User                      @relation(name: "createdBy", fields: [createdById], references: [id])
     createdById      String
     CopyPastasOnTags CopyPastasOnTags[]
     Reactions        Reaction[]
+    collections      CollectionsOnCopyPastas[]
 }
 
 model Tag {
@@ -52,6 +49,26 @@ model CopyPastasOnTags {
     tagId       String
 
     @@unique([copyPastaId, tagId])
+}
+
+model Collection {
+    id          String                    @id @default(uuid())
+    name        String
+    description String?
+    createdAt   DateTime                  @default(now())
+    updatedAt   DateTime                  @updatedAt
+    createdBy   User                      @relation(fields: [createdById], references: [id])
+    createdById String
+    copyPastas  CollectionsOnCopyPastas[]
+}
+
+model CollectionsOnCopyPastas {
+    collection   Collection @relation(fields: [collectionId], references: [id])
+    collectionId String
+    copyPasta    CopyPasta  @relation(fields: [copyPastaId], references: [id])
+    copyPastaId  String
+
+    @@unique([collectionId, copyPastaId])
 }
 
 // Necessary for Next auth
@@ -100,8 +117,9 @@ model User {
     rank      Rank?      @relation(fields: [rankId], references: [id])
     Reactions Reaction[]
 
-    avatarSeed String?
-    username   String? @unique
+    avatarSeed  String?
+    username    String?      @unique
+    collections Collection[]
 }
 
 model Rank {
