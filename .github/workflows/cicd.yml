@@ -46,9 +46,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: 'docker-compose.yml'
-          target: '${{ secrets.PROJECT_PATH }}/docker-compose.yml'
-          strip_components: 1
+          source: "docker-compose.yml"
+          target: "${{ secrets.PROJECT_PATH }}/"
 
       - name: Deploy to SSH server
         uses: appleboy/ssh-action@v0.1.7
