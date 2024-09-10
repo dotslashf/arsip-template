@@ -93,17 +93,17 @@ export const USER_PROFILE = {
 export const FORM_COLLECTION_CONSTANT = {
   name: {
     min: 10,
-    max: 50
+    max: 50,
   },
   description: {
     min: 10,
-    max: 100
+    max: 100,
   },
   copyPastaIds: {
     min: 2,
-    max: 3
-  }
-}
+    max: 3,
+  },
+};
 
 export const parseErrorMessages = (error: Record<string, any>) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -145,4 +145,8 @@ export const ANALYTICS_EVENT = {
   ...CONTENT_ENGAGEMENT_EVENT,
   ...USER_PROFILE_EVENT,
   ...SYSTEM_EVENT,
+};
+
+export const CACHE_KEYS = {
+  COUNT_CACHE_KEY: "COUNT_CACHE_KEY",
 };
