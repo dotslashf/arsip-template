@@ -1,8 +1,9 @@
 import {
   ChartNoAxesColumn,
+  FileType,
   HandCoins,
   House,
-  LibraryBig,
+  Library,
   LogIn,
   LogOut,
   Medal,
@@ -34,7 +35,6 @@ import { trackEvent } from "~/lib/track";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { type Session } from "next-auth";
 import Avatar from "./ui/avatar";
-import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
 
 interface NavbarDropDownProps {
@@ -126,12 +126,28 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
                 Dashboard
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild onClick={handleCreate}>
-              <Link href="/copy-pasta/create" className="flex items-center">
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
                 <Plus className="mr-2 h-4 w-4" />
-                Tambah Template
-              </Link>
-            </DropdownMenuItem>
+                <span>Tambah</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem asChild onClick={() => handleCreate()}>
+                    <Link href="/copy-pasta/create" className="flex items-center">
+                      <FileType className="mr-2 h-4 w-4" />
+                      Template
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/collection/create" className="flex items-center">
+                      <Library className="mr-2 w-4" />
+                      Koleksi
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
           </>
         ) : (
           <>
@@ -176,12 +192,12 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/collections" className="flex items-center">
-            <LibraryBig className="mr-2 w-4" />
+            <Library className="mr-2 w-4" />
             Koleksi
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/leaderboard" className="flex items-center">
+          <Link href="/ranking" className="flex items-center">
             <Medal className="mr-2 w-4" />
             Peringkat
           </Link>

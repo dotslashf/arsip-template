@@ -7,6 +7,7 @@ import { reactionRouter } from "./routers/reaction";
 import { userRouter } from "./routers/user";
 import { uploadRouter } from "./routers/upload";
 import { analyticsRouter } from "./routers/analytics";
+import { collectionRouter } from './routers/collection';
 
 /**
  * This is the primary router for your server.
@@ -22,6 +23,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   upload: uploadRouter,
   analytics: analyticsRouter,
+  collection: collectionRouter,
 });
 
 // export type definition of API
