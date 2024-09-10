@@ -139,9 +139,11 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
                       Template
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleSetTheme("dark")}>
-                    <Library className="mr-2 w-4" />
-                    Koleksi
+                  <DropdownMenuItem asChild>
+                    <Link href="/collection/create" className="flex items-center">
+                      <Library className="mr-2 w-4" />
+                      Koleksi
+                    </Link>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>

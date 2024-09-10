@@ -90,6 +90,21 @@ export const USER_PROFILE = {
   },
 };
 
+export const FORM_COLLECTION_CONSTANT = {
+  name: {
+    min: 10,
+    max: 50
+  },
+  description: {
+    min: 10,
+    max: 100
+  },
+  copyPastaIds: {
+    min: 2,
+    max: 3
+  }
+}
+
 export const parseErrorMessages = (error: Record<string, any>) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const message = error.shape.message as string;

@@ -158,6 +158,19 @@ export const copyPastaRouter = createTRPCRouter({
             not: null,
           },
         },
+        include: {
+          CopyPastasOnTags: {
+            include: {
+              tags: true,
+            },
+          },
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
         take: 5,
       });
 
@@ -177,11 +190,11 @@ export const copyPastaRouter = createTRPCRouter({
           id: input.id,
           approvedAt: input.approvedAt
             ? {
-                not: null,
-              }
+              not: null,
+            }
             : {
-                equals: null,
-              },
+              equals: null,
+            },
         },
         include: {
           CopyPastasOnTags: {
