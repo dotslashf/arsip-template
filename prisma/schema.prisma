@@ -63,7 +63,7 @@ model Collection {
 }
 
 model CollectionsOnCopyPastas {
-    collection   Collection @relation(fields: [collectionId], references: [id])
+    collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
     collectionId String
     copyPasta    CopyPasta  @relation(fields: [copyPastaId], references: [id])
     copyPastaId  String
