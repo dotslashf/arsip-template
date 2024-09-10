@@ -1,4 +1,4 @@
-import { type CardCopyPastaMinimal, type CardProps } from "~/lib/interface";
+import { type CardProps } from "~/lib/interface";
 import {
   Card,
   CardContent,
@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { ArrowRight, ImageIcon, Link2, Minus, Plus, Type } from "lucide-react";
+import { ArrowRight, ImageIcon, Link2, Type } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
@@ -15,18 +15,7 @@ import Link from "next/link";
 import Tag from "../ui/tags";
 import { trackEvent } from "~/lib/track";
 
-interface CardSearchCollectionProps extends CardProps {
-  type: "add" | "remove";
-  onAddToCollection: (copyPasta: CardCopyPastaMinimal) => void;
-  onRemoveFromCollection: (copyPasta: CardCopyPastaMinimal) => void;
-}
-
-export default function CardSearchCollection({
-  copyPasta,
-  onAddToCollection,
-  onRemoveFromCollection,
-  type,
-}: CardSearchCollectionProps) {
+export default function CardById({ copyPasta }: CardProps) {
   function handleMoreInfo() {
     void trackEvent(ANALYTICS_EVENT.VIEW_FULL_COPY_PASTA, {
       button: "more_info.search_collection",
@@ -113,28 +102,6 @@ export default function CardSearchCollection({
             Lebih Lanjut <ArrowRight className="ml-2 h-3 w-3" />
           </Link>
         </div>
-        {type === "add" ? (
-          <Button
-            size="xs"
-            type="button"
-            onClick={() => onAddToCollection(copyPasta)}
-            className="text-xs"
-          >
-            <Plus className="mr-2 w-4" />
-            Tambah
-          </Button>
-        ) : (
-          <Button
-            size="xs"
-            type="button"
-            variant={"destructive"}
-            onClick={() => onRemoveFromCollection(copyPasta)}
-            className="text-xs"
-          >
-            <Minus className="mr-2 w-4" />
-            Hapus
-          </Button>
-        )}
       </CardFooter>
     </Card>
   );
