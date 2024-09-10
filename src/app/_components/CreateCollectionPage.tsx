@@ -14,7 +14,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
-import { Circle, LoaderCircle, PlusIcon } from "lucide-react";
+import { LoaderCircle, PlusIcon } from "lucide-react";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -26,6 +26,7 @@ import CardSearchCollection from "~/components/CopyPasta/CardSearchCollection";
 import { type CardCopyPastaMinimal } from "~/lib/interface";
 import { ScrollBar, ScrollArea } from "~/components/ui/scroll-area";
 import EmptyState from "~/components/EmptyState";
+import CardList from "~/components/Collection/CardLists";
 
 export default function CreateCollection() {
   const [searchResults, setSearchResults] = useState<CardCopyPastaMinimal[]>(
@@ -107,6 +108,15 @@ export default function CreateCollection() {
     );
   };
 
+  const renderCollection = (copy: CardCopyPastaMinimal) => (
+    <CardSearchCollection
+      type="remove"
+      copyPasta={copy}
+      onAddToCollection={handleAddToCollection}
+      onRemoveFromCollection={handleRemoveFromCollection}
+    />
+  );
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
@@ -179,23 +189,11 @@ export default function CreateCollection() {
             )}
           />
           {listOfCollections.length > 0 ? (
-            <div className="flex w-full flex-col space-y-2">
-              {listOfCollections.map((copy, index) => (
-                <div key={copy.id} className="flex w-full">
-                  <div className="mr-4 flex flex-col items-center">
-                    <Circle className="h-4 w-4 text-secondary-foreground" />
-                    {index < listOfCollections.length - 1 && (
-                      <div className="mt-2 h-full w-px bg-secondary-foreground" />
-                    )}
-                  </div>
-                  <CardSearchCollection
-                    type="remove"
-                    copyPasta={copy}
-                    onAddToCollection={handleAddToCollection}
-                    onRemoveFromCollection={handleRemoveFromCollection}
-                  />
-                </div>
-              ))}
+            <div className="flex w-full flex-col space-y-4">
+              <CardList
+                listOfCollections={listOfCollections}
+                renderCollection={renderCollection}
+              />
             </div>
           ) : (
             <EmptyState message="Masih kosong nih 😢" />
