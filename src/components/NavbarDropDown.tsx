@@ -181,7 +181,7 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/leaderboard" className="flex items-center">
+          <Link href="/ranking" className="flex items-center">
             <Medal className="mr-2 w-4" />
             Peringkat
           </Link>
