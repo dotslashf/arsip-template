@@ -1,23 +1,29 @@
 import { z } from "zod";
+import { FORM_COLLECTION_CONSTANT } from "~/lib/constant";
 
 export const createCollectionForm = z.object({
   name: z
     .string()
-    .min(10, {
+    .min(FORM_COLLECTION_CONSTANT.name.min, {
       message: "Minimal 10 karakter",
     })
-    .max(50, {
+    .max(FORM_COLLECTION_CONSTANT.name.max, {
       message: "Max 59 karakter",
     }),
-  description: z.string().min(10, {
-    message: "Minimal 10 karakter",
-  })
-    .max(500, {
+  description: z
+    .string()
+    .min(FORM_COLLECTION_CONSTANT.description.min, {
+      message: "Minimal 10 karakter",
+    })
+    .max(FORM_COLLECTION_CONSTANT.description.max, {
       message: "Max 500 karakter",
     }),
-  copyPastaIds: z.array(z.string().uuid()).min(2, {
-    message: "Minimal 2 copy pasta",
-  }).max(3, {
-    message: "Maximal 3 copy pasta"
-  })
+  copyPastaIds: z
+    .array(z.string().uuid())
+    .min(FORM_COLLECTION_CONSTANT.copyPastaIds.min, {
+      message: "Minimal 2 copy pasta",
+    })
+    .max(FORM_COLLECTION_CONSTANT.copyPastaIds.max, {
+      message: "Maximal 3 copy pasta",
+    }),
 });

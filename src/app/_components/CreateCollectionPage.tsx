@@ -19,18 +19,22 @@ import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { parseErrorMessages } from "~/lib/constant";
+import { FORM_COLLECTION_CONSTANT, parseErrorMessages } from "~/lib/constant";
 import { createCollectionForm } from "~/server/form/collection";
 import SearchBar from "~/components/Collection/SearchBar";
 import CardSearchCollection from "~/components/CopyPasta/CardSearchCollection";
-import { CardCopyPastaMinimal } from "~/lib/interface";
+import { type CardCopyPastaMinimal } from "~/lib/interface";
 import { ScrollBar, ScrollArea } from "~/components/ui/scroll-area";
-import { Label } from "~/components/ui/label";
+import EmptyState from "~/components/EmptyState";
 
 export default function CreateCollection() {
-  const [searchResults, setSearchResults] = useState<CardCopyPastaMinimal[]>([]);
+  const [searchResults, setSearchResults] = useState<CardCopyPastaMinimal[]>(
+    [],
+  );
   const [isSearching, setIsSearching] = useState<boolean>(false);
-  const [listOfCollections, setListOfCollections] = useState<CardCopyPastaMinimal[]>([]);
+  const [listOfCollections, setListOfCollections] = useState<
+    CardCopyPastaMinimal[]
+  >([]);
 
   const createMutation = api.collection.create.useMutation();
 
@@ -54,38 +58,43 @@ export default function CreateCollection() {
   }, [createMutation.isSuccess, router]);
 
   useEffect(() => {
-    form.setValue("copyPastaIds", listOfCollections.map(copy => copy.id));
-  }, [listOfCollections, form]);
+    form.setValue(
+      "copyPastaIds",
+      listOfCollections.map((copy) => copy.id),
+    );
+  }, [listOfCollections, form, toast]);
 
-  function onSubmit(values: z.infer<typeof createCollectionForm>) {
-    // try {
-    console.log({
-      ...values,
-    });
-    // await toast({
-    //   message: "",
-    //   type: "promise",
-    //   promiseFn: createMutation.mutateAsync({
-    //     ...values,
-    //     copyPastaIds
-    //   }),
-    //   promiseMsg: {
-    //     loading: "Sedang memasak 🔥",
-    //     success: "Makasih! Koleksimu sudah dibuat ya 😎",
-    //     // eslint-disable-next-line
-    //     error: (err) => `${parseErrorMessages(err)}`,
-    //   },
-    // });
-    // } catch (error) { }
+  async function onSubmit(values: z.infer<typeof createCollectionForm>) {
+    try {
+      await toast({
+        message: "",
+        type: "promise",
+        promiseFn: createMutation.mutateAsync({
+          ...values,
+        }),
+        promiseMsg: {
+          loading: "Sedang memasak 🔥",
+          success: "Makasih! Koleksimu sudah dibuat ya 😎",
+          // eslint-disable-next-line
+          error: (err) => `${parseErrorMessages(err)}`,
+        },
+      });
+    } catch (error) {}
   }
 
-
   const handleAddToCollection = (copyPasta: CardCopyPastaMinimal) => {
-    const exists = listOfCollections.some(item => item.id === copyPasta.id);
+    if (listOfCollections.length >= FORM_COLLECTION_CONSTANT.copyPastaIds.max) {
+      return toast({
+        type: "danger",
+        message: "Sudah mencapai batas nih!",
+      });
+    }
+
+    const exists = listOfCollections.some((item) => item.id === copyPasta.id);
     if (exists) {
       return toast({
         type: "danger",
-        message: "Ups sudah ada dalam koleksi"
+        message: "Ups sudah ada dalam koleksi",
       });
     }
 
@@ -93,7 +102,9 @@ export default function CreateCollection() {
   };
 
   const handleRemoveFromCollection = (copyPasta: CardCopyPastaMinimal) => {
-    setListOfCollections(listOfCollections.filter(item => item.id !== copyPasta.id));
+    setListOfCollections(
+      listOfCollections.filter((item) => item.id !== copyPasta.id),
+    );
   };
 
   return (
@@ -134,15 +145,24 @@ export default function CreateCollection() {
               </FormItem>
             )}
           />
-          <SearchBar onSearchResults={setSearchResults} onLoadingState={setIsSearching} />
-          {isSearching && <LoaderCircle className="w-4 animate-spin mb-4" />}
+          <SearchBar
+            onSearchResults={setSearchResults}
+            onLoadingState={setIsSearching}
+          />
+          {isSearching && <LoaderCircle className="mb-4 w-4 animate-spin" />}
           {searchResults.length > 0 && (
             <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-              <div className="flex space-x-2 p-2 bg-secondary">
-                {searchResults.map(copy => {
+              <div className="flex space-x-2 bg-secondary p-2">
+                {searchResults.map((copy) => {
                   return (
-                    <CardSearchCollection type="add" key={copy.id} copyPasta={copy} onAddToCollection={handleAddToCollection} onRemoveFromCollection={handleRemoveFromCollection} />
-                  )
+                    <CardSearchCollection
+                      type="add"
+                      key={copy.id}
+                      copyPasta={copy}
+                      onAddToCollection={handleAddToCollection}
+                      onRemoveFromCollection={handleRemoveFromCollection}
+                    />
+                  );
                 })}
               </div>
               <ScrollBar orientation="horizontal" />
@@ -159,23 +179,26 @@ export default function CreateCollection() {
             )}
           />
           {listOfCollections.length > 0 ? (
-            <div className="w-full flex flex-col space-y-2">
+            <div className="flex w-full flex-col space-y-2">
               {listOfCollections.map((copy, index) => (
                 <div key={copy.id} className="flex w-full">
-                  <div className="flex flex-col items-center mr-4">
-                    <Circle className="w-4 h-4 text-secondary-foreground" />
+                  <div className="mr-4 flex flex-col items-center">
+                    <Circle className="h-4 w-4 text-secondary-foreground" />
                     {index < listOfCollections.length - 1 && (
-                      <div className="bg-secondary-foreground w-px h-full mt-2" />
+                      <div className="mt-2 h-full w-px bg-secondary-foreground" />
                     )}
                   </div>
-                  <CardSearchCollection type="remove" copyPasta={copy} onAddToCollection={handleAddToCollection} onRemoveFromCollection={handleRemoveFromCollection} />
+                  <CardSearchCollection
+                    type="remove"
+                    copyPasta={copy}
+                    onAddToCollection={handleAddToCollection}
+                    onRemoveFromCollection={handleRemoveFromCollection}
+                  />
                 </div>
               ))}
             </div>
           ) : (
-            <div className="flex text-sm bg-secondary h-32 w-full rounded-md border-dashed border items-center justify-center">
-              <span>Masih kosong nih 😢</span>
-            </div>
+            <EmptyState message="Masih kosong nih 😢" />
           )}
         </div>
         <div className="mt-6 w-full">
@@ -184,7 +207,9 @@ export default function CreateCollection() {
             className="w-full items-center"
             disabled={form.formState.isSubmitting}
           >
-            {form.formState.isSubmitting ? "Membuat Koleksi..." : "Tambah Koleksi"}
+            {form.formState.isSubmitting
+              ? "Membuat Koleksi..."
+              : "Tambah Koleksi"}
             <PlusIcon className="ml-2 h-4 w-4" />
           </Button>
         </div>

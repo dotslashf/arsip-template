@@ -2,6 +2,7 @@
 
 import { type Session } from "next-auth";
 import CardMinimal from "~/components/CopyPasta/CardMinimal";
+import EmptyState from "~/components/EmptyState";
 import GetContent from "~/components/GetContent";
 import { Button } from "~/components/ui/button";
 import UserProfileCard from "~/components/UserProfileCard";
@@ -71,9 +72,7 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
             )
           : null}
         {isCopyPastaEmpty ? (
-          <span className="col-span-2 flex h-24 w-full items-center justify-center rounded-md border bg-secondary">
-            User ini belum pernah arsipin template 😢
-          </span>
+          <EmptyState message="User ini belum pernah arsipin template 😢" />
         ) : (
           <div className="col-span-2 w-full">
             <Button
