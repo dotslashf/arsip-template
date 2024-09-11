@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Package } from "lucide-react";
 import { type Session } from "next-auth";
 import NavbarDropDown from "./NavbarDropDown";
+import NavbarDropDownNavigation from "./NavbarDropDownNavigation";
 
 interface NavbarProps {
   session: Session | null;
@@ -24,6 +25,7 @@ export default function Navbar({ session }: NavbarProps) {
           </Link>
           <nav className="ml-auto flex items-center space-x-2">
             <NavbarDropDown session={session} />
+            <NavbarDropDownNavigation />
           </nav>
         </div>
       </div>

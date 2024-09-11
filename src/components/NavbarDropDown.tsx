@@ -1,13 +1,9 @@
 import {
-  ChartNoAxesColumn,
-  FileType,
-  HandCoins,
-  House,
   Library,
   LogIn,
   LogOut,
-  Medal,
   Menu,
+  MonitorDot,
   MonitorSmartphone,
   Moon,
   NotebookPen,
@@ -121,12 +117,43 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Profil</DropdownMenuLabel>
-            <DropdownMenuItem asChild onClick={handleProfile}>
-              <Link href="/dashboard/profile" className="flex items-center">
-                <User className="mr-2 h-4 w-4" />
-                Dashboard
-              </Link>
-            </DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <MonitorDot className="mr-2 h-4 w-4" />
+                <span>Dashboard</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem asChild onClick={handleProfile}>
+                    <Link
+                      href="/dashboard/profile"
+                      className="flex items-center"
+                    >
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/dashboard/copy-pasta"
+                      className="flex items-center"
+                    >
+                      <NotebookPen className="mr-2 h-4 w-4" />
+                      Template
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/dashboard/collection"
+                      className="flex items-center"
+                    >
+                      <Library className="mr-2 w-4" />
+                      Koleksi
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <Plus className="mr-2 h-4 w-4" />
@@ -189,38 +216,6 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel>Navigasi</DropdownMenuLabel>
-        <DropdownMenuItem asChild>
-          <Link href="/" className="flex items-center">
-            <House className="mr-2 w-4" />
-            Beranda
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/collection" className="flex items-center">
-            <Library className="mr-2 w-4" />
-            Koleksi
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/ranking" className="flex items-center">
-            <Medal className="mr-2 w-4" />
-            Peringkat
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/statistics" className="flex items-center">
-            <ChartNoAxesColumn className="mr-2 h-4 w-4" />
-            Statistik
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/support" className="flex items-center">
-            <HandCoins className="mr-2 w-4" />
-            Beri Dukungan
-          </Link>
-        </DropdownMenuItem>
         {session?.user && (
           <>
             <DropdownMenuSeparator />
