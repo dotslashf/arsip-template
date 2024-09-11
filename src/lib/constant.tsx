@@ -90,6 +90,21 @@ export const USER_PROFILE = {
   },
 };
 
+export const FORM_COLLECTION_CONSTANT = {
+  name: {
+    min: 10,
+    max: 50,
+  },
+  description: {
+    min: 10,
+    max: 100,
+  },
+  copyPastaIds: {
+    min: 3,
+    max: 15,
+  },
+};
+
 export const parseErrorMessages = (error: Record<string, any>) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const message = error.shape.message as string;
@@ -106,6 +121,7 @@ export const USER_INTERACTION_EVENT = {
   SEARCH: "user_interaction.search_performed",
   SHARE: "user_interaction.content_shared",
   REACTION: "user_interaction.reaction_given",
+  BREADCRUMB_CLICKED: "user_interaction.breadcrumb_clicked",
 };
 
 // Content Engagement Events
@@ -130,4 +146,8 @@ export const ANALYTICS_EVENT = {
   ...CONTENT_ENGAGEMENT_EVENT,
   ...USER_PROFILE_EVENT,
   ...SYSTEM_EVENT,
+};
+
+export const CACHE_KEYS = {
+  COUNT_CACHE_KEY: "COUNT_CACHE_KEY",
 };

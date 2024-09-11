@@ -3,6 +3,7 @@ import { type $Enums, OriginSource } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import { type Breadcrumb } from "./interface";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -105,4 +106,18 @@ export function mergeReactions(
       }
     >,
   );
+}
+
+export function getBreadcrumbs(url: string): Breadcrumb[] {
+  const parts = url.split("/").filter((part) => part !== "");
+  const breadcrumbs: Breadcrumb[] = [];
+  let currentPath = "";
+
+  parts.forEach((part) => {
+    currentPath += `/${part}`;
+    const text = part; // Use the part itself as the text
+    breadcrumbs.push({ url: currentPath, text });
+  });
+
+  return breadcrumbs;
 }

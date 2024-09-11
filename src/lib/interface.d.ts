@@ -9,6 +9,17 @@ import { type Session } from "next-auth";
 import { type NextRequest } from "next/server";
 import { type Renderable, type ValueOrFunction } from "react-hot-toast";
 
+declare global {
+  interface Window {
+    umami?: {
+      track: (
+        eventName: string,
+        eventData?: Record<string, string | number | boolean>,
+      ) => void;
+    };
+  }
+}
+
 export interface DataInterface {
   copyPastas: string[];
   tags: string[];
@@ -122,13 +133,23 @@ export interface CardCopyPastaProps {
   copyPastaProps: CopyPastaCardProps;
 }
 
-declare global {
-  interface Window {
-    umami?: {
-      track: (
-        eventName: string,
-        eventData?: Record<string, string | number | boolean>,
-      ) => void;
-    };
-  }
+export interface CardCollectionDescriptionProps {
+  id: string;
+  name: string;
+  description: string?;
+  createdAt: Date;
+  createdBy: {
+    name: string | null;
+    avatarSeed: string | null;
+    id: string;
+    username: string | null;
+  };
+  isSingle: boolean;
+  count: number;
+  isEditable?: boolean;
+}
+
+export interface Breadcrumb {
+  text: string;
+  url: string;
 }

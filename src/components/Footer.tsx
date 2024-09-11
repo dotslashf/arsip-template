@@ -4,19 +4,51 @@ import { Dot } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "./ui/button";
 import { api } from "~/trpc/react";
-import { ANALYTICS_EVENT, DAYS } from "~/lib/constant";
+import { ANALYTICS_EVENT, CACHE_KEYS, DAYS } from "~/lib/constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { trackEvent } from "~/lib/track";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+const STALE_TIME = 1 * DAYS;
 
 export default function Footer() {
-  const [count] = api.copyPasta.count.useSuspenseQuery(undefined, {
-    staleTime: 1 * DAYS,
-    gcTime: 1 * DAYS,
+  const [count, setCount] = useState({ total: 0 });
+  const [shouldFetch, setShouldFetch] = useState(false);
+  const pathname = usePathname();
+
+  const { data } = api.copyPasta.count.useQuery(undefined, {
+    staleTime: STALE_TIME,
+    enabled: shouldFetch,
   });
 
-  const pathname = usePathname();
+  useEffect(() => {
+    const cachedData = localStorage.getItem(CACHE_KEYS.COUNT_CACHE_KEY);
+    if (cachedData) {
+      const { count: cachedCount, timestamp } = JSON.parse(cachedData);
+      if (Date.now() - timestamp < STALE_TIME) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        setCount(cachedCount);
+        return;
+      }
+    }
+    setShouldFetch(true);
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      setCount(data);
+      localStorage.setItem(
+        CACHE_KEYS.COUNT_CACHE_KEY,
+        JSON.stringify({
+          count: data,
+          timestamp: Date.now(),
+        }),
+      );
+      setShouldFetch(false);
+    }
+  }, [data]);
 
   return (
     <footer className="w-full bg-white py-6 shadow dark:bg-card">

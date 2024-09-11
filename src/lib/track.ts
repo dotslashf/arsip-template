@@ -1,10 +1,15 @@
 import { sendGAEvent } from "@next/third-parties/google";
 
-export const trackEvent = async (eventName: string, properties = {}) => {
+export const trackEvent = async (
+  eventName: string,
+  properties = {},
+  user_id: string | null = null,
+) => {
   const timestamp = new Date().toISOString();
   const payload = {
     ...properties,
     timestamp,
+    ...(user_id !== null && { user_id }),
   };
   let gaTrackEvent = null;
   if (!gaTrackEvent) {
