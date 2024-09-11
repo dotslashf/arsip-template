@@ -1,9 +1,12 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import BreadCrumbs from "~/components/BreadCrumbs";
 import CardById from "~/components/Collection/CardById";
 import CardCollectionDescription from "~/components/Collection/CardCollectionDescription";
 import CardList from "~/components/Collection/CardLists";
 import { type CardProps } from "~/lib/interface";
+import { getBreadcrumbs } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
 interface CollectionByIdProps {
@@ -18,24 +21,36 @@ export default function CollectionByIdPage({ id }: CollectionByIdProps) {
     <CardById copyPasta={copy.copyPasta} />
   );
 
+  const pathname = usePathname();
+  const breadcrumbs = getBreadcrumbs(pathname);
+  const currentPath = breadcrumbs.map((path, i) => {
+    return {
+      url: path.url,
+      text: i === breadcrumbs.length - 1 ? collection.name : path.text,
+    };
+  });
+
   return (
-    <div className="flex w-full flex-col gap-4 md:flex-row">
-      <div className="w-full md:w-1/3">
-        <CardCollectionDescription
-          id={collection.id}
-          isSingle={true}
-          createdAt={collection.createdAt}
-          description={collection.description}
-          name={collection.name}
-          createdBy={collection.createdBy}
-          count={0}
-        />
-      </div>
-      <div className="flex w-full flex-col gap-4 md:w-2/3">
-        <CardList
-          listOfCollections={collection.copyPastas}
-          renderCollection={renderCollection}
-        />
+    <div className="flex w-full flex-col gap-4">
+      <BreadCrumbs path={currentPath} />
+      <div className="flex flex-col gap-4 md:flex-row">
+        <div className="w-full md:w-1/3">
+          <CardCollectionDescription
+            id={collection.id}
+            isSingle={true}
+            createdAt={collection.createdAt}
+            description={collection.description}
+            name={collection.name}
+            createdBy={collection.createdBy}
+            count={0}
+          />
+        </div>
+        <div className="flex w-full flex-col gap-4 md:w-2/3">
+          <CardList
+            listOfCollections={collection.copyPastas}
+            renderCollection={renderCollection}
+          />
+        </div>
       </div>
     </div>
   );

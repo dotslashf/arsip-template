@@ -147,3 +147,8 @@ export interface CardCollectionDescriptionProps {
   isSingle: boolean;
   count: number;
 }
+
+export interface Breadcrumb {
+  text: string;
+  url: string;
+}
