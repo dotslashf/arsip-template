@@ -1,11 +1,4 @@
-import {
-  CalendarDays,
-  Check,
-  ChevronRight,
-  Pencil,
-  Trash,
-  User,
-} from "lucide-react";
+import { CalendarDays, Check, ChevronRight, Pencil, Trash } from "lucide-react";
 import { formatDateToHuman, cn } from "~/lib/utils";
 import Avatar from "../ui/avatar";
 import { Badge, badgeVariants } from "../ui/badge";

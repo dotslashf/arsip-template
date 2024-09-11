@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { ArrowRight, ImageIcon, Link2, NotebookPen, Type } from "lucide-react";
+import { ArrowRight, ImageIcon, Link2, NotebookPen } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn } from "~/lib/utils";
 import { buttonVariants } from "../ui/button";

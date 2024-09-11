@@ -14,7 +14,6 @@ import {
   Minus,
   NotebookPen,
   Plus,
-  Type,
 } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";

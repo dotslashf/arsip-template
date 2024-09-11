@@ -18,7 +18,6 @@ import {
   Link2,
   NotebookPen,
   Share2,
-  Type,
 } from "lucide-react";
 import useToast from "../ui/use-react-hot-toast";
 import { ScrollArea } from "../ui/scroll-area";

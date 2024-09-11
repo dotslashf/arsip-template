@@ -14,7 +14,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
-import { LoaderCircle, Pencil, PlusIcon } from "lucide-react";
+import { LoaderCircle, Pencil } from "lucide-react";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
