@@ -97,7 +97,7 @@ export const FORM_COLLECTION_CONSTANT = {
   },
   description: {
     min: 10,
-    max: 100,
+    max: 250,
   },
   copyPastaIds: {
     min: 3,
