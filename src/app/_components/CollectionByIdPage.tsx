@@ -5,7 +5,7 @@ import BreadCrumbs from "~/components/BreadCrumbs";
 import CardById from "~/components/Collection/CardById";
 import CardCollectionDescription from "~/components/Collection/CardCollectionDescription";
 import CardList from "~/components/Collection/CardLists";
-import { type CardProps } from "~/lib/interface";
+import { CardCopyPastaMinimal, type CardProps } from "~/lib/interface";
 import { getBreadcrumbs } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
@@ -17,8 +17,8 @@ export default function CollectionByIdPage({ id }: CollectionByIdProps) {
     id,
   });
 
-  const renderCollection = (copy: CardProps) => (
-    <CardById copyPasta={copy.copyPasta} />
+  const renderCollection = (copy: CardCopyPastaMinimal) => (
+    <CardById copyPasta={copy} />
   );
 
   const pathname = usePathname();
@@ -47,7 +47,9 @@ export default function CollectionByIdPage({ id }: CollectionByIdProps) {
         </div>
         <div className="flex w-full flex-col gap-4 md:w-2/3">
           <CardList
-            listOfCollections={collection.copyPastas}
+            listOfCollections={collection.copyPastas.map(
+              (collection) => collection.copyPasta,
+            )}
             renderCollection={renderCollection}
           />
         </div>
