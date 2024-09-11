@@ -100,8 +100,8 @@ export const FORM_COLLECTION_CONSTANT = {
     max: 100,
   },
   copyPastaIds: {
-    min: 2,
-    max: 3,
+    min: 3,
+    max: 15,
   },
 };
 

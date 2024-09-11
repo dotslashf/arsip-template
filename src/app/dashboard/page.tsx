@@ -5,8 +5,8 @@ import ProfilePage from "~/app/_components/Dashboard/ProfilePage";
 import { type Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dashboard | Profile",
-  description: "Dashboard | Profile",
+  title: "Dashboard",
+  description: "Dashboard",
 };
 export default async function DashboardProfile() {
   return (

@@ -146,6 +146,7 @@ export interface CardCollectionDescriptionProps {
   };
   isSingle: boolean;
   count: number;
+  isEditable?: boolean;
 }
 
 export interface Breadcrumb {

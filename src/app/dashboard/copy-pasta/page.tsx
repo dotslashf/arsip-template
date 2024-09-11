@@ -1,19 +1,19 @@
 import Layout from "~/components/Layout";
 import { HydrateClient } from "~/trpc/server";
 import HOCAuth from "~/components/HOCAuth";
-import ProfilePage from "~/app/_components/Dashboard/ProfilePage";
 import { type Metadata } from "next";
+import CopyPastaPage from "~/app/_components/Dashboard/CopyPastaPage";
 
 export const metadata: Metadata = {
-  title: "Dashboard | Profile",
-  description: "Dashboard | Profile",
+  title: "Dashboard | Copy Pasta",
+  description: "Dashboard | Copy Pasta",
 };
-export default async function DashboardProfile() {
+export default async function DashboardCopyPasta() {
   return (
     <HydrateClient>
       <HOCAuth>
         <Layout>
-          <ProfilePage />
+          <CopyPastaPage />
         </Layout>
       </HOCAuth>
     </HydrateClient>

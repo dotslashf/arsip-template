@@ -14,13 +14,13 @@ import {
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
-import { LoaderCircle, PlusIcon } from "lucide-react";
+import { LoaderCircle, Pencil, PlusIcon } from "lucide-react";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FORM_COLLECTION_CONSTANT, parseErrorMessages } from "~/lib/constant";
-import { createCollectionForm } from "~/server/form/collection";
+import { editCollectionForm } from "~/server/form/collection";
 import SearchBar from "~/components/Collection/SearchBar";
 import CardSearchResult from "~/components/Collection/CardSearchResult";
 import { type CardCopyPastaMinimal } from "~/lib/interface";
@@ -30,35 +30,40 @@ import CardList from "~/components/Collection/CardLists";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import { getBreadcrumbs } from "~/lib/utils";
 
-export default function CreateCollection() {
+export default function EditCollectionPage({ id }: { id: string }) {
+  const [collection] = api.collection.byId.useSuspenseQuery({
+    id,
+  });
+
   const [searchResults, setSearchResults] = useState<CardCopyPastaMinimal[]>(
     [],
   );
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [listOfCollections, setListOfCollections] = useState<
     CardCopyPastaMinimal[]
-  >([]);
+  >(collection.copyPastas.map((copy) => copy.copyPasta));
 
-  const createMutation = api.collection.create.useMutation();
+  const updateMutation = api.collection.edit.useMutation();
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof createCollectionForm>>({
-    resolver: zodResolver(createCollectionForm),
+  const form = useForm<z.infer<typeof editCollectionForm>>({
+    resolver: zodResolver(editCollectionForm),
     defaultValues: {
-      name: "",
-      description: "",
-      copyPastaIds: [],
+      id: collection.id,
+      name: collection.name,
+      description: collection.description ?? "",
+      copyPastaIds: collection.copyPastas.map((copy) => copy.copyPastaId),
     },
   });
 
   const toast = useToast();
 
   useEffect(() => {
-    if (createMutation.isSuccess) {
-      return router.push("/dashboard/profile?utm_content=create_collection");
+    if (updateMutation.isSuccess) {
+      return router.push("/dashboard/profile?utm_content=update_collection");
     }
-  }, [createMutation.isSuccess, router]);
+  }, [updateMutation.isSuccess, router]);
 
   useEffect(() => {
     form.setValue(
@@ -67,17 +72,18 @@ export default function CreateCollection() {
     );
   }, [listOfCollections, form]);
 
-  async function onSubmit(values: z.infer<typeof createCollectionForm>) {
+  async function onSubmit(values: z.infer<typeof editCollectionForm>) {
     try {
       await toast({
         message: "",
         type: "promise",
-        promiseFn: createMutation.mutateAsync({
+        promiseFn: updateMutation.mutateAsync({
           ...values,
+          id,
         }),
         promiseMsg: {
           loading: "Sedang memasak 🔥",
-          success: "Makasih! Koleksimu sudah dibuat ya 😎",
+          success: "Makasih! Koleksimu sudah diupdate ya 😎",
           // eslint-disable-next-line
           error: (err) => `${parseErrorMessages(err)}`,
         },
@@ -209,13 +215,14 @@ export default function CreateCollection() {
           <div className="mt-6 w-full">
             <Button
               type="submit"
+              variant={"warning"}
               className="w-full items-center"
               disabled={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting
                 ? "Membuat Koleksi..."
-                : "Tambah Koleksi"}
-              <PlusIcon className="ml-2 h-4 w-4" />
+                : "Edit Koleksi"}
+              <Pencil className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </form>

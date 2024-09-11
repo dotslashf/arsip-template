@@ -27,3 +27,7 @@ export const createCollectionForm = z.object({
       message: "Maximal 3 copy pasta",
     }),
 });
+
+export const editCollectionForm = createCollectionForm.extend({
+  id: z.string().uuid(),
+});

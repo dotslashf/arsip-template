@@ -4,8 +4,11 @@ import {
   Home,
   Library,
   Medal,
+  MonitorDot,
   NotebookPen,
+  Pencil,
   Plus,
+  User,
 } from "lucide-react";
 import { type ReactElement } from "react";
 
@@ -26,6 +29,24 @@ export default function BreadCrumbWithIcon({ text }: BreadCrumbWithIconProps) {
       parsedObject = {
         text: "Koleksi",
         icon: <Library className="mr-2 w-4" />,
+      };
+      break;
+    case "dashboard":
+      parsedObject = {
+        text: "Dashboard",
+        icon: <MonitorDot className="mr-2 w-4" />,
+      };
+      break;
+    case "edit":
+      parsedObject = {
+        text: "Edit",
+        icon: <Pencil className="mr-2 w-4" />,
+      };
+      break;
+    case "profile":
+      parsedObject = {
+        text: "Profile",
+        icon: <User className="mr-2 w-4" />,
       };
       break;
     case "home":
