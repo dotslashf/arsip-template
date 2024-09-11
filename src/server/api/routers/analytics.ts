@@ -17,13 +17,22 @@ export const analyticsRouter = createTRPCRouter({
           select: {
             id: true,
             content: true,
+            CopyPastasOnTags: {
+              include: {
+                tags: true,
+              },
+            },
           },
         });
         return {
           views: analytic.views,
           copyPasta: {
             id: copyPasta?.id,
-            content: copyPasta?.content,
+            content: copyPasta?.CopyPastasOnTags.some(
+              (copy) => copy.tags.name === "NSFW",
+            )
+              ? "[CENSORED]"
+              : copyPasta?.content,
           },
         };
       }),
