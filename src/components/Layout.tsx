@@ -10,7 +10,7 @@ const Navbar = dynamic(() => import("./Navbar"), {
   loading() {
     return (
       <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
-        <div className="container max-w-4xl p-0">
+        <div className="container max-w-4xl px-4 md:p-0">
           <div className="flex h-12 items-center">
             <Skeleton className="h-9 w-9 rounded-md md:w-20" />
             <nav className="ml-auto flex items-center space-x-4">

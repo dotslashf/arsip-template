@@ -5,7 +5,7 @@ import BreadCrumbs from "~/components/BreadCrumbs";
 import CardById from "~/components/Collection/CardById";
 import CardCollectionDescription from "~/components/Collection/CardCollectionDescription";
 import CardList from "~/components/Collection/CardLists";
-import { CardCopyPastaMinimal, type CardProps } from "~/lib/interface";
+import { type CardCopyPastaMinimal } from "~/lib/interface";
 import { getBreadcrumbs } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
