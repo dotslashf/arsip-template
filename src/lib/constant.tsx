@@ -121,6 +121,7 @@ export const USER_INTERACTION_EVENT = {
   SEARCH: "user_interaction.search_performed",
   SHARE: "user_interaction.content_shared",
   REACTION: "user_interaction.reaction_given",
+  BREADCRUMB_CLICKED: "user_interaction.breadcrumb_clicked",
 };
 
 // Content Engagement Events
