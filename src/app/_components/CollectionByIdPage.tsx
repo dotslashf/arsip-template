@@ -31,7 +31,7 @@ export default function CollectionByIdPage({ id }: CollectionByIdProps) {
   });
 
   return (
-    <div className="flex w-full flex-col gap-4">
+    <div className="flex w-full flex-col">
       <BreadCrumbs path={currentPath} />
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="w-full md:w-1/3">

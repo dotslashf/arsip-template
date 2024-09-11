@@ -7,7 +7,14 @@ import {
   CardTitle,
 } from "../ui/card";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { ArrowRight, Clipboard, ImageIcon, Link2, Type } from "lucide-react";
+import {
+  ArrowRight,
+  Clipboard,
+  ImageIcon,
+  Link2,
+  NotebookPen,
+  Type,
+} from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import ReactionSummary from "../ReactionSummary";
@@ -88,7 +95,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
     <Card className="h-full">
       <CardHeader className="pb-0">
         <CardTitle className="flex w-full items-center justify-between">
-          <Type className="h-4 w-4" />
+          <NotebookPen className="h-4 w-4" />
           <Button variant={"outline"} size={"xs"} onClick={handleCopy}>
             <span className="text-sm">Salin</span>
             <Clipboard className="ml-2 w-3" />

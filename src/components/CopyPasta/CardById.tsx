@@ -16,6 +16,7 @@ import {
   Eye,
   ImageIcon,
   Link2,
+  NotebookPen,
   Share2,
   Type,
 } from "lucide-react";
@@ -128,7 +129,7 @@ export default function CardById({ copyPasta }: CardProps) {
     <Card className="h-full">
       <CardHeader className="pb-0 lg:p-6 lg:pb-0">
         <CardTitle className="flex w-full items-center justify-between">
-          <Type className="flip h-6 w-6" />
+          <NotebookPen className="flip h-6 w-6" />
           <Badge
             variant={"default"}
             className="flex items-center justify-center md:text-base"

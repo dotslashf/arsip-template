@@ -1,10 +1,13 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import BreadCrumbs from "~/components/BreadCrumbs";
 import CardCollectionDescription from "~/components/Collection/CardCollectionDescription";
 import GetContent from "~/components/GetContent";
 import { Button } from "~/components/ui/button";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { trackEvent } from "~/lib/track";
+import { getBreadcrumbs } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
 export default function ListCollectionPage() {
@@ -28,8 +31,12 @@ export default function ListCollectionPage() {
     });
   }
 
+  const pathname = usePathname();
+  const breadcrumbs = getBreadcrumbs(pathname);
+
   return (
-    <div className="flex w-full flex-col gap-4" id="main">
+    <div className="flex w-full flex-col" id="main">
+      <BreadCrumbs path={breadcrumbs} />
       <div className="flex w-full flex-col gap-4 self-center">
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
           {pages

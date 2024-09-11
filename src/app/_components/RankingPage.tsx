@@ -9,7 +9,7 @@ import {
   TableBody,
   TableCell,
 } from "~/components/ui/table";
-import { getMedal } from "~/lib/utils";
+import { getBreadcrumbs, getMedal } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import {
   Accordion,
@@ -19,6 +19,8 @@ import {
 } from "~/components/ui/accordion";
 import Link from "next/link";
 import Avatar from "~/components/ui/avatar";
+import BreadCrumbs from "~/components/BreadCrumbs";
+import { usePathname } from "next/navigation";
 
 export default function RankingPage() {
   const [rankings] = api.ranking.topUsers.useSuspenseQuery(undefined, {
@@ -41,9 +43,13 @@ export default function RankingPage() {
     }
   }
 
+  const pathname = usePathname();
+  const breadcrumbs = getBreadcrumbs(pathname);
+
   return (
     <div className="mx-auto w-full">
-      <div className="mb-8">
+      <BreadCrumbs path={breadcrumbs} />
+      <div className="mb-8 mt-6">
         <h1 className="text-2xl font-bold">Peringkat Tukang Arsip</h1>
         <p className="text-muted-foreground">
           inilah peringkat tukang arsip di arsip template

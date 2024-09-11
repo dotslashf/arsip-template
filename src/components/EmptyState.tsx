@@ -8,7 +8,7 @@ export default function EmptyState({ message, ...props }: EmptyStateProps) {
   return (
     <div
       className={cn(
-        "flex h-32 w-full items-center justify-center rounded-md border border-dashed bg-secondary text-sm",
+        "flex h-32 w-full items-center justify-center rounded-md border-2 border-dashed bg-secondary text-sm",
         { ...props },
       )}
     >

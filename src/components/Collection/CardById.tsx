@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { ArrowRight, ImageIcon, Link2, Type } from "lucide-react";
+import { ArrowRight, ImageIcon, Link2, NotebookPen, Type } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
@@ -27,7 +27,7 @@ export default function CardById({ copyPasta }: CardProps) {
     <Card className="h-full w-full">
       <CardHeader className="pb-0">
         <CardTitle className="flex w-full items-center justify-between">
-          <Type className="h-4 w-4" />
+          <NotebookPen className="h-4 w-4" />
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col justify-between gap-2 pb-2 pt-4 hover:cursor-auto">

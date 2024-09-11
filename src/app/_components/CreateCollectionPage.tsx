@@ -17,7 +17,7 @@ import { api } from "~/trpc/react";
 import { LoaderCircle, PlusIcon } from "lucide-react";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FORM_COLLECTION_CONSTANT, parseErrorMessages } from "~/lib/constant";
 import { createCollectionForm } from "~/server/form/collection";
@@ -27,6 +27,8 @@ import { type CardCopyPastaMinimal } from "~/lib/interface";
 import { ScrollBar, ScrollArea } from "~/components/ui/scroll-area";
 import EmptyState from "~/components/EmptyState";
 import CardList from "~/components/Collection/CardLists";
+import BreadCrumbs from "~/components/BreadCrumbs";
+import { getBreadcrumbs } from "~/lib/utils";
 
 export default function CreateCollection() {
   const [searchResults, setSearchResults] = useState<CardCopyPastaMinimal[]>(
@@ -117,101 +119,107 @@ export default function CreateCollection() {
     />
   );
 
+  const pathname = usePathname();
+  const breadcrumbs = getBreadcrumbs(pathname);
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className="grid grid-cols-1 gap-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel>Judul Koleksi</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="Judul koleksi..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel>Deskripsi</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Deskripsi tentang koleksi template ini..."
-                    {...field}
-                    rows={5}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <SearchBar
-            onSearchResults={setSearchResults}
-            onLoadingState={setIsSearching}
-          />
-          {isSearching && <LoaderCircle className="mb-4 w-4 animate-spin" />}
-          {searchResults.length > 0 && (
-            <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-              <div className="flex space-x-2 bg-secondary p-2">
-                {searchResults.map((copy) => {
-                  return (
-                    <CardSearchResult
-                      type="add"
-                      key={copy.id}
-                      copyPasta={copy}
-                      onAddToCollection={handleAddToCollection}
-                      onRemoveFromCollection={handleRemoveFromCollection}
+    <div className="flex w-full flex-col">
+      <BreadCrumbs path={breadcrumbs} />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+          <div className="grid grid-cols-1 gap-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel>Judul Koleksi</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Koleksi arsip..."
+                      {...field}
                     />
-                  );
-                })}
-              </div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-          )}
-          <FormField
-            control={form.control}
-            name="copyPastaIds"
-            render={() => (
-              <FormItem>
-                <FormLabel>List Template</FormLabel>
-                <FormMessage />
-              </FormItem>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormLabel>Deskripsi</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Deskripsi tentang koleksi template ini..."
+                      {...field}
+                      rows={5}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <SearchBar
+              onSearchResults={setSearchResults}
+              onLoadingState={setIsSearching}
+            />
+            {isSearching && <LoaderCircle className="mb-4 w-4 animate-spin" />}
+            {searchResults.length > 0 && (
+              <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+                <div className="flex space-x-2 bg-secondary p-2">
+                  {searchResults.map((copy) => {
+                    return (
+                      <CardSearchResult
+                        type="add"
+                        key={copy.id}
+                        copyPasta={copy}
+                        onAddToCollection={handleAddToCollection}
+                        onRemoveFromCollection={handleRemoveFromCollection}
+                      />
+                    );
+                  })}
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             )}
-          />
-          {listOfCollections.length > 0 ? (
-            <div className="flex w-full flex-col space-y-4">
-              <CardList
-                listOfCollections={listOfCollections}
-                renderCollection={renderCollection}
-              />
-            </div>
-          ) : (
-            <EmptyState message="Masih kosong nih 😢" />
-          )}
-        </div>
-        <div className="mt-6 w-full">
-          <Button
-            type="submit"
-            className="w-full items-center"
-            disabled={form.formState.isSubmitting}
-          >
-            {form.formState.isSubmitting
-              ? "Membuat Koleksi..."
-              : "Tambah Koleksi"}
-            <PlusIcon className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      </form>
-    </Form>
+            <FormField
+              control={form.control}
+              name="copyPastaIds"
+              render={() => (
+                <FormItem>
+                  <FormLabel>List Template</FormLabel>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {listOfCollections.length > 0 ? (
+              <div className="flex w-full flex-col space-y-4">
+                <CardList
+                  listOfCollections={listOfCollections}
+                  renderCollection={renderCollection}
+                />
+              </div>
+            ) : (
+              <EmptyState message="Masih kosong nih 😢" />
+            )}
+          </div>
+          <div className="mt-6 w-full">
+            <Button
+              type="submit"
+              className="w-full items-center"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting
+                ? "Membuat Koleksi..."
+                : "Tambah Koleksi"}
+              <PlusIcon className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 }

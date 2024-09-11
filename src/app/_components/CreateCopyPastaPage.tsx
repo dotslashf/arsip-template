@@ -15,7 +15,11 @@ import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
 import { PlusIcon } from "lucide-react";
-import { determineSource, formatDateToHuman } from "~/lib/utils";
+import {
+  determineSource,
+  formatDateToHuman,
+  getBreadcrumbs,
+} from "~/lib/utils";
 import {
   ACCEPTED_IMAGE_TYPES,
   createCopyPastaFormClient,
@@ -23,7 +27,7 @@ import {
 } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import MultipleSelector, {
   type Option,
@@ -32,6 +36,7 @@ import { badgeVariants } from "~/components/ui/badge";
 import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id } from "date-fns/locale";
 import { DAYS, parseErrorMessages } from "~/lib/constant";
+import BreadCrumbs from "~/components/BreadCrumbs";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
@@ -140,127 +145,139 @@ export default function CreateCopyPasta() {
     } catch (error) {}
   }
 
+  const pathname = usePathname();
+  const breadcrumbs = getBreadcrumbs(pathname);
+  const currentPath = breadcrumbs.map((path) => {
+    return {
+      url: path.url === "/copy-pasta" ? "/#main" : path.url,
+      text: path.text,
+    };
+  });
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className="grid grid-cols-1 gap-4">
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel>Content</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Isi dari templatenya..."
-                    {...field}
-                    rows={5}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="tags"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Tags</FormLabel>
-                <FormControl>
-                  <MultipleSelector
-                    {...field}
-                    maxSelected={3}
-                    hidePlaceholderWhenSelected
-                    onMaxSelected={(maxLimit) => {
-                      void toast({
-                        type: "danger",
-                        message: `Maximal tag hanya ${maxLimit}`,
-                      });
-                    }}
-                    hideClearAllButton
-                    badgeClassName={badgeVariants({ variant: "destructive" })}
-                    defaultOptions={tagOptions}
-                    placeholder="Kira kira ini template cocok dengan tag..."
-                    emptyIndicator={
-                      <p className="text-center text-sm text-slate-600 dark:text-gray-400">
-                        Yang kamu cari gak ada 😱
-                      </p>
-                    }
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="postedAt"
-            render={({ field }) => (
-              <FormItem className="w-full flex-col">
-                <FormLabel className="mb-1">Tanggal kejadian</FormLabel>
-                <div>
-                  <FormControl>
-                    <DateTimePicker
-                      value={field.value}
-                      onChange={field.onChange}
-                      granularity="day"
-                      placeholder={formatDateToHuman(new Date())}
-                      locale={id}
-                      displayFormat={{ hour24: "PPP" }}
-                    />
-                  </FormControl>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+    <div className="flex w-full flex-col">
+      <BreadCrumbs path={currentPath} />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+          <div className="grid grid-cols-1 gap-4">
             <FormField
               control={form.control}
-              name="sourceUrl"
+              name="content"
               render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Doksli</FormLabel>
+                <FormItem className="">
+                  <FormLabel>Content</FormLabel>
                   <FormControl>
-                    <Input placeholder="www.doksli.com" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Gambar Doksli</FormLabel>
-                  <FormControl>
-                    <Input
+                    <Textarea
+                      placeholder="Isi dari templatenya..."
                       {...field}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                      value={field.value ? field.value[0] : undefined}
+                      rows={5}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="tags"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Tags</FormLabel>
+                  <FormControl>
+                    <MultipleSelector
+                      {...field}
+                      maxSelected={3}
+                      hidePlaceholderWhenSelected
+                      onMaxSelected={(maxLimit) => {
+                        void toast({
+                          type: "danger",
+                          message: `Maximal tag hanya ${maxLimit}`,
+                        });
+                      }}
+                      hideClearAllButton
+                      badgeClassName={badgeVariants({ variant: "destructive" })}
+                      defaultOptions={tagOptions}
+                      placeholder="Kira kira ini template cocok dengan tag..."
+                      emptyIndicator={
+                        <p className="text-center text-sm text-slate-600 dark:text-gray-400">
+                          Yang kamu cari gak ada 😱
+                        </p>
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="postedAt"
+              render={({ field }) => (
+                <FormItem className="w-full flex-col">
+                  <FormLabel className="mb-1">Tanggal kejadian</FormLabel>
+                  <div>
+                    <FormControl>
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        granularity="day"
+                        placeholder={formatDateToHuman(new Date())}
+                        locale={id}
+                        displayFormat={{ hour24: "PPP" }}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+              <FormField
+                control={form.control}
+                name="sourceUrl"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Doksli</FormLabel>
+                    <FormControl>
+                      <Input placeholder="www.doksli.com" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Gambar Doksli</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                        value={field.value ? field.value[0] : undefined}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
-        </div>
-        <div className="mt-6 w-full">
-          <Button
-            type="submit"
-            className="w-full items-center"
-            disabled={form.formState.isSubmitting}
-          >
-            {form.formState.isSubmitting ? "Mengarsipkan..." : "Tambah"}
-            <PlusIcon className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      </form>
-    </Form>
+          <div className="mt-6 w-full">
+            <Button
+              type="submit"
+              className="w-full items-center"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? "Mengarsipkan..." : "Tambah"}
+              <PlusIcon className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 }

@@ -10,6 +10,7 @@ import {
   Menu,
   MonitorSmartphone,
   Moon,
+  NotebookPen,
   Palette,
   Plus,
   Sun,
@@ -138,7 +139,7 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
                       href="/copy-pasta/create"
                       className="flex items-center"
                     >
-                      <FileType className="mr-2 h-4 w-4" />
+                      <NotebookPen className="mr-2 h-4 w-4" />
                       Template
                     </Link>
                   </DropdownMenuItem>

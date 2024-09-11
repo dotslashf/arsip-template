@@ -1,6 +1,8 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import BreadCrumbs from "~/components/BreadCrumbs";
 
 import {
   Card,
@@ -16,6 +18,7 @@ import {
   ChartTooltipContent,
 } from "~/components/ui/chart";
 import { DAYS } from "~/lib/constant";
+import { getBreadcrumbs } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
 const chartConfig = {
@@ -41,8 +44,12 @@ export function StatisticsPage() {
     },
   );
 
+  const pathname = usePathname();
+  const breadcrumbs = getBreadcrumbs(pathname);
+
   return (
     <div className="mx-auto w-full gap-4">
+      <BreadCrumbs path={breadcrumbs} />
       <Card>
         <CardHeader>
           <CardTitle>Bar chart berdasarkan sumber</CardTitle>
