@@ -134,13 +134,19 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
                   <DropdownMenuItem asChild onClick={() => handleCreate()}>
-                    <Link href="/copy-pasta/create" className="flex items-center">
+                    <Link
+                      href="/copy-pasta/create"
+                      className="flex items-center"
+                    >
                       <FileType className="mr-2 h-4 w-4" />
                       Template
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/collection/create" className="flex items-center">
+                    <Link
+                      href="/collection/create"
+                      className="flex items-center"
+                    >
                       <Library className="mr-2 w-4" />
                       Koleksi
                     </Link>
@@ -191,7 +197,7 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/collections" className="flex items-center">
+          <Link href="/collection" className="flex items-center">
             <Library className="mr-2 w-4" />
             Koleksi
           </Link>

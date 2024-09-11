@@ -15,18 +15,18 @@ import Link from "next/link";
 import Tag from "../ui/tags";
 import { trackEvent } from "~/lib/track";
 
-interface CardSearchCollectionProps extends CardProps {
+interface CardSearchResultProps extends CardProps {
   type: "add" | "remove";
   onAddToCollection: (copyPasta: CardCopyPastaMinimal) => void;
   onRemoveFromCollection: (copyPasta: CardCopyPastaMinimal) => void;
 }
 
-export default function CardSearchCollection({
+export default function CardSearchResult({
   copyPasta,
   onAddToCollection,
   onRemoveFromCollection,
   type,
-}: CardSearchCollectionProps) {
+}: CardSearchResultProps) {
   function handleMoreInfo() {
     void trackEvent(ANALYTICS_EVENT.VIEW_FULL_COPY_PASTA, {
       button: "more_info.search_collection",

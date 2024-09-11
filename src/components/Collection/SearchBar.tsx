@@ -6,14 +6,17 @@ import { api } from "~/trpc/react";
 import { useDebounce } from "@uidotdev/usehooks";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { trackEvent } from "~/lib/track";
-import { CardCopyPastaMinimal } from "~/lib/interface";
+import { type CardCopyPastaMinimal } from "~/lib/interface";
 
 interface SearchBarProps {
   onSearchResults: (results: CardCopyPastaMinimal[]) => void;
   onLoadingState: (isLoading: boolean) => void;
 }
 
-export default function SearchBar({ onSearchResults, onLoadingState }: SearchBarProps) {
+export default function SearchBar({
+  onSearchResults,
+  onLoadingState,
+}: SearchBarProps) {
   const [query, setQuery] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();

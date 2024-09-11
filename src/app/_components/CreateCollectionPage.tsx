@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import { FORM_COLLECTION_CONSTANT, parseErrorMessages } from "~/lib/constant";
 import { createCollectionForm } from "~/server/form/collection";
 import SearchBar from "~/components/Collection/SearchBar";
-import CardSearchCollection from "~/components/CopyPasta/CardSearchCollection";
+import CardSearchResult from "~/components/Collection/CardSearchResult";
 import { type CardCopyPastaMinimal } from "~/lib/interface";
 import { ScrollBar, ScrollArea } from "~/components/ui/scroll-area";
 import EmptyState from "~/components/EmptyState";
@@ -109,7 +109,7 @@ export default function CreateCollection() {
   };
 
   const renderCollection = (copy: CardCopyPastaMinimal) => (
-    <CardSearchCollection
+    <CardSearchResult
       type="remove"
       copyPasta={copy}
       onAddToCollection={handleAddToCollection}
@@ -165,7 +165,7 @@ export default function CreateCollection() {
               <div className="flex space-x-2 bg-secondary p-2">
                 {searchResults.map((copy) => {
                   return (
-                    <CardSearchCollection
+                    <CardSearchResult
                       type="add"
                       key={copy.id}
                       copyPasta={copy}

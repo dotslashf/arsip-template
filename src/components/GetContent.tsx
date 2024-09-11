@@ -1,4 +1,4 @@
-import { ArrowDown, CheckCheck, LoaderCircle } from "lucide-react";
+import { ArrowDown, ArrowDownToLine, LoaderCircle } from "lucide-react";
 
 interface GetContentProps {
   isFetchingNextPage: boolean;
@@ -11,19 +11,20 @@ export default function GetContent({
   if (isFetchingNextPage) {
     return (
       <span className="flex items-center">
-        Memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
+        Sedang memuat <LoaderCircle className="ml-2 h-4 w-4 animate-spin" />
       </span>
     );
   } else if (hasNextPage) {
     return (
       <span className="flex items-center">
-        Lebih Banyak <ArrowDown className="ml-2 h-4 w-4" />
+        Lihat lebih banyak <ArrowDown className="ml-2 h-4 w-4" />
       </span>
     );
   } else {
     return (
       <span className="flex items-center">
-        Udah habis kontennya <CheckCheck className="ml-2 h-4 w-4" />
+        Semua konten telah ditampilkan{" "}
+        <ArrowDownToLine className="ml-2 h-4 w-4" />
       </span>
     );
   }

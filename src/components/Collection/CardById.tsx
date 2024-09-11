@@ -18,7 +18,7 @@ import { trackEvent } from "~/lib/track";
 export default function CardById({ copyPasta }: CardProps) {
   function handleMoreInfo() {
     void trackEvent(ANALYTICS_EVENT.VIEW_FULL_COPY_PASTA, {
-      button: "more_info.search_collection",
+      button: "more_info.collection",
       value: `${copyPasta.id}`,
     });
   }
@@ -36,7 +36,7 @@ export default function CardById({ copyPasta }: CardProps) {
             className={cn("h-20 rounded-md text-sm", robotoSlab.className)}
           >
             <blockquote className="select-none whitespace-pre-line">
-              {trimContent(copyPasta.content, 255)}
+              {trimContent(copyPasta.content, 100)}
             </blockquote>
           </ScrollArea>
         </div>
@@ -80,7 +80,6 @@ export default function CardById({ copyPasta }: CardProps) {
               href={copyPasta.sourceUrl}
               className={cn(buttonVariants({ variant: "link", size: "url" }))}
               prefetch={false}
-              target="__blank"
             >
               Cek Doksli <Link2 className="ml-2 h-3 w-3" />
             </Link>
@@ -95,7 +94,6 @@ export default function CardById({ copyPasta }: CardProps) {
           )}
           <Link
             href={`/copy-pasta/${copyPasta.id}`}
-            target="__blank"
             className={cn(buttonVariants({ variant: "link", size: "url" }))}
             onClick={handleMoreInfo}
           >

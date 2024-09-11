@@ -1,10 +1,10 @@
 import { Input } from "~/components/ui/input";
-import { Button, buttonVariants } from "~/components/ui/button";
-import { LoaderCircle, PlusIcon, Search } from "lucide-react";
+import { Button } from "~/components/ui/button";
+import { LoaderCircle, Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { cn, trimContent } from "~/lib/utils";
+import { trimContent } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import { type CopyPasta } from "@prisma/client";
 import { useMediaQuery, useDebounce } from "@uidotdev/usehooks";
@@ -96,15 +96,9 @@ export default function SearchBar() {
           )}
         </div>
         {isSmallDevice ? (
-          <>
-            <ButtonSearch onClick={handleSubmit} />
-            <ButtonPlus />
-          </>
+          <ButtonSearch onClick={handleSubmit} />
         ) : (
-          <div className="space-x-2">
-            <ButtonSearch onClick={handleSubmit}>Cari</ButtonSearch>
-            <ButtonPlus>Tambah</ButtonPlus>
-          </div>
+          <ButtonSearch onClick={handleSubmit}>Cari</ButtonSearch>
         )}
       </div>
     </div>
@@ -127,30 +121,5 @@ function ButtonSearch({ children, onClick }: ButtonInterface) {
       <Search className={`h-4 w-4 ${children ? "ml-2" : null}`} />
       <span className="sr-only">Search</span>
     </Button>
-  );
-}
-
-function ButtonPlus({
-  children,
-}: {
-  children?: JSX.Element | JSX.Element[] | string;
-}) {
-  return (
-    <Link
-      href={"/copy-pasta/create?utm_content=search"}
-      className={cn(
-        buttonVariants({ size: children ? "default" : "icon" }),
-        "item-center",
-      )}
-      onClick={() => {
-        void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
-          button: "create",
-          path: "/",
-        });
-      }}
-    >
-      {children}
-      <PlusIcon className={`h-4 w-4 ${children ? "ml-2" : null}`} />
-    </Link>
   );
 }
