@@ -48,7 +48,13 @@ export const collectionRouter = createTRPCRouter({
           createdBy: true,
           _count: {
             select: {
-              copyPastas: true,
+              copyPastas: {
+                where: {
+                  copyPasta: {
+                    deletedAt: null,
+                  },
+                },
+              },
             },
           },
         },
@@ -101,6 +107,11 @@ export const collectionRouter = createTRPCRouter({
         },
         include: {
           copyPastas: {
+            where: {
+              copyPasta: {
+                deletedAt: null,
+              },
+            },
             include: {
               copyPasta: {
                 include: {
