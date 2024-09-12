@@ -23,7 +23,7 @@ const buttonVariants = cva(
         confirm:
           "focus:outline-none text-white bg-confirm hover:bg-green-800 focus:ring-4 focus:ring-confirm font-medium dark:bg-confirm dark:focus:ring-confirm",
         warning:
-          "focus:outline-none text-white bg-warning hover:bg-yellow-500 focus:ring-4 focus:ring-warning font-medium dark:focus:ring-warning ",
+          "focus:outline-none text-black bg-warning hover:bg-yellow-500 focus:ring-4 focus:ring-warning font-medium dark:focus:ring-warning",
         discord:
           "bg-discord text-white hover:bg-discord-hover focus:ring-discord",
         twitter:
