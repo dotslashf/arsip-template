@@ -147,16 +147,10 @@ export default function CreateCopyPasta() {
 
   const pathname = usePathname();
   const breadcrumbs = getBreadcrumbs(pathname);
-  const currentPath = breadcrumbs.map((path) => {
-    return {
-      url: path.url === "/copy-pasta" ? "/#main" : path.url,
-      text: path.text,
-    };
-  });
 
   return (
     <div className="flex w-full flex-col">
-      <BreadCrumbs path={currentPath} />
+      <BreadCrumbs path={breadcrumbs} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
           <div className="grid grid-cols-1 gap-4">

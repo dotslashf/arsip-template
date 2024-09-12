@@ -1,6 +1,6 @@
 "use client";
 
-import { Package, PenBoxIcon, Search } from "lucide-react";
+import { NotebookPen, Package, PenBoxIcon, Search } from "lucide-react";
 import React from "react";
 import { buttonVariants } from "./ui/button";
 import Link from "next/link";
@@ -29,15 +29,14 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
     <div
       className={cn(
         "relative flex w-full max-w-4xl flex-col overflow-hidden bg-background",
-        isShowButton ? "h-[500px]" : "h-screen py-16",
+        isShowButton ? "h-[650px]" : "h-screen py-16",
       )}
     >
-      <div className="z-30 flex w-full flex-grow flex-col items-center justify-center px-4 text-center">
+      <div className="z-30 flex w-full flex-grow flex-col items-center justify-center text-center">
         <Link
           href={"/"}
-          className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/90 to-primary/80 bg-clip-text text-left text-4xl font-bold text-transparent lg:text-5xl"
+          className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/85 to-primary/50 bg-clip-text text-center text-4xl font-bold text-transparent lg:text-5xl"
         >
-          <Package className="mr-1 h-8 w-8 text-primary lg:mr-3 lg:h-9 lg:w-9" />
           arsip
           <br />
           template
@@ -47,7 +46,7 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
         </p>
 
         {isShowButton && (
-          <div className="mt-4 flex flex-col items-center justify-center gap-4 md:flex-row">
+          <div className="mt-4 flex flex-col items-center justify-center gap-4">
             <Link
               href={"/copy-pasta/create"}
               className={cn(
@@ -56,15 +55,15 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
               )}
             >
               Mulai Mengarsipkan
-              <PenBoxIcon className="ml-2 h-4 w-4" />
+              <NotebookPen className="ml-2 h-4 w-4" />
             </Link>
             <Link
-              href={"#main"}
+              href={"/copy-pasta#main"}
               className={cn(
                 buttonVariants({ variant: "secondary", size: "lg" }),
               )}
             >
-              Cari Template
+              Cari
               <Search className="ml-2 w-4" />
             </Link>
           </div>
@@ -83,8 +82,8 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
         </Marquee>
       </div>
       <DotPattern
-        width={15}
-        height={15}
+        width={18}
+        height={18}
         cx={1}
         cy={1}
         cr={1}

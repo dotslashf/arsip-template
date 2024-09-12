@@ -1,10 +1,8 @@
 import Layout from "~/components/Layout";
 import { api, HydrateClient } from "~/trpc/server";
-import { ListCopyPasta } from "./_components/ListCopyPastaPage";
-import Hero from "~/components/Hero";
+import { ListCopyPasta } from "../_components/ListCopyPastaPage";
 import { type Metadata } from "next";
 import { baseUrl } from "~/lib/constant";
-import { Homepage } from "./_components/Homepage";
 
 type Props = {
   params: { id: string };
@@ -44,27 +42,10 @@ export async function generateMetadata({
 }
 
 export default async function Home() {
-  const copyPastas = await api.copyPasta.list({
-    limit: 12,
-  });
-  const copyPastasFormatted = copyPastas.copyPastas
-    .filter(
-      (copy) =>
-        !copy.CopyPastasOnTags.some((tag) => tag.tags.name === "ASCII Art"),
-    )
-    .map((copy) => {
-      return {
-        id: copy.id,
-        content: copy.content,
-        tags: copy.CopyPastasOnTags.map((tag) => tag.tags),
-      };
-    });
-
   return (
     <HydrateClient>
       <Layout>
-        <Hero copyPastas={copyPastasFormatted} isShowButton={true} />
-        <Homepage />
+        <ListCopyPasta />
       </Layout>
     </HydrateClient>
   );

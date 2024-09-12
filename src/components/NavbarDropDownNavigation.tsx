@@ -5,7 +5,6 @@ import {
   Library,
   Medal,
   Menu,
-  Zap,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import {

@@ -9,9 +9,10 @@ import NavbarDropDownNavigation from "./NavbarDropDownNavigation";
 interface NavbarProps {
   session: Session | null;
 }
+
 export default function Navbar({ session }: NavbarProps) {
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 bg-white py-1 shadow dark:bg-card">
+    <nav className="fixed inset-x-0 top-0 z-50 bg-white/30 py-1 shadow-md backdrop-blur-md backdrop-saturate-150 dark:bg-card/30">
       <div className="container mx-auto px-4 lg:px-[6.5rem]">
         <div className="mx-auto flex h-12 w-full max-w-4xl items-center">
           <Link

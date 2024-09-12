@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   ArrowRight,
   Clipboard,

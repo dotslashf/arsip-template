@@ -2,8 +2,6 @@ import {
   Library,
   LogIn,
   LogOut,
-  Menu,
-  MonitorDot,
   MonitorSmartphone,
   Moon,
   NotebookPen,
