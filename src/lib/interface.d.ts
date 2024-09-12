@@ -105,6 +105,8 @@ export interface CardCopyPastaMinimal extends CopyPasta {
   createdBy?: {
     id: string;
     name: string | null;
+    username?: string;
+    avatarSeed?: string;
   };
   reactions?: {
     copyPastaId: string;

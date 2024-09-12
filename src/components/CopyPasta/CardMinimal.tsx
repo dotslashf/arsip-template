@@ -23,6 +23,8 @@ import { type Tag as TagType } from "@prisma/client";
 import Tag from "../ui/tags";
 import useToast from "../ui/use-react-hot-toast";
 import { trackEvent } from "~/lib/track";
+import Avatar from "../ui/avatar";
+import { badgeVariants } from "../ui/badge";
 
 export default function CardMinimal({ copyPasta }: CardProps) {
   const router = useRouter();
@@ -93,17 +95,49 @@ export default function CardMinimal({ copyPasta }: CardProps) {
     <Card className="h-full">
       <CardHeader className="pb-0">
         <CardTitle className="flex w-full items-center justify-between">
-          <NotebookPen className="h-4 w-4" />
+          <div className="flex">
+            <span className="mr-4 rounded-full border-2 border-secondary-foreground">
+              <Avatar
+                size={{
+                  width: 75,
+                  height: 75,
+                }}
+                seed={
+                  copyPasta.createdBy?.avatarSeed ?? copyPasta.createdBy?.id
+                }
+              />
+            </span>
+            <div className="flex w-full flex-col justify-evenly">
+              <span className="text-sm font-normal">Diarsipkan oleh:</span>
+              <Link
+                href={`/user/${copyPasta.createdBy?.username}`}
+                className={cn(
+                  badgeVariants({
+                    variant: "ghost",
+                    className: "py-0.5",
+                  }),
+                  "w-fit",
+                )}
+              >
+                @
+                {copyPasta.createdBy?.id.includes(
+                  copyPasta.createdBy?.username ?? "",
+                )
+                  ? copyPasta.createdBy.name
+                  : copyPasta.createdBy?.username}
+              </Link>
+            </div>
+          </div>
           <Button variant={"outline"} size={"xs"} onClick={handleCopy}>
             <span className="text-sm">Salin</span>
             <Clipboard className="ml-2 w-3" />
           </Button>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col justify-between gap-2 pb-2 pt-4 hover:cursor-auto">
+      <CardContent className="mt-6 flex py-0 hover:cursor-auto">
         <div
           className={cn(
-            "overflow-x-hidden text-sm",
+            "w-full overflow-x-hidden rounded-md border-2 border-dashed bg-secondary p-3 text-sm",
             copyPasta.CopyPastasOnTags.some(
               (tag) => tag.tags.name === "NSFW",
             ) && "blur-sm transition hover:blur-none",
@@ -119,7 +153,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
           </blockquote>
         </div>
       </CardContent>
-      <CardFooter className="mt-4 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
+      <CardFooter className="mt-6 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
         <ReactionSummary
           reactions={copyPasta.reactions}
           copyPastaId={copyPasta.id}
