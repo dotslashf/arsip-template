@@ -26,6 +26,7 @@ export const copyPastaRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const newContentTokens = new Set(tokenize(input.content));
 
+      // TODO: Implement better search https://ai.belajarlagi.id/dash/c/82e86ed5-e9b5-460b-82c9-415d886e6550
       const existingCopyPastas = await ctx.db.copyPasta.findMany({
         select: {
           content: true,
