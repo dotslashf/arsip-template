@@ -149,7 +149,7 @@ export default function CardById({ copyPasta }: CardProps) {
             <div className="flex w-full flex-col justify-evenly">
               <span className="text-sm font-normal">Diarsipkan oleh:</span>
               <Link
-                href={`/user/${copyPasta.createdBy?.username}`}
+                href={`/user/${copyPasta.createdBy?.username ?? copyPasta.createdBy?.id}`}
                 className={cn(
                   badgeVariants({
                     variant: "ghost",
