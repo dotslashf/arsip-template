@@ -15,7 +15,7 @@ import {
   Clipboard,
   Eye,
   ImageIcon,
-  Link2,
+  Link as LinkIcon,
   NotebookPen,
   Share2,
 } from "lucide-react";
@@ -241,11 +241,11 @@ export default function CardById({ copyPasta }: CardProps) {
                   prefetch={false}
                   target="__blank"
                 >
-                  Cek Doksli <Link2 className="ml-2 h-4 w-4" />
+                  Cek postingan asli <LinkIcon className="ml-2 h-4 w-4" />
                 </Link>
               ) : (
                 <span className={cn(buttonVariants({ variant: "disabled" }))}>
-                  Cek Doksli <Link2 className="ml-2 h-4 w-4" />
+                  Cek postingan asli <LinkIcon className="ml-2 h-4 w-4" />
                 </span>
               )}
             </div>
@@ -270,7 +270,7 @@ export default function CardById({ copyPasta }: CardProps) {
                   onClick={handleCopyUrl}
                 >
                   Salin Url
-                  <Link2 className="ml-2 w-4" />
+                  <LinkIcon className="ml-2 w-4" />
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link

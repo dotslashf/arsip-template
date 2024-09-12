@@ -10,7 +10,7 @@ import {
   ArrowRight,
   Clipboard,
   ImageIcon,
-  Link2,
+  Link as LinkIcon,
   NotebookPen,
 } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
@@ -168,7 +168,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
               prefetch={false}
               target="__blank"
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </Link>
           ) : (
             <span
@@ -176,7 +176,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
                 buttonVariants({ variant: "disabled", size: "url" }),
               )}
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </span>
           )}
           <Link

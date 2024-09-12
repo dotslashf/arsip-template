@@ -10,7 +10,7 @@ import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   ArrowRight,
   ImageIcon,
-  Link2,
+  Link as LinkIcon,
   Minus,
   NotebookPen,
   Plus,
@@ -100,7 +100,7 @@ export default function CardSearchResult({
               prefetch={false}
               target="__blank"
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </Link>
           ) : (
             <span
@@ -108,7 +108,7 @@ export default function CardSearchResult({
                 buttonVariants({ variant: "disabled", size: "url" }),
               )}
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </span>
           )}
           <Link
