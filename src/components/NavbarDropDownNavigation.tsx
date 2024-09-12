@@ -5,6 +5,7 @@ import {
   Library,
   Medal,
   Menu,
+  NotebookPen,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -33,6 +34,12 @@ export default function NavbarDropDownNavigation() {
           <Link href="/" className="flex items-center">
             <House className="mr-2 w-4" />
             Beranda
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/copy-pasta" className="flex items-center">
+            <NotebookPen className="mr-2 w-4" />
+            Template
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
