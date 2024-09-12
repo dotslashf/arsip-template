@@ -25,6 +25,17 @@ import useToast from "../ui/use-react-hot-toast";
 import { trackEvent } from "~/lib/track";
 import Avatar from "../ui/avatar";
 import { badgeVariants } from "../ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import Image from "next/image";
+import { useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 interface CardMinimalProps extends CardProps {
   isShowAvatar?: boolean;
@@ -33,11 +44,29 @@ export default function CardMinimal({
   copyPasta,
   isShowAvatar = true,
 }: CardMinimalProps) {
+  const [isImageOpen, setIsImageOpen] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const currentTag = searchParams.get("tag");
   const toast = useToast();
+
+  const handleClickImage = (open: boolean) => {
+    if (open === true) {
+      void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+        value: `${copyPasta.id}`,
+        button: "original_image",
+        path: `${pathname}`,
+      });
+    }
+    setIsImageOpen(open);
+  };
+
+  const handleImageLoad = () => {
+    setIsImageLoading(false);
+  };
 
   const handleTagClick = (tag: TagType, isActive: boolean) => {
     const currentParams = new URLSearchParams(searchParams);
@@ -164,6 +193,51 @@ export default function CardMinimal({
         </div>
       </CardContent>
       <CardFooter className="mt-6 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
+        {copyPasta.imageUrl && (
+          <>
+            <Dialog open={isImageOpen} onOpenChange={handleClickImage}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size={"sm"} className="text-sm">
+                  <ImageIcon className="mr-2 h-4 w-4" />
+                  Lihat Gambar
+                </Button>
+              </DialogTrigger>
+              <DialogContent
+                className="sm:max-w-[425px]"
+                aria-describedby="Bukti Gambar"
+              >
+                <DialogHeader>
+                  <DialogTitle>Preview Gambar</DialogTitle>
+                  <DialogDescription>
+                    Screenshot gambar untuk template
+                    {trimContent(copyPasta.content, 10)}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="relative flex h-[400px] w-full">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {isImageLoading && <Skeleton className="h-full w-full" />}
+                  </div>
+                  <Image
+                    src={copyPasta.imageUrl}
+                    alt="Gambar screenshot"
+                    width={0}
+                    height={0}
+                    sizes="25vw"
+                    style={{
+                      objectFit: "fill",
+                      width: "100%",
+                      height: "auto",
+                    }}
+                    onLoad={handleImageLoad}
+                    className={`my-auto transition-opacity duration-300 ${
+                      isImageLoading ? "opacity-0" : "opacity-100"
+                    }`}
+                  />
+                </div>
+              </DialogContent>
+            </Dialog>
+          </>
+        )}
         <ReactionSummary
           reactions={copyPasta.reactions}
           copyPastaId={copyPasta.id}
@@ -192,20 +266,6 @@ export default function CardMinimal({
             {sourceEnumHash.get(copyPasta.source)?.icon}{" "}
             {sourceEnumHash.get(copyPasta.source)?.label}
           </Button>
-          {copyPasta.imageUrl && (
-            <Link
-              href={copyPasta.imageUrl}
-              target="__blank"
-              prefetch={false}
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "xs" }),
-                "rounded-sm text-xs",
-              )}
-            >
-              <ImageIcon className="mr-2 h-4 w-4" />
-              Image
-            </Link>
-          )}
         </div>
         <div className="flex w-full justify-between gap-3">
           {copyPasta.sourceUrl ? (

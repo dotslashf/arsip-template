@@ -13,18 +13,47 @@ import {
   NotebookPen,
 } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
-import { cn } from "~/lib/utils";
-import { buttonVariants } from "../ui/button";
+import { cn, trimContent } from "~/lib/utils";
+import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
 import Tag from "../ui/tags";
 import CopyPastaCardAction from "../CopyPastaCardAction";
 import { trackEvent } from "~/lib/track";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import Image from "next/image";
+import { useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 export default function CardDashboard({
   copyPasta,
   isApprovalMode,
   type,
 }: CardDashboardProps) {
+  const [isImageOpen, setIsImageOpen] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
+  const handleClickImage = (open: boolean) => {
+    if (open === true) {
+      void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+        value: `${copyPasta.id}`,
+        button: "original_image",
+        path: "/dashboard/profile",
+      });
+    }
+    setIsImageOpen(open);
+  };
+
+  const handleImageLoad = () => {
+    setIsImageLoading(false);
+  };
+
   function handleDoksli() {
     void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
       value: `${copyPasta.id}`,
@@ -58,6 +87,51 @@ export default function CardDashboard({
         </div>
       </CardContent>
       <CardFooter className="mt-4 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
+        {copyPasta.imageUrl && (
+          <>
+            <Dialog open={isImageOpen} onOpenChange={handleClickImage}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size={"sm"} className="text-sm">
+                  <ImageIcon className="mr-2 h-4 w-4" />
+                  Lihat Gambar
+                </Button>
+              </DialogTrigger>
+              <DialogContent
+                className="sm:max-w-[425px]"
+                aria-describedby="Bukti Gambar"
+              >
+                <DialogHeader>
+                  <DialogTitle>Preview Gambar</DialogTitle>
+                  <DialogDescription>
+                    Screenshot gambar untuk template
+                    {trimContent(copyPasta.content, 10)}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="relative flex h-[400px] w-full">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {isImageLoading && <Skeleton className="h-full w-full" />}
+                  </div>
+                  <Image
+                    src={copyPasta.imageUrl}
+                    alt="Gambar screenshot"
+                    width={0}
+                    height={0}
+                    sizes="25vw"
+                    style={{
+                      objectFit: "fill",
+                      width: "100%",
+                      height: "auto",
+                    }}
+                    onLoad={handleImageLoad}
+                    className={`my-auto transition-opacity duration-300 ${
+                      isImageLoading ? "opacity-0" : "opacity-100"
+                    }`}
+                  />
+                </div>
+              </DialogContent>
+            </Dialog>
+          </>
+        )}
         <div className="flex w-full space-x-2">
           {copyPasta.CopyPastasOnTags.map((tag) => {
             return (
@@ -80,20 +154,6 @@ export default function CardDashboard({
             {sourceEnumHash.get(copyPasta.source)?.icon}{" "}
             {sourceEnumHash.get(copyPasta.source)?.label}
           </span>
-          {copyPasta.imageUrl && (
-            <Link
-              href={copyPasta.imageUrl}
-              target="__blank"
-              prefetch={false}
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "xs" }),
-                "rounded-sm text-xs",
-              )}
-            >
-              <ImageIcon className="mr-2 h-4 w-4" />
-              Image
-            </Link>
-          )}
         </div>
         <div className="flex w-full justify-between gap-3">
           {copyPasta.sourceUrl ? (

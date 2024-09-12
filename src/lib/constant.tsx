@@ -132,6 +132,7 @@ export const USER_INTERACTION_EVENT = {
 const CONTENT_ENGAGEMENT_EVENT = {
   VIEW_ORIGINAL_DOCUMENT: "content_engagement.view_original_document",
   VIEW_FULL_COPY_PASTA: "content_engagement.view_full_copy_pasta",
+  VIEW_ORIGINAL_IMAGE: "content_engagement.view_original_image",
 };
 
 // User Profile Events

@@ -21,11 +21,7 @@ import {
   formatDateToHuman,
   getBreadcrumbs,
 } from "~/lib/utils";
-import {
-  ACCEPTED_IMAGE_TYPES,
-  createCopyPastaFormClient,
-  MAX_FILE_SIZE,
-} from "../../server/form/copyPasta";
+import { createCopyPastaFormClient } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";

@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import { type Tag as TagType } from "@prisma/client";
 import { cn, formatDateToHuman, trimContent } from "~/lib/utils";
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import {
   BookCheck,
   CalendarDays,
@@ -36,12 +36,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import Image from "next/image";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
 import {} from "@prisma/client";
 import Tag from "../ui/tags";
 import { type CardProps } from "~/lib/interface";
@@ -49,6 +43,16 @@ import { Badge, badgeVariants } from "../ui/badge";
 import { api } from "~/trpc/react";
 import { trackEvent } from "~/lib/track";
 import Avatar from "../ui/avatar";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Skeleton } from "../ui/skeleton";
 
 export default function CardById({ copyPasta }: CardProps) {
   const toast = useToast();
@@ -56,9 +60,16 @@ export default function CardById({ copyPasta }: CardProps) {
   const searchParams = useSearchParams();
   const currentTag = searchParams.get("tag");
 
+  const [isImageOpen, setIsImageOpen] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
   const [analytics] = api.analytics.getPageViewById.useSuspenseQuery({
     id: copyPasta.id,
   });
+
+  const handleImageLoad = () => {
+    setIsImageLoading(false);
+  };
 
   function handleCopy() {
     navigator.clipboard
@@ -123,6 +134,17 @@ export default function CardById({ copyPasta }: CardProps) {
     });
   }
 
+  const handleClickImage = (open: boolean) => {
+    if (open === true) {
+      void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+        value: `${copyPasta.id}`,
+        button: "original_image",
+        path: `/copy-pasta/${copyPasta.id}`,
+      });
+    }
+    setIsImageOpen(open);
+  };
+
   return (
     <Card className="h-full">
       <CardHeader className="pb-0 lg:p-6 lg:pb-0">
@@ -183,30 +205,49 @@ export default function CardById({ copyPasta }: CardProps) {
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:p-6 lg:pt-0">
         {copyPasta.imageUrl && (
-          <Accordion
-            className="w-full max-w-xs text-sm"
-            type="single"
-            collapsible
-          >
-            <AccordionItem value="item-1" className="border-0">
-              <AccordionTrigger className="py-0">
-                <span className="flex items-center">
-                  <ImageIcon className="mr-2 w-4" />
+          <>
+            <Dialog open={isImageOpen} onOpenChange={handleClickImage}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size={"sm"} className="text-sm">
+                  <ImageIcon className="mr-2 h-4 w-4" />
                   Lihat Gambar
-                </span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <Image
-                  src={copyPasta.imageUrl}
-                  alt="Gambar screenshot"
-                  width={0}
-                  height={0}
-                  sizes="25vw"
-                  style={{ width: "100%", height: "auto" }}
-                />
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+                </Button>
+              </DialogTrigger>
+              <DialogContent
+                className="sm:max-w-[425px]"
+                aria-describedby="Bukti Gambar"
+              >
+                <DialogHeader>
+                  <DialogTitle>Preview Gambar</DialogTitle>
+                  <DialogDescription>
+                    Screenshot gambar untuk template
+                    {trimContent(copyPasta.content, 10)}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="relative flex h-[400px] w-full">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {isImageLoading && <Skeleton className="h-full w-full" />}
+                  </div>
+                  <Image
+                    src={copyPasta.imageUrl}
+                    alt="Gambar screenshot"
+                    width={0}
+                    height={0}
+                    sizes="25vw"
+                    style={{
+                      objectFit: "fill",
+                      width: "100%",
+                      height: "auto",
+                    }}
+                    onLoad={handleImageLoad}
+                    className={`my-auto transition-opacity duration-300 ${
+                      isImageLoading ? "opacity-0" : "opacity-100"
+                    }`}
+                  />
+                </div>
+              </DialogContent>
+            </Dialog>
+          </>
         )}
         <Reaction copyPastaId={copyPasta.id} />
         <div className="flex flex-wrap gap-2">
@@ -234,16 +275,6 @@ export default function CardById({ copyPasta }: CardProps) {
               {sourceEnumHash.get(copyPasta.source)?.icon}{" "}
               {sourceEnumHash.get(copyPasta.source)?.label}
             </span>
-            {copyPasta.imageUrl && (
-              <span
-                className={cn(
-                  buttonVariants({ variant: "secondary", size: "xs" }),
-                  "rounded-sm",
-                )}
-              >
-                <ImageIcon className="h-4 w-4" />
-              </span>
-            )}
           </div>
         </div>
         <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-end">
