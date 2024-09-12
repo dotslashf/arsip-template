@@ -1,14 +1,7 @@
 "use client";
 
 import { useMediaQuery } from "@uidotdev/usehooks";
-import {
-  ArrowRight,
-  Eye,
-  Hash,
-  Library,
-  NotebookPen,
-  TrendingUp,
-} from "lucide-react";
+import { ArrowRight, Eye, Hash, Library, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { cn, trimContent } from "~/lib/utils";
 import { api } from "~/trpc/react";
