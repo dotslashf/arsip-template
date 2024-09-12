@@ -110,13 +110,14 @@ export default function CardMinimal({ copyPasta }: CardProps) {
             ) && "blur-sm transition hover:blur-none",
           )}
         >
-          <ScrollArea
-            className={cn("h-36 rounded-md text-sm", robotoSlab.className)}
+          <blockquote
+            className={cn(
+              "select-none whitespace-pre-line",
+              robotoSlab.className,
+            )}
           >
-            <blockquote className="select-none whitespace-pre-line">
-              {trimContent(copyPasta.content, 255)}
-            </blockquote>
-          </ScrollArea>
+            {trimContent(copyPasta.content, 255)}
+          </blockquote>
         </div>
       </CardContent>
       <CardFooter className="mt-4 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
