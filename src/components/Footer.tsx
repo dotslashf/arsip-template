@@ -51,7 +51,7 @@ export default function Footer() {
   }, [data]);
 
   return (
-    <footer className="w-full bg-white py-6 shadow dark:bg-card">
+    <footer className="w-full bg-background py-4 shadow">
       <div className="container flex items-center justify-center gap-4 px-4 lg:px-[6.5rem]">
         <div className="flex w-full max-w-4xl flex-col items-center gap-4 lg:flex-row">
           <Link

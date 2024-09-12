@@ -66,35 +66,37 @@ export default function TrendingHome(props: TrendingHomeProps) {
               Koleksi
             </h2>
           </AccordionTrigger>
-          <AccordionContent className="mt-4 flex flex-col space-y-2 pb-0">
-            {dataCollections.collections.map((collection) => {
-              return (
-                <Link
-                  href={`/collection/${collection.id}?utm_content=trending`}
-                  key={collection.id}
-                  className="flex items-center justify-between"
-                  prefetch={false}
-                >
-                  <span className="text-sm hover:underline">
-                    {trimContent(collection.name ?? "", 30)}
-                  </span>
-                  <span className="ml-4 flex items-center justify-center text-xs text-muted-foreground">
-                    {collection._count.copyPastas} Template{" "}
-                    <NotebookPen className="ml-2 w-4" />
-                  </span>
-                </Link>
-              );
-            })}
+          <AccordionContent className="mt-4 flex flex-col pb-0">
+            <div className="flex flex-col space-y-2">
+              {dataCollections.collections.map((collection) => {
+                return (
+                  <Link
+                    href={`/collection/${collection.id}?utm_content=trending`}
+                    key={collection.id}
+                    className="flex items-center justify-between"
+                    prefetch={false}
+                  >
+                    <span className="text-sm hover:underline">
+                      {trimContent(collection.name ?? "", 30)}
+                    </span>
+                    <span className="ml-4 flex items-center justify-center text-xs text-muted-foreground">
+                      {collection._count.copyPastas} Template{" "}
+                      <NotebookPen className="ml-2 w-4" />
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+            <Link
+              href={`/collection/?utm_source=trending`}
+              className={cn(
+                buttonVariants({ variant: "link", size: "url" }),
+                "mt-4 self-start",
+              )}
+            >
+              Selengkapnya <ArrowRight className="ml-2 h-3 w-3" />
+            </Link>
           </AccordionContent>
-          <Link
-            href={`/collection/?utm_source=trending`}
-            className={cn(
-              buttonVariants({ variant: "link", size: "url" }),
-              "mt-8",
-            )}
-          >
-            Selengkapnya <ArrowRight className="ml-2 h-3 w-3" />
-          </Link>
         </AccordionItem>
       </Accordion>
       <Accordion

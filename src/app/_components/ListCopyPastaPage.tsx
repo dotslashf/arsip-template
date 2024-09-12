@@ -48,13 +48,15 @@ export function ListCopyPasta() {
   const breadcrumbs = getBreadcrumbs(pathname);
 
   return (
-    <div className="flex w-full flex-col gap-4" id="main">
+    <div className="flex w-full flex-col" id="main">
       <BreadCrumbs path={breadcrumbs} />
-      <SearchBar />
-      <div className="flex w-full flex-col gap-4 self-center">
-        <div className="grid w-full grid-cols-3 gap-4">
-          <Lists />
-          <TrendingHome tag={tag} />
+      <div className="flex flex-col gap-4">
+        <SearchBar />
+        <div className="flex w-full flex-col gap-4 self-center">
+          <div className="grid w-full grid-cols-3 gap-4">
+            <Lists />
+            <TrendingHome tag={tag} />
+          </div>
         </div>
       </div>
     </div>
