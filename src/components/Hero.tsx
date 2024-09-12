@@ -1,6 +1,6 @@
 "use client";
 
-import { NotebookPen, Package, PenBoxIcon, Search } from "lucide-react";
+import { NotebookPen, Search } from "lucide-react";
 import React from "react";
 import { buttonVariants } from "./ui/button";
 import Link from "next/link";

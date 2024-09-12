@@ -1,6 +1,5 @@
 import Layout from "~/components/Layout";
 import { api, HydrateClient } from "~/trpc/server";
-import { ListCopyPasta } from "./_components/ListCopyPastaPage";
 import Hero from "~/components/Hero";
 import { type Metadata } from "next";
 import { baseUrl } from "~/lib/constant";

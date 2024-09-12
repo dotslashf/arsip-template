@@ -6,14 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   ArrowRight,
   ImageIcon,
   Link as LinkIcon,
   NotebookPen,
 } from "lucide-react";
-import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
+import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import { buttonVariants } from "../ui/button";
 import Link from "next/link";
