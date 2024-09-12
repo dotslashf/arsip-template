@@ -4,6 +4,7 @@ import {
   House,
   Library,
   Medal,
+  Menu,
   Zap,
 } from "lucide-react";
 import { Button } from "./ui/button";
@@ -23,8 +24,8 @@ export default function NavbarDropDownNavigation() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="default" size={isSmallDevice ? "icon" : "default"}>
-          <span className="hidden md:inline">Navigasi</span>
-          <Zap className="h-4 w-4 md:ml-2" />
+          <span className="hidden md:inline">Menu</span>
+          <Menu className="h-4 w-4 md:ml-2" />
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
