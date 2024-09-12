@@ -192,13 +192,13 @@ export default function CardById({ copyPasta }: CardProps) {
               <AccordionTrigger className="py-0">
                 <span className="flex items-center">
                   <ImageIcon className="mr-2 w-4" />
-                  Doksli Image
+                  Lihat Gambar
                 </span>
               </AccordionTrigger>
               <AccordionContent>
                 <Image
                   src={copyPasta.imageUrl}
-                  alt="Doksli Image"
+                  alt="Gambar screenshot"
                   width={0}
                   height={0}
                   sizes="25vw"

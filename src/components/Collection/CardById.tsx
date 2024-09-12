@@ -69,14 +69,18 @@ export default function CardById({ copyPasta }: CardProps) {
             {sourceEnumHash.get(copyPasta.source)?.label}
           </Button>
           {copyPasta.imageUrl && (
-            <span
+            <Link
+              href={copyPasta.imageUrl}
+              target="__blank"
+              prefetch={false}
               className={cn(
                 buttonVariants({ variant: "secondary", size: "xs" }),
-                "rounded-sm",
+                "rounded-sm text-xs",
               )}
             >
-              <ImageIcon className="h-4 w-4" />
-            </span>
+              <ImageIcon className="mr-2 h-4 w-4" />
+              Image
+            </Link>
           )}
         </div>
         <div className="flex w-full justify-between gap-3">
