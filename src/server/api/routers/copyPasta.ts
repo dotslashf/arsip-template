@@ -11,23 +11,40 @@ import {
 
 import { getRandomElement } from "~/lib/utils";
 
+function tokenize(content: string) {
+  return content.toLowerCase().split(/\s+/);
+}
+
+function jaccardSimilarity(setA: Set<string>, setB: Set<string>) {
+  const intersection = new Set([...setA].filter((x) => setB.has(x)));
+  return intersection.size / (setA.size + setB.size - intersection.size);
+}
+
 export const copyPastaRouter = createTRPCRouter({
   create: protectedProcedure
     .input(createCopyPastaFormServer)
     .mutation(async ({ ctx, input }) => {
-      const existCopyPasta = await ctx.db.copyPasta.findFirst({
-        where: {
-          content: input.content,
-        },
+      const newContentTokens = new Set(tokenize(input.content));
+
+      const existingCopyPastas = await ctx.db.copyPasta.findMany({
         select: {
           content: true,
         },
       });
 
-      if (existCopyPasta) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-        });
+      for (const { content } of existingCopyPastas) {
+        const existingContentTokens = new Set(tokenize(content));
+        const similarity = jaccardSimilarity(
+          newContentTokens,
+          existingContentTokens,
+        );
+
+        if (similarity > 0.7) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Content is too similar to an existing entry.",
+          });
+        }
       }
 
       const copyPasta = await ctx.db.copyPasta.create({

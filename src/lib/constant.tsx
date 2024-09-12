@@ -108,8 +108,12 @@ export const FORM_COLLECTION_CONSTANT = {
 export const parseErrorMessages = (error: Record<string, any>) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const message = error.shape.message as string;
-  if (message.toLowerCase().includes("unique") || message === "BAD_REQUEST") {
-    return "Data sudah ada!";
+  if (
+    message.toLowerCase().includes("unique") ||
+    message === "BAD_REQUEST" ||
+    message === "Content is too similar to an existing entry."
+  ) {
+    return "Datanya sudah ada nih 🥲";
   } else {
     return "Duh, gagal nih! 🤯";
   }
