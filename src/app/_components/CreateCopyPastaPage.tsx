@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,6 +38,7 @@ import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id } from "date-fns/locale";
 import { DAYS, parseErrorMessages } from "~/lib/constant";
 import BreadCrumbs from "~/components/BreadCrumbs";
+import Link from "next/link";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
@@ -167,6 +169,19 @@ export default function CreateCopyPasta() {
                       rows={5}
                     />
                   </FormControl>
+                  <FormDescription className="font-semibold">
+                    Pastikan mengecek templatenya sudah ada atau belum yah! 😎
+                    <br />
+                    Bisa menggunakan fitur{" "}
+                    <Link
+                      href={"/copy-pasta"}
+                      className="text-primary underline"
+                      prefetch={false}
+                      target="__blank"
+                    >
+                      cari disini
+                    </Link>
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
