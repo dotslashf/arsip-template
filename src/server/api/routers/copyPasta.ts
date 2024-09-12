@@ -162,6 +162,7 @@ export const copyPastaRouter = createTRPCRouter({
             contains: input.query,
             mode: "insensitive",
           },
+          deletedAt: null,
           approvedAt: {
             not: null,
           },
@@ -203,6 +204,7 @@ export const copyPastaRouter = createTRPCRouter({
             : {
                 equals: null,
               },
+          deletedAt: null,
         },
         include: {
           CopyPastasOnTags: {
