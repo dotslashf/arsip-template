@@ -44,11 +44,11 @@ export const createCopyPastaFormClient = baseCopyPastaForm.extend({
     .refine((file: File) => {
       if (!file) return true;
       return ACCEPTED_IMAGE_TYPES.includes(file.type);
-    }, "Only images are allowed")
+    }, "Hanya jpeg atau png yah!")
     .refine((file: File) => {
       if (!file) return true;
       return file.size <= MAX_FILE_SIZE;
-    }, "Max file size is 2MB"),
+    }, "Max gambarnya 2mb aja nih"),
 });
 
 export const createCopyPastaFormServer = baseCopyPastaForm.extend({

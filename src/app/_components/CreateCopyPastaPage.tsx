@@ -81,18 +81,9 @@ export default function CreateCopyPasta() {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
-    if (
-      selectedFile &&
-      ACCEPTED_IMAGE_TYPES.includes(selectedFile.type) &&
-      selectedFile.size <= MAX_FILE_SIZE
-    ) {
+    if (selectedFile) {
       setFile(selectedFile);
       form.setValue("imageUrl", selectedFile);
-    } else {
-      void toast({
-        message: "Hanya boleh gambar dan berukuran <= 2MB 🤓",
-        type: "danger",
-      });
     }
   };
 
