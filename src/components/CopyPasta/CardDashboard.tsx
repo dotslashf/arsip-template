@@ -6,30 +6,16 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import {
-  ArrowRight,
-  ImageIcon,
-  Link as LinkIcon,
-  NotebookPen,
-} from "lucide-react";
+import { ArrowRight, Link as LinkIcon, NotebookPen } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
-import { cn, trimContent } from "~/lib/utils";
-import { Button, buttonVariants } from "../ui/button";
+import { cn } from "~/lib/utils";
+import { buttonVariants } from "../ui/button";
 import Link from "next/link";
 import Tag from "../ui/tags";
 import CopyPastaCardAction from "../CopyPastaCardAction";
 import { trackEvent } from "~/lib/track";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import Image from "next/image";
 import { useState } from "react";
-import { Skeleton } from "../ui/skeleton";
+import DialogImage from "./DialogImage";
 
 export default function CardDashboard({
   copyPasta,
@@ -37,7 +23,6 @@ export default function CardDashboard({
   type,
 }: CardDashboardProps) {
   const [isImageOpen, setIsImageOpen] = useState(false);
-  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const handleClickImage = (open: boolean) => {
     if (open === true) {
@@ -48,10 +33,6 @@ export default function CardDashboard({
       });
     }
     setIsImageOpen(open);
-  };
-
-  const handleImageLoad = () => {
-    setIsImageLoading(false);
   };
 
   function handleDoksli() {
@@ -88,49 +69,12 @@ export default function CardDashboard({
       </CardContent>
       <CardFooter className="mt-4 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
         {copyPasta.imageUrl && (
-          <>
-            <Dialog open={isImageOpen} onOpenChange={handleClickImage}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size={"sm"} className="text-sm">
-                  <ImageIcon className="mr-2 h-4 w-4" />
-                  Lihat Gambar
-                </Button>
-              </DialogTrigger>
-              <DialogContent
-                className="sm:max-w-[425px]"
-                aria-describedby="Bukti Gambar"
-              >
-                <DialogHeader>
-                  <DialogTitle>Preview Gambar</DialogTitle>
-                  <DialogDescription>
-                    Screenshot gambar untuk template
-                    {trimContent(copyPasta.content, 10)}
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="relative flex h-[400px] w-full">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    {isImageLoading && <Skeleton className="h-full w-full" />}
-                  </div>
-                  <Image
-                    src={copyPasta.imageUrl}
-                    alt="Gambar screenshot"
-                    width={0}
-                    height={0}
-                    sizes="25vw"
-                    style={{
-                      objectFit: "fill",
-                      width: "100%",
-                      height: "auto",
-                    }}
-                    onLoad={handleImageLoad}
-                    className={`my-auto transition-opacity duration-300 ${
-                      isImageLoading ? "opacity-0" : "opacity-100"
-                    }`}
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
-          </>
+          <DialogImage
+            content={copyPasta.content}
+            imageUrl={copyPasta.imageUrl}
+            handleOpen={handleClickImage}
+            isOpen={isImageOpen}
+          />
         )}
         <div className="flex w-full space-x-2">
           {copyPasta.CopyPastasOnTags.map((tag) => {

@@ -8,13 +8,12 @@ import {
 import Link from "next/link";
 import { type Tag as TagType } from "@prisma/client";
 import { cn, formatDateToHuman, trimContent } from "~/lib/utils";
-import { Button, buttonVariants } from "../ui/button";
+import { buttonVariants } from "../ui/button";
 import {
   BookCheck,
   CalendarDays,
   Clipboard,
   Eye,
-  ImageIcon,
   Link as LinkIcon,
   Share2,
 } from "lucide-react";
@@ -35,7 +34,6 @@ import {
 } from "../ui/dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import Image from "next/image";
 import {} from "@prisma/client";
 import Tag from "../ui/tags";
 import { type CardProps } from "~/lib/interface";
@@ -44,15 +42,7 @@ import { api } from "~/trpc/react";
 import { trackEvent } from "~/lib/track";
 import Avatar from "../ui/avatar";
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import { Skeleton } from "../ui/skeleton";
+import DialogImage from "./DialogImage";
 
 export default function CardById({ copyPasta }: CardProps) {
   const toast = useToast();
@@ -61,15 +51,10 @@ export default function CardById({ copyPasta }: CardProps) {
   const currentTag = searchParams.get("tag");
 
   const [isImageOpen, setIsImageOpen] = useState(false);
-  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const [analytics] = api.analytics.getPageViewById.useSuspenseQuery({
     id: copyPasta.id,
   });
-
-  const handleImageLoad = () => {
-    setIsImageLoading(false);
-  };
 
   function handleCopy() {
     navigator.clipboard
@@ -193,7 +178,7 @@ export default function CardById({ copyPasta }: CardProps) {
       <CardContent className="my-8 flex flex-col justify-between gap-2 py-0 hover:cursor-auto lg:px-6">
         <div
           className={cn(
-            "w-full overflow-x-hidden rounded-md border-2 border-dashed bg-secondary p-3 text-sm",
+            "w-full overflow-x-hidden rounded-md border bg-secondary p-3 text-sm",
           )}
         >
           <blockquote
@@ -205,49 +190,12 @@ export default function CardById({ copyPasta }: CardProps) {
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:p-6 lg:pt-0">
         {copyPasta.imageUrl && (
-          <>
-            <Dialog open={isImageOpen} onOpenChange={handleClickImage}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size={"sm"} className="text-sm">
-                  <ImageIcon className="mr-2 h-4 w-4" />
-                  Lihat Gambar
-                </Button>
-              </DialogTrigger>
-              <DialogContent
-                className="sm:max-w-[425px]"
-                aria-describedby="Bukti Gambar"
-              >
-                <DialogHeader>
-                  <DialogTitle>Preview Gambar</DialogTitle>
-                  <DialogDescription>
-                    Screenshot gambar untuk template
-                    {trimContent(copyPasta.content, 10)}
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="relative flex h-[400px] w-full">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    {isImageLoading && <Skeleton className="h-full w-full" />}
-                  </div>
-                  <Image
-                    src={copyPasta.imageUrl}
-                    alt="Gambar screenshot"
-                    width={0}
-                    height={0}
-                    sizes="25vw"
-                    style={{
-                      objectFit: "fill",
-                      width: "100%",
-                      height: "auto",
-                    }}
-                    onLoad={handleImageLoad}
-                    className={`my-auto transition-opacity duration-300 ${
-                      isImageLoading ? "opacity-0" : "opacity-100"
-                    }`}
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
-          </>
+          <DialogImage
+            content={copyPasta.content}
+            imageUrl={copyPasta.imageUrl}
+            handleOpen={handleClickImage}
+            isOpen={isImageOpen}
+          />
         )}
         <Reaction copyPastaId={copyPasta.id} />
         <div className="flex flex-wrap gap-2">
