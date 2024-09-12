@@ -65,7 +65,7 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
               page.copyPastas.map((copy) => {
                 return (
                   <div className="col-span-2 w-full shadow-sm" key={copy.id}>
-                    <CardMinimal copyPasta={copy} />
+                    <CardMinimal copyPasta={copy} isShowAvatar={false} />
                   </div>
                 );
               }),

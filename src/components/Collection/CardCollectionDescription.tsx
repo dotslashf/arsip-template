@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -81,49 +82,12 @@ export default function CardCollectionDescription({
         </CardHeader>
       ) : (
         <CardHeader className="space-y-4">
-          <div className="flex justify-between">
-            <Link href={`/collection/${id}`}>
-              <CardTitle className="flex hover:underline">
-                {name} <ChevronRight className="ml-2 w-6" />
-              </CardTitle>
-            </Link>
-            {isEditable && (
-              <>
-                <Link
-                  className={cn(
-                    buttonVariants({ variant: "warning", size: "sm" }),
-                    "ml-auto mr-2",
-                  )}
-                  href={`/dashboard/collection/${id}/edit`}
-                >
-                  Edit
-                  <Pencil className="ml-2 w-4" />
-                </Link>
-                <>
-                  {isSureDelete ? (
-                    <Button
-                      ref={deleteButtonRef}
-                      variant={"destructive"}
-                      onClick={handleDelete}
-                      size={"sm"}
-                    >
-                      Yakin
-                      <Check className="ml-2 w-4" />
-                    </Button>
-                  ) : (
-                    <Button
-                      variant={"destructive"}
-                      onClick={() => setIsSureDelete(true)}
-                      size={"sm"}
-                    >
-                      Hapus
-                      <Trash className="ml-2 w-4" />
-                    </Button>
-                  )}
-                </>
-              </>
-            )}
-          </div>
+          <Link href={`/collection/${id}`}>
+            <CardTitle className="group flex hover:underline">
+              {name}{" "}
+              <ChevronRight className="ml-2 w-6 transition-transform group-hover:translate-x-2" />
+            </CardTitle>
+          </Link>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
       )}
@@ -133,7 +97,7 @@ export default function CardCollectionDescription({
             <CalendarDays className="mr-2 h-4 w-4" />{" "}
             {formatDateToHuman(createdAt ?? new Date())}
           </CardDescription>
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <span className="mr-2 rounded-full">
               <Avatar
                 size={{
@@ -143,7 +107,7 @@ export default function CardCollectionDescription({
                 seed={createdBy.avatarSeed ?? createdBy.id}
               />
             </span>
-            <div className="flex w-full justify-between self-end">
+            <div className="flex w-full justify-between">
               <Link
                 href={`/user/${createdBy.username}`}
                 className={cn(
@@ -164,6 +128,37 @@ export default function CardCollectionDescription({
           </div>
         </div>
       </CardContent>
+      {isEditable && (
+        <CardFooter className="flex justify-between">
+          <Link
+            className={cn(buttonVariants({ variant: "warning", size: "sm" }))}
+            href={`/dashboard/collection/${id}/edit`}
+          >
+            Edit
+            <Pencil className="ml-2 w-4" />
+          </Link>
+          {isSureDelete ? (
+            <Button
+              ref={deleteButtonRef}
+              variant={"destructive"}
+              onClick={handleDelete}
+              size={"sm"}
+            >
+              Yakin
+              <Check className="ml-2 w-4" />
+            </Button>
+          ) : (
+            <Button
+              variant={"destructive"}
+              onClick={() => setIsSureDelete(true)}
+              size={"sm"}
+            >
+              Hapus
+              <Trash className="ml-2 w-4" />
+            </Button>
+          )}
+        </CardFooter>
+      )}
     </Card>
   );
 }

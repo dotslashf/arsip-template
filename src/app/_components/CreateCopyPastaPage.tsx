@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,6 +38,7 @@ import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id } from "date-fns/locale";
 import { DAYS, parseErrorMessages } from "~/lib/constant";
 import BreadCrumbs from "~/components/BreadCrumbs";
+import Link from "next/link";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
@@ -147,16 +149,10 @@ export default function CreateCopyPasta() {
 
   const pathname = usePathname();
   const breadcrumbs = getBreadcrumbs(pathname);
-  const currentPath = breadcrumbs.map((path) => {
-    return {
-      url: path.url === "/copy-pasta" ? "/#main" : path.url,
-      text: path.text,
-    };
-  });
 
   return (
     <div className="flex w-full flex-col">
-      <BreadCrumbs path={currentPath} />
+      <BreadCrumbs path={breadcrumbs} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
           <div className="grid grid-cols-1 gap-4">
@@ -173,6 +169,19 @@ export default function CreateCopyPasta() {
                       rows={5}
                     />
                   </FormControl>
+                  <FormDescription className="font-semibold">
+                    Pastikan mengecek templatenya sudah ada atau belum yah! 😎
+                    <br />
+                    Bisa menggunakan fitur{" "}
+                    <Link
+                      href={"/copy-pasta"}
+                      className="text-primary underline"
+                      prefetch={false}
+                      target="__blank"
+                    >
+                      cari disini
+                    </Link>
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -5,26 +5,26 @@ export const createCollectionForm = z.object({
   name: z
     .string()
     .min(FORM_COLLECTION_CONSTANT.name.min, {
-      message: "Minimal 10 karakter",
+      message: `Minimal ${FORM_COLLECTION_CONSTANT.name.min} karakter`,
     })
     .max(FORM_COLLECTION_CONSTANT.name.max, {
-      message: "Max 59 karakter",
+      message: `Max ${FORM_COLLECTION_CONSTANT.name.max} karakter`,
     }),
   description: z
     .string()
     .min(FORM_COLLECTION_CONSTANT.description.min, {
-      message: "Minimal 10 karakter",
+      message: `Minimal ${FORM_COLLECTION_CONSTANT.description.min} karakter`,
     })
     .max(FORM_COLLECTION_CONSTANT.description.max, {
-      message: "Max 500 karakter",
+      message: `Max ${FORM_COLLECTION_CONSTANT.description.max} karakter`,
     }),
   copyPastaIds: z
     .array(z.string().uuid())
     .min(FORM_COLLECTION_CONSTANT.copyPastaIds.min, {
-      message: "Minimal 2 copy pasta",
+      message: `Minimal ${FORM_COLLECTION_CONSTANT.copyPastaIds.min} template`,
     })
     .max(FORM_COLLECTION_CONSTANT.copyPastaIds.max, {
-      message: "Maximal 3 copy pasta",
+      message: `Maximal ${FORM_COLLECTION_CONSTANT.copyPastaIds.max} template`,
     }),
 });
 

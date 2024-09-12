@@ -6,12 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   ArrowRight,
   Clipboard,
   ImageIcon,
-  Link2,
+  Link as LinkIcon,
   NotebookPen,
 } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
@@ -24,8 +23,16 @@ import { type Tag as TagType } from "@prisma/client";
 import Tag from "../ui/tags";
 import useToast from "../ui/use-react-hot-toast";
 import { trackEvent } from "~/lib/track";
+import Avatar from "../ui/avatar";
+import { badgeVariants } from "../ui/badge";
 
-export default function CardMinimal({ copyPasta }: CardProps) {
+interface CardMinimalProps extends CardProps {
+  isShowAvatar?: boolean;
+}
+export default function CardMinimal({
+  copyPasta,
+  isShowAvatar = true,
+}: CardMinimalProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -94,32 +101,69 @@ export default function CardMinimal({ copyPasta }: CardProps) {
     <Card className="h-full">
       <CardHeader className="pb-0">
         <CardTitle className="flex w-full items-center justify-between">
-          <NotebookPen className="h-4 w-4" />
+          {isShowAvatar ? (
+            <div className="flex">
+              <span className="mr-4 rounded-full border-2 border-secondary-foreground">
+                <Avatar
+                  size={{
+                    width: 75,
+                    height: 75,
+                  }}
+                  seed={
+                    copyPasta.createdBy?.avatarSeed ?? copyPasta.createdBy?.id
+                  }
+                />
+              </span>
+              <div className="flex w-full flex-col justify-evenly">
+                <span className="text-sm font-normal">Diarsipkan oleh:</span>
+                <Link
+                  href={`/user/${copyPasta.createdBy?.username}`}
+                  className={cn(
+                    badgeVariants({
+                      variant: "ghost",
+                      className: "py-0.5",
+                    }),
+                    "w-fit",
+                  )}
+                >
+                  @
+                  {copyPasta.createdBy?.id.includes(
+                    copyPasta.createdBy?.username ?? "",
+                  )
+                    ? copyPasta.createdBy.name
+                    : copyPasta.createdBy?.username}
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <NotebookPen className="w-4" />
+          )}
           <Button variant={"outline"} size={"xs"} onClick={handleCopy}>
             <span className="text-sm">Salin</span>
             <Clipboard className="ml-2 w-3" />
           </Button>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col justify-between gap-2 pb-2 pt-4 hover:cursor-auto">
+      <CardContent className="mt-6 flex py-0 hover:cursor-auto">
         <div
           className={cn(
-            "overflow-x-hidden text-sm",
+            "w-full overflow-x-hidden rounded-md border-2 border-dashed bg-secondary p-3 text-sm",
             copyPasta.CopyPastasOnTags.some(
               (tag) => tag.tags.name === "NSFW",
             ) && "blur-sm transition hover:blur-none",
           )}
         >
-          <ScrollArea
-            className={cn("h-36 rounded-md text-sm", robotoSlab.className)}
+          <blockquote
+            className={cn(
+              "select-none whitespace-pre-line",
+              robotoSlab.className,
+            )}
           >
-            <blockquote className="select-none whitespace-pre-line">
-              {trimContent(copyPasta.content, 255)}
-            </blockquote>
-          </ScrollArea>
+            {trimContent(copyPasta.content, 255)}
+          </blockquote>
         </div>
       </CardContent>
-      <CardFooter className="mt-4 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
+      <CardFooter className="mt-6 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
         <ReactionSummary
           reactions={copyPasta.reactions}
           copyPastaId={copyPasta.id}
@@ -168,7 +212,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
               prefetch={false}
               target="__blank"
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </Link>
           ) : (
             <span
@@ -176,7 +220,7 @@ export default function CardMinimal({ copyPasta }: CardProps) {
                 buttonVariants({ variant: "disabled", size: "url" }),
               )}
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </span>
           )}
           <Link

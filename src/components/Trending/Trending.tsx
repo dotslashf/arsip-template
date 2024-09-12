@@ -1,7 +1,14 @@
 "use client";
 
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { Eye, Hash, TrendingUp } from "lucide-react";
+import {
+  ArrowRight,
+  Eye,
+  Hash,
+  Library,
+  NotebookPen,
+  TrendingUp,
+} from "lucide-react";
 import Link from "next/link";
 import { cn, trimContent } from "~/lib/utils";
 import { api } from "~/trpc/react";
@@ -15,6 +22,7 @@ import {
 } from "../ui/accordion";
 import { DAYS } from "~/lib/constant";
 import NumberTicker from "../magicui/number-ticker";
+import { buttonVariants } from "../ui/button";
 
 interface TrendingHomeProps {
   tag: string | null;
@@ -23,6 +31,13 @@ export default function TrendingHome(props: TrendingHomeProps) {
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
   const [topCopyPastas] = api.analytics.getPopularCopyPasta.useSuspenseQuery(
     undefined,
+    {
+      staleTime: 7 * DAYS,
+      gcTime: 7 * DAYS,
+    },
+  );
+  const [dataCollections] = api.collection.list.useSuspenseQuery(
+    { limit: 5 },
     {
       staleTime: 7 * DAYS,
       gcTime: 7 * DAYS,
@@ -42,13 +57,59 @@ export default function TrendingHome(props: TrendingHomeProps) {
         type="single"
         collapsible
         className="h-fit w-full flex-col space-y-2 rounded-md border p-4"
+        defaultValue="trendingCollection"
+      >
+        <AccordionItem value="trendingCollection" className="border-0 p-0">
+          <AccordionTrigger className="border-0 py-0">
+            <h2 className="flex items-center gap-2 text-lg font-bold">
+              <Library className="w-4" />
+              Koleksi
+            </h2>
+          </AccordionTrigger>
+          <AccordionContent className="mt-4 flex flex-col pb-0">
+            <div className="flex flex-col space-y-2">
+              {dataCollections.collections.map((collection) => {
+                return (
+                  <Link
+                    href={`/collection/${collection.id}?utm_content=trending`}
+                    key={collection.id}
+                    className="flex items-center justify-between"
+                    prefetch={false}
+                  >
+                    <span className="text-sm hover:underline">
+                      {trimContent(collection.name ?? "", 30)}
+                    </span>
+                    <span className="ml-4 flex items-center justify-center text-xs text-muted-foreground">
+                      {collection._count.copyPastas} Template{" "}
+                      <NotebookPen className="ml-2 w-4" />
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+            <Link
+              href={`/collection/?utm_source=trending`}
+              className={cn(
+                buttonVariants({ variant: "link", size: "url" }),
+                "mt-4 self-start",
+              )}
+            >
+              Selengkapnya <ArrowRight className="ml-2 h-3 w-3" />
+            </Link>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+      <Accordion
+        type="single"
+        collapsible
+        className="h-fit w-full flex-col space-y-2 rounded-md border p-4"
         defaultValue={isSmallDevice ? "" : "trendingCopy"}
       >
         <AccordionItem value="trendingCopy" className="border-0 p-0">
           <AccordionTrigger className="border-0 py-0">
             <h2 className="flex items-center gap-2 text-lg font-bold">
               <TrendingUp className="w-4" />
-              Trending Template
+              Trending
             </h2>
           </AccordionTrigger>
           <AccordionContent className="mt-4 flex flex-col space-y-2 pb-0">

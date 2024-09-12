@@ -6,7 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { ArrowRight, ImageIcon, Link2, NotebookPen } from "lucide-react";
+import {
+  ArrowRight,
+  ImageIcon,
+  Link as LinkIcon,
+  NotebookPen,
+} from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn } from "~/lib/utils";
 import { buttonVariants } from "../ui/button";
@@ -95,7 +100,7 @@ export default function CardDashboard({
               prefetch={false}
               target="__blank"
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </Link>
           ) : (
             <span
@@ -103,7 +108,7 @@ export default function CardDashboard({
                 buttonVariants({ variant: "disabled", size: "url" }),
               )}
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </span>
           )}
           {isApprovalMode && (

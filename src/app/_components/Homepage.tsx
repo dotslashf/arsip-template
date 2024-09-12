@@ -3,10 +3,8 @@
 import dynamic from "next/dynamic";
 import { Skeleton } from "~/components/ui/skeleton";
 import SkeletonListCopyPasta from "~/components/Skeleton/ListCopyPasta";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import SkeletonTrending from "~/components/Skeleton/Trending";
-import BreadCrumbs from "~/components/BreadCrumbs";
-import { getBreadcrumbs } from "~/lib/utils";
 
 const TrendingHome = dynamic(() => import("~/components/Trending/Trending"), {
   ssr: false,
@@ -34,29 +32,24 @@ const SearchBar = dynamic(() => import("~/components/SearchBar"), {
   },
 });
 
-const Lists = dynamic(() => import("~/components/CopyPasta/Lists"), {
+const Lists = dynamic(() => import("~/components/Homepage/ListCopyPasta"), {
   ssr: false,
   loading() {
     return <SkeletonListCopyPasta />;
   },
 });
 
-export function ListCopyPasta() {
+export function Homepage() {
   const searchParams = useSearchParams();
   const tag = searchParams.get("tag");
-  const pathname = usePathname();
-  const breadcrumbs = getBreadcrumbs(pathname);
 
   return (
-    <div className="flex w-full flex-col" id="main">
-      <BreadCrumbs path={breadcrumbs} />
-      <div className="flex flex-col gap-4">
-        <SearchBar />
-        <div className="flex w-full flex-col gap-4 self-center">
-          <div className="grid w-full grid-cols-3 gap-4">
-            <Lists />
-            <TrendingHome tag={tag} />
-          </div>
+    <div className="flex w-full flex-col gap-4" id="main">
+      <SearchBar />
+      <div className="flex w-full flex-col gap-4 self-center">
+        <div className="grid w-full grid-cols-3 gap-4">
+          <Lists />
+          <TrendingHome tag={tag} />
         </div>
       </div>
     </div>

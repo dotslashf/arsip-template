@@ -6,9 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
-import { ArrowRight, ImageIcon, Link2, NotebookPen } from "lucide-react";
-import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
+import {
+  ArrowRight,
+  ImageIcon,
+  Link as LinkIcon,
+  NotebookPen,
+} from "lucide-react";
+import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import { buttonVariants } from "../ui/button";
 import Link from "next/link";
@@ -63,13 +67,13 @@ export default function CardRelated({ copyPasta }: CardProps) {
   }
 
   return (
-    <Card className="h-full">
+    <Card className="flex h-full flex-col">
       <CardHeader className="pb-0">
         <CardTitle>
           <NotebookPen className="h-4 w-4" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col justify-between gap-2 py-2 hover:cursor-auto">
+      <CardContent className="flex flex-col justify-between gap-2 py-4 hover:cursor-auto">
         <div
           className={cn(
             "overflow-x-hidden text-sm",
@@ -78,16 +82,12 @@ export default function CardRelated({ copyPasta }: CardProps) {
             ) && "blur-sm transition hover:blur-none",
           )}
         >
-          <ScrollArea
-            className={cn("h-36 rounded-md text-sm", robotoSlab.className)}
-          >
-            <blockquote className="whitespace-pre-line">
-              {trimContent(copyPasta.content, 255)}
-            </blockquote>
-          </ScrollArea>
+          <blockquote className="whitespace-pre-line text-sm">
+            {trimContent(copyPasta.content, 255)}
+          </blockquote>
         </div>
       </CardContent>
-      <CardFooter className="mt-4 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
+      <CardFooter className="mt-auto flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
         <div className="flex w-full space-x-2">
           {copyPasta.CopyPastasOnTags.map((tag) => {
             const isActive = currentTag === tag.tags.id;
@@ -133,7 +133,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
               prefetch={false}
               target="__blank"
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </Link>
           ) : (
             <span
@@ -141,7 +141,7 @@ export default function CardRelated({ copyPasta }: CardProps) {
                 buttonVariants({ variant: "disabled", size: "url" }),
               )}
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </span>
           )}
           <Link

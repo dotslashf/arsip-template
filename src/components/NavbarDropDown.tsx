@@ -2,8 +2,6 @@ import {
   Library,
   LogIn,
   LogOut,
-  Menu,
-  MonitorDot,
   MonitorSmartphone,
   Moon,
   NotebookPen,
@@ -93,8 +91,8 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size={isSmallDevice ? "icon" : "default"}>
-          <span className="hidden md:inline">Menu</span>
-          <Menu className="h-4 w-4 md:ml-2" />
+          <span className="hidden md:inline">Profil</span>
+          <User className="h-4 w-4 md:ml-2" />
           <span className="sr-only">Open menu</span>
         </Button>
       </DropdownMenuTrigger>
@@ -116,44 +114,26 @@ export default function NavbarDropDown({ session }: NavbarDropDownProps) {
               <span className="text-sm font-medium">{session.user.name}</span>
             </div>
             <DropdownMenuSeparator />
-            <DropdownMenuLabel>Profil</DropdownMenuLabel>
-            <DropdownMenuSub>
-              <DropdownMenuSubTrigger>
-                <MonitorDot className="mr-2 h-4 w-4" />
-                <span>Dashboard</span>
-              </DropdownMenuSubTrigger>
-              <DropdownMenuPortal>
-                <DropdownMenuSubContent>
-                  <DropdownMenuItem asChild onClick={handleProfile}>
-                    <Link
-                      href="/dashboard/profile"
-                      className="flex items-center"
-                    >
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/dashboard/copy-pasta"
-                      className="flex items-center"
-                    >
-                      <NotebookPen className="mr-2 h-4 w-4" />
-                      Template
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/dashboard/collection"
-                      className="flex items-center"
-                    >
-                      <Library className="mr-2 w-4" />
-                      Koleksi
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuSubContent>
-              </DropdownMenuPortal>
-            </DropdownMenuSub>
+            <DropdownMenuLabel>Dashboard</DropdownMenuLabel>
+            <DropdownMenuItem asChild onClick={handleProfile}>
+              <Link href="/dashboard/profile" className="flex items-center">
+                <User className="mr-2 h-4 w-4" />
+                Profile
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/copy-pasta" className="flex items-center">
+                <NotebookPen className="mr-2 h-4 w-4" />
+                Template
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/collection" className="flex items-center">
+                <Library className="mr-2 w-4" />
+                Koleksi
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <Plus className="mr-2 h-4 w-4" />

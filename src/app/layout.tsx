@@ -11,6 +11,7 @@ import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { env } from "~/env";
 import { baseUrl } from "~/lib/constant";
 import Script from "next/script";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: {
@@ -79,6 +80,7 @@ export default function RootLayout({
         ></meta>
       </head>
       <body>
+        <NextTopLoader showSpinner={false} color="#4D7CDB" />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

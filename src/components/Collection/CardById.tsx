@@ -7,7 +7,12 @@ import {
   CardTitle,
 } from "../ui/card";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { ArrowRight, ImageIcon, Link2, NotebookPen } from "lucide-react";
+import {
+  ArrowRight,
+  ImageIcon,
+  Link as LinkIcon,
+  NotebookPen,
+} from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
@@ -81,7 +86,7 @@ export default function CardById({ copyPasta }: CardProps) {
               className={cn(buttonVariants({ variant: "link", size: "url" }))}
               prefetch={false}
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </Link>
           ) : (
             <span
@@ -89,7 +94,7 @@ export default function CardById({ copyPasta }: CardProps) {
                 buttonVariants({ variant: "disabled", size: "url" }),
               )}
             >
-              Cek Doksli <Link2 className="ml-2 h-3 w-3" />
+              Cek postingan asli <LinkIcon className="ml-2 h-3 w-3" />
             </span>
           )}
           <Link

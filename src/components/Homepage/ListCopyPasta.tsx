@@ -1,11 +1,11 @@
 import { type OriginSource } from "@prisma/client";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { api } from "~/trpc/react";
-import CardMinimal from "./CardMinimal";
+import CardMinimal from "../CopyPasta/CardMinimal";
 import { Button } from "~/components/ui/button";
-import GetContent from "../GetContent";
 import { trackEvent } from "~/lib/track";
+import { ArrowRight } from "lucide-react";
 
 export default function Lists() {
   const searchParams = useSearchParams();
@@ -13,28 +13,26 @@ export default function Lists() {
   const tag = searchParams.get("tag");
   const byUserId = searchParams.get("byUserId");
   const source = searchParams.get("source") as OriginSource;
-  const [{ pages }, allCopyPastas] =
-    api.copyPasta.list.useSuspenseInfiniteQuery(
-      {
-        limit: 10,
-        search,
-        tag,
-        byUserId,
-        source,
-      },
-      {
-        getNextPageParam: (lastPage) => lastPage.nextCursor,
-      },
-    );
+  const [{ pages }] = api.copyPasta.list.useSuspenseInfiniteQuery(
+    {
+      limit: 5,
+      search,
+      tag,
+      byUserId,
+      source,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    },
+  );
+  const router = useRouter();
 
-  const { isFetchingNextPage, fetchNextPage, hasNextPage } = allCopyPastas;
-
-  async function handleNextList() {
-    await fetchNextPage();
+  async function handleMore() {
     void trackEvent(ANALYTICS_EVENT.BUTTON_CLICKED, {
       button: "next",
       path: "/",
     });
+    router.push("/copy-pasta");
   }
 
   return (
@@ -47,14 +45,8 @@ export default function Lists() {
           )
         : null}
 
-      <Button
-        onClick={handleNextList}
-        disabled={!hasNextPage || isFetchingNextPage}
-      >
-        <GetContent
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-        />
+      <Button onClick={handleMore}>
+        Lihat Lebih Banyak <ArrowRight className="ml-2 w-4" />
       </Button>
     </div>
   );

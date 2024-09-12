@@ -18,7 +18,7 @@ import { LoaderCircle, PlusIcon } from "lucide-react";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FORM_COLLECTION_CONSTANT, parseErrorMessages } from "~/lib/constant";
 import { createCollectionForm } from "~/server/form/collection";
 import SearchBar from "~/components/Collection/SearchBar";
@@ -31,6 +31,8 @@ import BreadCrumbs from "~/components/BreadCrumbs";
 import { getBreadcrumbs } from "~/lib/utils";
 
 export default function CreateCollection() {
+  const createMutation = api.collection.create.useMutation();
+
   const [searchResults, setSearchResults] = useState<CardCopyPastaMinimal[]>(
     [],
   );
@@ -38,9 +40,12 @@ export default function CreateCollection() {
   const [listOfCollections, setListOfCollections] = useState<
     CardCopyPastaMinimal[]
   >([]);
+  const [showResults, setShowResults] = useState<boolean>(false);
+  const searchAreaRef = useRef<HTMLDivElement>(null);
 
-  const createMutation = api.collection.create.useMutation();
-
+  const toast = useToast();
+  const pathname = usePathname();
+  const breadcrumbs = getBreadcrumbs(pathname);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof createCollectionForm>>({
@@ -52,7 +57,73 @@ export default function CreateCollection() {
     },
   });
 
-  const toast = useToast();
+  const handleAddToCollection = (copyPasta: CardCopyPastaMinimal) => {
+    if (listOfCollections.length >= FORM_COLLECTION_CONSTANT.copyPastaIds.max) {
+      return toast({
+        type: "danger",
+        message: "Sudah mencapai batas nih!",
+      });
+    }
+
+    const exists = listOfCollections.some((item) => item.id === copyPasta.id);
+    if (exists) {
+      return toast({
+        type: "danger",
+        message: "Ups sudah ada dalam koleksi",
+      });
+    }
+
+    void toast({
+      type: "success",
+      message: "Ditambahkan dalam koleksi 😉",
+    });
+
+    setListOfCollections([...listOfCollections, copyPasta]);
+  };
+
+  const handleRemoveFromCollection = (copyPasta: CardCopyPastaMinimal) => {
+    setListOfCollections(
+      listOfCollections.filter((item) => item.id !== copyPasta.id),
+    );
+  };
+
+  const renderCollection = (copy: CardCopyPastaMinimal) => (
+    <CardSearchResult
+      type="remove"
+      copyPasta={copy}
+      onAddToCollection={handleAddToCollection}
+      onRemoveFromCollection={handleRemoveFromCollection}
+    />
+  );
+
+  const handleSearchBlur = useCallback(() => {
+    setShowResults(false);
+  }, []);
+
+  const handleSearchFocus = () => {
+    setShowResults(true);
+  };
+
+  const handleSearchResults = (results: CardCopyPastaMinimal[]) => {
+    setSearchResults(results);
+    setShowResults(true);
+  };
+
+  useEffect(() => {
+    const handleMouseDown = (event: MouseEvent) => {
+      if (
+        searchAreaRef.current &&
+        !searchAreaRef.current.contains(event.target as Node)
+      ) {
+        handleSearchBlur();
+      }
+    };
+
+    document.addEventListener("mousedown", handleMouseDown);
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+    };
+  }, [handleSearchBlur]);
 
   useEffect(() => {
     if (createMutation.isSuccess) {
@@ -84,43 +155,6 @@ export default function CreateCollection() {
       });
     } catch (error) {}
   }
-
-  const handleAddToCollection = (copyPasta: CardCopyPastaMinimal) => {
-    if (listOfCollections.length >= FORM_COLLECTION_CONSTANT.copyPastaIds.max) {
-      return toast({
-        type: "danger",
-        message: "Sudah mencapai batas nih!",
-      });
-    }
-
-    const exists = listOfCollections.some((item) => item.id === copyPasta.id);
-    if (exists) {
-      return toast({
-        type: "danger",
-        message: "Ups sudah ada dalam koleksi",
-      });
-    }
-
-    setListOfCollections([...listOfCollections, copyPasta]);
-  };
-
-  const handleRemoveFromCollection = (copyPasta: CardCopyPastaMinimal) => {
-    setListOfCollections(
-      listOfCollections.filter((item) => item.id !== copyPasta.id),
-    );
-  };
-
-  const renderCollection = (copy: CardCopyPastaMinimal) => (
-    <CardSearchResult
-      type="remove"
-      copyPasta={copy}
-      onAddToCollection={handleAddToCollection}
-      onRemoveFromCollection={handleRemoveFromCollection}
-    />
-  );
-
-  const pathname = usePathname();
-  const breadcrumbs = getBreadcrumbs(pathname);
 
   return (
     <div className="flex w-full flex-col">
@@ -162,29 +196,40 @@ export default function CreateCollection() {
                 </FormItem>
               )}
             />
-            <SearchBar
-              onSearchResults={setSearchResults}
-              onLoadingState={setIsSearching}
-            />
-            {isSearching && <LoaderCircle className="mb-4 w-4 animate-spin" />}
-            {searchResults.length > 0 && (
-              <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-                <div className="flex space-x-2 bg-secondary p-2">
-                  {searchResults.map((copy) => {
-                    return (
-                      <CardSearchResult
-                        type="add"
-                        key={copy.id}
-                        copyPasta={copy}
-                        onAddToCollection={handleAddToCollection}
-                        onRemoveFromCollection={handleRemoveFromCollection}
-                      />
-                    );
-                  })}
+            <div
+              className="flex flex-col gap-4"
+              ref={searchAreaRef}
+              onFocus={handleSearchFocus}
+            >
+              <SearchBar
+                onSearchResults={handleSearchResults}
+                onLoadingState={setIsSearching}
+              />
+              {isSearching && (
+                <div className="flex h-20 items-center justify-center rounded-md border bg-secondary">
+                  <LoaderCircle className="w-4 animate-spin" />
                 </div>
-                <ScrollBar orientation="horizontal" />
-              </ScrollArea>
-            )}
+              )}
+              {!isSearching && showResults && searchResults.length > 0 && (
+                <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+                  <div className="flex w-full space-x-2 bg-secondary p-2">
+                    {searchResults.map((copy) => {
+                      return (
+                        <div key={copy.id} className="w-80">
+                          <CardSearchResult
+                            type="add"
+                            copyPasta={copy}
+                            onAddToCollection={handleAddToCollection}
+                            onRemoveFromCollection={handleRemoveFromCollection}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <ScrollBar orientation="horizontal" />
+                </ScrollArea>
+              )}
+            </div>
             <FormField
               control={form.control}
               name="copyPastaIds"

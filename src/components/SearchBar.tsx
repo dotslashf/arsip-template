@@ -45,11 +45,11 @@ export default function SearchBar() {
     const currentParams = new URLSearchParams(searchParams);
     currentParams.set("search", query);
     void trackEvent(ANALYTICS_EVENT.SEARCH, {
-      value: currentParams.get("search") ?? "",
+      value: currentParams.get("search")?.toLowerCase() ?? "",
     });
     setIsSearchOpen(false);
     router.push(
-      `?${currentParams.toString()}&utm_term=${encodeURIComponent(query)}`,
+      `/copy-pasta/?${currentParams.toString()}&utm_term=${encodeURIComponent(query)}`,
     );
   };
 

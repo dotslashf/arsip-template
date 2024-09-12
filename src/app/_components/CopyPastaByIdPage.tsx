@@ -35,7 +35,7 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
   const breadcrumbs = getBreadcrumbs(pathname);
   const currentPath = breadcrumbs.map((path, i) => {
     return {
-      url: path.url === "/copy-pasta" ? "/#main" : path.url,
+      url: path.url,
       text:
         i === breadcrumbs.length - 1
           ? trimContent(copyPasta.content, 20)
