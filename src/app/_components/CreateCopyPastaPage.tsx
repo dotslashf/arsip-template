@@ -21,11 +21,7 @@ import {
   formatDateToHuman,
   getBreadcrumbs,
 } from "~/lib/utils";
-import {
-  ACCEPTED_IMAGE_TYPES,
-  createCopyPastaFormClient,
-  MAX_FILE_SIZE,
-} from "../../server/form/copyPasta";
+import { createCopyPastaFormClient } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
@@ -81,18 +77,9 @@ export default function CreateCopyPasta() {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
-    if (
-      selectedFile &&
-      ACCEPTED_IMAGE_TYPES.includes(selectedFile.type) &&
-      selectedFile.size <= MAX_FILE_SIZE
-    ) {
+    if (selectedFile) {
       setFile(selectedFile);
       form.setValue("imageUrl", selectedFile);
-    } else {
-      void toast({
-        message: "Hanya boleh gambar dan berukuran <= 2MB 🤓",
-        type: "danger",
-      });
     }
   };
 

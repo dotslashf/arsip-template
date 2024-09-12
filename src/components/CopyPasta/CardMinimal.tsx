@@ -9,7 +9,6 @@ import {
 import {
   ArrowRight,
   Clipboard,
-  ImageIcon,
   Link as LinkIcon,
   NotebookPen,
 } from "lucide-react";
@@ -25,6 +24,8 @@ import useToast from "../ui/use-react-hot-toast";
 import { trackEvent } from "~/lib/track";
 import Avatar from "../ui/avatar";
 import { badgeVariants } from "../ui/badge";
+import { useState } from "react";
+import DialogImage from "./DialogImage";
 
 interface CardMinimalProps extends CardProps {
   isShowAvatar?: boolean;
@@ -33,11 +34,24 @@ export default function CardMinimal({
   copyPasta,
   isShowAvatar = true,
 }: CardMinimalProps) {
+  const [isImageOpen, setIsImageOpen] = useState(false);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const currentTag = searchParams.get("tag");
   const toast = useToast();
+
+  const handleClickImage = (open: boolean) => {
+    if (open === true) {
+      void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+        value: `${copyPasta.id}`,
+        button: "original_image",
+        path: `${pathname}`,
+      });
+    }
+    setIsImageOpen(open);
+  };
 
   const handleTagClick = (tag: TagType, isActive: boolean) => {
     const currentParams = new URLSearchParams(searchParams);
@@ -147,7 +161,7 @@ export default function CardMinimal({
       <CardContent className="mt-6 flex py-0 hover:cursor-auto">
         <div
           className={cn(
-            "w-full overflow-x-hidden rounded-md border-2 border-dashed bg-secondary p-3 text-sm",
+            "w-full overflow-x-hidden rounded-md border bg-secondary p-3 text-sm",
             copyPasta.CopyPastasOnTags.some(
               (tag) => tag.tags.name === "NSFW",
             ) && "blur-sm transition hover:blur-none",
@@ -164,6 +178,14 @@ export default function CardMinimal({
         </div>
       </CardContent>
       <CardFooter className="mt-6 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
+        {copyPasta.imageUrl && (
+          <DialogImage
+            content={copyPasta.content}
+            imageUrl={copyPasta.imageUrl}
+            handleOpen={handleClickImage}
+            isOpen={isImageOpen}
+          />
+        )}
         <ReactionSummary
           reactions={copyPasta.reactions}
           copyPastaId={copyPasta.id}
@@ -192,16 +214,6 @@ export default function CardMinimal({
             {sourceEnumHash.get(copyPasta.source)?.icon}{" "}
             {sourceEnumHash.get(copyPasta.source)?.label}
           </Button>
-          {copyPasta.imageUrl && (
-            <span
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "xs" }),
-                "rounded-sm",
-              )}
-            >
-              <ImageIcon className="h-4 w-4" />
-            </span>
-          )}
         </div>
         <div className="flex w-full justify-between gap-3">
           {copyPasta.sourceUrl ? (

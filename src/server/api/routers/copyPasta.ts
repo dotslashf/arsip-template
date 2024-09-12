@@ -290,6 +290,7 @@ export const copyPastaRouter = createTRPCRouter({
           approvedAt: {
             not: null,
           },
+          deletedAt: null,
         },
         include: {
           CopyPastasOnTags: {
@@ -312,6 +313,7 @@ export const copyPastaRouter = createTRPCRouter({
         approvedAt: {
           not: null,
         },
+        deletedAt: null,
       },
     });
 

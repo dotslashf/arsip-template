@@ -6,12 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import {
-  ArrowRight,
-  ImageIcon,
-  Link as LinkIcon,
-  NotebookPen,
-} from "lucide-react";
+import { ArrowRight, Link as LinkIcon, NotebookPen } from "lucide-react";
 import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
 import { cn } from "~/lib/utils";
 import { buttonVariants } from "../ui/button";
@@ -19,12 +14,27 @@ import Link from "next/link";
 import Tag from "../ui/tags";
 import CopyPastaCardAction from "../CopyPastaCardAction";
 import { trackEvent } from "~/lib/track";
+import { useState } from "react";
+import DialogImage from "./DialogImage";
 
 export default function CardDashboard({
   copyPasta,
   isApprovalMode,
   type,
 }: CardDashboardProps) {
+  const [isImageOpen, setIsImageOpen] = useState(false);
+
+  const handleClickImage = (open: boolean) => {
+    if (open === true) {
+      void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+        value: `${copyPasta.id}`,
+        button: "original_image",
+        path: "/dashboard/profile",
+      });
+    }
+    setIsImageOpen(open);
+  };
+
   function handleDoksli() {
     void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
       value: `${copyPasta.id}`,
@@ -58,6 +68,14 @@ export default function CardDashboard({
         </div>
       </CardContent>
       <CardFooter className="mt-4 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
+        {copyPasta.imageUrl && (
+          <DialogImage
+            content={copyPasta.content}
+            imageUrl={copyPasta.imageUrl}
+            handleOpen={handleClickImage}
+            isOpen={isImageOpen}
+          />
+        )}
         <div className="flex w-full space-x-2">
           {copyPasta.CopyPastasOnTags.map((tag) => {
             return (
@@ -80,16 +98,6 @@ export default function CardDashboard({
             {sourceEnumHash.get(copyPasta.source)?.icon}{" "}
             {sourceEnumHash.get(copyPasta.source)?.label}
           </span>
-          {copyPasta.imageUrl && (
-            <span
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "xs" }),
-                "rounded-sm",
-              )}
-            >
-              <ImageIcon className="h-4 w-4" />
-            </span>
-          )}
         </div>
         <div className="flex w-full justify-between gap-3">
           {copyPasta.sourceUrl ? (

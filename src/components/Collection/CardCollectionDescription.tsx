@@ -84,7 +84,7 @@ export default function CardCollectionDescription({
         <CardHeader className="space-y-4">
           <Link href={`/collection/${id}`}>
             <CardTitle className="group flex hover:underline">
-              {name}{" "}
+              <span className="w-fit">{name}</span>
               <ChevronRight className="ml-2 w-6 transition-transform group-hover:translate-x-2" />
             </CardTitle>
           </Link>

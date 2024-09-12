@@ -88,16 +88,16 @@ export default function ReactionSummaryChild({
     let reactionName;
     switch (reaction) {
       case "Hah":
-        reactionName = "hmm";
+        reactionName = "🤯";
         break;
       case "Marah":
-        reactionName = "ngeselin";
+        reactionName = "🤬";
         break;
       case "Kocak":
-        reactionName = "ngakak";
+        reactionName = "🤣";
         break;
       case "Setuju":
-        reactionName = "setuju";
+        reactionName = "💯";
         break;
     }
     void toast({
@@ -108,7 +108,7 @@ export default function ReactionSummaryChild({
       }),
       type: "promise",
       promiseMsg: {
-        success: `Reaksi ${reactionName} ✍️`,
+        success: `${reactionName} disimpan ✍️`,
         loading: "🔥 Sedang memasak",
         error: `Pelan pelan pak sopir 🏎️💨 `,
       },

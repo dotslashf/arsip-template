@@ -1,14 +1,7 @@
 "use client";
 
 import { useMediaQuery } from "@uidotdev/usehooks";
-import {
-  ArrowRight,
-  Eye,
-  Hash,
-  Library,
-  NotebookPen,
-  TrendingUp,
-} from "lucide-react";
+import { ArrowRight, Eye, Hash, Library, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { cn, trimContent } from "~/lib/utils";
 import { api } from "~/trpc/react";
@@ -23,6 +16,7 @@ import {
 import { DAYS } from "~/lib/constant";
 import NumberTicker from "../magicui/number-ticker";
 import { buttonVariants } from "../ui/button";
+import { Badge } from "../ui/badge";
 
 interface TrendingHomeProps {
   tag: string | null;
@@ -76,13 +70,12 @@ export default function TrendingHome(props: TrendingHomeProps) {
                     className="flex items-center justify-between"
                     prefetch={false}
                   >
-                    <span className="text-sm hover:underline">
+                    <span className="w-fit text-sm hover:underline">
                       {trimContent(collection.name ?? "", 30)}
                     </span>
-                    <span className="ml-4 flex items-center justify-center text-xs text-muted-foreground">
-                      {collection._count.copyPastas} Template{" "}
-                      <NotebookPen className="ml-2 w-4" />
-                    </span>
+                    <Badge variant={"secondary"}>
+                      {collection._count.copyPastas} Template
+                    </Badge>
                   </Link>
                 );
               })}
