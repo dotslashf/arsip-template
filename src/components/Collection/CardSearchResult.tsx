@@ -42,7 +42,7 @@ export default function CardSearchResult({
   }
 
   return (
-    <Card className="h-full w-full">
+    <Card className="flex h-full w-full flex-col">
       <CardHeader className="pb-0">
         <CardTitle className="flex w-full items-center justify-between">
           <NotebookPen className="h-4 w-4" />
@@ -51,15 +51,15 @@ export default function CardSearchResult({
       <CardContent className="flex flex-col justify-between gap-2 pb-2 pt-4 hover:cursor-auto">
         <div className={cn("overflow-x-hidden text-sm")}>
           <ScrollArea
-            className={cn("h-20 rounded-md text-sm", robotoSlab.className)}
+            className={cn("rounded-md text-sm", robotoSlab.className)}
           >
             <blockquote className="select-none whitespace-pre-line">
-              {trimContent(copyPasta.content, 255)}
+              {trimContent(copyPasta.content, 200)}
             </blockquote>
           </ScrollArea>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col items-start gap-4 self-end text-sm text-secondary-foreground dark:text-muted-foreground">
+      <CardFooter className="mt-auto flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
         <div className="flex w-full space-x-2">
           {copyPasta.CopyPastasOnTags.map((tag) => {
             return (
