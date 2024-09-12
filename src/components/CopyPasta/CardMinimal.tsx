@@ -26,7 +26,13 @@ import { trackEvent } from "~/lib/track";
 import Avatar from "../ui/avatar";
 import { badgeVariants } from "../ui/badge";
 
-export default function CardMinimal({ copyPasta }: CardProps) {
+interface CardMinimalProps extends CardProps {
+  isShowAvatar?: boolean;
+}
+export default function CardMinimal({
+  copyPasta,
+  isShowAvatar = true,
+}: CardMinimalProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -95,39 +101,43 @@ export default function CardMinimal({ copyPasta }: CardProps) {
     <Card className="h-full">
       <CardHeader className="pb-0">
         <CardTitle className="flex w-full items-center justify-between">
-          <div className="flex">
-            <span className="mr-4 rounded-full border-2 border-secondary-foreground">
-              <Avatar
-                size={{
-                  width: 75,
-                  height: 75,
-                }}
-                seed={
-                  copyPasta.createdBy?.avatarSeed ?? copyPasta.createdBy?.id
-                }
-              />
-            </span>
-            <div className="flex w-full flex-col justify-evenly">
-              <span className="text-sm font-normal">Diarsipkan oleh:</span>
-              <Link
-                href={`/user/${copyPasta.createdBy?.username}`}
-                className={cn(
-                  badgeVariants({
-                    variant: "ghost",
-                    className: "py-0.5",
-                  }),
-                  "w-fit",
-                )}
-              >
-                @
-                {copyPasta.createdBy?.id.includes(
-                  copyPasta.createdBy?.username ?? "",
-                )
-                  ? copyPasta.createdBy.name
-                  : copyPasta.createdBy?.username}
-              </Link>
+          {isShowAvatar ? (
+            <div className="flex">
+              <span className="mr-4 rounded-full border-2 border-secondary-foreground">
+                <Avatar
+                  size={{
+                    width: 75,
+                    height: 75,
+                  }}
+                  seed={
+                    copyPasta.createdBy?.avatarSeed ?? copyPasta.createdBy?.id
+                  }
+                />
+              </span>
+              <div className="flex w-full flex-col justify-evenly">
+                <span className="text-sm font-normal">Diarsipkan oleh:</span>
+                <Link
+                  href={`/user/${copyPasta.createdBy?.username}`}
+                  className={cn(
+                    badgeVariants({
+                      variant: "ghost",
+                      className: "py-0.5",
+                    }),
+                    "w-fit",
+                  )}
+                >
+                  @
+                  {copyPasta.createdBy?.id.includes(
+                    copyPasta.createdBy?.username ?? "",
+                  )
+                    ? copyPasta.createdBy.name
+                    : copyPasta.createdBy?.username}
+                </Link>
+              </div>
             </div>
-          </div>
+          ) : (
+            <NotebookPen className="w-4" />
+          )}
           <Button variant={"outline"} size={"xs"} onClick={handleCopy}>
             <span className="text-sm">Salin</span>
             <Clipboard className="ml-2 w-3" />

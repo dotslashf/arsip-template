@@ -45,6 +45,7 @@ export default function UserProfileCard({
     },
     {
       staleTime: Infinity,
+      enabled: !isPreviewMode,
     },
   );
   const { data: topTags } = api.tag.getTopTagsByUserId.useQuery(
@@ -276,12 +277,6 @@ export default function UserProfileCard({
                     session?.user.id.slice(0, 15) ??
                     "Anon"}
                 </Link>
-                {/* <Badge variant={"ghost"} className="py-1 font-bold">
-                  @
-                  {session?.user.username ??
-                    session?.user.id.slice(0, 15) ??
-                    "Anon"}
-                </Badge> */}
                 {!isPreviewMode && (
                   <Button
                     variant={"outline"}
@@ -297,10 +292,10 @@ export default function UserProfileCard({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col items-center space-y-2 font-mono text-sm font-semibold">
+      <CardContent className="flex flex-col items-center space-y-2 pt-4 text-sm font-semibold">
         <span className="flex w-full justify-between">
           Rank:
-          <Badge>{session?.user.rank?.title ?? "User"}</Badge>
+          <Badge variant={"white"}>{session?.user.rank?.title ?? "User"}</Badge>
         </span>
         <span className="flex w-full justify-between">
           Login Provider:
@@ -315,11 +310,13 @@ export default function UserProfileCard({
           </Badge>
         </span>
       </CardContent>
-      <CardFooter className="flex flex-col space-y-2 font-mono text-sm font-semibold">
-        <div className="flex flex-col items-center justify-center space-y-2">
-          <span>Reactions:</span>
-          <ReactionSummaryProfile reactions={reactions} />
-        </div>
+      <CardFooter className="flex flex-col space-y-2 text-sm font-semibold">
+        {!isPreviewMode && (
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <span>Reactions:</span>
+            <ReactionSummaryProfile reactions={reactions} />
+          </div>
+        )}
         <div className="flex flex-col items-center justify-center space-y-2">
           <span>Tags:</span>
           <div className="flex flex-wrap items-center justify-center gap-2">

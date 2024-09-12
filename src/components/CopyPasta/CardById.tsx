@@ -16,11 +16,9 @@ import {
   Eye,
   ImageIcon,
   Link as LinkIcon,
-  NotebookPen,
   Share2,
 } from "lucide-react";
 import useToast from "../ui/use-react-hot-toast";
-import { ScrollArea } from "../ui/scroll-area";
 import {
   ANALYTICS_EVENT,
   baseUrl,
@@ -47,9 +45,10 @@ import {
 import {} from "@prisma/client";
 import Tag from "../ui/tags";
 import { type CardProps } from "~/lib/interface";
-import { Badge } from "../ui/badge";
+import { Badge, badgeVariants } from "../ui/badge";
 import { api } from "~/trpc/react";
 import { trackEvent } from "~/lib/track";
+import Avatar from "../ui/avatar";
 
 export default function CardById({ copyPasta }: CardProps) {
   const toast = useToast();
@@ -128,7 +127,39 @@ export default function CardById({ copyPasta }: CardProps) {
     <Card className="h-full">
       <CardHeader className="pb-0 lg:p-6 lg:pb-0">
         <CardTitle className="flex w-full items-center justify-between">
-          <NotebookPen className="flip h-4 w-4" />
+          <div className="flex">
+            <span className="mr-4 rounded-full border-2 border-secondary-foreground">
+              <Avatar
+                size={{
+                  width: 95,
+                  height: 95,
+                }}
+                seed={
+                  copyPasta.createdBy?.avatarSeed ?? copyPasta.createdBy?.id
+                }
+              />
+            </span>
+            <div className="flex w-full flex-col justify-evenly">
+              <span className="text-sm font-normal">Diarsipkan oleh:</span>
+              <Link
+                href={`/user/${copyPasta.createdBy?.username}`}
+                className={cn(
+                  badgeVariants({
+                    variant: "ghost",
+                    className: "py-0.5",
+                  }),
+                  "w-fit",
+                )}
+              >
+                @
+                {copyPasta.createdBy?.id.includes(
+                  copyPasta.createdBy?.username ?? "",
+                )
+                  ? copyPasta.createdBy.name
+                  : copyPasta.createdBy?.username}
+              </Link>
+            </div>
+          </div>
           <Badge
             variant={"default"}
             className="flex items-center justify-center md:text-base"
@@ -137,15 +168,17 @@ export default function CardById({ copyPasta }: CardProps) {
           </Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent className="my-6 flex flex-col justify-between gap-2 hover:cursor-auto lg:px-6">
-        <div className={cn("overflow-x-hidden text-sm")}>
-          <ScrollArea
-            className={cn("h-fit rounded-md text-lg", robotoSlab.className)}
+      <CardContent className="my-8 flex flex-col justify-between gap-2 py-0 hover:cursor-auto lg:px-6">
+        <div
+          className={cn(
+            "w-full overflow-x-hidden rounded-md border-2 border-dashed bg-secondary p-3 text-sm",
+          )}
+        >
+          <blockquote
+            className={`whitespace-pre-line text-lg ${robotoSlab.className}`}
           >
-            <blockquote className="whitespace-pre-line">
-              {copyPasta.content}
-            </blockquote>
-          </ScrollArea>
+            {copyPasta.content}
+          </blockquote>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground lg:p-6 lg:pt-0">
@@ -223,13 +256,6 @@ export default function CardById({ copyPasta }: CardProps) {
               Diarsipkan <BookCheck className="mx-2 h-4 w-4" />{" "}
               {formatDateToHuman(copyPasta.createdAt ?? new Date())}
             </div>
-            <Link
-              href={`/user/${copyPasta.createdById}?utm_source=copy_pasta_by_id`}
-              className="font-semibold transition-colors hover:text-primary hover:underline"
-              prefetch={false}
-            >
-              Oleh: {copyPasta.createdBy ? copyPasta.createdBy.name : "Anon"}
-            </Link>
           </div>
           <div className="flex items-center justify-between gap-2 md:flex-col md:items-end">
             <div>
