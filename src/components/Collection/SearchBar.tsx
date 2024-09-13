@@ -2,10 +2,10 @@ import { Input } from "~/components/ui/input";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import { useDebounce } from "@uidotdev/usehooks";
-import { type CardCopyPastaMinimal } from "~/lib/interface";
+import { type CopyPastaSearchResult } from "~/lib/interface";
 
 interface SearchBarProps {
-  onSearchResults: (results: CardCopyPastaMinimal[]) => void;
+  onSearchResults: (results: CopyPastaSearchResult[]) => void;
   onLoadingState: (isLoading: boolean) => void;
 }
 
@@ -21,7 +21,7 @@ export default function SearchBar({
   useEffect(() => {
     const searchQuery = async () => {
       onLoadingState(true); // Notify parent that loading has started
-      let queryResult: CardCopyPastaMinimal[] = [];
+      let queryResult: CopyPastaSearchResult[] = [];
       if (query) {
         const data = await searchMutation.mutateAsync({ query });
         queryResult = data;

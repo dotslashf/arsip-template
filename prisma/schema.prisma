@@ -32,6 +32,8 @@ model CopyPasta {
     CopyPastasOnTags CopyPastasOnTags[]
     Reactions        Reaction[]
     collections      CollectionsOnCopyPastas[]
+
+    @@index([content(ops: raw("gin_trgm_ops"))], type: Gin)
 }
 
 model Tag {

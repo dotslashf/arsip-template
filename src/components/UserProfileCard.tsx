@@ -233,8 +233,9 @@ export default function UserProfileCard({
                     )}
                   />
                   <div className="flex w-full justify-between">
-                    <Button variant={"confirm"} size={"icon"} type="submit">
-                      <Save className="w-4" />
+                    <Button variant={"confirm"} type="submit">
+                      Simpan
+                      <Save className="ml-2 w-4" />
                     </Button>
                     <div className="flex space-x-2">
                       <Button
@@ -259,7 +260,7 @@ export default function UserProfileCard({
                 </form>
               </Form>
             ) : (
-              <div className="flex flex-col items-center space-y-2">
+              <div className="flex flex-col items-center gap-4">
                 <span className="font-bold">
                   {session?.user.name ?? "Anon"}
                 </span>
@@ -267,7 +268,7 @@ export default function UserProfileCard({
                   href={`/user/${session?.user.username}`}
                   className={cn(
                     badgeVariants({
-                      variant: "ghost",
+                      variant: "default",
                       className: "py1 font-bold",
                     }),
                   )}
@@ -277,9 +278,21 @@ export default function UserProfileCard({
                     session?.user.id.slice(0, 15) ??
                     "Anon"}
                 </Link>
+                <Badge variant={"white"}>
+                  Rank: {session?.user.rank?.title ?? "User"}
+                </Badge>
+                <Badge
+                  className={cn(
+                    session?.user.loginProvider
+                      ? `bg-${session.user.loginProvider} hover:bg-${session.user.loginProvider}-hover`
+                      : "bg-primary hover:bg-primary/80",
+                  )}
+                >
+                  Login: {session?.user.loginProvider ?? "User"}
+                </Badge>
                 {!isPreviewMode && (
                   <Button
-                    variant={"outline"}
+                    variant={"warning"}
                     size={"sm"}
                     onClick={() => setIsEditMode(!isEditMode)}
                   >
@@ -292,54 +305,40 @@ export default function UserProfileCard({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col items-center space-y-2 pt-4 text-sm font-semibold">
-        <span className="flex w-full justify-between">
-          Rank:
-          <Badge variant={"white"}>{session?.user.rank?.title ?? "User"}</Badge>
-        </span>
-        <span className="flex w-full justify-between">
-          Login Provider:
-          <Badge
-            className={cn(
-              session?.user.loginProvider
-                ? `bg-${session.user.loginProvider} hover:bg-${session.user.loginProvider}-hover`
-                : "bg-primary hover:bg-primary/80",
-            )}
-          >
-            {session?.user.loginProvider ?? "User"}
-          </Badge>
-        </span>
-      </CardContent>
-      <CardFooter className="flex flex-col space-y-2 text-sm font-semibold">
-        {!isPreviewMode && (
-          <div className="flex flex-col items-center justify-center space-y-2">
-            <span>Reactions:</span>
-            <ReactionSummaryProfile reactions={reactions} />
-          </div>
-        )}
-        <div className="flex flex-col items-center justify-center space-y-2">
-          <span>Tags:</span>
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {topTags?.map((tag) => {
-              const now = new Date();
-              const formattedTag = {
-                createdAt: now,
-                id: tag.count.id,
-                name: `${tag.id} (${tag.count.count})`,
-                updatedAt: now,
-              };
-              return (
-                <Tag
-                  key={tag.count.id}
-                  tagContent={formattedTag}
-                  onClick={() => handleTagClick(formattedTag)}
-                  className="rounded-sm shadow-sm hover:bg-primary hover:text-primary-foreground"
-                />
-              );
-            })}
-          </div>
-        </div>
-      </CardFooter>
+      {!isPreviewMode || (topTags && topTags.length > 0) ? (
+        <CardFooter className="flex flex-col space-y-2 text-sm font-semibold">
+          {!isPreviewMode && (
+            <div className="flex flex-col items-center justify-center space-y-2">
+              <span>Reactions:</span>
+              <ReactionSummaryProfile reactions={reactions} />
+            </div>
+          )}
+          {topTags && topTags.length > 0 && (
+            <div className="flex flex-col items-center justify-center space-y-2">
+              <span>Tags:</span>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {topTags?.map((tag) => {
+                  const now = new Date();
+                  const formattedTag = {
+                    createdAt: now,
+                    id: tag.count.id,
+                    name: `${tag.id} (${tag.count.count})`,
+                    updatedAt: now,
+                  };
+                  return (
+                    <Tag
+                      key={tag.count.id}
+                      tagContent={formattedTag}
+                      onClick={() => handleTagClick(formattedTag)}
+                      className="rounded-sm shadow-sm hover:bg-primary hover:text-primary-foreground"
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </CardFooter>
+      ) : null}
     </Card>
   );
 }

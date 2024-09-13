@@ -108,12 +108,22 @@ export default function CreateCopyPasta() {
         fileName: file.name,
       });
 
-      await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": file.type,
+      await toast({
+        type: "promise",
+        message: "",
+        promiseFn: fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+          },
+          body: file,
+        }),
+        promiseMsg: {
+          loading: "Sedang memasak 🔥",
+          success: "Image berhasil diupload 📸",
+          // eslint-disable-next-line
+          error: (err) => `${parseErrorMessages(err)}`,
         },
-        body: file,
       });
 
       await toast({
