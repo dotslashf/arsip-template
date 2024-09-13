@@ -6,16 +6,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { trimContent } from "~/lib/utils";
 import { api } from "~/trpc/react";
-import { type CopyPasta } from "@prisma/client";
 import { useMediaQuery, useDebounce } from "@uidotdev/usehooks";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { trackEvent } from "~/lib/track";
+import { type CopyPastaSearchResult } from "~/lib/interface";
 
 export default function SearchBar() {
   const [query, setQuery] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [results, setResults] = useState<CopyPasta[]>([]);
+  const [results, setResults] = useState<CopyPastaSearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const debouncedSearchTerm = useDebounce(query, 500);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function SearchBar() {
   useEffect(() => {
     const searchQuery = async () => {
       setIsSearching(true);
-      let queryResult: CopyPasta[] = [];
+      let queryResult: CopyPastaSearchResult[] = [];
       if (query) {
         const data = await searchMutation.mutateAsync({ query });
         queryResult = data;
@@ -89,7 +89,7 @@ export default function SearchBar() {
                   key={index}
                   className="cursor-pointer overflow-hidden rounded-md px-4 py-2 transition-colors hover:bg-secondary dark:text-accent dark:hover:bg-accent-foreground"
                 >
-                  {trimContent(result.content, 100)}
+                  {trimContent(result.content as string, 100)}
                 </Link>
               ))}
             </ul>
