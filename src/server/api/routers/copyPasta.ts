@@ -10,6 +10,10 @@ import {
 } from "~/server/api/trpc";
 
 import { getRandomElement } from "~/lib/utils";
+import {
+  type CopyPastaOnlyContent,
+  type CopyPastaSearchResult,
+} from "~/lib/interface";
 
 function tokenize(content: string) {
   return content.toLowerCase().split(/\s+/);
@@ -26,12 +30,11 @@ export const copyPastaRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const newContentTokens = new Set(tokenize(input.content));
 
-      // TODO: Implement better search https://ai.belajarlagi.id/dash/c/82e86ed5-e9b5-460b-82c9-415d886e6550
-      const existingCopyPastas = await ctx.db.copyPasta.findMany({
-        select: {
-          content: true,
-        },
-      });
+      const existingCopyPastas: CopyPastaOnlyContent[] = await ctx.db.$queryRaw`
+        SELECT content
+        FROM "CopyPasta"
+        WHERE to_tsvector('indonesian', content) @@ plainto_tsquery('indonesian', ${input.content})
+      `;
 
       for (const { content } of existingCopyPastas) {
         const existingContentTokens = new Set(tokenize(content));
@@ -40,7 +43,7 @@ export const copyPastaRouter = createTRPCRouter({
           existingContentTokens,
         );
 
-        if (similarity > 0.7) {
+        if (similarity > 0.65) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "Content is too similar to an existing entry.",
@@ -174,34 +177,36 @@ export const copyPastaRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const results = await ctx.db.copyPasta.findMany({
-        where: {
-          content: {
-            contains: input.query,
-            mode: "insensitive",
-          },
-          deletedAt: null,
-          approvedAt: {
-            not: null,
-          },
-        },
-        include: {
-          CopyPastasOnTags: {
-            include: {
-              tags: true,
-            },
-          },
-          createdBy: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-        take: 5,
-      });
+      const results: CopyPastaSearchResult[] = await ctx.db.$queryRaw`
+        SELECT 
+          cp.*, 
+          u.id as "createdById", 
+          u.name as "createdByName", 
+          json_agg(json_build_object('id', t.id, 'name', t.name)) as tags
+        FROM "CopyPasta" cp
+        LEFT JOIN "CopyPastasOnTags" cpt ON cp.id = cpt."copyPastaId"
+        LEFT JOIN "Tag" t ON cpt."tagId" = t.id
+        LEFT JOIN "User" u ON cp."createdById" = u.id
+        WHERE cp.content ILIKE '%' || ${input.query} || '%'
+          AND cp."deletedAt" IS NULL
+          AND cp."approvedAt" IS NOT NULL
+        GROUP BY cp.id, u.id, u.name
+        LIMIT 5
+      `;
 
-      return results;
+      console.log(
+        "results",
+        results.map((r) => r.tags),
+      );
+
+      return results.map((row) => ({
+        ...row,
+        createdBy: {
+          id: row.createdById,
+          name: row.createdByName,
+        },
+        tags: row.tags.filter((tag) => tag !== null), // Filter out null tags
+      }));
     }),
 
   byId: publicProcedure

@@ -23,7 +23,7 @@ import { FORM_COLLECTION_CONSTANT, parseErrorMessages } from "~/lib/constant";
 import { createCollectionForm } from "~/server/form/collection";
 import SearchBar from "~/components/Collection/SearchBar";
 import CardSearchResult from "~/components/Collection/CardSearchResult";
-import { type CardCopyPastaMinimal } from "~/lib/interface";
+import { type CopyPastaSearchResult } from "~/lib/interface";
 import { ScrollBar, ScrollArea } from "~/components/ui/scroll-area";
 import EmptyState from "~/components/EmptyState";
 import CardList from "~/components/Collection/CardLists";
@@ -33,12 +33,12 @@ import { getBreadcrumbs } from "~/lib/utils";
 export default function CreateCollection() {
   const createMutation = api.collection.create.useMutation();
 
-  const [searchResults, setSearchResults] = useState<CardCopyPastaMinimal[]>(
+  const [searchResults, setSearchResults] = useState<CopyPastaSearchResult[]>(
     [],
   );
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [listOfCollections, setListOfCollections] = useState<
-    CardCopyPastaMinimal[]
+    CopyPastaSearchResult[]
   >([]);
   const [showResults, setShowResults] = useState<boolean>(false);
   const searchAreaRef = useRef<HTMLDivElement>(null);
@@ -57,7 +57,7 @@ export default function CreateCollection() {
     },
   });
 
-  const handleAddToCollection = (copyPasta: CardCopyPastaMinimal) => {
+  const handleAddToCollection = (copyPasta: CopyPastaSearchResult) => {
     if (listOfCollections.length >= FORM_COLLECTION_CONSTANT.copyPastaIds.max) {
       return toast({
         type: "danger",
@@ -81,13 +81,13 @@ export default function CreateCollection() {
     setListOfCollections([...listOfCollections, copyPasta]);
   };
 
-  const handleRemoveFromCollection = (copyPasta: CardCopyPastaMinimal) => {
+  const handleRemoveFromCollection = (copyPasta: CopyPastaSearchResult) => {
     setListOfCollections(
       listOfCollections.filter((item) => item.id !== copyPasta.id),
     );
   };
 
-  const renderCollection = (copy: CardCopyPastaMinimal) => (
+  const renderCollection = (copy: CopyPastaSearchResult) => (
     <CardSearchResult
       type="remove"
       copyPasta={copy}
@@ -104,7 +104,7 @@ export default function CreateCollection() {
     setShowResults(true);
   };
 
-  const handleSearchResults = (results: CardCopyPastaMinimal[]) => {
+  const handleSearchResults = (results: CopyPastaSearchResult[]) => {
     setSearchResults(results);
     setShowResults(true);
   };
@@ -134,7 +134,7 @@ export default function CreateCollection() {
   useEffect(() => {
     form.setValue(
       "copyPastaIds",
-      listOfCollections.map((copy) => copy.id),
+      listOfCollections.map((copy) => copy.id as string),
     );
   }, [listOfCollections, form]);
 

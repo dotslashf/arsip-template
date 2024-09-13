@@ -1,4 +1,7 @@
-import { type CardCopyPastaMinimal, type CardProps } from "~/lib/interface";
+import {
+  type CardSearchProps,
+  type CopyPastaSearchResult,
+} from "~/lib/interface";
 import {
   Card,
   CardContent,
@@ -15,17 +18,17 @@ import {
   NotebookPen,
   Plus,
 } from "lucide-react";
-import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
+import { ANALYTICS_EVENT, robotoSlab } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
 import Tag from "../ui/tags";
 import { trackEvent } from "~/lib/track";
 
-interface CardSearchResultProps extends CardProps {
+interface CardSearchResultProps extends CardSearchProps {
   type: "add" | "remove";
-  onAddToCollection: (copyPasta: CardCopyPastaMinimal) => void;
-  onRemoveFromCollection: (copyPasta: CardCopyPastaMinimal) => void;
+  onAddToCollection: (copyPasta: CopyPastaSearchResult) => void;
+  onRemoveFromCollection: (copyPasta: CopyPastaSearchResult) => void;
 }
 
 export default function CardSearchResult({
@@ -54,33 +57,29 @@ export default function CardSearchResult({
             className={cn("rounded-md text-sm", robotoSlab.className)}
           >
             <blockquote className="select-none whitespace-pre-line">
-              {trimContent(copyPasta.content, 200)}
+              {trimContent(copyPasta.content as string, 200)}
             </blockquote>
           </ScrollArea>
         </div>
       </CardContent>
       <CardFooter className="mt-auto flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
         <div className="flex w-full space-x-2">
-          {copyPasta.CopyPastasOnTags.map((tag) => {
+          {copyPasta.tags.map((tag) => {
             return (
               <Tag
-                key={tag.tags.id}
+                key={tag.id}
                 onClick={() => null}
-                tagContent={tag.tags}
+                tagContent={{
+                  ...tag,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                }}
                 className="rounded-sm shadow-sm hover:bg-primary hover:text-primary-foreground"
               />
             );
           })}
         </div>
         <div className="flex w-full gap-2">
-          <Button
-            className="cursor-pointer gap-2 rounded-sm px-2 text-xs"
-            variant="secondary"
-            size="xs"
-          >
-            {sourceEnumHash.get(copyPasta.source)?.icon}{" "}
-            {sourceEnumHash.get(copyPasta.source)?.label}
-          </Button>
           {copyPasta.imageUrl && (
             <Link
               href={copyPasta.imageUrl}

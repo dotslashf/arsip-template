@@ -122,6 +122,10 @@ export interface CardProps {
   copyPasta: CardCopyPastaMinimal;
 }
 
+export interface CardSearchProps {
+  copyPasta: CopyPastaSearchResult;
+}
+
 export interface CardDashboardProps extends CardProps {
   isApprovalMode?: boolean;
   type: "approved" | "disapproved" | "deleted";
@@ -155,3 +159,40 @@ export interface Breadcrumb {
   text: string;
   url: string;
 }
+
+export type CopyPastaOnlyContent = Pick<CopyPasta, "content">;
+
+export type CopyPastaSearchResult = Pick<
+  Prisma.CopyPastaGetPayload<{
+    include: {
+      CopyPastasOnTags: {
+        include: {
+          tags: true;
+        };
+      };
+      createdBy: {
+        select: {
+          id: true;
+          name: true;
+        };
+      };
+    };
+  }>,
+  | "id"
+  | "content"
+  | "source"
+  | "sourceUrl"
+  | "postedAt"
+  | "imageUrl"
+  | "createdAt"
+  | "updatedAt"
+  | "approvedAt"
+  | "deletedAt"
+> & {
+  createdById: string;
+  createdByName: string;
+  tags: {
+    id: string;
+    name: string;
+  }[];
+};
