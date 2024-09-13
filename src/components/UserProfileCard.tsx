@@ -1,11 +1,5 @@
 import { type Session } from "next-auth";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardFooter,
-  CardTitle,
-} from "./ui/card";
+import { Card, CardHeader, CardFooter, CardTitle } from "./ui/card";
 import { Badge, badgeVariants } from "./ui/badge";
 import { ANALYTICS_EVENT, baseUrl, parseErrorMessages } from "~/lib/constant";
 import { Edit, RotateCw, Save, Share2, Undo2 } from "lucide-react";

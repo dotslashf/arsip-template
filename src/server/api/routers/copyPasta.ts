@@ -185,8 +185,6 @@ export const copyPastaRouter = createTRPCRouter({
       const results: CopyPastaSearchResult[] = await ctx.db.$queryRaw`
         SELECT 
           cp.*, 
-          u.id as "createdById", 
-          u.name as "createdByName", 
           json_agg(json_build_object('id', t.id, 'name', t.name)) as tags
         FROM "CopyPasta" cp
         LEFT JOIN "CopyPastasOnTags" cpt ON cp.id = cpt."copyPastaId"
@@ -195,7 +193,7 @@ export const copyPastaRouter = createTRPCRouter({
         WHERE cp.content ILIKE '%' || ${input.query} || '%'
           AND cp."deletedAt" IS NULL
           AND cp."approvedAt" IS NOT NULL
-        GROUP BY cp.id, u.id, u.name
+        GROUP BY cp.id
         LIMIT 5
       `;
 
@@ -206,10 +204,6 @@ export const copyPastaRouter = createTRPCRouter({
 
       return results.map((row) => ({
         ...row,
-        createdBy: {
-          id: row.createdById,
-          name: row.createdByName,
-        },
         tags: row.tags.filter((tag) => tag !== null), // Filter out null tags
       }));
     }),

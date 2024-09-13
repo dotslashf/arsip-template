@@ -170,12 +170,6 @@ export type CopyPastaSearchResult = Pick<
           tags: true;
         };
       };
-      createdBy: {
-        select: {
-          id: true;
-          name: true;
-        };
-      };
     };
   }>,
   | "id"
@@ -189,8 +183,6 @@ export type CopyPastaSearchResult = Pick<
   | "approvedAt"
   | "deletedAt"
 > & {
-  createdById: string;
-  createdByName: string;
   tags: {
     id: string;
     name: string;
