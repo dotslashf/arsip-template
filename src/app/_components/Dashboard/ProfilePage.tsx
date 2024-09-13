@@ -51,9 +51,10 @@ export default function ProfilePage() {
                     href={`${menu.path}`}
                     className={cn(
                       buttonVariants({ variant: "link", size: "url" }),
+                      "w-full",
                     )}
                   >
-                    Lebih Lanjut <ArrowRight className="ml-2 h-3 w-3" />
+                    Lebih Lanjut <ArrowRight className="ml-auto h-3 w-3" />
                   </Link>
                 </CardContent>
               </Card>
