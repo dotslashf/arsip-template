@@ -51,14 +51,19 @@ export const copyPastaRouter = createTRPCRouter({
         }
       }
 
+      const isSuperAdmin = ctx.session.user.role === "SuperAdmin";
+
+      const { content, source, sourceUrl, postedAt, imageUrl } = input;
       const copyPasta = await ctx.db.copyPasta.create({
         data: {
-          content: input.content,
-          source: input.source,
-          sourceUrl: input.sourceUrl,
-          postedAt: input.postedAt,
+          content,
+          source,
+          sourceUrl,
+          postedAt,
+          imageUrl,
           createdById: ctx.session.user.id,
-          imageUrl: input.imageUrl,
+          approvedAt: isSuperAdmin ? new Date() : null,
+          approvedById: isSuperAdmin ? ctx.session.user.id : null,
           CopyPastasOnTags: {
             createMany: {
               data: input.tags.map((tag) => {
