@@ -4,7 +4,12 @@ import { type ClassValue, clsx } from "clsx";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { type Breadcrumb } from "./interface";
-import { type Thing, type WithContext, type WebSite } from "schema-dts";
+import {
+  type Thing,
+  type WithContext,
+  type WebSite,
+  type SearchAction,
+} from "schema-dts";
 import { baseUrl } from "./constant";
 
 export function cn(...inputs: ClassValue[]) {
@@ -128,6 +133,10 @@ export function generateSchemaById<T extends Thing>(json: WithContext<T>) {
   return json;
 }
 
+type QueryAction = SearchAction & {
+  "query-input": string;
+};
+
 export function generateSchemaOrgWebSite(): WithContext<WebSite> {
   return {
     "@context": "https://schema.org",
@@ -140,6 +149,7 @@ export function generateSchemaOrgWebSite(): WithContext<WebSite> {
         "@type": "EntryPoint",
         urlTemplate: `${baseUrl}/copy-pasta?search={search_term_string}`,
       },
-    },
+      "query-input": "required name=search_term_string",
+    } as QueryAction,
   };
 }

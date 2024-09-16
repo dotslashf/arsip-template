@@ -69,13 +69,21 @@ export default async function CopyPastaById({ params }: PropsPage) {
     headline: copyPasta.content,
     author: {
       "@type": "Person",
+      url: `${baseUrl}/user/${copyPasta.createdBy.username ?? copyPasta.createdBy.id}`,
       name:
         copyPasta.createdBy.name ??
         copyPasta.createdBy.username ??
         copyPasta.createdBy.id,
     },
-    datePublished: formatDateToHuman(copyPasta.approvedAt!),
-    image: copyPasta.imageUrl ?? defaultImage,
+    datePublished: formatDateToHuman(
+      copyPasta.approvedAt!,
+      "yyyy-MM-dd'T'HH:mm:ssXXX",
+    ),
+    dateModified: formatDateToHuman(
+      copyPasta.createdAt,
+      "yyyy-MM-dd'T'HH:mm:ssXXX",
+    ),
+    image: [copyPasta.imageUrl ?? defaultImage],
     description: copyPasta.content,
     thumbnailUrl: copyPasta.imageUrl ?? defaultImage,
   });
