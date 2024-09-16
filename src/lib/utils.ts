@@ -4,6 +4,8 @@ import { type ClassValue, clsx } from "clsx";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { type Breadcrumb } from "./interface";
+import { type Thing, type WithContext, type WebSite } from "schema-dts";
+import { baseUrl } from "./constant";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -120,4 +122,24 @@ export function getBreadcrumbs(url: string): Breadcrumb[] {
   });
 
   return breadcrumbs;
+}
+
+export function generateSchemaById<T extends Thing>(json: WithContext<T>) {
+  return json;
+}
+
+export function generateSchemaOrgWebSite(): WithContext<WebSite> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Arsip Template",
+    url: baseUrl,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${baseUrl}/copy-pasta?search={search_term_string}`,
+      },
+    },
+  };
 }

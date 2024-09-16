@@ -4,9 +4,14 @@ import CopyPastaPage from "~/app/_components/CopyPastaByIdPage";
 import { Suspense } from "react";
 import SkeletonCopyPasta from "~/components/Skeleton/CopyPasta";
 import { type Metadata } from "next";
-import { trimContent } from "~/lib/utils";
+import {
+  formatDateToHuman,
+  generateSchemaById,
+  trimContent,
+} from "~/lib/utils";
 import { notFound } from "next/navigation";
 import { baseUrl } from "~/lib/constant";
+import { Article } from "schema-dts";
 
 export type PropsPage = {
   params: { id: string };
@@ -53,10 +58,37 @@ export async function generateMetadata({
     },
   };
 }
-export default function CopyPastaById({ params }: PropsPage) {
+export default async function CopyPastaById({ params }: PropsPage) {
+  const copyPasta = await api.copyPasta.byId({ id: params.id });
+
+  const defaultImage = `${baseUrl}/api/og?copyPasta=${trimContent(copyPasta.content, 255)}`;
+
+  const richSearchAppearance = generateSchemaById<Article>({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: copyPasta.content,
+    author: {
+      "@type": "Person",
+      name:
+        copyPasta.createdBy.name ??
+        copyPasta.createdBy.username ??
+        copyPasta.createdBy.id,
+    },
+    datePublished: formatDateToHuman(copyPasta.approvedAt!),
+    image: copyPasta.imageUrl ?? defaultImage,
+    description: copyPasta.content,
+    thumbnailUrl: copyPasta.imageUrl ?? defaultImage,
+  });
+
   return (
     <HydrateClient>
       <Layout>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(richSearchAppearance),
+          }}
+        />
         <Suspense
           fallback={
             <div className="flex w-full flex-col gap-4">

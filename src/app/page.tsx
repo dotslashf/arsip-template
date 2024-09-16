@@ -4,6 +4,7 @@ import Hero from "~/components/Hero";
 import { type Metadata } from "next";
 import { baseUrl } from "~/lib/constant";
 import { Homepage } from "./_components/Homepage";
+import { generateSchemaOrgWebSite } from "~/lib/utils";
 
 type Props = {
   params: { id: string };
@@ -39,6 +40,9 @@ export async function generateMetadata({
     description: searchParams.tag
       ? `Arsip template dengan tag: ${tag?.name}`
       : "",
+    other: {
+      "schema-org": JSON.stringify(generateSchemaOrgWebSite()),
+    },
   };
 }
 
@@ -62,6 +66,12 @@ export default async function Home() {
   return (
     <HydrateClient>
       <Layout>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateSchemaOrgWebSite()),
+          }}
+        />
         <Hero copyPastas={copyPastasFormatted} isShowButton={true} />
         <Homepage />
       </Layout>
