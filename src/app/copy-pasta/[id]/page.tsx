@@ -11,7 +11,7 @@ import {
 } from "~/lib/utils";
 import { notFound } from "next/navigation";
 import { baseUrl } from "~/lib/constant";
-import { Article } from "schema-dts";
+import { type Article } from "schema-dts";
 
 export type PropsPage = {
   params: { id: string };

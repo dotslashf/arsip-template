@@ -6,8 +6,8 @@ import { rankingRouter } from "./routers/ranking";
 import { reactionRouter } from "./routers/reaction";
 import { userRouter } from "./routers/user";
 import { uploadRouter } from "./routers/upload";
-import { analyticsRouter } from "./routers/analytics";
-import { collectionRouter } from './routers/collection';
+import { statisticsRouter } from "./routers/statistics";
+import { collectionRouter } from "./routers/collection";
 
 /**
  * This is the primary router for your server.
@@ -22,7 +22,7 @@ export const appRouter = createTRPCRouter({
   reaction: reactionRouter,
   user: userRouter,
   upload: uploadRouter,
-  analytics: analyticsRouter,
+  statistics: statisticsRouter,
   collection: collectionRouter,
 });
 

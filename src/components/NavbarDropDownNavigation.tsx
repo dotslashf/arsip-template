@@ -14,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import { useMediaQuery } from "@uidotdev/usehooks";
@@ -50,7 +51,8 @@ export default function NavbarDropDownNavigation() {
             Koleksi
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuLabel>Analisis & Dukungan</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>Statistik & Dukungan</DropdownMenuLabel>
         <DropdownMenuItem asChild>
           <Link href="/ranking" className="flex items-center">
             <Medal className="mr-2 w-4" />

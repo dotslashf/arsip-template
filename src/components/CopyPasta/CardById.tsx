@@ -52,7 +52,7 @@ export default function CardById({ copyPasta }: CardProps) {
 
   const [isImageOpen, setIsImageOpen] = useState(false);
 
-  const [analytics] = api.analytics.getPageViewById.useSuspenseQuery({
+  const [analytics] = api.statistics.getPageViewById.useSuspenseQuery({
     id: copyPasta.id,
   });
 
