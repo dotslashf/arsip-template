@@ -13,6 +13,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import { useMediaQuery } from "@uidotdev/usehooks";
@@ -30,6 +32,7 @@ export default function NavbarDropDownNavigation() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuLabel>Konten</DropdownMenuLabel>
         <DropdownMenuItem asChild>
           <Link href="/" className="flex items-center">
             <House className="mr-2 w-4" />
@@ -48,6 +51,8 @@ export default function NavbarDropDownNavigation() {
             Koleksi
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>Statistik & Dukungan</DropdownMenuLabel>
         <DropdownMenuItem asChild>
           <Link href="/ranking" className="flex items-center">
             <Medal className="mr-2 w-4" />
