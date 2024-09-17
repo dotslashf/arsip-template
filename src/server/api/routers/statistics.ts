@@ -113,4 +113,52 @@ export const statisticsRouter = createTRPCRouter({
 
       return copyPastas;
     }),
+
+  getCopyPastaVersusReactionPerDay: publicProcedure
+    .input(
+      z.object({
+        days: z.number().default(30),
+      }),
+    )
+    .query(async (opts) => {
+      const data: {
+        date: Date;
+        approved_copypastas: number;
+        reactions: number;
+      }[] = await opts.ctx.db.$queryRaw`
+      WITH date_series AS (
+          SELECT generate_series(
+              CURRENT_DATE - INTERVAL '30 days',
+              CURRENT_DATE,
+              '1 day'::interval
+          )::date AS date
+      ),
+      approved_copypastas AS (
+          SELECT 
+              DATE("approvedAt") as approval_date,
+              COUNT(*)::integer as approved_count
+          FROM "CopyPasta"
+          WHERE "approvedAt" >= CURRENT_DATE - INTERVAL '30 days'
+          GROUP BY DATE("approvedAt")
+      ),
+      reactions AS (
+          SELECT 
+              DATE("createdAt") as reaction_date,
+              COUNT(*)::integer as reaction_count
+          FROM "Reaction"
+          WHERE "createdAt" >= CURRENT_DATE - INTERVAL '30 days'
+          GROUP BY DATE("createdAt")
+      )
+      SELECT 
+          ds.date,
+          COALESCE(ac.approved_count, 0) as approved_copypastas,
+          COALESCE(r.reaction_count, 0) as reactions
+      FROM date_series ds
+      LEFT JOIN approved_copypastas ac ON ds.date = ac.approval_date
+      LEFT JOIN reactions r ON ds.date = r.reaction_date
+      ORDER BY ds.date ASC;
+      `;
+
+      return data;
+    }),
 });
