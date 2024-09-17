@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import {
+  Area,
+  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
@@ -59,7 +61,18 @@ const chartConfigBarChartCopyPastaByDay = {
   },
   copyPasta: {
     label: "Template",
-    color: "hsl(var(--chart-5))",
+    color: "hsl(var(--chart-4))",
+  },
+} satisfies ChartConfig;
+
+const chartConfigLineCopyPastaVersusReaction = {
+  copyPasta: {
+    label: "Template",
+    color: "hsl(var(--chart-2))",
+  },
+  reaction: {
+    label: "Reaction",
+    color: "hsl(var(--chart-4))",
   },
 } satisfies ChartConfig;
 
@@ -83,6 +96,24 @@ export function StatisticsPage() {
         gcTime: 1 * DAYS,
       },
     );
+
+  const [copyPastaVersusReaction] =
+    api.statistics.getCopyPastaVersusReactionPerDay.useSuspenseQuery(
+      {},
+      {
+        gcTime: 1 * DAYS,
+      },
+    );
+
+  const chartDataLineCopyPastaVersusReaction = copyPastaVersusReaction.map(
+    (c) => {
+      return {
+        date: formatDateToHuman(c.date, "yyyy-MM-dd"),
+        copyPasta: c.approved_copypastas,
+        reaction: c.reactions,
+      };
+    },
+  );
 
   const chartDataBarChartCopyPastasByDay = copyPastas.map((c) => {
     return {
@@ -191,6 +222,102 @@ export function StatisticsPage() {
                 />
                 <Bar dataKey={"copyPasta"} fill={`var(--color-copyPasta)`} />
               </BarChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="md:col-span-2">
+          <CardHeader>
+            <CardTitle>Template vs Reaction</CardTitle>
+            <CardDescription>
+              Jumlah template yang diapprove dibanding dengan reaction perhari
+              (30 hari kebelakang)
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={chartConfigLineCopyPastaVersusReaction}
+              className="aspect-auto h-[250px] w-full"
+            >
+              <AreaChart
+                accessibilityLayer
+                data={chartDataLineCopyPastaVersusReaction}
+                margin={{
+                  left: 12,
+                  right: 12,
+                  top: 12,
+                }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="date"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  minTickGap={32}
+                  tickFormatter={(value: string) => {
+                    const date = new Date(value);
+                    return date.toLocaleDateString("id-ID", {
+                      month: "short",
+                      day: "numeric",
+                    });
+                  }}
+                />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent />}
+                />
+                <defs>
+                  <linearGradient
+                    id="fillCopyPasta"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop
+                      offset="10%"
+                      stopColor="var(--color-copyPasta)"
+                      stopOpacity={1}
+                    />
+                    <stop
+                      offset="99%"
+                      stopColor="var(--color-copyPasta)"
+                      stopOpacity={0.05}
+                    />
+                  </linearGradient>
+                  <linearGradient id="fillReaction" x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="10%"
+                      stopColor="var(--color-reaction)"
+                      stopOpacity={1}
+                    />
+                    <stop
+                      offset="99%"
+                      stopColor="var(--color-reaction)"
+                      stopOpacity={0.1}
+                    />
+                  </linearGradient>
+                </defs>
+                <Area
+                  dataKey="reaction"
+                  type="bump"
+                  fill="url(#fillReaction)"
+                  fillOpacity={0.29}
+                  stroke="var(--color-reaction)"
+                  stackId="a"
+                  strokeWidth={1.5}
+                />
+                <Area
+                  dataKey="copyPasta"
+                  type="bump"
+                  fill="url(#fillCopyPasta)"
+                  fillOpacity={0.29}
+                  stroke="var(--color-copyPasta)"
+                  stackId="b"
+                  strokeWidth={1.5}
+                />
+              </AreaChart>
             </ChartContainer>
           </CardContent>
         </Card>
