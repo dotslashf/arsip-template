@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { type $Enums, OriginSource } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { id } from "date-fns/locale";
 import { type Breadcrumb } from "./interface";
 import {
@@ -18,6 +18,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDateToHuman(date: Date, formatString = "PPP") {
   return format(date, formatString, { locale: id });
+}
+
+export function parseDate(date: string) {
+  return parse(date, "d MMMM yyyy", new Date(), { locale: id });
 }
 
 export function trimContent(content: string, length = 255) {
