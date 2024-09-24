@@ -6,18 +6,21 @@ import { type Session } from "next-auth";
 import NavbarDropDown from "./NavbarDropDown";
 import NavbarDropDownNavigation from "./NavbarDropDownNavigation";
 import { RainbowButton } from "./magicui/rainbow-button";
-import Lottie from 'react-lottie-player'
+import Lottie from "react-lottie-player";
 import { api } from "~/trpc/react";
-
+import NumberTicker from "./magicui/number-ticker";
 
 interface NavbarProps {
   session: Session | null;
 }
 
 export default function Navbar({ session }: NavbarProps) {
-  const { data: streak } = api.user.getStreakInfo.useQuery({ id: session?.user.id }, {
-    enabled: !!session
-  })
+  const { data: streak } = api.user.getStreakInfo.useQuery(
+    { id: session?.user.id },
+    {
+      enabled: !!session,
+    },
+  );
 
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white/30 py-1 shadow-md backdrop-blur-md backdrop-saturate-150 dark:bg-card/30">
@@ -39,9 +42,14 @@ export default function Navbar({ session }: NavbarProps) {
                   path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
                   play
                   loop
-                  style={{ width: "16px", height: "16px", marginRight: "8px" }}
+                  className="mr-2 h-4 w-4"
                 />
-                {streak?.currentStreak ?? 0} streak</RainbowButton>
+                <NumberTicker
+                  value={streak?.currentStreak ?? 0}
+                  className="mr-2"
+                />
+                streak
+              </RainbowButton>
             )}
             <NavbarDropDown session={session} />
             <NavbarDropDownNavigation />

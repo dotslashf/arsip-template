@@ -40,7 +40,7 @@ export const rankingRouter = createTRPCRouter({
       topUsers.map(async (user) => {
         return {
           ...user,
-          rank: await getUserRank(ctx.db.rank, user.engagementScore as number),
+          rank: await getUserRank(ctx.db.rank, user.engagementScore),
           count: {
             copyPastas: {
               approved: user.CopyPastaCreatedBy.filter(

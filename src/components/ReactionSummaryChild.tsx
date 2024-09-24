@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Badge } from "./ui/badge";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import useToast from "./ui/use-react-hot-toast";
@@ -163,10 +162,11 @@ export function ReactionChildWrapper({
       break;
   }
   return (
-    <Lottie path={`https://fonts.gstatic.com/s/e/notoemoji/latest/${emotion}/lottie.json`}
+    <Lottie
+      path={`https://fonts.gstatic.com/s/e/notoemoji/latest/${emotion}/lottie.json`}
       play
       loop
-      className={cn("flex items-center justify-center w-4 h-4", className)}
+      className={cn("flex h-4 w-4 items-center justify-center", className)}
     />
   );
 }

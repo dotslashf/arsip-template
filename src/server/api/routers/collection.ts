@@ -260,7 +260,7 @@ export const collectionRouter = createTRPCRouter({
       await updateUserEngagementScore(
         ctx.db,
         ctx.session.user.id,
-        "DeleteCollecttion",
+        "DeleteCollection",
       );
 
       return true;

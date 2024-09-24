@@ -1,4 +1,4 @@
-import { AchievementType, PrismaClient, User } from "@prisma/client";
+import { AchievementType, type PrismaClient, type User } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
@@ -6,6 +6,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { getUserRank } from "~/server/util/db";
 
 export async function updateUserStreak(userId: string, db: PrismaClient) {
   const user = await db.user.findUnique({
@@ -19,17 +20,16 @@ export async function updateUserStreak(userId: string, db: PrismaClient) {
     });
   }
 
-  const lastPost = await db.copyPasta.findFirst({
-    where: { createdById: userId },
-    orderBy: { createdAt: "desc" },
-  });
-
   const now = new Date();
-  const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  let newStreak = 1;
-  if (lastPost && lastPost.createdAt > oneDayAgo) {
-    newStreak = (user.currentStreak || 0) + 1;
+  let newStreak = user.currentStreak || 0;
+  let isStreakUpdated = false;
+
+  if (!user.lastPostedAt || user.lastPostedAt < today) {
+    // If last post was before today, increment the streak
+    newStreak += 1;
+    isStreakUpdated = true;
   }
 
   const updatedUser = await db.user.update({
@@ -41,7 +41,10 @@ export async function updateUserStreak(userId: string, db: PrismaClient) {
     },
   });
 
-  return updatedUser;
+  return {
+    ...updatedUser,
+    isStreakUpdated,
+  };
 }
 
 export async function checkAndAwardAchievements(user: User, db: PrismaClient) {
@@ -87,6 +90,7 @@ export const userRouter = createTRPCRouter({
         Reactions: true,
         avatarSeed: true,
         username: true,
+        engagementScore: true,
         accounts: {
           select: {
             provider: true,
@@ -115,17 +119,24 @@ export const userRouter = createTRPCRouter({
           code: "NOT_FOUND",
         });
 
-      return user;
+      const rank = await getUserRank(ctx.db.rank, user.engagementScore);
+
+      return {
+        ...user,
+        rank,
+      };
     }),
 
   updateUserStreak: protectedProcedure.mutation(async ({ ctx }) => {
     const updatedUser = await updateUserStreak(ctx.session.user.id, ctx.db);
-    await checkAndAwardAchievements(updatedUser, ctx.db);
+    if (updatedUser.isStreakUpdated) {
+      await checkAndAwardAchievements(updatedUser, ctx.db);
+    }
 
     return updatedUser.id;
   }),
 
-  getStreakInfo: protectedProcedure
+  getStreakInfo: publicProcedure
     .input(
       z.object({
         id: z.string().nullish(),

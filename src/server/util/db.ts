@@ -1,4 +1,4 @@
-import { EngagementAction, type PrismaClient } from "@prisma/client";
+import { type EngagementAction, type PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { ENGAGEMENT_SCORE } from "~/lib/constant";
 

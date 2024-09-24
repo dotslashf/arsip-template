@@ -35,7 +35,6 @@ import { id } from "date-fns/locale";
 import { DAYS, parseErrorMessages } from "~/lib/constant";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import Link from "next/link";
-import { updateUserStreak } from "~/server/api/routers/user";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
@@ -96,7 +95,7 @@ export default function CreateCopyPasta() {
               ...values,
               source: determineSource(values.sourceUrl),
             }),
-            await updateStreakMutation.mutateAsync()
+            await updateStreakMutation.mutateAsync(),
           ]),
           promiseMsg: {
             loading: "Sedang memasak 🔥",
@@ -140,7 +139,7 @@ export default function CreateCopyPasta() {
             source: determineSource(values.sourceUrl),
             imageUrl: url.split("?")[0],
           }),
-          updateStreakMutation.mutateAsync()
+          updateStreakMutation.mutateAsync(),
         ]),
         promiseMsg: {
           loading: "Sedang memasak 🔥",
@@ -149,7 +148,7 @@ export default function CreateCopyPasta() {
           error: (err) => `${parseErrorMessages(err)}`,
         },
       });
-    } catch (error) { }
+    } catch (error) {}
   }
 
   const pathname = usePathname();

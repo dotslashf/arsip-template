@@ -23,6 +23,9 @@ import { type Tag as TagType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { trackEvent } from "~/lib/track";
 import Link from "next/link";
+import { RainbowButton } from "./magicui/rainbow-button";
+import Lottie from "react-lottie-player";
+import NumberTicker from "./magicui/number-ticker";
 
 interface UserProfileCardProps {
   session: Session | null;
@@ -48,6 +51,12 @@ export default function UserProfileCard({
     },
     {
       staleTime: Infinity,
+    },
+  );
+  const { data: streak } = api.user.getStreakInfo.useQuery(
+    { id: session?.user.id },
+    {
+      enabled: !!session,
     },
   );
   const editProfileMutation = api.dashboard.editProfile.useMutation({
@@ -272,18 +281,33 @@ export default function UserProfileCard({
                     session?.user.id.slice(0, 15) ??
                     "Anon"}
                 </Link>
-                <Badge variant={"white"}>
-                  Rank: {session?.user.rank?.title ?? "User"}
-                </Badge>
-                <Badge
-                  className={cn(
-                    session?.user.loginProvider
-                      ? `bg-${session.user.loginProvider} hover:bg-${session.user.loginProvider}-hover`
-                      : "bg-primary hover:bg-primary/80",
-                  )}
-                >
-                  Login: {session?.user.loginProvider ?? "User"}
-                </Badge>
+                <div className="flex gap-4">
+                  <Badge variant={"white"}>
+                    Rank: {session?.user.rank?.title ?? "User"}
+                  </Badge>
+                  <Badge
+                    className={cn(
+                      session?.user.loginProvider
+                        ? `bg-${session.user.loginProvider} hover:bg-${session.user.loginProvider}-hover`
+                        : "bg-primary hover:bg-primary/80",
+                    )}
+                  >
+                    Login: {session?.user.loginProvider ?? "User"}
+                  </Badge>
+                </div>
+                <RainbowButton>
+                  <Lottie
+                    path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
+                    play
+                    loop
+                    className="mr-2 h-4 w-4"
+                  />
+                  <NumberTicker
+                    value={streak?.currentStreak ?? 0}
+                    className="mr-2"
+                  />
+                  streak
+                </RainbowButton>
                 {!isPreviewMode && (
                   <Button
                     variant={"warning"}

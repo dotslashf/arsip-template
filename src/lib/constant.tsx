@@ -157,4 +157,5 @@ export const ENGAGEMENT_SCORE = {
   RemoveReaction: -3,
   CreateCollection: 3,
   DeleteReaction: -3,
+  DeleteCollection: -3,
 };
