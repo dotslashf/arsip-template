@@ -73,6 +73,16 @@ model CollectionsOnCopyPastas {
     @@unique([collectionId, copyPastaId])
 }
 
+model Achievement {
+    id         String          @id @default(uuid())
+    user       User            @relation(fields: [userId], references: [id])
+    userId     String
+    type       AchievementType
+    achievedAt DateTime        @default(now())
+
+    @@unique([userId, type])
+}
+
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -122,6 +132,11 @@ model User {
     avatarSeed  String?
     username    String?      @unique
     collections Collection[]
+
+    currentStreak      Int           @default(0)
+    longestStreak      Int           @default(0)
+    lastPostedAt       DateTime?
+    streakAchievements Achievement[]
 }
 
 model Rank {
@@ -168,4 +183,12 @@ enum UserRole {
     User
     Admin
     SuperAdmin
+}
+
+enum AchievementType {
+    OneWeekStreak
+    TwoWeekStreak
+    OneMonthStreak
+    ThreeMonthStreak
+    SixMonthStreak
 }
