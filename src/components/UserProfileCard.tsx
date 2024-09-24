@@ -23,9 +23,9 @@ import { type Tag as TagType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { trackEvent } from "~/lib/track";
 import Link from "next/link";
-import { RainbowButton } from "./magicui/rainbow-button";
 import Lottie from "react-lottie-player";
 import NumberTicker from "./magicui/number-ticker";
+import { RainbowBadge } from "./magicui/rainbow-badge";
 
 interface UserProfileCardProps {
   session: Session | null;
@@ -294,20 +294,22 @@ export default function UserProfileCard({
                   >
                     Login: {session?.user.loginProvider ?? "User"}
                   </Badge>
+                  {streak?.currentStreak > 0 && (
+                    <RainbowBadge>
+                      <Lottie
+                        path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
+                        play
+                        loop
+                        className="mr-2 h-4 w-4"
+                      />
+                      <NumberTicker
+                        value={streak?.currentStreak ?? 0}
+                        className="mr-2"
+                      />
+                      streak
+                    </RainbowBadge>
+                  )}
                 </div>
-                <RainbowButton>
-                  <Lottie
-                    path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
-                    play
-                    loop
-                    className="mr-2 h-4 w-4"
-                  />
-                  <NumberTicker
-                    value={streak?.currentStreak ?? 0}
-                    className="mr-2"
-                  />
-                  streak
-                </RainbowButton>
                 {!isPreviewMode && (
                   <Button
                     variant={"warning"}
