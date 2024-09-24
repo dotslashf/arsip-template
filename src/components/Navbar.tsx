@@ -5,6 +5,9 @@ import { Package } from "lucide-react";
 import { type Session } from "next-auth";
 import NavbarDropDown from "./NavbarDropDown";
 import NavbarDropDownNavigation from "./NavbarDropDownNavigation";
+import { RainbowButton } from "./magicui/rainbow-button";
+import Lottie from 'react-lottie-player'
+
 
 interface NavbarProps {
   session: Session | null;
@@ -25,6 +28,14 @@ export default function Navbar({ session }: NavbarProps) {
             template
           </Link>
           <nav className="ml-auto flex items-center space-x-2">
+            <RainbowButton>
+              <Lottie
+                path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
+                play
+                loop
+                style={{ width: "16px", height: "16px", marginRight: "8px" }}
+              />
+              100 days streak</RainbowButton>
             <NavbarDropDown session={session} />
             <NavbarDropDownNavigation />
           </nav>

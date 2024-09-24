@@ -66,6 +66,7 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.1",
     "react-hot-toast": "^2.4.1",
+    "react-lottie-player": "^2.1.0",
     "recharts": "^2.13.0-alpha.4",
     "redis": "^4.7.0",
     "schema-dts": "^1.1.2",
