@@ -115,7 +115,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
           />
         );
       }
-      return <ReactionChildWrapper className="text-lg" type={"Kocak"} />;
+      return <ReactionChildWrapper className="text-lg w-6 h-6" type={"Kocak"} />;
     }
     return <Skeleton className="h-5 w-5 rounded-full" />;
   }
@@ -142,7 +142,7 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
                   <Button
                     variant={
                       isUserReacted &&
-                      currentUserReaction === reactionsMap(key)!.name
+                        currentUserReaction === reactionsMap(key)!.name
                         ? "white"
                         : "ghost"
                     }
@@ -150,10 +150,10 @@ export default function Reaction({ copyPastaId }: ReactionProps) {
                     className="rounded-full hover:bg-secondary"
                     onClick={() =>
                       isUserReacted &&
-                      currentUserReaction === reactionsMap(key)!.name
+                        currentUserReaction === reactionsMap(key)!.name
                         ? handleUnReact(
-                            reactionsByCopyPastaId.currentUserReaction?.id,
-                          )
+                          reactionsByCopyPastaId.currentUserReaction?.id,
+                        )
                         : handleReaction(reactionsMap(key)!.name)
                     }
                   >

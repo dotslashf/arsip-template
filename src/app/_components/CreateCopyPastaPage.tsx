@@ -35,6 +35,7 @@ import { id } from "date-fns/locale";
 import { DAYS, parseErrorMessages } from "~/lib/constant";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import Link from "next/link";
+import { updateUserStreak } from "~/server/api/routers/user";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
@@ -43,6 +44,7 @@ export default function CreateCopyPasta() {
     gcTime: 7 * DAYS,
   });
   const createMutation = api.copyPasta.create.useMutation();
+  const updateStreakMutation = api.user.updateUserStreak.useMutation();
   const getUploadUrl = api.upload.getUploadSignedUrl.useMutation();
 
   const router = useRouter();
@@ -89,10 +91,13 @@ export default function CreateCopyPasta() {
         await toast({
           message: "",
           type: "promise",
-          promiseFn: createMutation.mutateAsync({
-            ...values,
-            source: determineSource(values.sourceUrl),
-          }),
+          promiseFn: Promise.all([
+            await createMutation.mutateAsync({
+              ...values,
+              source: determineSource(values.sourceUrl),
+            }),
+            await updateStreakMutation.mutateAsync()
+          ]),
           promiseMsg: {
             loading: "Sedang memasak 🔥",
             success: "Makasih! Tunggu diapproved ya 😎",
@@ -129,11 +134,14 @@ export default function CreateCopyPasta() {
       await toast({
         message: "",
         type: "promise",
-        promiseFn: createMutation.mutateAsync({
-          ...values,
-          source: determineSource(values.sourceUrl),
-          imageUrl: url.split("?")[0],
-        }),
+        promiseFn: Promise.all([
+          createMutation.mutateAsync({
+            ...values,
+            source: determineSource(values.sourceUrl),
+            imageUrl: url.split("?")[0],
+          }),
+          updateStreakMutation.mutateAsync()
+        ]),
         promiseMsg: {
           loading: "Sedang memasak 🔥",
           success: "Makasih! Tunggu diapproved ya 😎",
@@ -141,7 +149,7 @@ export default function CreateCopyPasta() {
           error: (err) => `${parseErrorMessages(err)}`,
         },
       });
-    } catch (error) {}
+    } catch (error) { }
   }
 
   const pathname = usePathname();
