@@ -9,33 +9,35 @@ export const statisticsRouter = createTRPCRouter({
   getPopularCopyPasta: publicProcedure.query(async (opts) => {
     const analytics = await getPageViews();
     const result = await Promise.all(
-      analytics.map(async (analytic) => {
-        const copyPasta = await opts.ctx.db.copyPasta.findUnique({
-          where: {
-            id: analytic.path!.toString().replace("/copy-pasta/", ""),
-          },
-          select: {
-            id: true,
-            content: true,
-            CopyPastasOnTags: {
-              include: {
-                tags: true,
+      analytics
+        .filter((a) => parseInt((a.views as string) ?? 0) >= 100)
+        .map(async (analytic) => {
+          const copyPasta = await opts.ctx.db.copyPasta.findUnique({
+            where: {
+              id: analytic.path!.toString().replace("/copy-pasta/", ""),
+            },
+            select: {
+              id: true,
+              content: true,
+              CopyPastasOnTags: {
+                include: {
+                  tags: true,
+                },
               },
             },
-          },
-        });
-        return {
-          views: analytic.views,
-          copyPasta: {
-            id: copyPasta?.id,
-            content: copyPasta?.CopyPastasOnTags.some(
-              (copy) => copy.tags.name === "NSFW",
-            )
-              ? "[CENSORED]"
-              : copyPasta?.content,
-          },
-        };
-      }),
+          });
+          return {
+            views: analytic.views,
+            copyPasta: {
+              id: copyPasta?.id,
+              content: copyPasta?.CopyPastasOnTags.some(
+                (copy) => copy.tags.name === "NSFW",
+              )
+                ? "[CENSORED]"
+                : copyPasta?.content,
+            },
+          };
+        }),
     );
 
     return result;
