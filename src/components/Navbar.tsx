@@ -41,7 +41,7 @@ export default function Navbar({ session }: NavbarProps) {
                   loop
                   style={{ width: "16px", height: "16px", marginRight: "8px" }}
                 />
-                {streak?.currentStreak ?? 0} hari streak</RainbowButton>
+                {streak?.currentStreak ?? 0} streak</RainbowButton>
             )}
             <NavbarDropDown session={session} />
             <NavbarDropDownNavigation />
