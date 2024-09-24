@@ -7,6 +7,7 @@ import NavbarDropDown from "./NavbarDropDown";
 import NavbarDropDownNavigation from "./NavbarDropDownNavigation";
 import { RainbowButton } from "./magicui/rainbow-button";
 import Lottie from 'react-lottie-player'
+import { api } from "~/trpc/react";
 
 
 interface NavbarProps {
@@ -14,6 +15,10 @@ interface NavbarProps {
 }
 
 export default function Navbar({ session }: NavbarProps) {
+  const { data: streak } = api.user.getStreakInfo.useQuery({ id: session?.user.id }, {
+    enabled: !!session
+  })
+
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white/30 py-1 shadow-md backdrop-blur-md backdrop-saturate-150 dark:bg-card/30">
       <div className="container mx-auto px-4 lg:px-[6.5rem]">
@@ -28,14 +33,16 @@ export default function Navbar({ session }: NavbarProps) {
             template
           </Link>
           <nav className="ml-auto flex items-center space-x-2">
-            <RainbowButton>
-              <Lottie
-                path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
-                play
-                loop
-                style={{ width: "16px", height: "16px", marginRight: "8px" }}
-              />
-              100 days streak</RainbowButton>
+            {session && (
+              <RainbowButton>
+                <Lottie
+                  path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
+                  play
+                  loop
+                  style={{ width: "16px", height: "16px", marginRight: "8px" }}
+                />
+                {streak?.currentStreak ?? 0} hari streak</RainbowButton>
+            )}
             <NavbarDropDown session={session} />
             <NavbarDropDownNavigation />
           </nav>
