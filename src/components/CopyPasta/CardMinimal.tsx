@@ -129,12 +129,14 @@ export default function CardMinimal({
                 />
               </span>
               <div className="flex w-full flex-col justify-evenly">
-                <span className="text-sm font-normal">Diarsipkan oleh:</span>
+                <span className="text-sm font-normal text-muted-foreground">
+                  Diarsipkan oleh:
+                </span>
                 <Link
                   href={`/user/${copyPasta.createdBy?.username ?? copyPasta.createdBy?.id}`}
                   className={cn(
                     badgeVariants({
-                      variant: "ghost",
+                      variant: "secondary",
                       className: "py-0.5",
                     }),
                     "w-fit",
@@ -161,13 +163,13 @@ export default function CardMinimal({
       <CardContent className="mt-6 flex py-0 hover:cursor-auto">
         <div
           className={cn(
-            "w-full overflow-x-hidden text-sm",
+            "w-full overflow-x-hidden text-base font-semibold",
             copyPasta.CopyPastasOnTags.some(
               (tag) => tag.tags.name === "NSFW",
             ) && "blur-sm transition hover:blur-none",
           )}
         >
-          <blockquote className="select-none whitespace-pre-line border-l-4 pl-6 italic">
+          <blockquote className="select-none whitespace-pre-line border-l-4 pl-6">
             &quot;{trimContent(copyPasta.content, 255)}&quot;
           </blockquote>
         </div>
