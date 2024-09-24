@@ -21,6 +21,7 @@ import Link from "next/link";
 import Avatar from "~/components/ui/avatar";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import { usePathname } from "next/navigation";
+import { Laugh, Library, NotebookPen } from "lucide-react";
 
 export default function RankingPage() {
   const [rankings] = api.ranking.topUsers.useSuspenseQuery(undefined, {
@@ -62,6 +63,15 @@ export default function RankingPage() {
             </AccordionTrigger>
             <AccordionContent>
               <ul className="flex flex-col gap-y-2">
+                <p>
+                  Score dihitung berdasarkan:
+                  <ul className="mt-2 list-decimal space-y-1.5 pl-4 italic">
+                    <li>buat template (1 poin)</li>
+                    <li>template diapprove (1 poin)</li>
+                    <li>memberi reaction (3 poin)</li>
+                    <li>membuat koleksi (3 poin)</li>
+                  </ul>
+                </p>
                 {rankingLists.map((rank, index) => {
                   return (
                     <li className="py-1" key={rank.id}>
@@ -75,9 +85,9 @@ export default function RankingPage() {
                       </span>{" "}
                       {">"}{" "}
                       <span className="font-bold italic">
-                        <Badge variant={"ghost"}>{rank.minCount}</Badge>
+                        {rank.minimumScore}
                       </span>{" "}
-                      template
+                      Score
                     </li>
                   );
                 })}
@@ -93,7 +103,8 @@ export default function RankingPage() {
               <TableHead className="w-24"></TableHead>
               <TableHead>Tukang Arsip</TableHead>
               <TableHead className="text-center">Rank</TableHead>
-              <TableHead className="w-24 text-center"># Arsip</TableHead>
+              <TableHead className="w-24 text-center">Kontribusi</TableHead>
+              <TableHead className="w-24 text-center">Score</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="overflow-y-auto">
@@ -110,22 +121,44 @@ export default function RankingPage() {
                     <TableCell className="text-center font-medium">
                       {getMedal(rankPosition)}
                     </TableCell>
-                    <TableCell className="flex w-64 items-center gap-2 md:w-72">
-                      <span className="mr-4 rounded-full border-2 border-secondary-foreground">
-                        <Avatar seed={rank.avatarSeed ?? rank.id} zoom={130} />
-                      </span>
-                      <Badge
-                        variant={getBadgeVariant(rankPosition)}
-                        className="flex w-fit"
-                      >
-                        {rank.name}
-                      </Badge>
+                    <TableCell className="w-64 md:w-72">
+                      <div className="my-auto flex h-full items-center gap-2">
+                        <span className="mr-4 rounded-full border-2 border-secondary-foreground">
+                          <Avatar
+                            seed={rank.avatarSeed ?? rank.id}
+                            zoom={130}
+                          />
+                        </span>
+                        <Badge
+                          variant={getBadgeVariant(rankPosition)}
+                          className="flex w-fit"
+                        >
+                          {rank.name}
+                        </Badge>
+                      </div>
                     </TableCell>
                     <TableCell className="text-center">
                       <Badge variant={"ghost"}>{rank.rank?.title}</Badge>
                     </TableCell>
+                    <TableCell className="w-48 text-center">
+                      <div className="flex flex-col items-center gap-2">
+                        <Badge variant={"white"} className="w-fit">
+                          <NotebookPen className="mr-2 w-3 py-1" />{" "}
+                          {rank.count.copyPastas.approved} /{" "}
+                          {rank.count.copyPastas.total}
+                        </Badge>
+                        <Badge variant={"white"} className="w-fit">
+                          <Laugh className="mr-2 w-3 py-1" />{" "}
+                          {rank.count.reactions}
+                        </Badge>
+                        <Badge variant={"white"} className="w-fit">
+                          <Library className="mr-2 w-3 py-1" />{" "}
+                          {rank.count.collections}
+                        </Badge>
+                      </div>
+                    </TableCell>
                     <TableCell className="w-24 text-center">
-                      {rank._count.CopyPastaCreatedBy}
+                      {rank.engagementScore}
                     </TableCell>
                   </TableRow>
                 </Link>

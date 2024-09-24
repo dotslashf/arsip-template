@@ -28,7 +28,9 @@ export default function CardDisplay({ id, content, tags }: CardDisplayProps) {
   return (
     <Card className="flex w-fit flex-col justify-between">
       <CardContent className="flex flex-col justify-between gap-2 overflow-x-hidden pb-2 pt-4 text-sm hover:cursor-auto">
-        <blockquote className="w-full">{trimContent(content, 45)}</blockquote>
+        <blockquote className="w-full select-none border-l-4 pl-3 italic">
+          &quot;{trimContent(content, 45)}&quot;
+        </blockquote>
       </CardContent>
       <CardFooter>
         <div className="flex w-full justify-between">

@@ -1,4 +1,4 @@
-import { Circle } from "lucide-react";
+import { cn } from "~/lib/utils";
 
 interface CollectionListProps<T> {
   listOfCollections: T[];
@@ -15,14 +15,23 @@ export default function CardList<T>({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         <div key={(collection as any).id} className="flex w-full">
           <div className="relative mr-4 flex flex-col items-center">
-            <div className="relative top-1/2 flex h-full justify-center">
-              <Circle className="h-5 w-5 text-secondary-foreground" />
-              {index < listOfCollections.length - 1 && (
-                <div className="absolute top-[19px] h-full border-0 border-r border-foreground" />
-              )}
+            <div className="relative">
+              <div
+                className={cn(
+                  "absolute left-[15px] w-0.5 bg-secondary-foreground",
+                  index === 0 || index === listOfCollections.length - 1
+                    ? "h-1/2"
+                    : "h-full",
+                  index === 0 && "bottom-0",
+                  index === listOfCollections.length - 1 && "top-0",
+                )}
+              />
+              <div className="relative mb-8">
+                <div className="absolute left-4 top-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-secondary-foreground" />
+                {renderCollection(collection, index)}
+              </div>
             </div>
           </div>
-          {renderCollection(collection, index)}
         </div>
       ))}
     </>

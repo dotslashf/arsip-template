@@ -45,7 +45,7 @@ export default function CollectionByIdPage({ id }: CollectionByIdProps) {
             count={0}
           />
         </div>
-        <div className="flex w-full flex-col gap-4 md:w-2/3">
+        <div className="flex w-full flex-col md:w-2/3">
           <CardList
             listOfCollections={collection.copyPastas.map(
               (collection) => collection.copyPasta,

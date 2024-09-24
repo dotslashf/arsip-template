@@ -1,4 +1,4 @@
-import { OriginSource, Prisma } from "@prisma/client";
+import { EngagementAction, OriginSource, Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createCopyPastaFormServer } from "~/server/form/copyPasta";
@@ -14,6 +14,8 @@ import {
   type CopyPastaOnlyContent,
   type CopyPastaSearchResult,
 } from "~/lib/interface";
+import { ENGAGEMENT_SCORE } from "~/lib/constant";
+import { updateUserEngagementScore } from "~/server/util/db";
 
 function tokenize(content: string) {
   return content.toLowerCase().split(/\s+/);
@@ -75,6 +77,12 @@ export const copyPastaRouter = createTRPCRouter({
           },
         },
       });
+
+      await updateUserEngagementScore(
+        ctx.db,
+        ctx.session.user.id,
+        "CreateCopyPasta",
+      );
 
       return copyPasta.id;
     }),

@@ -6,6 +6,7 @@ import {
 } from "../trpc";
 import { EmotionType } from "@prisma/client";
 import { redirect } from "next/navigation";
+import { updateUserEngagementScore } from "~/server/util/db";
 
 export const reactionRouter = createTRPCRouter({
   reactionByCopyPastaId: protectedProcedureLimited
@@ -27,13 +28,19 @@ export const reactionRouter = createTRPCRouter({
         },
       });
       if (!reaction) {
-        return await ctx.db.reaction.create({
+        const newReaction = await ctx.db.reaction.create({
           data: {
             emotion: input.reactionType,
             copyPastaId: input.copyPastaId,
             userId: ctx.session.user.id,
           },
         });
+        await updateUserEngagementScore(
+          ctx.db,
+          ctx.session.user.id,
+          "GiveReaction",
+        );
+        return newReaction;
       }
       return await ctx.db.reaction.update({
         where: {
@@ -61,6 +68,11 @@ export const reactionRouter = createTRPCRouter({
           id: input.id,
         },
       });
+      await updateUserEngagementScore(
+        ctx.db,
+        ctx.session.user.id,
+        "RemoveReaction",
+      );
 
       return ctx.session.user.id;
     }),
@@ -72,13 +84,19 @@ export const reactionRouter = createTRPCRouter({
         copyPastaId: z.string().uuid(),
       }),
     )
-    .mutation(({ ctx, input }) => {
-      return ctx.db.reaction.deleteMany({
+    .mutation(async ({ ctx, input }) => {
+      const reaction = ctx.db.reaction.deleteMany({
         where: {
           copyPastaId: input.copyPastaId,
           userId: input.userId,
         },
       });
+      await updateUserEngagementScore(
+        ctx.db,
+        ctx.session.user.id,
+        "RemoveReaction",
+      );
+      return reaction;
     }),
 
   getReactionByCopyPastaId: publicProcedure

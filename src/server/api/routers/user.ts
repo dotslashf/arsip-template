@@ -15,7 +15,6 @@ export const userRouter = createTRPCRouter({
         name: true,
         role: true,
         Reactions: true,
-        rank: true,
         avatarSeed: true,
         username: true,
         accounts: {

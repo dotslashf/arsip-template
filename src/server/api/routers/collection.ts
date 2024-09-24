@@ -10,6 +10,7 @@ import {
   createCollectionForm,
   editCollectionForm,
 } from "~/server/form/collection";
+import { updateUserEngagementScore } from "~/server/util/db";
 
 export const collectionRouter = createTRPCRouter({
   list: publicProcedure
@@ -93,6 +94,11 @@ export const collectionRouter = createTRPCRouter({
           createdById: ctx.session.user.id,
         },
       });
+      await updateUserEngagementScore(
+        ctx.db,
+        ctx.session.user.id,
+        "CreateCollection",
+      );
 
       return collection.id;
     }),
@@ -250,6 +256,12 @@ export const collectionRouter = createTRPCRouter({
           id: collection.id,
         },
       });
+
+      await updateUserEngagementScore(
+        ctx.db,
+        ctx.session.user.id,
+        "DeleteCollecttion",
+      );
 
       return true;
     }),

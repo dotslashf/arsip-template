@@ -9,21 +9,21 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   ArrowRight,
-  ImageIcon,
   Link as LinkIcon,
   Minus,
   NotebookPen,
   Plus,
 } from "lucide-react";
-import { ANALYTICS_EVENT, robotoSlab } from "~/lib/constant";
+import { ANALYTICS_EVENT } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
 import Tag from "../ui/tags";
 import { trackEvent } from "~/lib/track";
+import DialogImage from "../CopyPasta/DialogImage";
+import { useState } from "react";
 
 interface CardSearchResultProps extends CardSearchProps {
   type: "add" | "remove";
@@ -37,6 +37,7 @@ export default function CardSearchResult({
   onRemoveFromCollection,
   type,
 }: CardSearchResultProps) {
+  const [isImageOpen, setIsImageOpen] = useState(false);
   function handleMoreInfo() {
     void trackEvent(ANALYTICS_EVENT.VIEW_FULL_COPY_PASTA, {
       button: "more_info.search_collection",
@@ -44,22 +45,31 @@ export default function CardSearchResult({
     });
   }
 
+  const handleClickImage = (open: boolean) => {
+    if (open === true) {
+      void trackEvent(ANALYTICS_EVENT.VIEW_ORIGINAL_DOCUMENT, {
+        value: `${copyPasta.id}`,
+        button: "original_image",
+        path: `/copy-pasta/${copyPasta.id}`,
+      });
+    }
+    setIsImageOpen(open);
+  };
+
   return (
-    <Card className="flex h-full w-full flex-col">
+    <Card
+      className={cn("flex h-full w-full flex-col", type === "remove" && "ml-8")}
+    >
       <CardHeader className="pb-0">
         <CardTitle className="flex w-full items-center justify-between">
           <NotebookPen className="h-4 w-4" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col justify-between gap-2 pb-2 pt-4 hover:cursor-auto">
+      <CardContent className="flex flex-col justify-between gap-2 py-4 hover:cursor-auto">
         <div className={cn("overflow-x-hidden text-sm")}>
-          <ScrollArea
-            className={cn("rounded-md text-sm", robotoSlab.className)}
-          >
-            <blockquote className="select-none whitespace-pre-line">
-              {trimContent(copyPasta.content as string, 200)}
-            </blockquote>
-          </ScrollArea>
+          <blockquote className="select-none whitespace-pre-line border-l-4 pl-6 italic">
+            {trimContent(copyPasta.content as string, 200)}
+          </blockquote>
         </div>
       </CardContent>
       <CardFooter className="mt-auto flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
@@ -81,18 +91,12 @@ export default function CardSearchResult({
         </div>
         <div className="flex w-full gap-2">
           {copyPasta.imageUrl && (
-            <Link
-              href={copyPasta.imageUrl}
-              target="__blank"
-              prefetch={false}
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "xs" }),
-                "rounded-sm text-xs",
-              )}
-            >
-              <ImageIcon className="mr-2 h-4 w-4" />
-              Image
-            </Link>
+            <DialogImage
+              content={copyPasta.content}
+              imageUrl={copyPasta.imageUrl}
+              handleOpen={handleClickImage}
+              isOpen={isImageOpen}
+            />
           )}
         </div>
         <div className="flex w-full justify-between gap-3">

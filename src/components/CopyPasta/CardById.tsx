@@ -18,12 +18,7 @@ import {
   Share2,
 } from "lucide-react";
 import useToast from "../ui/use-react-hot-toast";
-import {
-  ANALYTICS_EVENT,
-  baseUrl,
-  robotoSlab,
-  sourceEnumHash,
-} from "~/lib/constant";
+import { ANALYTICS_EVENT, baseUrl, sourceEnumHash } from "~/lib/constant";
 import { useRouter, useSearchParams } from "next/navigation";
 import Reaction from "../Reaction";
 import {
@@ -176,15 +171,11 @@ export default function CardById({ copyPasta }: CardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="my-8 flex flex-col justify-between gap-2 py-0 hover:cursor-auto lg:px-6">
-        <div
-          className={cn(
-            "w-full overflow-x-hidden rounded-md border bg-secondary p-3 text-sm",
-          )}
-        >
+        <div className={cn("w-full overflow-x-hidden text-sm")}>
           <blockquote
-            className={`whitespace-pre-line text-lg ${robotoSlab.className}`}
+            className={`whitespace-pre-line border-l-4 pl-6 text-lg italic`}
           >
-            {copyPasta.content}
+            &quot;{copyPasta.content}&quot;
           </blockquote>
         </div>
       </CardContent>

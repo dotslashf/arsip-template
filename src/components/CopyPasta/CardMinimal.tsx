@@ -12,7 +12,7 @@ import {
   Link as LinkIcon,
   NotebookPen,
 } from "lucide-react";
-import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
+import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import ReactionSummary from "../ReactionSummary";
 import { Button, buttonVariants } from "../ui/button";
@@ -161,19 +161,14 @@ export default function CardMinimal({
       <CardContent className="mt-6 flex py-0 hover:cursor-auto">
         <div
           className={cn(
-            "w-full overflow-x-hidden rounded-md border bg-secondary p-3 text-sm",
+            "w-full overflow-x-hidden text-sm",
             copyPasta.CopyPastasOnTags.some(
               (tag) => tag.tags.name === "NSFW",
             ) && "blur-sm transition hover:blur-none",
           )}
         >
-          <blockquote
-            className={cn(
-              "select-none whitespace-pre-line",
-              robotoSlab.className,
-            )}
-          >
-            {trimContent(copyPasta.content, 255)}
+          <blockquote className="select-none whitespace-pre-line border-l-4 pl-6 italic">
+            &quot;{trimContent(copyPasta.content, 255)}&quot;
           </blockquote>
         </div>
       </CardContent>

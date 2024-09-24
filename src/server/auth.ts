@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { type Rank, type UserRole } from "@prisma/client";
+import { User, type Rank, type UserRole } from "@prisma/client";
 import {
   getServerSession,
   type DefaultSession,
@@ -12,6 +12,7 @@ import Google from "next-auth/providers/google";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
+import { getUserRank } from "./util/db";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -111,38 +112,35 @@ export const authOptions: NextAuthOptions = {
         where: {
           userId: user.id,
         },
+        select: {
+          provider: true,
+        },
       });
-      const rank = await db.rank.findUnique({
-        where: user.rankId
-          ? {
-              id: user.rankId,
-            }
-          : {
-              minCount: 0,
-            },
-      });
-      if (!user.rankId) {
-        await db.user.update({
+      let rank;
+      if (!user.avatarSeed) {
+        const updatedUser = await db.user.update({
           where: {
             id: user.id,
           },
           data: {
-            rankId: rank?.id,
             avatarSeed: user.id,
             username: user.id.slice(0, 15),
           },
         });
+
+        rank = await getUserRank(db.rank, updatedUser.engagementScore);
       }
+
       return {
         ...session,
         user: {
           ...session.user,
           id: user.id,
           role: user.role,
-          rank,
           avatarSeed: user.avatarSeed,
           username: user.username,
           loginProvider: account?.provider,
+          rank,
         },
       };
     },
