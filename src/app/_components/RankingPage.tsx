@@ -132,25 +132,23 @@ export default function RankingPage() {
                             zoom={130}
                           />
                         </span>
-                        <Badge
-                          variant={getBadgeVariant(rankPosition)}
-                          className="flex w-fit"
-                        >
-                          {rank.name}
-                        </Badge>
-                        <RainbowBadge>
-                          <Lottie
-                            path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
-                            play
-                            loop
-                            className="mr-2 h-4 w-4"
-                          />
-                          <NumberTicker
-                            value={rank.currentStreak ?? 0}
-                            className="mr-2"
-                          />
-                          streak
-                        </RainbowBadge>
+                        <div className="flex flex-col gap-2">
+                          <Badge
+                            variant={getBadgeVariant(rankPosition)}
+                            className="flex w-fit"
+                          >
+                            {rank.name}
+                          </Badge>
+                          <RainbowBadge className="w-fit">
+                            <Lottie
+                              path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
+                              play
+                              loop
+                              className="mr-2 h-4 w-4"
+                            />
+                            {rank.currentStreak} streak
+                          </RainbowBadge>
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell className="text-center">

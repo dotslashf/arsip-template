@@ -294,7 +294,7 @@ export default function UserProfileCard({
                   >
                     Login: {session?.user.loginProvider ?? "User"}
                   </Badge>
-                  {streak?.currentStreak && (
+                  {streak && streak.currentStreak > 0 && (
                     <RainbowBadge>
                       <Lottie
                         path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
