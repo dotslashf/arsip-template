@@ -46,10 +46,7 @@ export default function Navbar({ session }: NavbarProps) {
             href={"/"}
             className="flex items-center justify-center font-bold leading-4 text-primary"
           >
-            <Package className="mr-1 w-6" />
-            arsip
-            <br />
-            template
+            <Package className="w-6" />
           </Link>
           <nav className="ml-auto flex items-center space-x-2">
             {session && streak && (
