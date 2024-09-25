@@ -123,8 +123,8 @@ export default function RankingPage() {
                     <TableCell className="text-center font-medium">
                       {getMedal(rankPosition)}
                     </TableCell>
-                    <TableCell className="w-64 md:w-72">
-                      <div className="my-auto flex h-full items-center gap-2">
+                    <TableCell>
+                      <div className="my-auto flex h-full w-64 items-center gap-2">
                         <span className="mr-4 rounded-full border-2 border-secondary-foreground">
                           <Avatar
                             seed={rank.avatarSeed ?? rank.id}
