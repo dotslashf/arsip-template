@@ -159,3 +159,5 @@ export const ENGAGEMENT_SCORE = {
   DeleteReaction: -3,
   DeleteCollection: -3,
 };
+
+export const TIMEZONE = "Asia/Jakarta";

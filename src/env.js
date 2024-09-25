@@ -33,6 +33,7 @@ export const env = createEnv({
     GCP_PROJECT_ID: z.string(),
     GOOGLE_APPLICATION_CREDENTIALS: z.string(),
     GCS_BUCKET_NAME: z.string(),
+    CRON_SECRET: z.string(),
   },
 
   /**
@@ -64,6 +65,7 @@ export const env = createEnv({
     GCP_PROJECT_ID: process.env.GCP_PROJECT_ID,
     GCS_BUCKET_NAME: process.env.GCS_BUCKET_NAME,
     GOOGLE_APPLICATION_CREDENTIALS: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+    CRON_SECRET: process.env.CRON_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
