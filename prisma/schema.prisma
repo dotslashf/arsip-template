@@ -146,6 +146,7 @@ model EngagementLog {
     userId    String
     action    EngagementAction
     score     Int
+    data      Json?
     createdAt DateTime         @default(now())
 }
 
