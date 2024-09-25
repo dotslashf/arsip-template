@@ -23,7 +23,6 @@ import BreadCrumbs from "~/components/BreadCrumbs";
 import { usePathname } from "next/navigation";
 import { Laugh, Library, NotebookPen } from "lucide-react";
 import { RainbowBadge } from "~/components/magicui/rainbow-badge";
-import NumberTicker from "~/components/magicui/number-ticker";
 import Lottie from "react-lottie-player";
 
 export default function RankingPage() {

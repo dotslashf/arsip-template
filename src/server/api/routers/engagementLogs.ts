@@ -1,10 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const engagementLogsRouter = createTRPCRouter({
   latestEngagement: publicProcedure

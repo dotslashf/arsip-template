@@ -40,6 +40,7 @@ declare module "next-auth" {
     rank: Rank;
     avatarSeed: string;
     username: string;
+    engagementScore: number;
   }
 }
 
@@ -116,9 +117,8 @@ export const authOptions: NextAuthOptions = {
           provider: true,
         },
       });
-      let rank;
       if (!user.avatarSeed) {
-        const updatedUser = await db.user.update({
+        await db.user.update({
           where: {
             id: user.id,
           },
@@ -127,8 +127,6 @@ export const authOptions: NextAuthOptions = {
             username: user.id.slice(0, 15),
           },
         });
-
-        rank = await getUserRank(db.rank, updatedUser.engagementScore);
       }
 
       return {
@@ -140,7 +138,7 @@ export const authOptions: NextAuthOptions = {
           avatarSeed: user.avatarSeed,
           username: user.username,
           loginProvider: account?.provider,
-          rank,
+          rank: await getUserRank(db.rank, user.engagementScore),
         },
       };
     },
