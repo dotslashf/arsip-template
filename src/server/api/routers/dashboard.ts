@@ -12,6 +12,7 @@ import { editCopyPastaForm } from "~/server/form/copyPasta";
 import { deleteBucketFile } from "~/server/util/storage";
 import { editProfile } from "~/server/form/user";
 import { updateUserEngagementScore } from "~/server/util/db";
+import { handleEngagementAction } from "~/lib/utils";
 
 export const dashboardRouter = createTRPCRouter({
   list: protectedProcedure
@@ -102,11 +103,8 @@ export const dashboardRouter = createTRPCRouter({
         },
       });
 
-      await updateUserEngagementScore(
-        ctx.db,
-        copyPasta.createdById,
-        "ApproveCopyPasta",
-      );
+      const payload = handleEngagementAction("ApproveCopyPasta", copyPasta.id);
+      await updateUserEngagementScore(ctx.db, copyPasta.createdById, payload);
 
       return copyPasta.id;
     }),

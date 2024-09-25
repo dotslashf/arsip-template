@@ -20,6 +20,7 @@ export const rankingRouter = createTRPCRouter({
         avatarSeed: true,
         engagementScore: true,
         username: true,
+        currentStreak: true,
         _count: {
           select: {
             Reactions: true,
@@ -29,9 +30,7 @@ export const rankingRouter = createTRPCRouter({
         CopyPastaCreatedBy: true,
       },
       orderBy: {
-        CopyPastaCreatedBy: {
-          _count: "desc",
-        },
+        engagementScore: "desc",
       },
       take: 5,
     });

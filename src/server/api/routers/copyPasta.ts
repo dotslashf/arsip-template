@@ -9,7 +9,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-import { getRandomElement } from "~/lib/utils";
+import { getRandomElement, handleEngagementAction } from "~/lib/utils";
 import {
   type CopyPastaOnlyContent,
   type CopyPastaSearchResult,
@@ -77,17 +77,14 @@ export const copyPastaRouter = createTRPCRouter({
         },
       });
 
-      await updateUserEngagementScore(
-        ctx.db,
-        ctx.session.user.id,
-        "CreateCopyPasta",
-      );
+      const payload = handleEngagementAction("CreateCopyPasta", copyPasta.id);
+      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
       if (isSuperAdmin) {
-        await updateUserEngagementScore(
-          ctx.db,
-          ctx.session.user.id,
+        const payload = handleEngagementAction(
           "ApproveCopyPasta",
+          copyPasta.id,
         );
+        await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
       }
 
       return copyPasta.id;

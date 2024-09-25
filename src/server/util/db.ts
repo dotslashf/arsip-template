@@ -1,6 +1,7 @@
-import { type EngagementAction, type PrismaClient } from "@prisma/client";
+import { type PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { ENGAGEMENT_SCORE } from "~/lib/constant";
+import { type EngagementActionDataDb } from "~/lib/interface";
 
 export async function getUserRank(
   dbRank: PrismaClient["rank"],
@@ -22,15 +23,16 @@ export async function getUserRank(
 export async function updateUserEngagementScore(
   db: PrismaClient,
   userId: string,
-  action: EngagementAction,
+  payload: EngagementActionDataDb,
 ) {
   try {
-    const score = ENGAGEMENT_SCORE[action];
+    const score = ENGAGEMENT_SCORE[payload.engagementType];
     await db.engagementLog.create({
       data: {
-        action,
+        action: payload.engagementType,
         score,
         userId,
+        data: payload as any,
       },
     });
 

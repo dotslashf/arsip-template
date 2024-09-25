@@ -7,6 +7,7 @@ import {
 import { EmotionType } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { updateUserEngagementScore } from "~/server/util/db";
+import { handleEngagementAction } from "~/lib/utils";
 
 export const reactionRouter = createTRPCRouter({
   reactionByCopyPastaId: protectedProcedureLimited
@@ -35,11 +36,11 @@ export const reactionRouter = createTRPCRouter({
             userId: ctx.session.user.id,
           },
         });
-        await updateUserEngagementScore(
-          ctx.db,
-          ctx.session.user.id,
+        const payload = handleEngagementAction(
           "GiveReaction",
+          input.copyPastaId,
         );
+        await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
         return newReaction;
       }
       return await ctx.db.reaction.update({
@@ -68,11 +69,8 @@ export const reactionRouter = createTRPCRouter({
           id: input.id,
         },
       });
-      await updateUserEngagementScore(
-        ctx.db,
-        ctx.session.user.id,
-        "RemoveReaction",
-      );
+      const payload = handleEngagementAction("RemoveReaction", null);
+      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
 
       return ctx.session.user.id;
     }),
@@ -91,11 +89,11 @@ export const reactionRouter = createTRPCRouter({
           userId: input.userId,
         },
       });
-      await updateUserEngagementScore(
-        ctx.db,
-        ctx.session.user.id,
+      const payload = handleEngagementAction(
         "RemoveReaction",
+        input.copyPastaId,
       );
+      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
       return reaction;
     }),
 

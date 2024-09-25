@@ -1,9 +1,13 @@
 import { twMerge } from "tailwind-merge";
-import { type $Enums, OriginSource } from "@prisma/client";
+import { type $Enums, EngagementAction, OriginSource } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
-import { format, parse } from "date-fns";
+import { format, formatDistance, parse } from "date-fns";
 import { id } from "date-fns/locale";
-import { type Breadcrumb } from "./interface";
+import {
+  type Breadcrumb,
+  type EngagementActionRecord,
+  type EngagementActionDataDb,
+} from "./interface";
 import {
   type Thing,
   type WithContext,
@@ -18,6 +22,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDateToHuman(date: Date, formatString = "PPP") {
   return format(date, formatString, { locale: id });
+}
+
+export function formatDateDistance(date: Date) {
+  return formatDistance(date, new Date(), { locale: id, addSuffix: true });
 }
 
 export function parseDate(date: string) {
@@ -156,4 +164,64 @@ export function generateSchemaOrgWebSite(): WithContext<WebSite> {
       "query-input": "required name=search_term_string",
     } as QueryAction,
   };
+}
+
+export const actionMap: EngagementActionRecord = {
+  [EngagementAction.CreateCopyPasta]: { action: "create", type: "copyPasta" },
+  [EngagementAction.ApproveCopyPasta]: { action: "approve", type: "copyPasta" },
+  [EngagementAction.GiveReaction]: { action: "give", type: "reaction" },
+  [EngagementAction.RemoveReaction]: { action: "remove", type: "reaction" },
+  [EngagementAction.CreateCollection]: { action: "create", type: "collection" },
+  [EngagementAction.DeleteCollection]: { action: "delete", type: "collection" },
+};
+
+export function handleEngagementAction(
+  action: EngagementAction,
+  resourceId: string | null,
+): EngagementActionDataDb {
+  const actionData = actionMap[action];
+
+  return {
+    engagementType: action,
+    action: actionData.action,
+    id: resourceId,
+    type: actionData.type,
+  };
+}
+
+export function parseEngagementLogs(log: EngagementActionDataDb) {
+  let action = "";
+  let activity = "";
+
+  switch (log.action) {
+    case "create":
+      action = "Telah membuat";
+      break;
+    case "approve":
+      action = "Template sudah disetujui";
+      break;
+    case "delete":
+      action = "Menghapus";
+      break;
+    case "give":
+      action = "Memberikan";
+      break;
+    case "remove":
+      action = "Menghapus";
+      break;
+  }
+
+  switch (log.type) {
+    case "collection":
+      activity = "koleksi";
+      break;
+    case "copyPasta":
+      activity = "template";
+      break;
+    case "reaction":
+      activity = "reaksi pada template";
+      break;
+  }
+
+  return `${action} ${activity}`;
 }

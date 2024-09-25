@@ -4,6 +4,7 @@ import { ArrowRight, Library, NotebookPen } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import BreadCrumbs from "~/components/BreadCrumbs";
+import EngagementLogHistory from "~/components/Dashboard/EngagementLogHistory";
 import { useSession } from "~/components/SessionContext";
 import { buttonVariants } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -60,6 +61,7 @@ export default function ProfilePage() {
               </Card>
             );
           })}
+          <EngagementLogHistory session={session} />
         </div>
       </div>
     </div>

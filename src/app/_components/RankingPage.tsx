@@ -22,6 +22,9 @@ import Avatar from "~/components/ui/avatar";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import { usePathname } from "next/navigation";
 import { Laugh, Library, NotebookPen } from "lucide-react";
+import { RainbowBadge } from "~/components/magicui/rainbow-badge";
+import NumberTicker from "~/components/magicui/number-ticker";
+import Lottie from "react-lottie-player";
 
 export default function RankingPage() {
   const [rankings] = api.ranking.topUsers.useSuspenseQuery(undefined, {
@@ -135,6 +138,19 @@ export default function RankingPage() {
                         >
                           {rank.name}
                         </Badge>
+                        <RainbowBadge>
+                          <Lottie
+                            path="https://fonts.gstatic.com/s/e/notoemoji/latest/1f525/lottie.json"
+                            play
+                            loop
+                            className="mr-2 h-4 w-4"
+                          />
+                          <NumberTicker
+                            value={rank.currentStreak ?? 0}
+                            className="mr-2"
+                          />
+                          streak
+                        </RainbowBadge>
                       </div>
                     </TableCell>
                     <TableCell className="text-center">
