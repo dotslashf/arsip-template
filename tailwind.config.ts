@@ -115,6 +115,11 @@ const config = {
           "0%": { "background-position": "0%" },
           "100%": { "background-position": "200%" },
         },
+        gradient: {
+          to: {
+            backgroundPosition: "var(--bg-size) 0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -124,6 +129,7 @@ const config = {
         marquee: "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         rainbow: "rainbow var(--speed, 4s) infinite linear",
+        gradient: "gradient 8s linear infinite",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)"],

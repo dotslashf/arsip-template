@@ -8,6 +8,8 @@ import { cn } from "~/lib/utils";
 import Marquee from "./magicui/marquee";
 import DotPattern from "./magicui/dot-pattern";
 import CardDisplay from "./CopyPasta/CardDisplay";
+import BlurIn from "./magicui/blur-in";
+import AnimatedGradientText from "./magicui/animated-gradient-text";
 
 interface HeroProps {
   copyPastas: {
@@ -35,7 +37,9 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
       <div className="z-30 flex w-full flex-grow flex-col items-center justify-center text-center">
         <Link
           href={"/"}
-          className="mb-4 flex items-center justify-center bg-white bg-gradient-to-br from-primary via-primary/85 to-primary/50 bg-clip-text text-center text-4xl font-bold text-transparent lg:text-5xl"
+          className={cn(
+            `animate-gradient duration-3000 mb-4 inline bg-white bg-gradient-to-r from-primary via-primary/60 to-primary bg-[length:var(--bg-size)_100%] bg-clip-text text-5xl font-bold text-transparent ease-out [--bg-size:300%]`,
+          )}
         >
           arsip
           <br />
@@ -82,13 +86,13 @@ export default function Hero({ copyPastas, isShowButton }: HeroProps) {
         </Marquee>
       </div>
       <DotPattern
-        width={18}
-        height={18}
+        width={14}
+        height={14}
         cx={1}
         cy={1}
         cr={1}
         className={cn(
-          "[mask-image:radial-gradient(550px_circle_at_top,white,transparent)]",
+          "[mask-image:radial-gradient(500px_circle_at_top,white,transparent)]",
         )}
       />
       <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-1/5 bg-gradient-to-r from-white dark:from-background md:w-1/3"></div>
