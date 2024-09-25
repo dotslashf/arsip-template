@@ -2,6 +2,7 @@ import { twMerge } from "tailwind-merge";
 import { type $Enums, EngagementAction, OriginSource } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import { format, formatDistance, parse } from "date-fns";
+import { format as formatTz, toZonedTime } from "date-fns-tz";
 import { id } from "date-fns/locale";
 import {
   type Breadcrumb,
@@ -14,7 +15,7 @@ import {
   type WebSite,
   type SearchAction,
 } from "schema-dts";
-import { baseUrl } from "./constant";
+import { baseUrl, TIMEZONE } from "./constant";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -30,6 +31,14 @@ export function formatDateDistance(date: Date) {
 
 export function parseDate(date: string) {
   return parse(date, "d MMMM yyyy", new Date(), { locale: id });
+}
+
+export function getJakartaDate(date: Date = new Date()): Date {
+  return toZonedTime(date, TIMEZONE);
+}
+
+export function getJakartaDateString(date: Date = new Date()): string {
+  return formatTz(getJakartaDate(date), "yyyy-MM-dd", { timeZone: TIMEZONE });
 }
 
 export function trimContent(content: string, length = 255) {
