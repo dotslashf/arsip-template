@@ -6,6 +6,8 @@ import {
 } from "../trpc";
 import { EmotionType } from "@prisma/client";
 import { redirect } from "next/navigation";
+import { updateUserEngagementScore } from "~/server/util/db";
+import { handleEngagementAction } from "~/lib/utils";
 
 export const reactionRouter = createTRPCRouter({
   reactionByCopyPastaId: protectedProcedureLimited
@@ -27,13 +29,19 @@ export const reactionRouter = createTRPCRouter({
         },
       });
       if (!reaction) {
-        return await ctx.db.reaction.create({
+        const newReaction = await ctx.db.reaction.create({
           data: {
             emotion: input.reactionType,
             copyPastaId: input.copyPastaId,
             userId: ctx.session.user.id,
           },
         });
+        const payload = handleEngagementAction(
+          "GiveReaction",
+          input.copyPastaId,
+        );
+        await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
+        return newReaction;
       }
       return await ctx.db.reaction.update({
         where: {
@@ -61,6 +69,8 @@ export const reactionRouter = createTRPCRouter({
           id: input.id,
         },
       });
+      const payload = handleEngagementAction("RemoveReaction", null);
+      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
 
       return ctx.session.user.id;
     }),
@@ -72,13 +82,19 @@ export const reactionRouter = createTRPCRouter({
         copyPastaId: z.string().uuid(),
       }),
     )
-    .mutation(({ ctx, input }) => {
-      return ctx.db.reaction.deleteMany({
+    .mutation(async ({ ctx, input }) => {
+      const reaction = ctx.db.reaction.deleteMany({
         where: {
           copyPastaId: input.copyPastaId,
           userId: input.userId,
         },
       });
+      const payload = handleEngagementAction(
+        "RemoveReaction",
+        input.copyPastaId,
+      );
+      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
+      return reaction;
     }),
 
   getReactionByCopyPastaId: publicProcedure

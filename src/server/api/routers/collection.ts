@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { handleEngagementAction } from "~/lib/utils";
 
 import {
   createTRPCRouter,
@@ -10,6 +11,7 @@ import {
   createCollectionForm,
   editCollectionForm,
 } from "~/server/form/collection";
+import { updateUserEngagementScore } from "~/server/util/db";
 
 export const collectionRouter = createTRPCRouter({
   list: publicProcedure
@@ -93,6 +95,8 @@ export const collectionRouter = createTRPCRouter({
           createdById: ctx.session.user.id,
         },
       });
+      const payload = handleEngagementAction("CreateCollection", collection.id);
+      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
 
       return collection.id;
     }),
@@ -250,6 +254,9 @@ export const collectionRouter = createTRPCRouter({
           id: collection.id,
         },
       });
+
+      const payload = handleEngagementAction("DeleteCollection", collection.id);
+      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
 
       return true;
     }),

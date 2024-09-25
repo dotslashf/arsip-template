@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Badge } from "./ui/badge";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import useToast from "./ui/use-react-hot-toast";
@@ -11,6 +10,7 @@ import { session } from "./HOCSession";
 import { useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
 import { trackEvent } from "~/lib/track";
+import Lottie from "react-lottie-player";
 
 interface ReactionSummaryChildProps {
   copyPastaId: string;
@@ -116,9 +116,7 @@ export default function ReactionSummaryChild({
   }
 
   return (
-    <motion.div
-      whileHover="hover"
-      whileTap="tap"
+    <div
       onClick={() =>
         currentUser && userIds?.includes(currentUser)
           ? handleUnReact()
@@ -129,24 +127,12 @@ export default function ReactionSummaryChild({
         variant={
           currentUser && userIds?.includes(currentUser) ? "default" : "outline"
         }
+        className="rounded-md"
       >
-        <motion.span
-          variants={{
-            hover: {
-              scale: 1.5,
-              rotateZ: 5,
-              transition: { type: "tween", duration: 0.2 },
-            },
-            tap: {
-              scale: 2.5,
-            },
-          }}
-        >
-          <ReactionChildWrapper className="mr-2 text-sm" type={emotion} />
-        </motion.span>
+        <ReactionChildWrapper className="mr-2 h-5 w-5 text-sm" type={emotion} />
         {count}
       </Badge>
-    </motion.div>
+    </div>
   );
 }
 
@@ -161,23 +147,26 @@ export function ReactionChildWrapper({
   let emotion = "";
   switch (type) {
     case "Kocak":
-      emotion = "🤣";
+      emotion = "1f923";
       break;
     case "Marah":
-      emotion = "🤬";
+      emotion = "1f92c";
       break;
     case "Setuju":
-      emotion = "💯";
+      emotion = "1f4af";
       break;
     case "Hah":
-      emotion = "🤯";
+      emotion = "1f92f";
       break;
     default:
       break;
   }
   return (
-    <span className={cn("flex items-center justify-center", className)}>
-      {emotion}
-    </span>
+    <Lottie
+      path={`https://fonts.gstatic.com/s/e/notoemoji/latest/${emotion}/lottie.json`}
+      play
+      loop
+      className={cn("flex h-4 w-4 items-center justify-center", className)}
+    />
   );
 }

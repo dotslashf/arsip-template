@@ -30,7 +30,7 @@ import {
   ChartTooltipContent,
 } from "~/components/ui/chart";
 import { DAYS } from "~/lib/constant";
-import { formatDateToHuman, getBreadcrumbs } from "~/lib/utils";
+import { formatDateToHuman, getBreadcrumbs, parseDate } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
 const chartConfigDonutReaction = {
@@ -108,7 +108,11 @@ export function StatisticsPage() {
   const chartDataLineCopyPastaVersusReaction = copyPastaVersusReaction.map(
     (c) => {
       return {
-        date: formatDateToHuman(c.date, "yyyy-MM-dd"),
+        date: new Date(c.date).toLocaleDateString("id-ID", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }),
         copyPasta: c.approved_copypastas,
         reaction: c.reactions,
       };
@@ -190,7 +194,7 @@ export function StatisticsPage() {
                   right: 12,
                 }}
               >
-                <CartesianGrid vertical={false} />
+                <CartesianGrid vertical={true} />
                 <XAxis
                   dataKey="date"
                   tickLine={false}
@@ -243,30 +247,28 @@ export function StatisticsPage() {
                 accessibilityLayer
                 data={chartDataLineCopyPastaVersusReaction}
                 margin={{
-                  left: 12,
-                  right: 12,
+                  left: 20,
+                  right: 20,
                   top: 12,
                 }}
               >
-                <CartesianGrid vertical={false} />
+                <CartesianGrid vertical={true} />
                 <XAxis
                   dataKey="date"
                   tickLine={false}
                   axisLine={false}
                   tickMargin={8}
                   minTickGap={32}
+                  interval={2}
                   tickFormatter={(value: string) => {
-                    const date = new Date(value);
+                    const date = parseDate(value);
                     return date.toLocaleDateString("id-ID", {
                       month: "short",
                       day: "numeric",
                     });
                   }}
                 />
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent />}
-                />
+                <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
                 <defs>
                   <linearGradient
                     id="fillCopyPasta"
@@ -281,7 +283,7 @@ export function StatisticsPage() {
                       stopOpacity={1}
                     />
                     <stop
-                      offset="99%"
+                      offset="100%"
                       stopColor="var(--color-copyPasta)"
                       stopOpacity={0.05}
                     />
@@ -293,7 +295,7 @@ export function StatisticsPage() {
                       stopOpacity={1}
                     />
                     <stop
-                      offset="99%"
+                      offset="100%"
                       stopColor="var(--color-reaction)"
                       stopOpacity={0.1}
                     />

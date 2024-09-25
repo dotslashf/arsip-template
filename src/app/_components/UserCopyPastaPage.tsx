@@ -2,6 +2,7 @@
 
 import { type Session } from "next-auth";
 import CardMinimal from "~/components/CopyPasta/CardMinimal";
+import EngagementLogHistory from "~/components/Dashboard/EngagementLogHistory";
 import EmptyState from "~/components/EmptyState";
 import GetContent from "~/components/GetContent";
 import { Button } from "~/components/ui/button";
@@ -56,8 +57,9 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
 
   return (
     <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
-      <div className="flex w-full items-center justify-center self-start lg:sticky lg:top-[4.5rem] lg:max-w-xs">
+      <div className="flex w-full flex-col items-center justify-center gap-4 self-start lg:sticky lg:top-[4.5rem] lg:max-w-xs">
         <UserProfileCard session={session} isPreviewMode={true} />
+        <EngagementLogHistory session={session} />
       </div>
       <div className="grid w-full gap-4">
         {pages

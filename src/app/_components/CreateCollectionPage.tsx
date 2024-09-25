@@ -127,7 +127,7 @@ export default function CreateCollection() {
 
   useEffect(() => {
     if (createMutation.isSuccess) {
-      return router.push("/dashboard/profile?utm_content=create_collection");
+      return router.push("/dashboard/collection?utm_content=create_collection");
     }
   }, [createMutation.isSuccess, router]);
 
@@ -241,7 +241,7 @@ export default function CreateCollection() {
               )}
             />
             {listOfCollections.length > 0 ? (
-              <div className="flex w-full flex-col space-y-4">
+              <div className="flex w-full flex-col">
                 <CardList
                   listOfCollections={listOfCollections}
                   renderCollection={renderCollection}

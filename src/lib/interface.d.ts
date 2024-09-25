@@ -2,6 +2,7 @@ import {
   type PrismaClient,
   type Tag as TagType,
   type CopyPasta,
+  type EngagementAction,
 } from "@prisma/client";
 import { type DefaultArgs } from "@prisma/client/runtime/library";
 import { type MiddlewareResult } from "@trpc/server/unstable-core-do-not-import";
@@ -188,3 +189,22 @@ export type CopyPastaSearchResult = Pick<
     name: string;
   }[];
 };
+
+export type ActionType = "create" | "approve" | "give" | "remove" | "delete";
+export type ResourceType = "copyPasta" | "reaction" | "collection";
+
+export interface EngagementActionData {
+  action: ActionType;
+  type: ResourceType;
+}
+
+export type EngagementActionRecord = {
+  [key in EngagementAction]: EngagementActionData;
+};
+
+export interface EngagementActionDataDb {
+  engagementType: EngagementAction;
+  id: string | null;
+  action: ActionType;
+  type: ResourceType;
+}

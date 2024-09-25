@@ -5,7 +5,6 @@ import {
   faDiaspora,
 } from "@fortawesome/free-brands-svg-icons";
 import { EmotionType } from "@prisma/client";
-import { Roboto_Slab } from "next/font/google";
 
 export const avatarColorsTheme = [
   "4D7CDB",
@@ -70,12 +69,6 @@ export const baseUrl =
   process.env.NODE_ENV === "production"
     ? "https://arsiptemplate.app"
     : "http://localhost:3000";
-
-export const robotoSlab = Roboto_Slab({
-  weight: ["400", "600"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
 
 export const DAYS = 24 * 60 * 60 * 1000;
 
@@ -155,4 +148,14 @@ export const ANALYTICS_EVENT = {
 
 export const CACHE_KEYS = {
   COUNT_CACHE_KEY: "COUNT_CACHE_KEY",
+};
+
+export const ENGAGEMENT_SCORE = {
+  CreateCopyPasta: 1,
+  ApproveCopyPasta: 1,
+  GiveReaction: 3,
+  RemoveReaction: -3,
+  CreateCollection: 3,
+  DeleteReaction: -3,
+  DeleteCollection: -3,
 };

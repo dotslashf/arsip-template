@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { ArrowRight, Link as LinkIcon, NotebookPen } from "lucide-react";
-import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
+import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
 import { cn } from "~/lib/utils";
 import { buttonVariants } from "../ui/button";
 import Link from "next/link";
@@ -58,16 +58,18 @@ export default function CardDashboard({
           <NotebookPen className="h-4 w-4" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col justify-between gap-2 py-2 hover:cursor-auto">
+      <CardContent className="flex flex-col justify-between gap-2 py-4 hover:cursor-auto">
         <div className="overflow-x-hidden text-sm">
           <blockquote
-            className={cn("whitespace-pre-line", robotoSlab.className)}
+            className={cn(
+              "select-none whitespace-pre-line border-l-4 pl-6 italic",
+            )}
           >
-            {copyPasta.content}
+            &quot;{copyPasta.content}&quot;
           </blockquote>
         </div>
       </CardContent>
-      <CardFooter className="mt-4 flex flex-col items-start gap-4 text-sm text-secondary-foreground dark:text-muted-foreground">
+      <CardFooter className="flex flex-col items-start gap-2 text-sm text-secondary-foreground dark:text-muted-foreground">
         {copyPasta.imageUrl && (
           <DialogImage
             content={copyPasta.content}

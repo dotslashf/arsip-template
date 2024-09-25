@@ -9,11 +9,12 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-import { getRandomElement } from "~/lib/utils";
+import { getRandomElement, handleEngagementAction } from "~/lib/utils";
 import {
   type CopyPastaOnlyContent,
   type CopyPastaSearchResult,
 } from "~/lib/interface";
+import { updateUserEngagementScore } from "~/server/util/db";
 
 function tokenize(content: string) {
   return content.toLowerCase().split(/\s+/);
@@ -75,6 +76,16 @@ export const copyPastaRouter = createTRPCRouter({
           },
         },
       });
+
+      const payload = handleEngagementAction("CreateCopyPasta", copyPasta.id);
+      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
+      if (isSuperAdmin) {
+        const payload = handleEngagementAction(
+          "ApproveCopyPasta",
+          copyPasta.id,
+        );
+        await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
+      }
 
       return copyPasta.id;
     }),

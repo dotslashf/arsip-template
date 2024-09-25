@@ -82,8 +82,8 @@ export default function CardRelated({ copyPasta }: CardProps) {
             ) && "blur-sm transition hover:blur-none",
           )}
         >
-          <blockquote className="whitespace-pre-line text-sm">
-            {trimContent(copyPasta.content, 255)}
+          <blockquote className="select-none whitespace-pre-line border-l-4 pl-6 text-sm italic">
+            &quot;{trimContent(copyPasta.content, 255)}&quot;
           </blockquote>
         </div>
       </CardContent>

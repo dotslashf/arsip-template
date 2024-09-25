@@ -6,14 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
 import {
   ArrowRight,
   ImageIcon,
   Link as LinkIcon,
   NotebookPen,
 } from "lucide-react";
-import { ANALYTICS_EVENT, robotoSlab, sourceEnumHash } from "~/lib/constant";
+import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
 import Link from "next/link";
@@ -29,21 +28,17 @@ export default function CardById({ copyPasta }: CardProps) {
   }
 
   return (
-    <Card className="h-full w-full">
+    <Card className="ml-8 h-full w-full">
       <CardHeader className="pb-0">
         <CardTitle className="flex w-full items-center justify-between">
           <NotebookPen className="h-4 w-4" />
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col justify-between gap-2 pb-2 pt-4 hover:cursor-auto">
+      <CardContent className="flex flex-col justify-between gap-2 py-4 hover:cursor-auto">
         <div className={cn("overflow-x-hidden text-sm")}>
-          <ScrollArea
-            className={cn("h-20 rounded-md text-sm", robotoSlab.className)}
-          >
-            <blockquote className="select-none whitespace-pre-line">
-              {trimContent(copyPasta.content, 100)}
-            </blockquote>
-          </ScrollArea>
+          <blockquote className="select-none whitespace-pre-line border-l-4 pl-6 text-sm italic">
+            {trimContent(copyPasta.content, 100)}
+          </blockquote>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-4 self-end text-sm text-secondary-foreground dark:text-muted-foreground">

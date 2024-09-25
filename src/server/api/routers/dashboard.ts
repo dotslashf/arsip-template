@@ -11,6 +11,8 @@ import { z } from "zod";
 import { editCopyPastaForm } from "~/server/form/copyPasta";
 import { deleteBucketFile } from "~/server/util/storage";
 import { editProfile } from "~/server/form/user";
+import { updateUserEngagementScore } from "~/server/util/db";
+import { handleEngagementAction } from "~/lib/utils";
 
 export const dashboardRouter = createTRPCRouter({
   list: protectedProcedure
@@ -101,26 +103,8 @@ export const dashboardRouter = createTRPCRouter({
         },
       });
 
-      const userContributionCount = await ctx.db.copyPasta.count({
-        where: { createdById: copyPasta.createdById },
-      });
-
-      const rank = await ctx.db.rank.findFirst({
-        where: {
-          minCount: {
-            lte: userContributionCount,
-          },
-        },
-        orderBy: {
-          minCount: "desc",
-        },
-      });
-      if (rank) {
-        await ctx.db.user.update({
-          where: { id: copyPasta.createdById },
-          data: { rankId: rank.id },
-        });
-      }
+      const payload = handleEngagementAction("ApproveCopyPasta", copyPasta.id);
+      await updateUserEngagementScore(ctx.db, copyPasta.createdById, payload);
 
       return copyPasta.id;
     }),
