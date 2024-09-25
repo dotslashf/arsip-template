@@ -55,7 +55,7 @@ export default function EngagementLogHistory({
                       className="text-primary underline"
                       href={`/copy-pasta/${parsed.id}`}
                     >
-                      disini
+                      ini
                     </Link>
                   )}
                   {parsed.type === "collection" && (
