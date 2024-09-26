@@ -51,13 +51,13 @@ export default function EngagementLogHistory({
                   {parseEngagementLogs(parsed)}{" "}
                   {(parsed.action === "approve" ||
                     parsed.type === "reaction") && (
-                    <Link
-                      className="text-primary underline"
-                      href={`/copy-pasta/${parsed.id}`}
-                    >
-                      ini
-                    </Link>
-                  )}
+                      <Link
+                        className="text-primary underline"
+                        href={`/copy-pasta/${parsed.id}`}
+                      >
+                        ini
+                      </Link>
+                    )}
                   {parsed.type === "collection" && (
                     <Link
                       className="text-primary underline"
