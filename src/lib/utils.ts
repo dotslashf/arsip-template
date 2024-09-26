@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { twMerge } from "tailwind-merge";
 import { type $Enums, EngagementAction, OriginSource } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
