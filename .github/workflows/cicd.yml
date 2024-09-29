@@ -35,6 +35,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
           GCE_REGION: ${{ secrets.GCE_REGION }}
           BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           echo "$GCP_SA_KEY" > gcp-service-account-key.json
           docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=$BUCKET_NAME --build-arg GCP_SA_KEY="$GCP_SA_KEY" -t $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA .
