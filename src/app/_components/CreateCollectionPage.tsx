@@ -257,10 +257,17 @@ export default function CreateCollection() {
               className="w-full items-center"
               disabled={form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting
-                ? "Membuat Koleksi..."
-                : "Tambah Koleksi"}
-              <PlusIcon className="ml-2 h-4 w-4" />
+              {form.formState.isSubmitting ? (
+                <>
+                  Membuat Koleksi...
+                  <LoaderCircle className="ml-2 w-4 animate-spin" />
+                </>
+              ) : (
+                <>
+                  Tambah Koleksi
+                  <PlusIcon className="ml-2 h-4 w-4" />
+                </>
+              )}
             </Button>
           </div>
         </form>
