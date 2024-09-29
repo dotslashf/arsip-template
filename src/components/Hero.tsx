@@ -8,8 +8,6 @@ import { cn } from "~/lib/utils";
 import Marquee from "./magicui/marquee";
 import DotPattern from "./magicui/dot-pattern";
 import CardDisplay from "./CopyPasta/CardDisplay";
-import BlurIn from "./magicui/blur-in";
-import AnimatedGradientText from "./magicui/animated-gradient-text";
 
 interface HeroProps {
   copyPastas: {

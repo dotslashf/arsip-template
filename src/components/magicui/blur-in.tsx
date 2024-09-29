@@ -18,7 +18,7 @@ const BlurIn = ({ word, className, variant, duration = 1 }: BlurIntProps) => {
     hidden: { filter: "blur(10px)", opacity: 0 },
     visible: { filter: "blur(0px)", opacity: 1 },
   };
-  const combinedVariants = variant || defaultVariants;
+  const combinedVariants = variant ?? defaultVariants;
 
   return (
     <motion.h1

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { type PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { ENGAGEMENT_SCORE } from "~/lib/constant";
