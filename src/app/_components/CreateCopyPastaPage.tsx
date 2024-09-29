@@ -24,7 +24,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
-import { PlusIcon } from "lucide-react";
+import { LoaderCircle, PlusIcon } from "lucide-react";
 import {
   determineSource,
   formatDateToHuman,
@@ -437,8 +437,16 @@ export default function CreateCopyPasta() {
               className="w-full items-center"
               disabled={form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting ? "Mengarsipkan..." : "Tambah"}
-              <PlusIcon className="ml-2 h-4 w-4" />
+              {form.formState.isSubmitting ? (
+                <>
+                  Mengarsipkan...
+                  <LoaderCircle className="ml-2 w-4 animate-spin" />
+                </>
+              ) : (
+                <>
+                  Arsipkan <PlusIcon className="ml-2 h-4 w-4" />
+                </>
+              )}
             </Button>
           </div>
         </form>

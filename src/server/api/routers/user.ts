@@ -1,6 +1,7 @@
 import { AchievementType, type PrismaClient, type User } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { getJakartaDate, getJakartaDateString } from "~/lib/utils";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -20,13 +21,16 @@ export async function updateUserStreak(userId: string, db: PrismaClient) {
     });
   }
 
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const now = getJakartaDate();
+  const todayString = getJakartaDateString(now);
 
   let newStreak = user.currentStreak || 0;
   let isStreakUpdated = false;
 
-  if (!user.lastPostedAt || user.lastPostedAt < today) {
+  if (
+    !user.lastPostedAt ||
+    getJakartaDateString(user.lastPostedAt) < todayString
+  ) {
     // If last post was before today, increment the streak
     newStreak += 1;
     isStreakUpdated = true;
