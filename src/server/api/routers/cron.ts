@@ -3,12 +3,9 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "~/env";
 import { getJakartaDate, getJakartaDateString } from "~/lib/utils";
-import { Resend } from "resend";
+import { type CreateEmailOptions, Resend } from "resend";
 import StreakPage from "~/app/_components/Email/Streak";
-import { setTimeout } from "timers/promises";
 import { type User } from "@prisma/client";
-
-const resend = new Resend(env.RESEND_API_KEY);
 
 export const cronRouter = createTRPCRouter({
   healthCheck: publicProcedure
@@ -88,47 +85,44 @@ export const cronRouter = createTRPCRouter({
         AND "currentStreak" > 0;
       `;
 
-      const emailPromises = targetedUsers.map(async (user) => {
-        try {
-          if (!user.email) {
-            return {
-              user: null,
-              success: false,
-              error: Error("User don't have email"),
-            };
-          }
-          const { data, error } = await resend.emails.send({
+      if (targetedUsers.length === 0) return;
+
+      const resend = new Resend(env.RESEND_API_KEY);
+
+      const emails: CreateEmailOptions[] = targetedUsers
+        .filter((user) => user.email)
+        .map((user) => {
+          return {
             from: "Arsip Template <noreply@arsiptemplate.app>",
-            to: [user.email],
+            to: user.email,
             subject: "Jangan sampai streakmu hilang!",
             react: StreakPage({
               name: user.name ?? "",
               streakCount: user.currentStreak,
               previewText: "Jangan sampai streakmu hilang!",
             }),
-          });
+          } as CreateEmailOptions;
+        });
 
-          if (error) {
-            console.error(`Failed to send email to ${user.email}:`, error);
-            return { user: user.email, success: false, error };
-          }
+      try {
+        const { data, error } = await resend.batch.send(emails);
 
-          await setTimeout(1000);
-          console.log(`Email sent successfully to ${user.email}`, data);
-          return { user: user.email, success: true, data };
-        } catch (error) {
-          console.error(`Error sending email to ${user.email}:`, error);
-          return { user: user.email, success: false, error };
+        if (error) {
+          console.error("Failed to send batch emails:", error);
+          return { success: false, error };
         }
-      });
 
-      const results = await Promise.all(emailPromises);
+        const successCount = data?.data.filter((result) => result.id).length;
+        const message = `Successfully sent ${successCount} (${emails.map((email) => email.to).join(", ")}) out of ${emails.length} emails`;
+        console.log(message);
 
-      const successCount = results.filter((r) => r.success).length;
-      console.log(
-        `Successfully sent ${successCount} out of ${targetedUsers.length} emails`,
-      );
-
-      return results;
+        return {
+          success: true,
+          message,
+        };
+      } catch (error) {
+        console.error("Error sending batch emails:", error);
+        return { success: false, error };
+      }
     }),
 });
