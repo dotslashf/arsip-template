@@ -52,6 +52,12 @@ export function trimContent(content: string, length = 255) {
   return trimmedContent + (content.length > length ? "..." : "");
 }
 
+export function getTweetId(tweetUrl: string) {
+  const match = tweetUrl.match(/\/status\/(\d+)/);
+  return match ? match[1] : null;
+}
+
+
 export function getRandomElement(array: string[]) {
   if (array.length === 0) {
     throw new Error("Array cannot be empty");

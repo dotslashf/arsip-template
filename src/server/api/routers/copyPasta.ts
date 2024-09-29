@@ -26,8 +26,12 @@ function jaccardSimilarity(setA: Set<string>, setB: Set<string>) {
 }
 
 export const copyPastaRouter = createTRPCRouter({
-  create: protectedProcedure
-    .input(createCopyPastaFormServer)
+  validateCopyPastaContent: protectedProcedure
+    .input(
+      z.object({
+        content: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const newContentTokens = new Set(tokenize(input.content));
 
@@ -51,7 +55,11 @@ export const copyPastaRouter = createTRPCRouter({
           });
         }
       }
+    }),
 
+  create: protectedProcedure
+    .input(createCopyPastaFormServer)
+    .mutation(async ({ ctx, input }) => {
       const isSuperAdmin = ctx.session.user.role === "SuperAdmin";
 
       const { content, source, sourceUrl, postedAt, imageUrl } = input;

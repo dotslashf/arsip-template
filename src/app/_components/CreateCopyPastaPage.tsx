@@ -12,6 +12,15 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
@@ -20,6 +29,7 @@ import {
   determineSource,
   formatDateToHuman,
   getBreadcrumbs,
+  getTweetId,
 } from "~/lib/utils";
 import { createCopyPastaFormClient } from "../../server/form/copyPasta";
 import { type z } from "zod";
@@ -35,6 +45,11 @@ import { id } from "date-fns/locale";
 import { DAYS, parseErrorMessages } from "~/lib/constant";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import Link from "next/link";
+import { Tweet } from "react-tweet";
+import { type Tweet as TweetInterface } from "react-tweet/api";
+import { parseISO } from "date-fns";
+import { useToBlob } from "@hugocxl/react-to-image";
+import he from "he";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
@@ -44,6 +59,8 @@ export default function CreateCopyPasta() {
   });
   const createMutation = api.copyPasta.create.useMutation();
   const updateStreakMutation = api.user.updateUserStreak.useMutation();
+  const validateCopyPastaMutation =
+    api.copyPasta.validateCopyPastaContent.useMutation();
   const getUploadUrl = api.upload.getUploadSignedUrl.useMutation();
 
   const router = useRouter();
@@ -69,6 +86,7 @@ export default function CreateCopyPasta() {
 
   const toast = useToast();
   const [file, setFile] = useState<File | null>(null);
+  const [modeCreate, setModeCreate] = useState<"manual" | "auto">("manual");
 
   useEffect(() => {
     if (createMutation.isSuccess) {
@@ -86,6 +104,26 @@ export default function CreateCopyPasta() {
 
   async function onSubmit(values: z.infer<typeof createCopyPastaFormClient>) {
     try {
+      if (
+        modeCreate === "auto" &&
+        determineSource(values.sourceUrl) !== "Twitter"
+      ) {
+        return form.setError("sourceUrl", {
+          message: "Hanya support link twitter 😉",
+        });
+      }
+
+      try {
+        await validateCopyPastaMutation.mutateAsync({
+          content: values.content,
+        });
+      } catch (error) {
+        return toast({
+          type: "danger",
+          message: parseErrorMessages(error as Record<string, any>),
+        });
+      }
+
       if (!file) {
         await toast({
           message: "",
@@ -151,6 +189,62 @@ export default function CreateCopyPasta() {
     } catch (error) {}
   }
 
+  const [fetchedTweetId, setFetchedTweetId] = useState<string | null>();
+
+  async function fetchTweetData() {
+    if (determineSource(form.getValues("sourceUrl")) !== "Twitter") {
+      return form.setError("sourceUrl", {
+        message: "Hanya support link twitter 😉",
+      });
+    } else {
+      form.clearErrors();
+    }
+
+    const tweetId = getTweetId(form.getValues("sourceUrl") ?? "");
+    if (!tweetId) return null;
+    setFetchedTweetId(tweetId);
+    const url = `https://react-tweet.vercel.app/api/tweet/${tweetId}`;
+
+    try {
+      const response = await fetch(url, {});
+      const { data } = (await response.json()) as { data: TweetInterface };
+
+      form.setValue("content", he.decode(data.text));
+      form.setValue("postedAt", parseISO(data.created_at));
+    } catch (error) {
+      console.error("Error fetching tweet data:", error);
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, convert, ref] = useToBlob<HTMLDivElement>({
+    onSuccess: async (data) => {
+      if (!data) return null;
+      const file = new File([data], "tweet.png", { type: "image/png" });
+      setFile(file);
+      form.setValue("imageUrl", file);
+    },
+    onError: (error) => console.log("Error", error),
+  });
+
+  useEffect(() => {
+    if (fetchedTweetId) {
+      const timeoutId = setTimeout(() => {
+        convert();
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchedTweetId]);
+
+  useEffect(() => {
+    setFile(null);
+    setFetchedTweetId(null);
+    form.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modeCreate]);
+
   const pathname = usePathname();
   const breadcrumbs = getBreadcrumbs(pathname);
 
@@ -160,36 +254,77 @@ export default function CreateCopyPasta() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
           <div className="grid grid-cols-1 gap-4">
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormLabel>Content</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Isi dari templatenya..."
-                      {...field}
-                      rows={5}
-                    />
-                  </FormControl>
-                  <FormDescription className="font-semibold">
-                    Pastikan mengecek templatenya sudah ada atau belum yah! 😎
-                    <br />
-                    Bisa menggunakan fitur{" "}
-                    <Link
-                      href={"/copy-pasta"}
-                      className="text-primary underline"
-                      prefetch={false}
-                      target="__blank"
-                    >
-                      cari disini
-                    </Link>
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <Select
+              onValueChange={(value) =>
+                setModeCreate(value as "manual" | "auto")
+              }
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Mode Buat" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Mode Buat</SelectLabel>
+                  <SelectItem value="manual">Manual</SelectItem>
+                  <SelectItem value="auto">Automatis</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            {modeCreate === "manual" ? (
+              <FormField
+                control={form.control}
+                name="content"
+                render={({ field }) => (
+                  <FormItem className="">
+                    <FormLabel>Content</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Isi dari templatenya..."
+                        {...field}
+                        rows={5}
+                      />
+                    </FormControl>
+                    <FormDescription className="font-semibold">
+                      Pastikan mengecek templatenya sudah ada atau belum yah! 😎
+                      <br />
+                      Bisa menggunakan fitur{" "}
+                      <Link
+                        href={"/copy-pasta"}
+                        className="text-primary underline"
+                        prefetch={false}
+                        target="__blank"
+                      >
+                        cari disini
+                      </Link>
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : (
+              <FormField
+                control={form.control}
+                name="sourceUrl"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Tweet original</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="https://x.com/ichikiwhere/status/1827573537336652224"
+                        {...field}
+                        type="url"
+                        required={modeCreate === "auto"}
+                        onBlur={fetchTweetData}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription>
+                      Saat ini hanya untuk twitter 😉
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="tags"
@@ -222,62 +357,79 @@ export default function CreateCopyPasta() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="postedAt"
-              render={({ field }) => (
-                <FormItem className="w-full flex-col">
-                  <FormLabel className="mb-1">Tanggal kejadian</FormLabel>
-                  <div>
-                    <FormControl>
-                      <DateTimePicker
-                        value={field.value}
-                        onChange={field.onChange}
-                        granularity="day"
-                        placeholder={formatDateToHuman(new Date())}
-                        locale={id}
-                        displayFormat={{ hour24: "PPP" }}
-                      />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+            {modeCreate === "manual" && (
               <FormField
                 control={form.control}
-                name="sourceUrl"
+                name="postedAt"
                 render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Doksli</FormLabel>
-                    <FormControl>
-                      <Input placeholder="www.doksli.com" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="imageUrl"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Gambar Doksli</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        value={field.value ? field.value[0] : undefined}
-                      />
-                    </FormControl>
+                  <FormItem className="w-full flex-col">
+                    <FormLabel className="mb-1">Tanggal kejadian</FormLabel>
+                    <div>
+                      <FormControl>
+                        <DateTimePicker
+                          value={field.value}
+                          onChange={field.onChange}
+                          granularity="day"
+                          placeholder={formatDateToHuman(new Date())}
+                          locale={id}
+                          displayFormat={{ hour24: "PPP" }}
+                        />
+                      </FormControl>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
+            )}
+            {modeCreate === "manual" && (
+              <div className="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+                <FormField
+                  control={form.control}
+                  name="sourceUrl"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Doksli</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="www.doksli.com"
+                          {...field}
+                          type="url"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>Gambar</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                          value={field.value ? field.value[0] : undefined}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+            {fetchedTweetId && (
+              <div
+                ref={ref}
+                className="flex items-center justify-center bg-background"
+              >
+                <Tweet id={fetchedTweetId} />
+              </div>
+            )}
           </div>
           <div className="mt-6 w-full">
             <Button
