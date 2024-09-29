@@ -6,6 +6,7 @@ import { getJakartaDate, getJakartaDateString } from "~/lib/utils";
 import { Resend } from "resend";
 import StreakPage from "~/app/_components/Email/Streak";
 import { setTimeout } from "timers/promises";
+import { type User } from "@prisma/client";
 
 const resend = new Resend(env.RESEND_API_KEY);
 
@@ -80,19 +81,12 @@ export const cronRouter = createTRPCRouter({
         });
       }
 
-      const jakartaYesterday = getJakartaDate(
-        new Date(Date.now() - 24 * 60 * 60 * 1000),
-      );
-      const targetedUsers = await ctx.db.user.findMany({
-        where: {
-          lastPostedAt: {
-            lt: jakartaYesterday,
-          },
-          currentStreak: {
-            gt: 0,
-          },
-        },
-      });
+      const targetedUsers: User[] = await ctx.db.$queryRaw`
+      SELECT *
+      FROM "User"
+      WHERE "lastPostedAt" < (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Jakarta' - INTERVAL '1 day')
+        AND "currentStreak" > 0;
+      `;
 
       const emailPromises = targetedUsers.map(async (user) => {
         try {
@@ -119,7 +113,7 @@ export const cronRouter = createTRPCRouter({
             return { user: user.email, success: false, error };
           }
 
-          await setTimeout(500);
+          await setTimeout(1000);
           console.log(`Email sent successfully to ${user.email}`, data);
           return { user: user.email, success: true, data };
         } catch (error) {
