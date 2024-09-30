@@ -3,9 +3,10 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "~/env";
 import { getJakartaDate, getJakartaDateString } from "~/lib/utils";
-import { type CreateEmailOptions, Resend } from "resend";
+import { type CreateEmailOptions } from "resend";
 import StreakPage from "~/app/_components/Email/Streak";
 import { type User } from "@prisma/client";
+import resend from "~/server/util/resend";
 
 export const cronRouter = createTRPCRouter({
   healthCheck: publicProcedure
@@ -86,8 +87,6 @@ export const cronRouter = createTRPCRouter({
       `;
 
       if (targetedUsers.length === 0) return;
-
-      const resend = new Resend(env.RESEND_API_KEY);
 
       const emails: CreateEmailOptions[] = targetedUsers
         .filter((user) => user.email)

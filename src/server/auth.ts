@@ -1,11 +1,9 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type Rank, type UserRole } from "@prisma/client";
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
-import { type Adapter } from "next-auth/adapters";
 import TwitterProvider from "next-auth/providers/twitter";
 import Discord from "next-auth/providers/discord";
 import Google from "next-auth/providers/google";
@@ -13,6 +11,9 @@ import Google from "next-auth/providers/google";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { getUserRank } from "./util/db";
+import PrismaAdapterExtend from "./util/adapter";
+import resend from "./util/resend";
+import WelcomeEmail from "~/app/_components/Email/Welcoming";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -117,6 +118,28 @@ export const authOptions: NextAuthOptions = {
           provider: true,
         },
       });
+      // send welcoming email
+      if (!user.emailVerified) {
+        await Promise.all([
+          resend.emails.send({
+            from: "Arsip Template <noreply@arsiptemplate.app>",
+            to: user.email,
+            subject: "Selamat datang di arsip template!",
+            react: WelcomeEmail({
+              name: user.name ?? user.email,
+              previewText: "Selamat datang di arsip template!",
+            }),
+          }),
+          db.user.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              emailVerified: new Date(),
+            },
+          }),
+        ]);
+      }
       if (!user.avatarSeed) {
         await db.user.update({
           where: {
@@ -143,7 +166,7 @@ export const authOptions: NextAuthOptions = {
       };
     },
   },
-  adapter: PrismaAdapter(db) as Adapter,
+  adapter: PrismaAdapterExtend(db),
   providers: [
     /**
      * ...add more providers here.
