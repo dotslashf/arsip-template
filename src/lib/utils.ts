@@ -57,7 +57,6 @@ export function getTweetId(tweetUrl: string) {
   return match ? match[1] : null;
 }
 
-
 export function getRandomElement(array: string[]) {
   if (array.length === 0) {
     throw new Error("Array cannot be empty");
@@ -206,16 +205,21 @@ export function handleEngagementAction(
   };
 }
 
+export function capitalize(str: string): string {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 export function parseEngagementLogs(log: EngagementActionDataDb) {
   let action = "";
   let activity = "";
 
   switch (log.action) {
     case "create":
-      action = "Telah membuat";
+      action = "Membuat";
       break;
     case "approve":
-      action = "Template sudah disetujui";
+      action = "disetujui";
       break;
     case "delete":
       action = "Menghapus";
@@ -240,5 +244,15 @@ export function parseEngagementLogs(log: EngagementActionDataDb) {
       break;
   }
 
-  return `${action} ${activity}`;
+  if (log.action === "approve") {
+    return {
+      text: `${capitalize(activity)} ${action}`,
+      action: `link`,
+    };
+  }
+
+  return {
+    text: `${action} ${activity}`,
+    action: `link`,
+  };
 }
