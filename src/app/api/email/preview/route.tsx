@@ -1,6 +1,7 @@
 import { render } from "@react-email/render";
 import { NextResponse } from "next/server";
 import Streak from "~/app/_components/Email/Streak";
+import WelcomeEmail from "~/app/_components/Email/Welcoming";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -17,10 +18,18 @@ export async function GET(request: Request) {
         />
       );
       break;
+    case "welcoming":
+      templateComponent = (
+        <WelcomeEmail
+          name="Fadhlu"
+          previewText="Selamat datang, Fadhlu di arsip-template"
+        />
+      );
+      break;
     default:
       templateComponent = (
         <Streak
-          name="Fadhlu"
+          name="Default"
           streakCount={4}
           previewText="Streakmu bisa saja hilang!"
         />

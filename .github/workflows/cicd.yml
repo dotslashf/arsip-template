@@ -38,7 +38,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           echo "$GCP_SA_KEY" > gcp-service-account-key.json
-          docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=$BUCKET_NAME --build-arg GCP_SA_KEY="$GCP_SA_KEY" -t $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA .
+          docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg GCS_BUCKET_NAME=$BUCKET_NAME --build-arg GCP_SA_KEY="$GCP_SA_KEY" --build-arg RESEND_API_KEY="$RESEND_API_KEY" -t $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA .
           docker push $GCE_REGION-docker.pkg.dev/$PROJECT_ID/arsip-template/app:$GITHUB_SHA
 
       - name: Copy docker-compose.yml to SSH server
