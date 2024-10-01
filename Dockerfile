@@ -22,6 +22,7 @@ ARG DATABASE_URL
 ARG GCS_BUCKET_NAME
 ARG GCP_SA_KEY
 ARG NEXT_PUBLIC_CLIENTVAR
+ARG RESEND_API_KEY
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -33,6 +34,7 @@ RUN apt-get update -y && apt-get install -y openssl
 ENV DATABASE_URL=${DATABASE_URL}
 ENV GCS_BUCKET_NAME=${GCS_BUCKET_NAME}
 ENV GCP_SA_KEY=${GCP_SA_KEY}
+ENV RESEND_API_KEY=${RESEND_API_KEY}
 
 # Run Prisma migrations
 RUN npm install -g prisma && prisma migrate deploy
