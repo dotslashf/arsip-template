@@ -256,3 +256,12 @@ export function parseEngagementLogs(log: EngagementActionDataDb) {
     action: `link`,
   };
 }
+
+export function formatNumber(number: number) {
+  return Intl.NumberFormat("en-US", {
+    style: "decimal",
+    useGrouping: true,
+    notation: "compact",
+    compactDisplay: "short",
+  }).format(number);
+}

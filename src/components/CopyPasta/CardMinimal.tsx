@@ -22,7 +22,7 @@ import { type Tag as TagType } from "@prisma/client";
 import Tag from "../ui/tags";
 import useToast from "../ui/use-react-hot-toast";
 import { trackEvent } from "~/lib/track";
-import Avatar from "../ui/avatar";
+import Avatar from "../ui/avatar-image";
 import { badgeVariants } from "../ui/badge";
 import { useState } from "react";
 import DialogImage from "./DialogImage";

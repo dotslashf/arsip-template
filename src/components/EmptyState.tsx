@@ -14,7 +14,7 @@ export default function EmptyState({
     <div
       className={cn(
         "flex h-32 w-full flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed bg-secondary text-sm",
-        { ...props },
+        props.className,
       )}
     >
       {message}

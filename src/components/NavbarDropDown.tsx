@@ -29,7 +29,7 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 import { trackEvent } from "~/lib/track";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { type Session } from "next-auth";
-import Avatar from "./ui/avatar";
+import Avatar from "./ui/avatar-image";
 import { signOut } from "next-auth/react";
 
 interface NavbarDropDownProps {

@@ -35,7 +35,7 @@ import { createCopyPastaFormClient } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import MultipleSelector, {
   type Option,
 } from "~/components/ui/multiple-selector";
@@ -45,11 +45,13 @@ import { id } from "date-fns/locale";
 import { DAYS, parseErrorMessages } from "~/lib/constant";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import Link from "next/link";
-import { Tweet } from "react-tweet";
+import { enrichTweet, Tweet, TweetSkeleton } from "react-tweet";
 import { type Tweet as TweetInterface } from "react-tweet/api";
 import { parseISO } from "date-fns";
 import { useToBlob } from "@hugocxl/react-to-image";
 import he from "he";
+import TweetPage from "./TweetPage";
+import EmptyState from "~/components/EmptyState";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {
@@ -208,9 +210,18 @@ export default function CreateCopyPasta() {
     try {
       const response = await fetch(url, {});
       const { data } = (await response.json()) as { data: TweetInterface };
+      const tweet = enrichTweet(data);
 
-      form.setValue("content", he.decode(data.text));
-      form.setValue("postedAt", parseISO(data.created_at));
+      void toast({
+        type: "success",
+        message: tweet.entities.map((e) => e.text).join(" "),
+      });
+
+      form.setValue(
+        "content",
+        he.decode(tweet.entities.map((e) => e.text).join(" ")),
+      );
+      form.setValue("postedAt", parseISO(tweet.created_at));
     } catch (error) {
       console.error("Error fetching tweet data:", error);
     }
@@ -422,13 +433,19 @@ export default function CreateCopyPasta() {
                 />
               </div>
             )}
-            {fetchedTweetId && (
+            <span className="text-sm">Tweet akan muncul dibawah 👇</span>
+            {fetchedTweetId ? (
               <div
                 ref={ref}
                 className="flex items-center justify-center bg-background"
               >
-                <Tweet id={fetchedTweetId} />
+                <TweetPage id={fetchedTweetId} />
               </div>
+            ) : (
+              <EmptyState
+                message="Tweet belum terload"
+                className="border-solid"
+              />
             )}
           </div>
           <div className="mt-6 w-full">
