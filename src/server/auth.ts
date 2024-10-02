@@ -14,6 +14,7 @@ import { getUserRank } from "./util/db";
 import PrismaAdapterExtend from "./util/adapter";
 import resend from "./util/resend";
 import WelcomeEmail from "~/app/_components/Email/Welcoming";
+import { type Adapter } from "next-auth/adapters";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -166,7 +167,7 @@ export const authOptions: NextAuthOptions = {
       };
     },
   },
-  adapter: PrismaAdapterExtend(db),
+  adapter: PrismaAdapterExtend(db) as Adapter,
   providers: [
     /**
      * ...add more providers here.
