@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import { buttonVariants } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { cn, getBreadcrumbs } from "~/lib/utils";

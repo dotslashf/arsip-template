@@ -1,7 +1,7 @@
 import { CalendarDays, Check, ChevronRight, Pencil, Trash } from "lucide-react";
 import { formatDateToHuman, cn } from "~/lib/utils";
-import Avatar from "../ui/avatar-image";
-import { Badge, badgeVariants } from "../ui/badge";
+import Avatar from "~/components/ui/avatar-image";
+import { Badge, badgeVariants } from "~/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -9,12 +9,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "~/components/ui/card";
 import { type CardCollectionDescriptionProps } from "~/lib/interface";
 import Link from "next/link";
-import { Button, buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import { useEffect, useRef, useState } from "react";
-import useToast from "../ui/use-react-hot-toast";
+import useToast from "~/components/ui/use-react-hot-toast";
 import { api } from "~/trpc/react";
 
 export default function CardCollectionDescription({

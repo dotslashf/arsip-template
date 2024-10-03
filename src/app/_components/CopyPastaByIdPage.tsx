@@ -1,11 +1,10 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import CardById from "~/components/CopyPasta/CardById";
 import CardRelated from "~/components/CopyPasta/CardRelated";
 import SkeletonCopyPasta from "~/components/Skeleton/CopyPasta";
-import CustomTweet from "~/components/Tweet/CustomTweet";
 import { getBreadcrumbs, getTweetId, trimContent } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import TweetPage from "./TweetPage";

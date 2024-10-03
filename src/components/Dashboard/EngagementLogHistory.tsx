@@ -1,10 +1,10 @@
 "use client";
 
 import { formatDateDistance, parseEngagementLogs } from "~/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { api } from "~/trpc/react";
 import { type ActionType, type EngagementActionDataDb } from "~/lib/interface";
-import { Badge } from "../ui/badge";
+import { Badge } from "~/components/ui/badge";
 import Link from "next/link";
 import {
   History,
@@ -15,14 +15,14 @@ import {
   ThumbsUp,
   Trash,
 } from "lucide-react";
-import EmptyState from "../EmptyState";
+import EmptyState from "../Common/EmptyState";
 import { type Session } from "next-auth";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
+} from "~/components/ui/accordion";
 
 interface EngagementLogsHistoryProps {
   session: Session | null;

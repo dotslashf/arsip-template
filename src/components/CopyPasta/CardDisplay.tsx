@@ -1,8 +1,8 @@
 import { cn, trimContent } from "~/lib/utils";
-import { Card, CardContent, CardFooter } from "../ui/card";
-import Tag from "../ui/tags";
+import { Card, CardContent, CardFooter } from "~/components/ui/card";
+import Tag from "~/components/ui/tags";
 import Link from "next/link";
-import { buttonVariants } from "../ui/button";
+import { buttonVariants } from "~/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { trackEvent } from "~/lib/track";
 import { ANALYTICS_EVENT } from "~/lib/constant";

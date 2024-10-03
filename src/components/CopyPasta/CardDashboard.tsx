@@ -5,14 +5,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "~/components/ui/card";
 import { ArrowRight, Link as LinkIcon, NotebookPen } from "lucide-react";
 import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
 import { cn } from "~/lib/utils";
-import { buttonVariants } from "../ui/button";
+import { buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
-import Tag from "../ui/tags";
-import CopyPastaCardAction from "../CopyPastaCardAction";
+import Tag from "~/components/ui/tags";
+import CopyPastaCardAction from "~/components/CopyPasta/CopyPastaCardAction";
 import { trackEvent } from "~/lib/track";
 import { useState } from "react";
 import DialogImage from "./DialogImage";

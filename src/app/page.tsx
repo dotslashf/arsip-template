@@ -1,6 +1,6 @@
-import Layout from "~/components/Layout";
+import Layout from "~/components/Common/Layout";
 import { api, HydrateClient } from "~/trpc/server";
-import Hero from "~/components/Hero";
+import Hero from "~/components/Common/Hero";
 import { type Metadata } from "next";
 import { baseUrl } from "~/lib/constant";
 import { Homepage } from "./_components/Homepage";

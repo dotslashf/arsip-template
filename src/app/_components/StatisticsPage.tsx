@@ -14,7 +14,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 
 import {
   Card,

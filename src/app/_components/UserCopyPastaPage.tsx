@@ -3,10 +3,10 @@
 import { type Session } from "next-auth";
 import CardMinimal from "~/components/CopyPasta/CardMinimal";
 import EngagementLogHistory from "~/components/Dashboard/EngagementLogHistory";
-import EmptyState from "~/components/EmptyState";
-import GetContent from "~/components/GetContent";
+import EmptyState from "~/components/Common/EmptyState";
+import GetContent from "~/components/Common/GetContent";
 import { Button } from "~/components/ui/button";
-import UserProfileCard from "~/components/UserProfileCard";
+import UserProfileCard from "~/components/Common/UserProfileCard";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { trackEvent } from "~/lib/track";
 import { api } from "~/trpc/react";

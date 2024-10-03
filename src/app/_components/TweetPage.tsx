@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { enrichTweet } from "react-tweet";
 import { type Tweet } from "react-tweet/api";
-import EmptyState from "~/components/EmptyState";
+import EmptyState from "~/components/Common/EmptyState";
 import CustomTweet from "~/components/Tweet/CustomTweet";
 import SkeletonTweet from "~/components/Tweet/SkeletonTweet";
 import { sanitizeTweetEnrich } from "~/lib/utils";

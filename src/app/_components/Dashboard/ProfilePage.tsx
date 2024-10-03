@@ -3,12 +3,12 @@
 import { ArrowRight, Library, NotebookPen } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import EngagementLogHistory from "~/components/Dashboard/EngagementLogHistory";
-import { useSession } from "~/components/SessionContext";
+import { useSession } from "~/components/Common/SessionContext";
 import { buttonVariants } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import UserProfileCard from "~/components/UserProfileCard";
+import UserProfileCard from "~/components/Common/UserProfileCard";
 import { cn, getBreadcrumbs } from "~/lib/utils";
 
 export default function ProfilePage() {

@@ -1,9 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import CardCollectionDescription from "~/components/Collection/CardCollectionDescription";
-import GetContent from "~/components/GetContent";
+import GetContent from "~/components/Common/GetContent";
 import { Button } from "~/components/ui/button";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { trackEvent } from "~/lib/track";

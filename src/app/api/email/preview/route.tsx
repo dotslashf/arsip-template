@@ -37,7 +37,7 @@ export async function GET(request: Request) {
       break;
   }
 
-  const html = await render(templateComponent);
+  const html = render(templateComponent);
   const response = new NextResponse(html);
   response.headers.set("Content-Type", "text/html; charset=utf-8");
   return response;

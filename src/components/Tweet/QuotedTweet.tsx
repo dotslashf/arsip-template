@@ -1,8 +1,13 @@
 import { enrichTweet, formatNumber, TweetBody, TweetMedia } from "react-tweet";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "~/components/ui/card";
 import { type QuotedTweet } from "react-tweet/api";
 import { Heart, MessageCircle, Repeat2 } from "lucide-react";
-import { AvatarImage, AvatarFallback, Avatar } from "../ui/avatar";
+import { AvatarImage, AvatarFallback, Avatar } from "~/components/ui/avatar";
 import { parseISO } from "date-fns";
 import { formatDateToHuman } from "~/lib/utils";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import CardById from "~/components/Collection/CardById";
 import CardCollectionDescription from "~/components/Collection/CardCollectionDescription";
 import CardList from "~/components/Collection/CardLists";

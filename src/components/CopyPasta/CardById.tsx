@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import { type Tag as TagType } from "@prisma/client";
 import { cn, formatDateToHuman, trimContent } from "~/lib/utils";
-import { buttonVariants } from "../ui/button";
+import { buttonVariants } from "~/components/ui/button";
 import {
   BookCheck,
   CalendarDays,
@@ -17,25 +17,25 @@ import {
   Link as LinkIcon,
   Share2,
 } from "lucide-react";
-import useToast from "../ui/use-react-hot-toast";
+import useToast from "~/components/ui/use-react-hot-toast";
 import { ANALYTICS_EVENT, baseUrl, sourceEnumHash } from "~/lib/constant";
 import { useRouter, useSearchParams } from "next/navigation";
-import Reaction from "../Reaction";
+import Reaction from "../Reaction/Reaction";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "~/components/ui/dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import {} from "@prisma/client";
-import Tag from "../ui/tags";
+import Tag from "~/components/ui/tags";
 import { type CardProps } from "~/lib/interface";
-import { Badge, badgeVariants } from "../ui/badge";
+import { Badge, badgeVariants } from "~/components/ui/badge";
 import { api } from "~/trpc/react";
 import { trackEvent } from "~/lib/track";
-import Avatar from "../ui/avatar-image";
+import Avatar from "~/components/ui/avatar-image";
 import { useState } from "react";
 import DialogImage from "./DialogImage";
 

@@ -25,9 +25,9 @@ import SearchBar from "~/components/Collection/SearchBar";
 import CardSearchResult from "~/components/Collection/CardSearchResult";
 import { type CopyPastaSearchResult } from "~/lib/interface";
 import { ScrollBar, ScrollArea } from "~/components/ui/scroll-area";
-import EmptyState from "~/components/EmptyState";
+import EmptyState from "~/components/Common/EmptyState";
 import CardList from "~/components/Collection/CardLists";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import { getBreadcrumbs } from "~/lib/utils";
 
 export default function CreateCollection() {

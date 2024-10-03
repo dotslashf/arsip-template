@@ -5,7 +5,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "~/components/ui/card";
 import {
   ArrowRight,
   ImageIcon,
@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
-import { Button, buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
-import Tag from "../ui/tags";
+import Tag from "~/components/ui/tags";
 import { trackEvent } from "~/lib/track";
 
 export default function CardById({ copyPasta }: CardProps) {
