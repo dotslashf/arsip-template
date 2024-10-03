@@ -2,10 +2,10 @@
 
 import { type UserRole } from "@prisma/client";
 import { usePathname } from "next/navigation";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import DashboardCopyPastaAdmin from "~/components/Dashboard/CopyPasta/DashboardCopyPastaAdmin";
 import DashboardCopyPastaUser from "~/components/Dashboard/CopyPasta/DashboardCopyPastaUser";
-import { useSession } from "~/components/SessionContext";
+import { useSession } from "~/components/Common/SessionContext";
 import { getBreadcrumbs } from "~/lib/utils";
 
 export default function ProfileCopyPastaPage() {

@@ -43,11 +43,11 @@ import { badgeVariants } from "~/components/ui/badge";
 import { DateTimePicker } from "~/components/ui/datetime-picker";
 import { id } from "date-fns/locale";
 import { DAYS, parseErrorMessages } from "~/lib/constant";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import Link from "next/link";
 import { useToBlob } from "@hugocxl/react-to-image";
 import TweetPage from "./TweetPage";
-import EmptyState from "~/components/EmptyState";
+import EmptyState from "~/components/Common/EmptyState";
 
 export default function CreateCopyPasta() {
   const [tags] = api.tag.list.useSuspenseQuery(undefined, {

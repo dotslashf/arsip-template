@@ -3,11 +3,11 @@
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import BreadCrumbs from "~/components/BreadCrumbs";
+import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import CardCollectionDescription from "~/components/Collection/CardCollectionDescription";
-import EmptyState from "~/components/EmptyState";
-import GetContent from "~/components/GetContent";
-import { useSession } from "~/components/SessionContext";
+import EmptyState from "~/components/Common/EmptyState";
+import GetContent from "~/components/Common/GetContent";
+import { useSession } from "~/components/Common/SessionContext";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { cn, getBreadcrumbs } from "~/lib/utils";
 import { api } from "~/trpc/react";

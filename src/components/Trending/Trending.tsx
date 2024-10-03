@@ -5,18 +5,18 @@ import { ArrowRight, Eye, Hash, Library, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { cn, trimContent } from "~/lib/utils";
 import { api } from "~/trpc/react";
-import { ScrollArea } from "../ui/scroll-area";
-import ListTags from "../ListTags";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import ListTags from "~/components/Common/ListTags";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion";
+} from "~/components/ui/accordion";
 import { DAYS } from "~/lib/constant";
 import NumberTicker from "../magicui/number-ticker";
-import { buttonVariants } from "../ui/button";
-import { Badge } from "../ui/badge";
+import { buttonVariants } from "~/components/ui/button";
+import { Badge } from "~/components/ui/badge";
 
 interface TrendingHomeProps {
   tag: string | null;

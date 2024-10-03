@@ -1,9 +1,9 @@
 import { type InfiniteData } from "@tanstack/react-query";
 import SkeletonCopyPasta from "../Skeleton/CopyPasta";
-import { Button } from "../ui/button";
+import { Button } from "~/components/ui/button";
 import { type CardCopyPastaMinimal } from "~/lib/interface";
 import CardDashboard from "../CopyPasta/CardDashboard";
-import GetContent from "../GetContent";
+import GetContent from "../Common/GetContent";
 
 interface ProfileCopyPastaCardProps {
   type: "approved" | "disapproved" | "deleted";

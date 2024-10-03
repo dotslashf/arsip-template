@@ -4,7 +4,7 @@ import { ANALYTICS_EVENT } from "~/lib/constant";
 import { api } from "~/trpc/react";
 import CardMinimal from "./CardMinimal";
 import { Button } from "~/components/ui/button";
-import GetContent from "../GetContent";
+import GetContent from "../Common/GetContent";
 import { trackEvent } from "~/lib/track";
 
 export default function Lists() {

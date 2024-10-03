@@ -19,7 +19,7 @@ const TrendingHome = dynamic(() => import("~/components/Trending/Trending"), {
   },
 });
 
-const SearchBar = dynamic(() => import("~/components/SearchBar"), {
+const SearchBar = dynamic(() => import("~/components/Common/SearchBar"), {
   ssr: false,
   loading() {
     return (

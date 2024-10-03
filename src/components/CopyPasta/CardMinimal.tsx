@@ -5,7 +5,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "~/components/ui/card";
 import {
   ArrowRight,
   Clipboard,
@@ -14,16 +14,16 @@ import {
 } from "lucide-react";
 import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
 import { cn, trimContent } from "~/lib/utils";
-import ReactionSummary from "../ReactionSummary";
-import { Button, buttonVariants } from "../ui/button";
+import ReactionSummary from "../Reaction/ReactionSummary";
+import { Button, buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { type Tag as TagType } from "@prisma/client";
-import Tag from "../ui/tags";
-import useToast from "../ui/use-react-hot-toast";
+import Tag from "~/components/ui/tags";
+import useToast from "~/components/ui/use-react-hot-toast";
 import { trackEvent } from "~/lib/track";
-import Avatar from "../ui/avatar-image";
-import { badgeVariants } from "../ui/badge";
+import Avatar from "~/components/ui/avatar-image";
+import { badgeVariants } from "~/components/ui/badge";
 import { useState } from "react";
 import DialogImage from "./DialogImage";
 

@@ -6,8 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { Button } from "../ui/button";
+} from "~/components/ui/dialog";
+import { Button } from "~/components/ui/button";
 import { trimContent } from "~/lib/utils";
 import Image from "next/image";
 import { useState, useEffect } from "react";
