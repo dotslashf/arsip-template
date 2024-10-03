@@ -1,12 +1,5 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "~/components/ui/card";
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
-import { Button } from "~/components/ui/button";
-import { MessageCircle, Repeat2, Heart, Share } from "lucide-react";
 
 export default function SkeletonTweet() {
   return (

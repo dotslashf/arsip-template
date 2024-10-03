@@ -35,7 +35,7 @@ import { createCopyPastaFormClient } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MultipleSelector, {
   type Option,
 } from "~/components/ui/multiple-selector";
@@ -45,11 +45,7 @@ import { id } from "date-fns/locale";
 import { DAYS, parseErrorMessages } from "~/lib/constant";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import Link from "next/link";
-import { enrichTweet, Tweet, TweetSkeleton } from "react-tweet";
-import { type Tweet as TweetInterface } from "react-tweet/api";
-import { parseISO } from "date-fns";
 import { useToBlob } from "@hugocxl/react-to-image";
-import he from "he";
 import TweetPage from "./TweetPage";
 import EmptyState from "~/components/EmptyState";
 
@@ -103,6 +99,19 @@ export default function CreateCopyPasta() {
       form.setValue("imageUrl", selectedFile);
     }
   };
+
+  const shouldRunEffect = useMemo(() => modeCreate === "auto", [modeCreate]);
+
+  useEffect(() => {
+    if (shouldRunEffect) {
+      if (Object.values(form.formState.errors).length > 0) {
+        form.setError("sourceUrl", {
+          message: "Isi tweet terlalu pendek untuk dijadikan template",
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.formState.errors.content, shouldRunEffect]);
 
   async function onSubmit(values: z.infer<typeof createCopyPastaFormClient>) {
     try {
@@ -205,26 +214,17 @@ export default function CreateCopyPasta() {
     const tweetId = getTweetId(form.getValues("sourceUrl") ?? "");
     if (!tweetId) return null;
     setFetchedTweetId(tweetId);
-    const url = `https://react-tweet.vercel.app/api/tweet/${tweetId}`;
+  }
 
-    try {
-      const response = await fetch(url, {});
-      const { data } = (await response.json()) as { data: TweetInterface };
-      const tweet = enrichTweet(data);
-
-      void toast({
-        type: "success",
-        message: tweet.entities.map((e) => e.text).join(" "),
-      });
-
-      form.setValue(
-        "content",
-        he.decode(tweet.entities.map((e) => e.text).join(" ")),
-      );
-      form.setValue("postedAt", parseISO(tweet.created_at));
-    } catch (error) {
-      console.error("Error fetching tweet data:", error);
-    }
+  function handleTweetDataFetched({
+    content,
+    postedAt,
+  }: {
+    content: string;
+    postedAt: Date;
+  }) {
+    form.setValue("postedAt", postedAt);
+    form.setValue("content", content);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -433,15 +433,21 @@ export default function CreateCopyPasta() {
                 />
               </div>
             )}
-            <span className="text-sm">Tweet akan muncul dibawah 👇</span>
-            {fetchedTweetId ? (
+            {modeCreate === "auto" && (
+              <span className="text-sm">Tweet akan muncul dibawah 👇</span>
+            )}
+            {fetchedTweetId && (
               <div
                 ref={ref}
                 className="flex items-center justify-center bg-background"
               >
-                <TweetPage id={fetchedTweetId} />
+                <TweetPage
+                  id={fetchedTweetId}
+                  onTweetLoaded={handleTweetDataFetched}
+                />
               </div>
-            ) : (
+            )}
+            {modeCreate === "auto" && !fetchedTweetId && (
               <EmptyState
                 message="Tweet belum terload"
                 className="border-solid"

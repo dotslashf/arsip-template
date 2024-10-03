@@ -14,11 +14,30 @@ export async function GET(
 ) {
   try {
     const tweet = await getTweet(params.id);
+    if (!tweet) {
+      return NextResponse.json(
+        { error: "Failed to fetch tweet" },
+        {
+          status: 404,
+          headers: {
+            "content-type": "application/json",
+          },
+        },
+      );
+    }
     return NextResponse.json({
       tweet,
     });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Failed to fetch tweet" });
+    return NextResponse.json(
+      { error: "Failed to fetch tweet" },
+      {
+        status: 404,
+        headers: {
+          "content-type": "application/json",
+        },
+      },
+    );
   }
 }

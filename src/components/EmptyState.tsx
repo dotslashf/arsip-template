@@ -2,7 +2,7 @@ import { type ReactElement, type HTMLAttributes } from "react";
 import { cn } from "~/lib/utils";
 
 interface EmptyStateProps extends HTMLAttributes<HTMLDivElement> {
-  message?: string;
+  message?: string | ReactElement;
   action?: ReactElement;
 }
 export default function EmptyState({

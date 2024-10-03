@@ -18,7 +18,7 @@ import {
   AccordionTrigger,
 } from "~/components/ui/accordion";
 import Link from "next/link";
-import Avatar from "~/components/ui/avatar";
+import Avatar from "~/components/ui/avatar-image";
 import BreadCrumbs from "~/components/BreadCrumbs";
 import { usePathname } from "next/navigation";
 import { Laugh, Library, NotebookPen } from "lucide-react";
