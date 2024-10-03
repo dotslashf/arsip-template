@@ -10,7 +10,7 @@ import { sanitizeTweetEnrich } from "~/lib/utils";
 
 interface TweetPageProps {
   id: string;
-  onTweetLoaded: ({
+  onTweetLoaded?: ({
     content,
     postedAt,
   }: {
@@ -35,10 +35,11 @@ export default function TweetPage({ id, onTweetLoaded }: TweetPageProps) {
         const { tweet }: { tweet: Tweet } = await response.json();
         setTweet(tweet);
         const enrich = enrichTweet(tweet);
-        onTweetLoaded({
-          content: sanitizeTweetEnrich(enrich),
-          postedAt: parseISO(tweet.created_at),
-        });
+        onTweetLoaded &&
+          onTweetLoaded({
+            content: sanitizeTweetEnrich(enrich),
+            postedAt: parseISO(tweet.created_at),
+          });
       } catch (err) {
         console.error(err);
         setError(err instanceof Error ? err : new Error("An error occurred"));

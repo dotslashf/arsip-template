@@ -41,7 +41,7 @@ export default function CustomTweet({ tweet: t }: CustomTweetProps) {
           <p className="mt-1 text-base text-gray-600">
             {sanitizeTweet(tweet.parent.text)}
           </p>
-          <div className="flex justify-between text-sm text-gray-500">
+          <div className="flex flex-col justify-between gap-2 text-sm text-gray-500 md:flex-row">
             <div className="flex gap-4">
               <span className="inline-flex items-center">
                 <MessageCircle className="mr-2 h-4 w-4" />
@@ -120,6 +120,7 @@ export default function CustomTweet({ tweet: t }: CustomTweetProps) {
             href={`https://x.com/${tweet.user.screen_name}/status/${tweet.id_str}`}
             className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
             prefetch={false}
+            target="__blank"
           >
             <Link2 className="mr-2 h-4 w-4" />
             Cek Tweet

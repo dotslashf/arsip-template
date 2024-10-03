@@ -5,8 +5,10 @@ import BreadCrumbs from "~/components/BreadCrumbs";
 import CardById from "~/components/CopyPasta/CardById";
 import CardRelated from "~/components/CopyPasta/CardRelated";
 import SkeletonCopyPasta from "~/components/Skeleton/CopyPasta";
-import { getBreadcrumbs, trimContent } from "~/lib/utils";
+import CustomTweet from "~/components/Tweet/CustomTweet";
+import { getBreadcrumbs, getTweetId, trimContent } from "~/lib/utils";
 import { api } from "~/trpc/react";
+import TweetPage from "./TweetPage";
 
 interface CopyPastaByIdProps {
   id: string;
@@ -44,14 +46,20 @@ export default function CopyPastaById({ id }: CopyPastaByIdProps) {
   });
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col gap-6">
       <BreadCrumbs path={currentPath} />
       {copyPasta && <CardById copyPasta={copyPasta} />}
-      <div className="mt-10 flex flex-col gap-2 lg:mt-20">
-        <div className="self-center text-sm font-semibold">
+      <div className="flex flex-col gap-2">
+        <div className="text-sm font-semibold">Tweet Preview:</div>
+        {copyPasta.source === "Twitter" && copyPasta.sourceUrl && (
+          <TweetPage id={getTweetId(copyPasta.sourceUrl)!} />
+        )}
+      </div>
+      <div className="flex flex-col gap-2">
+        <div className="text-sm font-semibold">
           Template Dengan Tag Yang Sama:
         </div>
-        <div className="mt-2 grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
           {related && !isLoading
             ? related.map((copy) => {
                 return <CardRelated key={copy.id} copyPasta={copy} />;
