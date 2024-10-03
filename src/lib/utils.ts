@@ -77,7 +77,7 @@ export function trimContent(content: string, length = 255) {
 
 export function getTweetId(tweetUrl: string) {
   const match = tweetUrl.match(/\/status\/(\d+)/);
-  return match ? match[1] : null;
+  return match ? match[1] : undefined;
 }
 
 export function getRandomElement(array: string[]) {
