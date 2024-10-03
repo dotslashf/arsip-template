@@ -53,13 +53,13 @@ export function sanitizeTweetEnrich(tweet: EnrichedTweet) {
   return tweet.entities
     .map((e) => {
       switch (e.type) {
-        case "hashtag":
         case "media":
-        case "mention":
         case "symbol":
         case "url":
           return;
-        default:
+        case "hashtag":
+        case "mention":
+        case "text":
           return e.text;
       }
     })
