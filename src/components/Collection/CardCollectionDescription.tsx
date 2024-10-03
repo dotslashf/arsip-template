@@ -1,6 +1,6 @@
 import { CalendarDays, Check, ChevronRight, Pencil, Trash } from "lucide-react";
 import { formatDateToHuman, cn } from "~/lib/utils";
-import Avatar from "../ui/avatar";
+import Avatar from "../ui/avatar-image";
 import { Badge, badgeVariants } from "../ui/badge";
 import {
   Card,

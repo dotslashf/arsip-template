@@ -35,7 +35,7 @@ import { type CardProps } from "~/lib/interface";
 import { Badge, badgeVariants } from "../ui/badge";
 import { api } from "~/trpc/react";
 import { trackEvent } from "~/lib/track";
-import Avatar from "../ui/avatar";
+import Avatar from "../ui/avatar-image";
 import { useState } from "react";
 import DialogImage from "./DialogImage";
 

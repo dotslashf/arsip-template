@@ -17,7 +17,7 @@ import ReactionSummaryProfile from "./ReactionSummaryProfile";
 import { v4 as uuidv4 } from "uuid";
 import { editProfile } from "~/server/form/user";
 import { Label } from "./ui/label";
-import Avatar from "./ui/avatar";
+import Avatar from "./ui/avatar-image";
 import Tag from "./ui/tags";
 import { type Tag as TagType } from "@prisma/client";
 import { useRouter } from "next/navigation";

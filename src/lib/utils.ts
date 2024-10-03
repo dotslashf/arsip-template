@@ -18,6 +18,8 @@ import {
   type SearchAction,
 } from "schema-dts";
 import { baseUrl, TIMEZONE } from "./constant";
+import he from "he";
+import { type EnrichedTweet } from "react-tweet";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -41,6 +43,27 @@ export function getJakartaDate(date: Date = new Date()): Date {
 
 export function getJakartaDateString(date: Date = new Date()): string {
   return formatTz(getJakartaDate(date), "yyyy-MM-dd", { timeZone: TIMEZONE });
+}
+
+export function sanitizeTweet(text: string) {
+  return he.decode(text);
+}
+
+export function sanitizeTweetEnrich(tweet: EnrichedTweet) {
+  return tweet.entities
+    .map((e) => {
+      switch (e.type) {
+        case "hashtag":
+        case "media":
+        case "mention":
+        case "symbol":
+        case "url":
+          return;
+        default:
+          return e.text;
+      }
+    })
+    .join(" ");
 }
 
 export function trimContent(content: string, length = 255) {
@@ -255,4 +278,13 @@ export function parseEngagementLogs(log: EngagementActionDataDb) {
     text: `${action} ${activity}`,
     action: `link`,
   };
+}
+
+export function formatNumber(number: number) {
+  return Intl.NumberFormat("en-US", {
+    style: "decimal",
+    useGrouping: true,
+    notation: "compact",
+    compactDisplay: "short",
+  }).format(number);
 }
