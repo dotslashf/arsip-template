@@ -1,6 +1,6 @@
 "use client";
 
-import { formatDateDistance, parseEngagementLogs } from "~/lib/utils";
+import { formatDateDistance, parseEngagementLogs } from "~/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { api } from "~/trpc/react";
 import { type ActionType, type EngagementActionDataDb } from "~/lib/interface";

@@ -4,7 +4,7 @@ import Hero from "~/components/Common/Hero";
 import { type Metadata } from "next";
 import { baseUrl } from "~/lib/constant";
 import { Homepage } from "./_components/Homepage";
-import { generateSchemaOrgWebSite } from "~/lib/utils";
+import { generateSchemaOrgWebSite } from "~/utils";
 
 type Props = {
   params: { id: string };

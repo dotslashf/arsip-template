@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import { buttonVariants } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { cn, getBreadcrumbs } from "~/lib/utils";
+import { cn, getBreadcrumbs } from "~/utils";
 
 export default function SupportPage() {
   const pathname = usePathname();

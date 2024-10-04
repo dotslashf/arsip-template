@@ -9,7 +9,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-import { getRandomElement, handleEngagementAction } from "~/lib/utils";
+import { getRandomElement, handleEngagementAction } from "~/utils";
 import {
   type CopyPastaOnlyContent,
   type CopyPastaSearchResult,

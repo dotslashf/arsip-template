@@ -9,7 +9,7 @@ import { type QuotedTweet } from "react-tweet/api";
 import { Heart, MessageCircle, Repeat2 } from "lucide-react";
 import { AvatarImage, AvatarFallback, Avatar } from "~/components/ui/avatar";
 import { parseISO } from "date-fns";
-import { formatDateToHuman } from "~/lib/utils";
+import { formatDateToHuman } from "~/utils";
 
 type CustomTweetProps = {
   tweet: QuotedTweet;

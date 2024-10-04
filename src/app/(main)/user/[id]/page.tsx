@@ -1,7 +1,7 @@
 import Layout from "~/components/Common/Layout";
 import { api, HydrateClient } from "~/trpc/server";
 import { type Metadata } from "next";
-import { trimContent } from "~/lib/utils";
+import { trimContent } from "~/utils";
 import { notFound } from "next/navigation";
 import { baseUrl } from "~/lib/constant";
 import UserCopyPastaPage from "~/app/_components/UserCopyPastaPage";

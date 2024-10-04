@@ -2,7 +2,7 @@ import { type $Enums, EmotionType } from "@prisma/client";
 import dynamic from "next/dynamic";
 import { Badge } from "~/components/ui/badge";
 import { Skeleton } from "~/components/ui/skeleton";
-import { mergeReactions } from "~/lib/utils";
+import { mergeReactions } from "~/utils";
 
 const ReactionSummaryChild = dynamic(() => import("./ReactionSummaryChild"), {
   ssr: false,

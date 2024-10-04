@@ -6,7 +6,7 @@ import SkeletonListCopyPasta from "~/components/Skeleton/ListCopyPasta";
 import { usePathname, useSearchParams } from "next/navigation";
 import SkeletonTrending from "~/components/Skeleton/Trending";
 import BreadCrumbs from "~/components/Common/BreadCrumbs";
-import { getBreadcrumbs } from "~/lib/utils";
+import { getBreadcrumbs } from "~/utils";
 
 const TrendingHome = dynamic(() => import("~/components/Trending/Trending"), {
   ssr: false,

@@ -4,7 +4,7 @@ import { LoaderCircle, Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { trimContent } from "~/lib/utils";
+import { trimContent } from "~/utils";
 import { api } from "~/trpc/react";
 import { useMediaQuery, useDebounce } from "@uidotdev/usehooks";
 import { ANALYTICS_EVENT } from "~/lib/constant";

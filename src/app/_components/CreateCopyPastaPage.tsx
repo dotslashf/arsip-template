@@ -30,7 +30,7 @@ import {
   formatDateToHuman,
   getBreadcrumbs,
   getTweetId,
-} from "~/lib/utils";
+} from "~/utils";
 import { createCopyPastaFormClient } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";

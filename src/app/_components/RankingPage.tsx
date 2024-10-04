@@ -9,7 +9,7 @@ import {
   TableBody,
   TableCell,
 } from "~/components/ui/table";
-import { getBreadcrumbs, getMedal } from "~/lib/utils";
+import { getBreadcrumbs, getMedal } from "~/utils";
 import { api } from "~/trpc/react";
 import {
   Accordion,

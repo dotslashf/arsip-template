@@ -3,7 +3,7 @@
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { ArrowRight, Eye, Hash, Library, TrendingUp } from "lucide-react";
 import Link from "next/link";
-import { cn, trimContent } from "~/lib/utils";
+import { cn, trimContent } from "~/utils";
 import { api } from "~/trpc/react";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import ListTags from "~/components/Common/ListTags";

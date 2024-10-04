@@ -9,7 +9,7 @@ import EmptyState from "~/components/Common/EmptyState";
 import GetContent from "~/components/Common/GetContent";
 import { useSession } from "~/components/Common/SessionContext";
 import { Button, buttonVariants } from "~/components/ui/button";
-import { cn, getBreadcrumbs } from "~/lib/utils";
+import { cn, getBreadcrumbs } from "~/utils";
 import { api } from "~/trpc/react";
 
 export default function CollectionPage() {

@@ -7,7 +7,7 @@ import GetContent from "~/components/Common/GetContent";
 import { Button } from "~/components/ui/button";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { trackEvent } from "~/lib/track";
-import { getBreadcrumbs } from "~/lib/utils";
+import { getBreadcrumbs } from "~/utils";
 import { api } from "~/trpc/react";
 
 export default function ListCollectionPage() {

@@ -3,7 +3,7 @@ import { api, HydrateClient } from "~/trpc/server";
 import { Suspense } from "react";
 import SkeletonCopyPasta from "~/components/Skeleton/CopyPasta";
 import { type Metadata } from "next";
-import { trimContent } from "~/lib/utils";
+import { trimContent } from "~/utils";
 import { notFound } from "next/navigation";
 import { baseUrl } from "~/lib/constant";
 import CollectionByIdPage from "~/app/_components/CollectionByIdPage";

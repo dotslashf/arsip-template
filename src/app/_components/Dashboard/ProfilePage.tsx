@@ -9,7 +9,7 @@ import { useSession } from "~/components/Common/SessionContext";
 import { buttonVariants } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import UserProfileCard from "~/components/Common/UserProfileCard";
-import { cn, getBreadcrumbs } from "~/lib/utils";
+import { cn, getBreadcrumbs } from "~/utils";
 
 export default function ProfilePage() {
   const session = useSession();

@@ -1,7 +1,7 @@
 import { AchievementType, type PrismaClient, type User } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { getJakartaDate, getJakartaDateString } from "~/lib/utils";
+import { getJakartaDate, getJakartaDateString } from "~/utils";
 import {
   createTRPCRouter,
   protectedProcedure,

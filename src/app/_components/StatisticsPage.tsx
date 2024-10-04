@@ -30,7 +30,7 @@ import {
   ChartTooltipContent,
 } from "~/components/ui/chart";
 import { DAYS } from "~/lib/constant";
-import { formatDateToHuman, getBreadcrumbs, parseDate } from "~/lib/utils";
+import { formatDateToHuman, getBreadcrumbs, parseDate } from "~/utils";
 import { api } from "~/trpc/react";
 
 const chartConfigDonutReaction = {

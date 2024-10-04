@@ -12,7 +12,7 @@ import { editCopyPastaForm } from "~/server/form/copyPasta";
 import { deleteBucketFile } from "~/server/util/storage";
 import { editProfile } from "~/server/form/user";
 import { updateUserEngagementScore } from "~/server/util/db";
-import { handleEngagementAction } from "~/lib/utils";
+import { handleEngagementAction } from "~/utils";
 
 export const dashboardRouter = createTRPCRouter({
   list: protectedProcedure

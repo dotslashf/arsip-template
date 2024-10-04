@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
-import { trimContent } from "~/lib/utils";
+import { trimContent } from "~/utils";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 

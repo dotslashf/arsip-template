@@ -1,4 +1,4 @@
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils";
 import { Badge } from "./badge";
 import { type Tag as TagType } from "@prisma/client";
 import { Hash } from "lucide-react";

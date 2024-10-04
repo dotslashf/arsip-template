@@ -1,5 +1,5 @@
 import { CalendarDays, Check, ChevronRight, Pencil, Trash } from "lucide-react";
-import { formatDateToHuman, cn } from "~/lib/utils";
+import { formatDateToHuman, cn } from "~/utils";
 import Avatar from "~/components/ui/avatar-image";
 import { Badge, badgeVariants } from "~/components/ui/badge";
 import {

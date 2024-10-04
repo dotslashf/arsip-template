@@ -5,7 +5,7 @@ import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import CardById from "~/components/CopyPasta/CardById";
 import CardRelated from "~/components/CopyPasta/CardRelated";
 import SkeletonCopyPasta from "~/components/Skeleton/CopyPasta";
-import { getBreadcrumbs, getTweetId, trimContent } from "~/lib/utils";
+import { getBreadcrumbs, getTweetId, trimContent } from "~/utils";
 import { api } from "~/trpc/react";
 import TweetPage from "./TweetPage";
 
