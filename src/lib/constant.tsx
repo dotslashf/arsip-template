@@ -161,3 +161,11 @@ export const ENGAGEMENT_SCORE = {
 };
 
 export const TIMEZONE = "Asia/Jakarta";
+
+export const ACHIEVEMENT_MINIMUM = {
+  TAG_COLLECTOR_MINIMUM: 15,
+  COLLECTION_CURATOR: {
+    COPY_PASTA_PER_COLLECTION: 5,
+    COLLECTION_MINIMUM: 3,
+  },
+};

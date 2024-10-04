@@ -19,6 +19,10 @@ import {
   type CopyPastaSearchResult,
 } from "~/lib/interface";
 import { updateUserEngagementScore } from "~/server/util/db";
+import {
+  checkAndGrantFiveCopyPastaADayAchievement,
+  checkAndGrantTagCollectionAchievement,
+} from "~/server/util/achievement";
 
 function tokenize(content: string) {
   return content.toLowerCase().split(/\s+/);
@@ -99,7 +103,12 @@ export const copyPastaRouter = createTRPCRouter({
       });
 
       const payload = handleEngagementAction("CreateCopyPasta", copyPasta.id);
-      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
+      await Promise.all([
+        updateUserEngagementScore(ctx.db, ctx.session.user.id, payload),
+        checkAndGrantTagCollectionAchievement(ctx.db, ctx.session.user.id),
+        checkAndGrantFiveCopyPastaADayAchievement(ctx.db, ctx.session.user.id),
+      ]);
+
       if (isSuperAdmin) {
         const payload = handleEngagementAction(
           "ApproveCopyPasta",

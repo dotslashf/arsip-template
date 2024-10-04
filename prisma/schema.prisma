@@ -201,6 +201,9 @@ enum AchievementType {
     OneMonthStreak
     ThreeMonthStreak
     SixMonthStreak
+    FiveCopyPastaADay
+    TagCollector
+    CollectionCurator
 }
 
 enum EngagementAction {
