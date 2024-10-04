@@ -18,7 +18,7 @@ import {
 import { Input } from "~/components/ui/input";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { api } from "~/trpc/react";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils";
 import ReactionSummaryProfile from "~/components/Reaction/ReactionSummaryProfile";
 import { v4 as uuidv4 } from "uuid";
 import { editProfile } from "~/server/form/user";

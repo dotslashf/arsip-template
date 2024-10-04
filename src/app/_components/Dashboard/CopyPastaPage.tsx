@@ -6,7 +6,7 @@ import BreadCrumbs from "~/components/Common/BreadCrumbs";
 import DashboardCopyPastaAdmin from "~/components/Dashboard/CopyPasta/DashboardCopyPastaAdmin";
 import DashboardCopyPastaUser from "~/components/Dashboard/CopyPasta/DashboardCopyPastaUser";
 import { useSession } from "~/components/Common/SessionContext";
-import { getBreadcrumbs } from "~/lib/utils";
+import { getBreadcrumbs } from "~/utils";
 
 export default function ProfileCopyPastaPage() {
   const session = useSession();

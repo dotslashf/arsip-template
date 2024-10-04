@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "~/env";
-import { getJakartaDate, getJakartaDateString } from "~/lib/utils";
+import { getJakartaDate, getJakartaDateString } from "~/utils";
 import { type CreateEmailOptions } from "resend";
 import StreakPage from "~/app/_components/Email/Streak";
 import { type User } from "@prisma/client";

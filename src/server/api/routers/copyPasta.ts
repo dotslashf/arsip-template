@@ -9,12 +9,20 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-import { getRandomElement, handleEngagementAction } from "~/lib/utils";
+import {
+  getJakartaDate,
+  getRandomElement,
+  handleEngagementAction,
+} from "~/utils";
 import {
   type CopyPastaOnlyContent,
   type CopyPastaSearchResult,
 } from "~/lib/interface";
 import { updateUserEngagementScore } from "~/server/util/db";
+import {
+  checkAndGrantFiveCopyPastaADayAchievement,
+  checkAndGrantTagCollectionAchievement,
+} from "~/server/util/achievement";
 
 function tokenize(content: string) {
   return content.toLowerCase().split(/\s+/);
@@ -85,8 +93,22 @@ export const copyPastaRouter = createTRPCRouter({
         },
       });
 
+      await ctx.db.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          lastPostedAt: getJakartaDate(),
+        },
+      });
+
       const payload = handleEngagementAction("CreateCopyPasta", copyPasta.id);
-      await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
+      await Promise.all([
+        updateUserEngagementScore(ctx.db, ctx.session.user.id, payload),
+        checkAndGrantTagCollectionAchievement(ctx.db, ctx.session.user.id),
+        checkAndGrantFiveCopyPastaADayAchievement(ctx.db, ctx.session.user.id),
+      ]);
+
       if (isSuperAdmin) {
         const payload = handleEngagementAction(
           "ApproveCopyPasta",

@@ -8,7 +8,7 @@ import {
 } from "~/components/ui/card";
 import { ArrowRight, Link as LinkIcon, NotebookPen } from "lucide-react";
 import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils";
 import { buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
 import Tag from "~/components/ui/tags";

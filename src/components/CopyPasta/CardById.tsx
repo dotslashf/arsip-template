@@ -7,7 +7,7 @@ import {
 } from "~/components/ui/card";
 import Link from "next/link";
 import { type Tag as TagType } from "@prisma/client";
-import { cn, formatDateToHuman, trimContent } from "~/lib/utils";
+import { cn, formatDateToHuman, trimContent } from "~/utils";
 import { buttonVariants } from "~/components/ui/button";
 import {
   BookCheck,

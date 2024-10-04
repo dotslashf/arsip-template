@@ -7,7 +7,7 @@ import {
 import { EmotionType } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { updateUserEngagementScore } from "~/server/util/db";
-import { handleEngagementAction } from "~/lib/utils";
+import { handleEngagementAction } from "~/utils";
 
 export const reactionRouter = createTRPCRouter({
   reactionByCopyPastaId: protectedProcedureLimited

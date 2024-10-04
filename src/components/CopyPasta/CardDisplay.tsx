@@ -1,4 +1,4 @@
-import { cn, trimContent } from "~/lib/utils";
+import { cn, trimContent } from "~/utils";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import Tag from "~/components/ui/tags";
 import Link from "next/link";

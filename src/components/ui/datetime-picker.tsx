@@ -7,7 +7,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils";
 import { Input } from "~/components/ui/input";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { type CalendarProps } from "~/components/ui/calendar";

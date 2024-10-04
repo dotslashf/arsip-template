@@ -28,7 +28,7 @@ import { ScrollBar, ScrollArea } from "~/components/ui/scroll-area";
 import EmptyState from "~/components/Common/EmptyState";
 import CardList from "~/components/Collection/CardLists";
 import BreadCrumbs from "~/components/Common/BreadCrumbs";
-import { getBreadcrumbs } from "~/lib/utils";
+import { getBreadcrumbs } from "~/utils";
 
 export default function CreateCollection() {
   const createMutation = api.collection.create.useMutation();

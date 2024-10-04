@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { handleEngagementAction } from "~/lib/utils";
+import { handleEngagementAction } from "~/utils";
 
 import {
   createTRPCRouter,
@@ -12,6 +12,7 @@ import {
   editCollectionForm,
 } from "~/server/form/collection";
 import { updateUserEngagementScore } from "~/server/util/db";
+import { checkAndGrantCollectionCuratorAchievement } from "~/server/util/achievement";
 
 export const collectionRouter = createTRPCRouter({
   list: publicProcedure
@@ -97,6 +98,10 @@ export const collectionRouter = createTRPCRouter({
       });
       const payload = handleEngagementAction("CreateCollection", collection.id);
       await updateUserEngagementScore(ctx.db, ctx.session.user.id, payload);
+      await checkAndGrantCollectionCuratorAchievement(
+        ctx.db,
+        ctx.session.user.id,
+      );
 
       return collection.id;
     }),
@@ -235,6 +240,11 @@ export const collectionRouter = createTRPCRouter({
           },
         },
       });
+
+      await checkAndGrantCollectionCuratorAchievement(
+        ctx.db,
+        ctx.session.user.id,
+      );
     }),
 
   delete: protectedProcedure

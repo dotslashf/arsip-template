@@ -4,11 +4,7 @@ import CopyPastaPage from "~/app/_components/CopyPastaByIdPage";
 import { Suspense } from "react";
 import SkeletonCopyPasta from "~/components/Skeleton/CopyPasta";
 import { type Metadata } from "next";
-import {
-  formatDateToHuman,
-  generateSchemaById,
-  trimContent,
-} from "~/lib/utils";
+import { formatDateToHuman, generateSchemaById, trimContent } from "~/utils";
 import { notFound } from "next/navigation";
 import { baseUrl } from "~/lib/constant";
 import { type Article } from "schema-dts";

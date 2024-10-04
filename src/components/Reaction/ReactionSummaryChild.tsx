@@ -8,7 +8,7 @@ import { api } from "~/trpc/react";
 import { type EmotionType } from "@prisma/client";
 import { session } from "../Common/HOCSession";
 import { useEffect, useState } from "react";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils";
 import { trackEvent } from "~/lib/track";
 import Lottie from "react-lottie-player";
 

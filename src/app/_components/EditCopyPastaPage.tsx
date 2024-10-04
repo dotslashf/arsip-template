@@ -15,7 +15,7 @@ import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/trpc/react";
 import { Pencil } from "lucide-react";
-import { determineSource, formatDateToHuman } from "~/lib/utils";
+import { determineSource, formatDateToHuman } from "~/utils";
 import { editCopyPastaForm } from "../../server/form/copyPasta";
 import { type z } from "zod";
 import useToast from "~/components/ui/use-react-hot-toast";

@@ -6,7 +6,7 @@ import { type Tweet } from "react-tweet/api";
 import EmptyState from "~/components/Common/EmptyState";
 import CustomTweet from "~/components/Tweet/CustomTweet";
 import SkeletonTweet from "~/components/Tweet/SkeletonTweet";
-import { sanitizeTweetEnrich } from "~/lib/utils";
+import { sanitizeTweetEnrich } from "~/utils";
 
 interface TweetPageProps {
   id: string;

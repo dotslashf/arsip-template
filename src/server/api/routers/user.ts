@@ -1,7 +1,7 @@
 import { AchievementType, type PrismaClient, type User } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { getJakartaDate, getJakartaDateString } from "~/lib/utils";
+import { getJakartaDate, getJakartaDateString } from "~/utils";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -41,7 +41,6 @@ export async function updateUserStreak(userId: string, db: PrismaClient) {
     data: {
       currentStreak: newStreak,
       longestStreak: Math.max(newStreak, user.longestStreak || 0),
-      lastPostedAt: now,
     },
   });
 

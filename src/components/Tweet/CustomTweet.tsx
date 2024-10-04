@@ -10,7 +10,7 @@ import { Heart, Link2, MessageCircle, Repeat2 } from "lucide-react";
 import Link from "next/link";
 import { AvatarImage, AvatarFallback, Avatar } from "~/components/ui/avatar";
 import { parseISO } from "date-fns";
-import { formatDateToHuman, cn, sanitizeTweet } from "~/lib/utils";
+import { formatDateToHuman, cn, sanitizeTweet } from "~/utils";
 import { buttonVariants } from "~/components/ui/button";
 import QuotedTweet from "./QuotedTweet";
 import CustomTweetBody from "./CustomTweetBody";

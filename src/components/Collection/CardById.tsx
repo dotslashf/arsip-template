@@ -13,7 +13,7 @@ import {
   NotebookPen,
 } from "lucide-react";
 import { ANALYTICS_EVENT, sourceEnumHash } from "~/lib/constant";
-import { cn, trimContent } from "~/lib/utils";
+import { cn, trimContent } from "~/utils";
 import { Button, buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
 import Tag from "~/components/ui/tags";

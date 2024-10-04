@@ -4,7 +4,7 @@ import { NotebookPen, Search } from "lucide-react";
 import React from "react";
 import { buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils";
 import Marquee from "~/components/magicui/marquee";
 import DotPattern from "~/components/magicui/dot-pattern";
 import CardDisplay from "~/components/CopyPasta/CardDisplay";
