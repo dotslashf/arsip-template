@@ -9,7 +9,11 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 
-import { getRandomElement, handleEngagementAction } from "~/utils";
+import {
+  getJakartaDate,
+  getRandomElement,
+  handleEngagementAction,
+} from "~/utils";
 import {
   type CopyPastaOnlyContent,
   type CopyPastaSearchResult,
@@ -82,6 +86,15 @@ export const copyPastaRouter = createTRPCRouter({
               }),
             },
           },
+        },
+      });
+
+      await ctx.db.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          lastPostedAt: getJakartaDate(),
         },
       });
 

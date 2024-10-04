@@ -41,7 +41,6 @@ export async function updateUserStreak(userId: string, db: PrismaClient) {
     data: {
       currentStreak: newStreak,
       longestStreak: Math.max(newStreak, user.longestStreak || 0),
-      lastPostedAt: now,
     },
   });
 
