@@ -61,7 +61,7 @@ export default function EngagementLogHistory({
             </CardHeader>
           </AccordionTrigger>
           <AccordionContent>
-            <CardContent>
+            <CardContent className="pb-0">
               {isLoading && (
                 <div className="flex h-20 items-center justify-center rounded-md border bg-secondary">
                   <LoaderCircle className="w-4 animate-spin" />

@@ -10,6 +10,7 @@ import { statisticsRouter } from "./routers/statistics";
 import { collectionRouter } from "./routers/collection";
 import { engagementLogsRouter } from "./routers/engagementLogs";
 import { cronRouter } from "./routers/cron";
+import { achievementRouter } from "./routers/achievement";
 
 /**
  * This is the primary router for your server.
@@ -28,6 +29,7 @@ export const appRouter = createTRPCRouter({
   collection: collectionRouter,
   engagementLogs: engagementLogsRouter,
   cron: cronRouter,
+  achievement: achievementRouter,
 });
 
 // export type definition of API
