@@ -10,6 +10,7 @@ import UserProfileCard from "~/components/Common/UserProfileCard";
 import { ANALYTICS_EVENT } from "~/lib/constant";
 import { trackEvent } from "~/lib/track";
 import { api } from "~/trpc/react";
+import Achievement from "~/components/Dashboard/Achievement";
 
 interface UserCopyPastaProps {
   id: string;
@@ -57,8 +58,9 @@ export default function UserCopyPastaPage({ id }: UserCopyPastaProps) {
 
   return (
     <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
-      <div className="flex w-full flex-col items-center justify-center gap-4 self-start lg:sticky lg:top-[4.5rem] lg:max-w-xs">
+      <div className="flex w-full flex-col items-center justify-center gap-4 self-start lg:sticky lg:top-[4.5rem]">
         <UserProfileCard session={session} isPreviewMode={true} />
+        <Achievement session={session} />
         <EngagementLogHistory session={session} />
       </div>
       <div className="grid w-full gap-4">

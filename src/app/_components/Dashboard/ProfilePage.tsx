@@ -10,6 +10,7 @@ import { buttonVariants } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import UserProfileCard from "~/components/Common/UserProfileCard";
 import { cn, getBreadcrumbs } from "~/utils";
+import Achievement from "~/components/Dashboard/Achievement";
 
 export default function ProfilePage() {
   const session = useSession();
@@ -61,6 +62,7 @@ export default function ProfilePage() {
               </Card>
             );
           })}
+          <Achievement session={session} />
           <EngagementLogHistory session={session} />
         </div>
       </div>
