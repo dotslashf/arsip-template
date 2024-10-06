@@ -44,13 +44,25 @@ export const cronRouter = createTRPCRouter({
         new Date(Date.now() - 24 * 60 * 60 * 1000),
       );
 
-      const resetResult = await ctx.db.user.updateMany({
+      const users = await ctx.db.user.findMany({
         where: {
           lastPostedAt: {
             lt: jakartaYesterday,
           },
           currentStreak: {
             gt: 0,
+          },
+        },
+        select: {
+          email: true,
+          id: true,
+        },
+      });
+
+      await ctx.db.user.updateMany({
+        where: {
+          id: {
+            in: users.map((u) => u.id),
           },
         },
         data: {
@@ -60,7 +72,7 @@ export const cronRouter = createTRPCRouter({
 
       return {
         message: "Daily streak reset",
-        resetCount: resetResult.count,
+        resetCount: `Resetting ${users.length} user's streak (${users.map((u) => u.email).join(", ")})`,
         jakartaDate: getJakartaDateString(),
       };
     }),
