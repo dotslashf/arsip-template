@@ -156,6 +156,22 @@ const config = {
             "offset-distance": "100%",
           },
         },
+        "gold-shine": {
+          "0%": {
+            "background-position": "200% center",
+          },
+          "100%": {
+            "background-position": "-200% center",
+          },
+        },
+        "background-position-spin": {
+          "0%": {
+            backgroundPosition: "top center",
+          },
+          "100%": {
+            backgroundPosition: "bottom center",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -168,6 +184,9 @@ const config = {
         gradient: "gradient 8s linear infinite",
         shine: "shine var(--duration) infinite linear",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+        "animate-gold-shine": "gold-shine 3s linear infinite",
+        "background-position-spin":
+          "background-position-spin 3000ms infinite alternate",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)"],

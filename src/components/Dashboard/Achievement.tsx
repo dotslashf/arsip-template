@@ -119,7 +119,7 @@ export function AchievementToolTip({
             {icon} {label}
           </ShinyBadge>
         </TooltipTrigger>
-        <TooltipContent className="p-3">
+        <TooltipContent align="start" className="p-3">
           <div className="flex flex-col gap-2">
             <div className="flex items-center text-sm">
               <CircleHelp className="mr-2 h-4 w-4" />

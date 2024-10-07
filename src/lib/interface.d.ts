@@ -3,6 +3,7 @@ import {
   type Tag as TagType,
   type CopyPasta,
   type EngagementAction,
+  type ExclusiveBadgeType,
 } from "@prisma/client";
 import { type DefaultArgs } from "@prisma/client/runtime/library";
 import { type MiddlewareResult } from "@trpc/server/unstable-core-do-not-import";
@@ -108,6 +109,12 @@ export interface CardCopyPastaMinimal extends CopyPasta {
     name: string | null;
     username?: string | null;
     avatarSeed?: string | null;
+    ExclusiveBadge:
+      | {
+          achievedAt: Date;
+          type: ExclusiveBadgeType;
+        }[]
+      | null;
   };
   reactions?: {
     copyPastaId: string;

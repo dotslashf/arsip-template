@@ -32,12 +32,13 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import {} from "@prisma/client";
 import Tag from "~/components/ui/tags";
 import { type CardProps } from "~/lib/interface";
-import { Badge, badgeVariants } from "~/components/ui/badge";
+import { Badge } from "~/components/ui/badge";
 import { api } from "~/trpc/react";
 import { trackEvent } from "~/lib/track";
 import Avatar from "~/components/ui/avatar-image";
 import { useState } from "react";
 import DialogImage from "./DialogImage";
+import ExclusiveBadge from "../Common/ExclusiveBadge";
 
 export default function CardById({ copyPasta }: CardProps) {
   const toast = useToast();
@@ -130,36 +131,37 @@ export default function CardById({ copyPasta }: CardProps) {
       <CardHeader className="pb-0 lg:p-6 lg:pb-0">
         <CardTitle className="flex w-full items-center justify-between">
           <div className="flex">
-            <span className="mr-4 rounded-full border-2 border-secondary-foreground">
+            <span className="mr-4 h-fit rounded-full border-2 border-secondary-foreground">
               <Avatar
                 size={{
-                  width: 95,
-                  height: 95,
+                  width: 60,
+                  height: 60,
                 }}
                 seed={
                   copyPasta.createdBy?.avatarSeed ?? copyPasta.createdBy?.id
                 }
               />
             </span>
-            <div className="flex w-full flex-col justify-evenly">
-              <span className="text-sm font-normal">Diarsipkan oleh:</span>
-              <Link
-                href={`/user/${copyPasta.createdBy?.username ?? copyPasta.createdBy?.id}`}
-                className={cn(
-                  badgeVariants({
-                    variant: "ghost",
-                    className: "py-0.5",
-                  }),
-                  "w-fit",
-                )}
-              >
-                @
-                {copyPasta.createdBy?.id.includes(
-                  copyPasta.createdBy?.username ?? "",
-                )
-                  ? copyPasta.createdBy.name
-                  : copyPasta.createdBy?.username}
-              </Link>
+            <div className="flex w-full flex-col justify-evenly gap-2">
+              <span className="text-sm font-normal">
+                Diarsipkan oleh:{" "}
+                <Link
+                  href={`/user/${copyPasta.createdBy?.username ?? copyPasta.createdBy?.id}`}
+                  className="font-semibold text-primary"
+                >
+                  @
+                  {copyPasta.createdBy?.id.includes(
+                    copyPasta.createdBy?.username ?? "",
+                  )
+                    ? copyPasta.createdBy.name
+                    : copyPasta.createdBy?.username}
+                </Link>
+              </span>
+              {copyPasta.createdBy?.ExclusiveBadge && (
+                <div className="flex flex-wrap gap-2">
+                  <ExclusiveBadge badges={copyPasta.createdBy.ExclusiveBadge} />
+                </div>
+              )}
             </div>
           </div>
           <Badge

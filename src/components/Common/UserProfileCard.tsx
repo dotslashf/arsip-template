@@ -32,6 +32,7 @@ import Link from "next/link";
 import Lottie from "react-lottie-player";
 import NumberTicker from "~/components/magicui/number-ticker";
 import { RainbowBadge } from "~/components/magicui/rainbow-badge";
+import ExclusiveBadge from "./ExclusiveBadge";
 
 interface UserProfileCardProps {
   session: Session | null;
@@ -65,6 +66,8 @@ export default function UserProfileCard({
       enabled: !!session,
     },
   );
+  const { data: exclusiveBadges, isLoading } =
+    api.user.getUserExclusiveBadge.useQuery({ id: session?.user.id });
   const editProfileMutation = api.dashboard.editProfile.useMutation({
     onSuccess(data) {
       session!.user.name = data.name;
@@ -287,6 +290,15 @@ export default function UserProfileCard({
                     session?.user.id.slice(0, 15) ??
                     "Anon"}
                 </Link>
+                {!isLoading &&
+                  exclusiveBadges &&
+                  exclusiveBadges.length > 0 && (
+                    <div className="flex flex-wrap gap-4">
+                      <div className="flex flex-wrap gap-2">
+                        <ExclusiveBadge badges={exclusiveBadges} />
+                      </div>
+                    </div>
+                  )}
                 <div className="flex gap-4">
                   <Badge variant={"white"}>
                     Rank: {session?.user.rank?.title ?? "User"}
