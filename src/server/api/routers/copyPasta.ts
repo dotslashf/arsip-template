@@ -186,6 +186,12 @@ export const copyPastaRouter = createTRPCRouter({
               username: true,
               avatarSeed: true,
               id: true,
+              ExclusiveBadge: {
+                select: {
+                  achievedAt: true,
+                  type: true,
+                },
+              },
             },
           },
         },
@@ -276,6 +282,12 @@ export const copyPastaRouter = createTRPCRouter({
               username: true,
               avatarSeed: true,
               id: true,
+              ExclusiveBadge: {
+                select: {
+                  achievedAt: true,
+                  type: true,
+                },
+              },
             },
           },
         },

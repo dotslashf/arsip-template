@@ -23,9 +23,9 @@ import Tag from "~/components/ui/tags";
 import useToast from "~/components/ui/use-react-hot-toast";
 import { trackEvent } from "~/lib/track";
 import Avatar from "~/components/ui/avatar-image";
-import { badgeVariants } from "~/components/ui/badge";
 import { useState } from "react";
 import DialogImage from "./DialogImage";
+import ExclusiveBadge from "../Common/ExclusiveBadge";
 
 interface CardMinimalProps extends CardProps {
   isShowAvatar?: boolean;
@@ -117,7 +117,7 @@ export default function CardMinimal({
         <CardTitle className="flex w-full items-center justify-between">
           {isShowAvatar ? (
             <div className="flex">
-              <span className="mr-4 rounded-full border-2 border-secondary-foreground">
+              <span className="mr-4 h-fit w-[75px] self-center rounded-full border-2 border-secondary-foreground">
                 <Avatar
                   size={{
                     width: 75,
@@ -128,36 +128,33 @@ export default function CardMinimal({
                   }
                 />
               </span>
-              <div className="flex w-full flex-col justify-evenly">
+              <div className="flex w-full flex-col justify-evenly gap-1">
                 <span className="text-sm font-normal text-muted-foreground">
-                  Diarsipkan oleh:
+                  Diarsipkan oleh:{" "}
+                  <Link
+                    href={`/user/${copyPasta.createdBy?.username ?? copyPasta.createdBy?.id}`}
+                    className="font-semibold text-primary"
+                  >
+                    @
+                    {copyPasta.createdBy?.id.includes(
+                      copyPasta.createdBy?.username ?? "",
+                    )
+                      ? copyPasta.createdBy.name
+                      : copyPasta.createdBy?.username}
+                  </Link>
                 </span>
-                <Link
-                  href={`/user/${copyPasta.createdBy?.username ?? copyPasta.createdBy?.id}`}
-                  className={cn(
-                    badgeVariants({
-                      variant: "secondary",
-                      className: "py-0.5",
-                    }),
-                    "w-fit",
-                  )}
-                >
-                  @
-                  {copyPasta.createdBy?.id.includes(
-                    copyPasta.createdBy?.username ?? "",
-                  )
-                    ? copyPasta.createdBy.name
-                    : copyPasta.createdBy?.username}
-                </Link>
+                {copyPasta.createdBy?.ExclusiveBadge && (
+                  <div className="flex flex-wrap gap-2">
+                    <ExclusiveBadge
+                      badges={copyPasta.createdBy.ExclusiveBadge}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ) : (
             <NotebookPen className="w-4" />
           )}
-          <Button variant={"outline"} size={"xs"} onClick={handleCopy}>
-            <span className="text-sm">Salin</span>
-            <Clipboard className="ml-2 w-3" />
-          </Button>
         </CardTitle>
       </CardHeader>
       <CardContent className="mt-6 flex py-0 hover:cursor-auto">
@@ -183,6 +180,10 @@ export default function CardMinimal({
             isOpen={isImageOpen}
           />
         )}
+        <Button variant={"outline"} size={"sm"} onClick={handleCopy}>
+          <Clipboard className="mr-2 w-4" />
+          <span className="text-sm">Salin</span>
+        </Button>
         <ReactionSummary
           reactions={copyPasta.reactions}
           copyPastaId={copyPasta.id}

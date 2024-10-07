@@ -138,6 +138,8 @@ model User {
 
     engagementScore Int             @default(0)
     engagementLogs  EngagementLog[]
+
+    ExclusiveBadge ExclusiveBadge[]
 }
 
 model EngagementLog {
@@ -162,6 +164,16 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model ExclusiveBadge {
+    id         String             @id @default(uuid())
+    user       User               @relation(fields: [userId], references: [id])
+    userId     String
+    type       ExclusiveBadgeType
+    achievedAt DateTime           @default(now())
+
+    @@unique([userId, type])
 }
 
 model Reaction {
@@ -193,6 +205,13 @@ enum UserRole {
     User
     Admin
     SuperAdmin
+}
+
+enum ExclusiveBadgeType {
+    Supporter
+    Donatur
+    SuperAdmin
+    Admin
 }
 
 enum AchievementType {

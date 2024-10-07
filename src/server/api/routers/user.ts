@@ -175,4 +175,21 @@ export const userRouter = createTRPCRouter({
 
       return user;
     }),
+
+  getUserExclusiveBadge: publicProcedure
+    .input(
+      z.object({
+        id: z.string().nullish(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      if (!input.id) {
+        return null;
+      }
+      return await ctx.db.exclusiveBadge.findMany({
+        where: {
+          userId: input.id,
+        },
+      });
+    }),
 });

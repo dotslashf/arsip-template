@@ -53,6 +53,12 @@ export const dashboardRouter = createTRPCRouter({
             select: {
               id: true,
               name: true,
+              ExclusiveBadge: {
+                select: {
+                  achievedAt: true,
+                  type: true,
+                },
+              },
             },
           },
         },
@@ -140,6 +146,12 @@ export const dashboardRouter = createTRPCRouter({
             select: {
               id: true,
               name: true,
+              ExclusiveBadge: {
+                select: {
+                  type: true,
+                  achievedAt: true,
+                },
+              },
             },
           },
         },
@@ -255,6 +267,12 @@ export const dashboardRouter = createTRPCRouter({
             select: {
               id: true,
               name: true,
+              ExclusiveBadge: {
+                select: {
+                  achievedAt: true,
+                  type: true,
+                },
+              },
             },
           },
         },
@@ -300,6 +318,12 @@ export const dashboardRouter = createTRPCRouter({
             select: {
               id: true,
               name: true,
+              ExclusiveBadge: {
+                select: {
+                  achievedAt: true,
+                  type: true,
+                },
+              },
             },
           },
         },
